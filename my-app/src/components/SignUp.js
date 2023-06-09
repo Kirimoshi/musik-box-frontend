@@ -15,7 +15,6 @@ export const SignUp = () => {
 
   const resetDetails = (name) => {
     setSignUpValues({ ...signUpValues, [name]: '' });
-    setSignUpErrors({});
   };
 
   const handleSubmit = (e) => {
