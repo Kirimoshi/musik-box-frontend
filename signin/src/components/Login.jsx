@@ -1,0 +1,185 @@
+// import React, { useState } from "react";
+import '../styles/loginstyle.css';
+import { AiOutlineCloseCircle } from "react-icons/ai";
+
+import { useFormik } from "formik";
+
+import { SignInSchema } from "../schemas/SignInSchema";
+
+import { BsFillExclamationCircleFill } from "react-icons/bs";
+
+const onSubmit = async (values, actions) => {
+  console.log(values);
+
+  console.log(actions);
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  actions.resetForm();
+};
+
+export const Login = (props) => {
+  const {
+    values,
+
+    errors,
+
+    touched,
+
+    isSubmitting,
+
+    handleBlur,
+
+    handleChange,
+
+    handleSubmit,
+
+    isValid,
+
+    setFieldValue,
+  } = useFormik({
+    initialValues: {
+      email: "",
+
+      password: "",
+    },
+
+    validationSchema: SignInSchema,
+
+    onSubmit,
+  });
+
+  const clearfunc = (name) => {
+    setFieldValue(name, "");
+  };
+
+  return (
+    <div className="container">
+      <div className="header">
+        <h2 className="header-content">Sign In</h2>
+
+        <h2 className="header-close">X</h2>
+      </div>
+
+      <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
+        <div className="login-form-inputcheckbox">
+          <div className="inputs">
+            <div className="label_div_ip1">
+              <div
+                className={`input-wrapper ${
+                  errors.email && touched.email ? "ip-error" : ""
+                }`}
+              >
+                <label
+                  htmlFor="inputbox"
+                  className={
+                    errors.email && touched.email
+                      ? "label label-error"
+                      : "label"
+                  }
+                >
+                  Email
+                </label>
+
+                <input
+                  value={values.email}
+                  onChange={handleChange}
+                  className="inputbox"
+                  type="email"
+                  name="email"
+                  onBlur={handleBlur}
+                />
+
+                {errors.email && touched.email ? (
+                  <BsFillExclamationCircleFill className="exclamation-circle" />
+                ) : (
+                  <AiOutlineCloseCircle
+                    className="close-circle"
+                    onClick={() => clearfunc("email")}
+                  />
+                )}
+              </div>
+
+              {errors.email && touched.email && (
+                <p className="error">{errors.email}</p>
+              )}
+            </div>
+
+            <div className="label_div_ip1">
+              <div
+                className={`input-wrapper ${
+                  errors.password && touched.password ? "ip-error" : ""
+                }`}
+              >
+                <label
+                  htmlFor="password"
+                  className={
+                    errors.password && touched.password
+                      ? "label label-error"
+                      : "label"
+                  }
+                >
+                  Password
+                </label>
+
+                <input
+                  className="inputbox"
+                  id="password-label"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="password"
+                />
+
+                {errors.password && touched.password ? (
+                  <BsFillExclamationCircleFill className="exclamation-circle" />
+                ) : (
+                  <AiOutlineCloseCircle
+                    className="close-circle"
+                    onClick={() => clearfunc("password")}
+                  />
+                )}
+              </div>
+
+              {errors.password && touched.password && (
+                <p className="error">{errors.password}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="checkbox">
+            <div className="checkboxes-dark-parent">
+              <input
+                className="checkboxes-dark"
+                type="checkbox"
+                id="checkbox"
+                name="checkbox"
+              />
+            </div>
+
+            <label className="rememberme" htmlFor="checkbox">
+              Remember me
+            </label>
+          </div>
+        </div>
+
+        <div className="sigin-sigup">
+          <button className={`sigin ${!isValid?"signin-error":''}`} type="submit">
+            Sign In
+          </button>
+
+          <div className="donthaveaccount">
+            <p>Don't have a account yet?</p>
+
+            <button
+              className="signup"
+              onClick={() => props.onFormSwitch("register")}
+            >
+              sign up
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
