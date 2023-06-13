@@ -6,7 +6,6 @@ export const SignUp = () => {
   const initialValues = { nickname: '', email: '', password: '', confirmPassword: '' };
   const [signUpValues, setSignUpValues] = useState(initialValues);
   const [signUpErrors, setSignUpErrors] = useState({});
-  // const [isSignUp, setIsSignUp] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,7 +19,6 @@ export const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSignUpErrors(validate(signUpValues));
-    // setIsSignUp(true);
   };
 
   return (
