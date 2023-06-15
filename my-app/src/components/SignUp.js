@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SignUpFormInput } from './SignUpFormInput';
 import { validate } from './SignUpValidation';
+import {Link} from 'react-router-dom';
 
 export const SignUp = () => {
   const initialValues = { nickname: '', email: '', password: '', confirmPassword: '' };
@@ -37,7 +38,9 @@ export const SignUp = () => {
                     <div className="form-submit">
                         <button type='submit' className='submit-button'> Sign Up</button>
                         <p className="signin-query">Already have an account?</p>
-                        <a href="">Sign in</a>
+                        <nav>
+                          <Link to="/SignIn">Sign in</Link>
+                        </nav>
                     </div>
                 </form>
             </div>

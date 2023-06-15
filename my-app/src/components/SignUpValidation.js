@@ -1,4 +1,5 @@
 export const validate = (values) => {
+
   const error = {};
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
   const whiteSpaceRegex = /\s/g;
@@ -7,6 +8,7 @@ export const validate = (values) => {
   const oneDigitRegex = /(?=.*\d)/;
   const specialCharacterRegex = /(?=.*[@#$%^&-+=()])/;
   const notAllowedRegex = /(?=.*[/'"\0])/;
+  
   if (!values.nickname) {
     error.nickname = 'Please enter your nickname.';
   } else if (whiteSpaceRegex.test(values.nickname)) {
