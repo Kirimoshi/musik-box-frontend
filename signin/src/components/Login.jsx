@@ -1,42 +1,29 @@
-// import React, { useState } from "react";
+
 import '../styles/loginstyle.css';
 import { AiOutlineCloseCircle } from "react-icons/ai";
-
 import { useFormik } from "formik";
-
 import { SignInSchema } from "../schemas/SignInSchema";
-
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 
 const onSubmit = async (values, actions) => {
   console.log(values);
-
   console.log(actions);
-
   await new Promise((resolve) => setTimeout(resolve, 1000));
-
   actions.resetForm();
 };
 
 export const Login = (props) => {
   const {
     values,
-
     errors,
-
     touched,
-
     isSubmitting,
-
     handleBlur,
-
     handleChange,
-
     handleSubmit,
-
     isValid,
-
     setFieldValue,
+
   } = useFormik({
     initialValues: {
       email: "",
@@ -49,14 +36,14 @@ export const Login = (props) => {
     onSubmit,
   });
 
-  const clearfunc = (name) => {
+  const clearFunc = (name) => {
     setFieldValue(name, "");
   };
 
   return (
     <div className="container">
       <div className="header">
-        <h2 className="header-content">Sign In</h2>
+        <h2 className="header-content">Sign In.</h2>
 
         <h2 className="header-close">X</h2>
       </div>
@@ -88,6 +75,7 @@ export const Login = (props) => {
                   type="email"
                   name="email"
                   onBlur={handleBlur}
+                  data-testid='emaile'
                 />
 
                 {errors.email && touched.email ? (
@@ -95,7 +83,8 @@ export const Login = (props) => {
                 ) : (
                   <AiOutlineCloseCircle
                     className="close-circle"
-                    onClick={() => clearfunc("email")}
+                    data-testid='closei'
+                    onClick={() => clearFunc("email")}
                   />
                 )}
               </div>
@@ -129,6 +118,7 @@ export const Login = (props) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   name="password"
+                  data-testid='passwordp'
                 />
 
                 {errors.password && touched.password ? (
@@ -136,7 +126,8 @@ export const Login = (props) => {
                 ) : (
                   <AiOutlineCloseCircle
                     className="close-circle"
-                    onClick={() => clearfunc("password")}
+                    data-testid='closeu'
+                    onClick={() => clearFunc("password")}
                   />
                 )}
               </div>
@@ -173,7 +164,6 @@ export const Login = (props) => {
 
             <button
               className="signup"
-              onClick={() => props.onFormSwitch("register")}
             >
               sign up
             </button>
