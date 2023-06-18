@@ -83,4 +83,36 @@ test('should update password input value', () => {
   });
 
 
+  test("Clear email button should clear the email field", () => {
+    render(<Login />, {
+    });
+    const emailInput = screen.getByTestId("emaile");
+    fireEvent.change(emailInput, {
+      target: { value: "bhaskara@gmail.com" },
+    });
+    const emailInputClearElement = screen.getByTestId("closei");
+    fireEvent.click(emailInputClearElement);
+    expect(emailInput.value).toBe("");
+  });
 
+  test("Clear password button should clear the password field", () => {
+    render(<Login />, {
+    });
+    const passwordInput = screen.getByTestId("passwordp");
+    fireEvent.change(passwordInput, { target: { value: "Bhaskara@61552" } });
+    const passwordInputClearElement = screen.getByTestId("closeu");
+    fireEvent.click(passwordInputClearElement);
+    expect(passwordInput.value).toBe("");
+  });
+
+  describe("Clear Button Functionality", () => {
+    test("Clear email", () => {
+      render(<Login />, {
+      });
+      const emailInput = screen.getByTestId("emaile");
+      fireEvent.change(emailInput, { target: { value: "bhaskara@epam.com" } });
+      const emailInputClearElement = screen.getByTestId("closei");
+      fireEvent.click(emailInputClearElement);
+      expect(emailInput.value).toBe("");
+    });
+  })
