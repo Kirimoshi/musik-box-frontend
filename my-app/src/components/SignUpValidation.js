@@ -1,4 +1,4 @@
-import { Constants } from "../constants";
+import { constants } from "../constants";
 export const validate = (values) => {
   const error = {};
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -15,8 +15,8 @@ export const validate = (values) => {
     error.nickname = "Plese enter a nickname that doesn't include spaces.";
   } else if (
     !(
-      values.nickname.length >= Constants().nicknameMinValueLength &&
-      values.nickname.length <= Constants().nicknameMaxValueLength
+      values.nickname.length >=constants.nicknameMinValueLength &&
+      values.nickname.length <= constants.nicknameMaxValueLength
     )
   ) {
     error.nickname =
@@ -32,9 +32,9 @@ export const validate = (values) => {
   }
   if (!values.password) {
     error.password = "Please enter a password.";
-  } else if (values.password.length < Constants().passwordMinValueLength) {
+  } else if (values.password.length < constants.passwordMinValueLength) {
     error.password = "Password should be atleast 8 characters";
-  } else if (values.password.length > Constants().passwordMaxValueLength) {
+  } else if (values.password.length > constants.passwordMaxValueLength) {
     error.password =
       "The password you entered is too long. Please enter a password with a maximum of 128 characters.";
   } else if (!lowerCaseRegex.test(values.password)) {
