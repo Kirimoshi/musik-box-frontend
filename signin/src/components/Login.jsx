@@ -3,50 +3,39 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useFormik } from "formik";
 import { SignInSchema } from "../schemas/SignInSchema";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
-
 const onSubmit = async (values, actions) => {
   console.log(values);
   console.log(actions);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   actions.resetForm();
 };
-
 export const Login = (props) => {
   const {
     values,
     errors,
     touched,
-    isSubmitting,
     handleBlur,
     handleChange,
     handleSubmit,
     isValid,
     setFieldValue,
-
   } = useFormik({
     initialValues: {
       email: "",
-
       password: "",
     },
-
     validationSchema: SignInSchema,
-
     onSubmit,
   });
-
   const clearFunc = (name) => {
     setFieldValue(name, "");
   };
-
   return (
     <div className="container">
       <div className="header">
-        <h2 className="header-content">Sign In.</h2>
-
+        <h2 className="header-content" data-testid='signin'>Sign In</h2>
         <h2 className="header-close">X</h2>
       </div>
-
       <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
         <div className="login-form-inputcheckbox">
           <div className="inputs">
@@ -66,7 +55,6 @@ export const Login = (props) => {
                 >
                   Email
                 </label>
-
                 <input
                   value={values.email}
                   onChange={handleChange}
@@ -74,15 +62,14 @@ export const Login = (props) => {
                   type="email"
                   name="email"
                   onBlur={handleBlur}
-                  data-testid='emaile'
+                  data-testid='emailtest'
                 />
-
                 {errors.email && touched.email ? (
                   <BsFillExclamationCircleFill className="exclamation-circle" />
                 ) : (
                   <AiOutlineCloseCircle
                     className="close-circle"
-                    data-testid='closei'
+                    data-testid='closetest1'
                     onClick={() => clearFunc("email")}
                   />
                 )}
@@ -92,7 +79,6 @@ export const Login = (props) => {
                 <p className="error">{errors.email}</p>
               )}
             </div>
-
             <div className="label_div_ip1">
               <div
                 className={`input-wrapper ${
@@ -117,7 +103,7 @@ export const Login = (props) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   name="password"
-                  data-testid='passwordp'
+                  data-testid='passwordtest'
                 />
 
                 {errors.password && touched.password ? (
@@ -125,7 +111,7 @@ export const Login = (props) => {
                 ) : (
                   <AiOutlineCloseCircle
                     className="close-circle"
-                    data-testid='closeu'
+                    data-testid='closetest2'
                     onClick={() => clearFunc("password")}
                   />
                 )}
@@ -147,18 +133,18 @@ export const Login = (props) => {
               />
             </div>
 
-            <label className="rememberme" htmlFor="checkbox">
+            <label className="checkbox-text" htmlFor="checkbox">
               Remember me
             </label>
           </div>
         </div>
 
         <div className="sigin-sigup">
-          <button className={`sigin ${!isValid?"signin-error":''}`} type="submit">
+          <button className={`signin-button ${!isValid?"signin-error":''}`} type="submit">
             Sign In
           </button>
 
-          <div className="donthaveaccount">
+          <div className="signin-signup-text">
             <p>Don't have a account yet?</p>
 
             <button
