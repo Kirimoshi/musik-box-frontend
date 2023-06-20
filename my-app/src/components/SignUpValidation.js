@@ -1,5 +1,5 @@
 import { constants } from "../constants";
-export const validate = (values) => {
+export const validate = (values, backendErrors) => {
   const error = {};
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
   const whiteSpaceRegex = /\s/g;
@@ -15,12 +15,15 @@ export const validate = (values) => {
     error.nickname = "Plese enter a nickname that doesn't include spaces.";
   } else if (
     !(
-      values.nickname.length >=constants.nicknameMinValueLength &&
+      values.nickname.length >= constants.nicknameMinValueLength &&
       values.nickname.length <= constants.nicknameMaxValueLength
     )
   ) {
     error.nickname =
       "Please enter the nickname that includes between 3 and 50 characters.";
+  } else if (backendErrors.nicknameExistingError) {
+    error.nickname =
+      "The nickname you entered is already associated with an existing account. Please sign in or use a different nickname to sign up.";
   }
   if (!values.email) {
     error.email = "Please enter an email address.";
@@ -28,6 +31,11 @@ export const validate = (values) => {
     error.email =
       "Please enter a valid email address without any spaces or special characters.";
   } else if (!emailRegex.test(values.email)) {
+    error.email = "Please enter a valid email domain.";
+  } else if (backendErrors.emailExistingError) {
+    error.email =
+      "The email address you entered is already associated with an existing account. Please sign in or use a different email address to sign up.";
+  } else if (backendErrors.emailDomainError) {
     error.email = "Please enter a valid email domain.";
   }
   if (!values.password) {
