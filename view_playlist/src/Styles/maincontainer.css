@@ -1,0 +1,200 @@
+.maincontainer {
+  width: 100%;
+  height: 93%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  background-image:  radial-gradient(50% 50% at 50% 50%, #293755 0%, #0D1927 100%),linear-gradient(180deg, #170D2E 0%, #1F192E 100%);
+  overflow-y:scroll;
+}
+.profiledetails {
+  color: white;
+  width: 35%;
+  height: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  top: 10px;
+}
+
+.email {
+  font-family: "Roboto", sans-serif;
+  font-size: 9px;
+}
+
+.otherdetails {
+  font-family: "Roboto", sans-serif;
+  font-size: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.otherdetails1 {
+  color: #aea9b4;
+}
+
+.otherdetails2 {
+  color: #aea9b4;
+}
+
+.playlistimage {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.vertical-menu {
+  color: white;
+}
+
+.img2 {
+  height: 120px;
+  width: 120px;
+}
+
+
+.playlistdetails {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.playlistname {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-size: 12px;
+}
+
+.playlistcontent {
+  font-family: "Roboto", sans-serif;
+  font-size: 8px;
+  color: #aea9b4;
+}
+
+.created-updated {
+  font-family: "Roboto", sans-serif;
+  font-size: 8px;
+  color: #aea9b4;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 5px;
+}
+
+.likedislike {
+  color: white;
+  width: 6%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dislike {
+  font-family: "Roboto", sans-serif;
+  font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.like {
+  font-family: "Roboto", sans-serif;
+  font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.addsong {
+  width: 90%;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 5px;
+}
+
+.circle-icon {
+  background: #d0bcff;
+  border-radius: 100px;
+  color: black;
+  size: 20px;
+}
+
+.addsong {
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+}
+
+.divider {
+  width: 90%;
+  border: 1px solid #49454f;
+}
+
+.songsList {
+  width: 90%;
+}
+
+
+@media (max-width: 600px) {
+  .maincontainer {
+    width: 60%;
+    height: 100%;
+    gap: 10px;
+  }
+
+  .profiledetails {
+    width: 80%;
+    height: auto;
+    top: 0;
+  }
+
+  .email {
+    font-size: 8px;
+  }
+
+  .otherdetails {
+    font-size: 4px;
+    gap: 6px;
+  }
+
+  .playlistimage {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+  .playlistname {
+    font-size: 10px;
+  }
+
+  .playlistcontent {
+    font-size: 6px;
+  }
+
+  .created-updated {
+    font-size: 6px;
+    gap: 3px;
+  }
+
+  .likedislike {
+    width: 10%;
+  }
+
+  .dislike,
+  .like {
+    font-size: 8px;
+  }
+
+  .addsong {
+    font-size: 10px;
+  }
+
+  .circle-icon {
+    size: 16px;
+  }
+}
