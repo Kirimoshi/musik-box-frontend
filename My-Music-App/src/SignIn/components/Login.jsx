@@ -34,8 +34,8 @@ export const Login = (props) => {
   return (
     <div className="container">
       <div className="header">
-        <h2 className="header-content" data-testid='signin'>Sign In</h2>
-        <h2 className="header-close">X</h2>
+        <span className="header-content" data-testid='signin'>Sign In</span>
+        <span className="header-close">X</span>
       </div>
       <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
         <div className="login-form-inputcheckbox">
@@ -146,7 +146,7 @@ export const Login = (props) => {
           </button>
 
           <div className="signin-signup-text">
-            <p>Don't have a account yet?</p>
+            <span className='p'>Don't have a account yet?</span>
 
             <nav >
               <Link to="/SignUp" className='signup'>Sign Up</Link>

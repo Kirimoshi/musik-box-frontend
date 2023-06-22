@@ -19,13 +19,17 @@
   color: white;
 }
 .header-content {
+  font-family: "Roboto" ,"sans-serif";
   display: flex;
   flex: 2;
+  font-size: 20px;
   flex-direction: row;
   align-items: flex-start;
 }
 .header-close {
+  font-family: "Roboto" ,"sans-serif";
   display: flex;
+  font-size: 20px;
   justify-content: flex-end;
   flex: 1;
 }
@@ -45,6 +49,7 @@
   justify-content: center;
   gap: 8px;
   width: 40%;
+  color: white;
 }
 .inputs {
   display: flex;
@@ -123,7 +128,7 @@
   align-items: center;
   justify-content: center;
   padding: 0px;
-  gap: 15px;
+  gap: 20px;
   width: 224px;
   height: 132px;
 }
@@ -150,10 +155,10 @@
   color: #e6e0e9;
 }
 
-p {
-  width: 142px;
+.p {
+  width: 135px;
   height: 16px;
-  font-family: "Roboto";
+  font-family: "Roboto" ,"sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -256,5 +261,6 @@ p {
   .login-form-inputcheckbox{
         padding: 0px 5px;
         width: 90%;
+        color: white;
   }
 }
