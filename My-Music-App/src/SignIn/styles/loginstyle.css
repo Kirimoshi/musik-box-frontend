@@ -68,6 +68,7 @@
 .inputbox {
   display: flex;
   flex-direction: column;
+  color: white;
   align-items: flex-start;
   width: 380px;
   height: 45px;
@@ -163,6 +164,8 @@ p {
 }
 
 .signup {
+  font-family: "Roboto" ,"sans-serif";
+  font-size: 14px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -174,6 +177,7 @@ p {
   background: none;
   border: none;
   color: #d0bcff;
+  text-decoration: none;
 }
 
 .label_div_ip1 {
@@ -234,6 +238,9 @@ p {
     height: 100vh;
   }
 
+  .inputbox{
+    width:96% ;
+  }
 
   .signin-button{
     width: 140px;

@@ -3,6 +3,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useFormik } from "formik";
 import { SignInSchema } from "../schemas/SignInSchema";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 const onSubmit = async (values, actions) => {
   console.log(values);
   console.log(actions);
@@ -147,11 +148,9 @@ export const Login = (props) => {
           <div className="signin-signup-text">
             <p>Don't have a account yet?</p>
 
-            <button
-              className="signup"
-            >
-              sign up
-            </button>
+            <nav >
+              <Link to="/SignUp" className='signup'>Sign Up</Link>
+            </nav>
           </div>
         </div>
       </form>
