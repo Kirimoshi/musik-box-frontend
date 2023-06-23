@@ -3,6 +3,7 @@ import { SignUpFormInput } from "./SignUpFormInput";
 import { validate } from "./SignUpValidation";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../style.css";
 import { constants } from "../constants";
 
 export const SignUp = () => {
