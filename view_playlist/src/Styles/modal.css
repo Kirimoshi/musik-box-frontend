@@ -17,19 +17,19 @@
 .division{
     border: 1px solid #49454F;
 }
-.submodal-menu1{
+.submodal-delete-item{
     display: flex;
     justify-content:flex-start;
     padding: 3px;
     gap: 2px;
 }
-.submodal-menu2{
+.submodal-edit-item{
     display: flex;
     justify-content: flex-start;
     gap: 2px;
     padding: 3px;
 }
-.submodal-menu3{
+.submodal-change-playlist{
     height: 35px;
     display: flex;
     flex-direction: column;

@@ -2,18 +2,18 @@ import React from "react";
 import {RiPencilFill,RiDeleteBin6Line} from 'react-icons/ri'
 
 import '../Styles/modal.css'
-export default function modal() {
+export default function Modal() {
   return (
     <div>
         <div className="submodal-container">
-          <div className="submodal-menu1">
+          <div className="submodal-delete-item">
             <RiDeleteBin6Line />
             <span className="delete-name">Delete playlist</span>
           </div>
 
           <div className="division" />
 
-          <div className="submodal-menu2">
+          <div className="submodal-edit-item">
             <RiPencilFill />
 
             <span className="edit-name">Edit</span>
@@ -22,7 +22,7 @@ export default function modal() {
           <div className="division" />
 
 
-          <div className="submodal-menu3">
+          <div className="submodal-change-playlist">
             <span className="p1">Make Private</span>
             <span className="p2">Make Shared</span>
             <span className="p3">Make Public</span>

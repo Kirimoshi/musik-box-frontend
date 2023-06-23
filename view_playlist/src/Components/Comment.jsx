@@ -1,24 +1,10 @@
 import React, { useState } from "react";
 import "../Styles/comment.css";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import commentData from "./CommentData";
 export default function Comment() {
   let [input, updateInput] = useState("");
-  let [commentList, updateCommentList] = useState([
-    {
-      image: "https://i.scdn.co/image/ab67616d00001e021630dd349221a35ce03a0ccf",
-      name: "bhaskara",
-      email: "bhaskara@epam.com",
-      comment: "song is awesomen bla bla bla",
-      posted: "3 days ago",
-    },
-    {
-      image: "https://i.scdn.co/image/ab67616d00001e021630dd349221a35ce03a0ccf",
-      name: "vijay",
-      email: "vijay@epam.com",
-      comment: "song is awesomen bla bla bla",
-      posted: "3 days ago",
-    },
-  ]);
+  let [commentList, updateCommentList] = useState(commentData);
   const addNewComment = () => {
     if (input) {
       const newCommentList = [
@@ -48,6 +34,7 @@ export default function Comment() {
       <div className="comment-section2">
         <div className="commenttextfield">
           <label htmlFor="commenttextbox">comment</label>
+          <div className="input-and-close-circle">
           <input
             type="text"
             className="commenttextinput"
@@ -62,7 +49,7 @@ export default function Comment() {
                     data-testid='closetest2'
                     onClick={() => clearFunc()}
                   />
-
+          </div>
         </div>
       </div>
 

@@ -20,6 +20,7 @@ export default function MainContainer() {
           <div className="otherdetails2">Amount of playlists: 3 </div>
         </div>
       </div>
+
       <div className="playlistimage">
         <img
           src={require("../images/image2.jpg")}
@@ -27,11 +28,11 @@ export default function MainContainer() {
           className="img2"
         ></img>
         <BsThreeDotsVertical className="vertical-menu" onClick={()=>{
-          setOpenModel(true)
+         setOpenModel((prev) => !prev);
         }} />
         {openModel && <Modal/>}
-        <div className="frame1" id='frame1'></div>
       </div>
+
       <div className="playlistdetails">
         <p className="playlistname">Mega Mix</p>
         <p className="playlistcontent">Good for training’s and so on... </p>
