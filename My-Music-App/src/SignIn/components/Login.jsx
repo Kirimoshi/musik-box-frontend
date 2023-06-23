@@ -1,0 +1,159 @@
+import '../styles/loginstyle.css';
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useFormik } from "formik";
+import { SignInSchema } from "../schemas/SignInSchema";
+import { BsFillExclamationCircleFill } from "react-icons/bs";
+import { Link } from 'react-router-dom';
+const onSubmit = async (values, actions) => {
+  console.log(values);
+  console.log(actions);
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  actions.resetForm();
+};
+export const Login = (props) => {
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isValid,
+    setFieldValue,
+  } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: SignInSchema,
+    onSubmit,
+  });
+  const clearFunc = (name) => {
+    setFieldValue(name, "");
+  };
+  return (
+    <div className="container">
+      <div className="header">
+        <span className="header-content" data-testid='signin'>Sign In</span>
+        <span className="header-close">X</span>
+      </div>
+      <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
+        <div className="login-form-inputcheckbox">
+          <div className="inputs">
+            <div className="label_div_ip1">
+              <div
+                className={`input-wrapper ${
+                  errors.email && touched.email ? "ip-error" : ""
+                }`}
+              >
+                <label
+                  htmlFor="inputbox"
+                  className={
+                    errors.email && touched.email
+                      ? "label label-error"
+                      : "label"
+                  }
+                >
+                  Email
+                </label>
+                <input
+                  value={values.email}
+                  onChange={handleChange}
+                  className="inputbox"
+                  type="email"
+                  name="email"
+                  onBlur={handleBlur}
+                  data-testid='emailtest'
+                />
+                {errors.email && touched.email ? (
+                  <BsFillExclamationCircleFill className="exclamation-circle" />
+                ) : (
+                  <AiOutlineCloseCircle
+                    className="close-circle"
+                    data-testid='closetest1'
+                    onClick={() => clearFunc("email")}
+                  />
+                )}
+              </div>
+
+              {errors.email && touched.email && (
+                <p className="error">{errors.email}</p>
+              )}
+            </div>
+            <div className="label_div_ip1">
+              <div
+                className={`input-wrapper ${
+                  errors.password && touched.password ? "ip-error" : ""
+                }`}
+              >
+                <label
+                  htmlFor="password"
+                  className={
+                    errors.password && touched.password
+                      ? "label label-error"
+                      : "label"
+                  }
+                >
+                  Password
+                </label>
+
+                <input
+                  className="inputbox"
+                  id="password-label"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="password"
+                  data-testid='passwordtest'
+                />
+
+                {errors.password && touched.password ? (
+                  <BsFillExclamationCircleFill className="exclamation-circle" />
+                ) : (
+                  <AiOutlineCloseCircle
+                    className="close-circle"
+                    data-testid='closetest2'
+                    onClick={() => clearFunc("password")}
+                  />
+                )}
+              </div>
+
+              {errors.password && touched.password && (
+                <p className="error">{errors.password}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="checkbox">
+            <div className="checkboxes-dark-parent">
+              <input
+                className="checkboxes-dark"
+                type="checkbox"
+                id="checkbox"
+                name="checkbox"
+              />
+            </div>
+
+            <label className="checkbox-text" htmlFor="checkbox">
+              Remember me
+            </label>
+          </div>
+        </div>
+
+        <div className="sigin-sigup">
+          <button className={`signin-button ${!isValid?"signin-error":''}`} type="submit">
+            Sign In
+          </button>
+
+          <div className="signin-signup-text">
+            <span className='p'>Don't have a account yet?</span>
+
+            <nav >
+              <Link to="/SignUp" className='signup'>Sign Up</Link>
+            </nav>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
