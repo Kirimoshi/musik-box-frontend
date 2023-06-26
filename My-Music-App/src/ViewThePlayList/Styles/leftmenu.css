@@ -20,10 +20,6 @@
 }
 
 
-.divider {
-    width: 92%; 
-}
-
 .account_setting {
     height: 65px;
     display: flex;
@@ -124,13 +120,9 @@ li{
     padding: 5px;
 }
 
-/* li:first-child{
-    background: #030109;
-border: 1px solid #49454F;
-border-radius: 14px;
-display: flex;
-align-items: center;
-} */
+.divider{
+  width: 93%;
+}
 
 .highlighted-button {
     width: 180px;
