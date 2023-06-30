@@ -12,6 +12,7 @@ export const SignUp = () => {
     nicknameExistingError: false,
     emailExistingError: false,
     emailDomainError: false,
+    emailInvalidError: false,
   };
   const initialValues = {
     nickname: "",
@@ -43,6 +44,8 @@ export const SignUp = () => {
         backendErrors.emailDomainError = true;
       else if (element === constants.emailExistingErrorElement)
         backendErrors.emailExistingError = true;
+      else if (element === constants.emailInvalidErrorElement)
+        backendErrors.emailInvalidError = true;
       if (element === constants.nicknameExistingErrorElement)
         backendErrors.nicknameExistingError = true;
     });
@@ -51,9 +54,12 @@ export const SignUp = () => {
 
   const fetchAPIData = () => {
     const userData = {
-      email: signUpValues.email,
-      nickname: signUpValues.nickname,
-      password: signUpValues.password,
+      user: {
+        email: signUpValues.email,
+        nickname: signUpValues.nickname,
+        password: signUpValues.password,
+        password_confirmation: signUpValues.confirmPassword,
+      },
     };
     axios
       .post(constants.API_URL, userData)
@@ -70,7 +76,7 @@ export const SignUp = () => {
     <div className="signup-page">
       <div className="signup-header">
         <header>
-          <h1>Sign Up</h1>
+          <p>Sign Up</p>
         </header>
       </div>
       <div className="signup-details">
