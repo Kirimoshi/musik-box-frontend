@@ -1,4 +1,5 @@
 import '../styles/loginstyle.css';
+import React, { Component }  from 'react';
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useFormik } from "formik";
 import { SignInSchema } from "../schemas/SignInSchema";
@@ -45,15 +46,15 @@ export const Login = (props) => {
                 className={`input-wrapper ${
                   errors.email && touched.email ? "ip-error" : ""
                 }`}
-              >
+                >
                 <label
                   htmlFor="inputbox"
                   className={
                     errors.email && touched.email
-                      ? "label label-error"
-                      : "label"
+                    ? "label label-error"
+                    : "label"
                   }
-                >
+                  >
                   Email
                 </label>
                 <input
@@ -64,36 +65,36 @@ export const Login = (props) => {
                   name="email"
                   onBlur={handleBlur}
                   data-testid='emailtest'
-                />
+                  />
                 {errors.email && touched.email ? (
                   <BsFillExclamationCircleFill className="exclamation-circle" />
-                ) : (
-                  <AiOutlineCloseCircle
+                  ) : (
+                    <AiOutlineCloseCircle
                     className="close-circle"
                     data-testid='closetest1'
                     onClick={() => clearFunc("email")}
-                  />
-                )}
+                    />
+                    )}
               </div>
 
               {errors.email && touched.email && (
                 <p className="error">{errors.email}</p>
-              )}
+                )}
             </div>
             <div className="label_div_ip1">
               <div
                 className={`input-wrapper ${
                   errors.password && touched.password ? "ip-error" : ""
                 }`}
-              >
+                >
                 <label
                   htmlFor="password"
                   className={
                     errors.password && touched.password
-                      ? "label label-error"
-                      : "label"
+                    ? "label label-error"
+                    : "label"
                   }
-                >
+                  >
                   Password
                 </label>
 
@@ -105,22 +106,22 @@ export const Login = (props) => {
                   onBlur={handleBlur}
                   name="password"
                   data-testid='passwordtest'
-                />
+                  />
 
                 {errors.password && touched.password ? (
                   <BsFillExclamationCircleFill className="exclamation-circle" />
-                ) : (
+                  ) : (
                   <AiOutlineCloseCircle
                     className="close-circle"
                     data-testid='closetest2'
                     onClick={() => clearFunc("password")}
-                  />
-                )}
+                    />
+                    )}
               </div>
 
               {errors.password && touched.password && (
                 <p className="error">{errors.password}</p>
-              )}
+                )}
             </div>
           </div>
 
@@ -131,7 +132,7 @@ export const Login = (props) => {
                 type="checkbox"
                 id="checkbox"
                 name="checkbox"
-              />
+                />
             </div>
 
             <label className="checkbox-text" htmlFor="checkbox">

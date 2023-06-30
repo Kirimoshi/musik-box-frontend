@@ -37,6 +37,9 @@ export const validate = (values, backendErrors) => {
       "The email address you entered is already associated with an existing account. Please sign in or use a different email address to sign up.";
   } else if (backendErrors.emailDomainError) {
     error.email = "Please enter a valid email domain.";
+  } else if (backendErrors.emailInvalidError) {
+    error.email =
+      "Email has invalid characters. Please enter a valid email address.";
   }
   if (!values.password) {
     error.password = "Please enter a password.";
