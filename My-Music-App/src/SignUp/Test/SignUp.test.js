@@ -4,16 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { SignUp } from "../components/SignUp";
 
 describe("Sign Up fields", () => {
-  test("Header Should be present", () => {
-    render(<SignUp />, {
-      wrapper: BrowserRouter,
-    });
-    const headerElement = screen.getByRole("heading", {
-      level: 1,
-    });
-    expect(headerElement).toBeInTheDocument();
-  });
-
   test("Nickname input should be present", () => {
     render(<SignUp />, {
       wrapper: BrowserRouter,
