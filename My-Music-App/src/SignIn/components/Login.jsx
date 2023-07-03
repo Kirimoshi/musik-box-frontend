@@ -4,10 +4,12 @@ import { useFormik } from "formik";
 import { SignInSchema } from "../schemas/SignInSchema";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
+import axios from "axios";
+import { constants } from '../../constants';
 const onSubmit = async (values, actions) => {
   console.log(values);
   console.log(actions);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 10000));
   actions.resetForm();
 };
 export const Login = (props) => {
@@ -20,6 +22,7 @@ export const Login = (props) => {
     handleSubmit,
     isValid,
     setFieldValue,
+    setFieldError
   } = useFormik({
     initialValues: {
       email: "",
@@ -28,15 +31,41 @@ export const Login = (props) => {
     validationSchema: SignInSchema,
     onSubmit,
   });
+
   const clearFunc = (name) => {
     setFieldValue(name, "");
   };
+  const post=()=>{
+    const userData = {
+      email:values.email,
+      password:values.password,
+  };
+
+  axios
+      .post(constants.API_URL, userData)
+      .then((response)=>console.log(response))
+      .catch((error) => {
+        console.log(error)
+        const response=error.response.data;
+        console.log(response.errors)
+        if(response.errors==="Invalid password"){
+          errors.password=response.errors
+          setFieldError(errors.password)
+          console.log(errors.password)
+        }
+        else{
+          errors.email=response.errors
+          setFieldError(errors.email)
+        }
+      });
+    }
+
   return (
-    <div className="container">
+    <div className="header-container">
       <div className="header">
         <span className="header-content" data-testid='signin'>Sign In</span>
-        <span className="header-close">X</span>
       </div>
+      <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
         <div className="login-form-inputcheckbox">
           <div className="inputs">
@@ -141,7 +170,7 @@ export const Login = (props) => {
         </div>
 
         <div className="sigin-sigup">
-          <button className={`signin-button ${!isValid?"signin-error":''}`} type="submit">
+          <button className={`signin-button ${!isValid?"signin-error":''}`} type="submit" onClick={post}>
             Sign In
           </button>
 
@@ -154,6 +183,7 @@ export const Login = (props) => {
           </div>
         </div>
       </form>
+      </div>
     </div>
   );
 };
