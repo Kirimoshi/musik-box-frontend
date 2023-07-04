@@ -32,14 +32,14 @@ export default function SongList() {
                             </div>
                             </div>
                             
-                            <div className="vertical-menu">
-                            <BsThreeDotsVertical className="vertical-menu" 
+                            <div className="songlist-vertical-menu">
+                            <BsThreeDotsVertical 
                             onClick={()=>{
                                 handleClick(song.id)
                                }}
                             />
                             {openModel===song.id && <div className='delete-icon-modal'>
-                            <a href='#' onClick={someThing}>
+                            <a href='#' onClick={someThing} className='delete-tag'>
                             <RiDeleteBin6Line className='delete-button'/>
                             <i>Remove song from playlist</i>
                             </a>

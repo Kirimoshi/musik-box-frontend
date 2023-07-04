@@ -96,11 +96,32 @@ background-color: rgb(23, 23, 23);
 
 .delete-icon-modal{
   display: flex;
-  justify-content: space-between;
-  position: relative;
-  right: 100px;
-  top:20px;
-  border: 1px solid white;
-  padding: 5px;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-size: 14px;
+  position: absolute;
+  right: 15px;
+  top: 35px;
+  padding: 10px;
+  background: #211F26;
 
+}
+
+.delete-tag{
+  display: flex;
+  justify-content: space-between;
+  width: 185px;
+}
+.delete-button{
+  color: #F2B8B5;
+}
+i{
+  color: #F2B8B5;
+}
+
+.songlist-vertical-menu{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
 }
