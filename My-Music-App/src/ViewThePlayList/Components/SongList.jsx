@@ -40,7 +40,7 @@ export default function SongList() {
                             />
                             {openModel===song.id && <div className='delete-icon-modal'>
                             <a href='#' onClick={someThing}>
-                            <RiDeleteBin6Line/>
+                            <RiDeleteBin6Line className='delete-button'/>
                             <i>Remove song from playlist</i>
                             </a>
                             </div>}
