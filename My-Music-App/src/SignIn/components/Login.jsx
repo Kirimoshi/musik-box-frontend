@@ -43,7 +43,12 @@ export const Login = (props) => {
 
   axios
       .post(constants.API_URL, userData)
-      .then((response)=>console.log(response))
+      .then((response)=>{
+        // console.log(response.data.access);
+        localStorage.setItem('accesstoken',response.data.access)
+        localStorage.setItem('refreshtoken',response.data.refresh)
+        // usenavigate
+      })
       .catch((error) => {
         console.log(error)
         const response=error.response.data;
