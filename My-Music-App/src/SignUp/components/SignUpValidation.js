@@ -7,12 +7,12 @@ export const validate = (values, backendErrors) => {
   const upperCaseRegex = /(?=.*[A-Z])/;
   const oneDigitRegex = /(?=.*\d)/;
   const specialCharacterRegex = /(?=.*[@#$%^&-+=()])/;
-  const notAllowedRegex = /(?=.*[/'"\0])/;
+  const notAllowedRegex = /(?=.*[\\'"])/;
 
   if (!values.nickname) {
     error.nickname = "Please enter your nickname.";
   } else if (whiteSpaceRegex.test(values.nickname)) {
-    error.nickname = "Plese enter a nickname that doesn't include spaces.";
+    error.nickname = "Please enter a nickname that doesn't include spaces.";
   } else if (
     !(
       values.nickname.length >= constants.nicknameMinValueLength &&
@@ -37,11 +37,14 @@ export const validate = (values, backendErrors) => {
       "The email address you entered is already associated with an existing account. Please sign in or use a different email address to sign up.";
   } else if (backendErrors.emailDomainError) {
     error.email = "Please enter a valid email domain.";
+  } else if (backendErrors.emailInvalidError) {
+    error.email =
+      "Please enter a valid email address without any spaces or special characters.";
   }
   if (!values.password) {
     error.password = "Please enter a password.";
   } else if (values.password.length < constants.passwordMinValueLength) {
-    error.password = "Password should be atleast 8 characters";
+    error.password = "Please enter a password with a minimum of 8 characters.";
   } else if (values.password.length > constants.passwordMaxValueLength) {
     error.password =
       "The password you entered is too long. Please enter a password with a maximum of 128 characters.";
@@ -57,10 +60,10 @@ export const validate = (values, backendErrors) => {
   } else if (!specialCharacterRegex.test(values.password)) {
     error.password =
       "Please enter a password that includes at least one special character.";
-  } else if (notAllowedRegex.test(values.password)) {
+  } else if (notAllowedRegex.test(values.password) || values.password.includes("\\0")) {
     error.password =
-      "Please enter the password that does not include characters such as Backslash (/), Single Quote (' or '), Double Quote (\" or \"), Null Byte (\0).";
-  }
+      "Please enter the password that does not include characters such as Backslash (\\), Single Quote (' or '), Double Quote (\" or \"), Null Byte (\\0).";
+  } 
   if (!values.confirmPassword) {
     error.confirmPassword = "Please confirm your password.";
   } else if (values.password !== values.confirmPassword) {

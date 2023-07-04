@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SignUpFormInput } from "./SignUpFormInput";
 import { validate } from "./SignUpValidation";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ export const SignUp = () => {
     nicknameExistingError: false,
     emailExistingError: false,
     emailDomainError: false,
+    emailInvalidError: false,
   };
   const initialValues = {
     nickname: "",
@@ -21,6 +22,7 @@ export const SignUp = () => {
   };
   const [signUpValues, setSignUpValues] = useState(initialValues);
   const [signUpErrors, setSignUpErrors] = useState({});
+  const [disableButton, setDisableButton] = useState(1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,8 +31,18 @@ export const SignUp = () => {
 
   const resetDetails = (name) => {
     setSignUpValues({ ...signUpValues, [name]: "" });
+    setSignUpErrors({ ...signUpErrors, [name]: "" });
   };
-
+  useEffect(() => {
+    if (
+      signUpValues.nickname &&
+      signUpValues.email &&
+      signUpValues.password &&
+      signUpValues.confirmPassword
+    )
+      setDisableButton(0);
+    else setDisableButton(1);
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     setSignUpErrors(validate(signUpValues, backendErrors));
@@ -43,6 +55,8 @@ export const SignUp = () => {
         backendErrors.emailDomainError = true;
       else if (element === constants.emailExistingErrorElement)
         backendErrors.emailExistingError = true;
+      else if (element === constants.emailInvalidErrorElement)
+        backendErrors.emailInvalidError = true;
       if (element === constants.nicknameExistingErrorElement)
         backendErrors.nicknameExistingError = true;
     });
@@ -51,9 +65,12 @@ export const SignUp = () => {
 
   const fetchAPIData = () => {
     const userData = {
-      email: signUpValues.email,
-      nickname: signUpValues.nickname,
-      password: signUpValues.password,
+      user: {
+        email: signUpValues.email,
+        nickname: signUpValues.nickname,
+        password: signUpValues.password,
+        password_confirmation: signUpValues.confirmPassword,
+      },
     };
     axios
       .post(constants.API_URL, userData)
@@ -70,7 +87,7 @@ export const SignUp = () => {
     <div className="signup-page">
       <div className="signup-header">
         <header>
-          <h1>Sign Up</h1>
+          <p>Sign Up</p>
         </header>
       </div>
       <div className="signup-details">
@@ -112,7 +129,14 @@ export const SignUp = () => {
             signUpErrors={signUpErrors.confirmPassword}
           />
           <div className="form-submit">
-            <button type="submit" className="submit-button">
+            <button
+              id="submit-confirm"
+              type="submit"
+              disabled={disableButton}
+              className={
+                disableButton ? "submit-disable-button" : "submit-button"
+              }
+            >
               {" "}
               Sign Up
             </button>
