@@ -6,6 +6,7 @@ import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { constants } from '../../constants';
+import {useNavigate} from "react-router-dom"
 const onSubmit = async (values, actions) => {
   console.log(values);
   console.log(actions);
@@ -13,6 +14,7 @@ const onSubmit = async (values, actions) => {
   actions.resetForm();
 };
 export const Login = (props) => {
+  const navigate = useNavigate();
   const {
     values,
     errors,
@@ -44,10 +46,9 @@ export const Login = (props) => {
   axios
       .post(constants.API_URL, userData)
       .then((response)=>{
-        // console.log(response.data.access);
         localStorage.setItem('accesstoken',response.data.access)
         localStorage.setItem('refreshtoken',response.data.refresh)
-        // usenavigate
+        navigate("/")
       })
       .catch((error) => {
         console.log(error)
