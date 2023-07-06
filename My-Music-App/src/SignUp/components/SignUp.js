@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../style.css";
 import { constants } from "../constants";
-import { checkLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
+import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export const SignUp = () => {
   const [signUpValues, setSignUpValues] = useState(initialValues);
   const [signUpErrors, setSignUpErrors] = useState({});
   const [disableButton, setDisableButton] = useState(1);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedStatus, setLoggedStatus] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,8 +37,8 @@ export const SignUp = () => {
   };
 
   useEffect(() => {
-    checkLoggedIn(setLoggedIn, navigate);
-  }, [setLoggedIn, navigate]);
+    isLoggedIn(setLoggedStatus, navigate);
+  }, [setLoggedStatus, navigate]);
 
   useEffect(() => {
     if (

@@ -1,20 +1,19 @@
 import axios from "axios";
 import { parse } from "cookie";
+import { constants } from "./constants";
 
-export const checkLoggedIn = async (setLoggedIn, navigate) => {
+export const isLoggedIn = async (setLoggedStatus, navigate) => {
   let logIn = false;
   const cookies = parse(document.cookie);
   let accessToken = localStorage.getItem("accessToken");
   let accessExpiresAt = localStorage.getItem("accessExpiresAt");
   let refreshToken= localStorage.getItem("refreshToken");
-
   if (accessToken) {
     if (new Date(accessExpiresAt) < Date.now()) {
-      console.log("access expired");
       let response;
       try {
         response = await axios.post(
-            "http://127.0.0.1:3000/api/v1/refresh",
+            constants.refreshURL,
           null,
           {
             headers: {
@@ -30,12 +29,12 @@ export const checkLoggedIn = async (setLoggedIn, navigate) => {
           document.cookie = `accessToken=${accessToken}; max-age=${accessExpiresAt}; path=/`;
           document.cookie = `accessExpiresAt=${accessExpiresAt}; path=/`;
         }
-        setLoggedIn(true);
+        setLoggedStatus(true);
         logIn = true;
         navigate("/");
       } catch (error) {
-        console.log(error);
         if (
+          error.response.data.errors[0].status &&
           error.response.data.errors[0].status == 401 &&
           error.response.data.errors[0].detail == "not authorized"
         ) {
@@ -48,7 +47,7 @@ export const checkLoggedIn = async (setLoggedIn, navigate) => {
         }
       }
     } else {
-      setLoggedIn(true);
+      setLoggedStatus(true);
       logIn = true;
       navigate("/");
     }
@@ -64,7 +63,7 @@ export const checkLoggedIn = async (setLoggedIn, navigate) => {
       let response;
       try {
         response = await axios.post(
-            "http://127.0.0.1:3000/api/v1/refresh",
+           constants.refreshURL,
           {
             headers: {
                 "X-Refresh-Token": `${refreshToken}`
@@ -77,12 +76,12 @@ export const checkLoggedIn = async (setLoggedIn, navigate) => {
         localStorage.setItem("accessExpiresAt", accessExpiresAt);
         document.cookie = `accessToken=${accessToken}; max-age=${accessExpiresAt}; path=/`;
         document.cookie = `accessExpiresAt=${accessExpiresAt}; path=/`;
-        setLoggedIn(true);
+        setLoggedStatus(true);
         logIn = true;
         navigate("/");
       } catch (error) {
-        console.log(error);
         if (
+          error.response.data.errors[0].status &&
           error.response.data.errors[0].status == 401 &&
           error.response.data.errors[0].detail == "not authorized"
         ) {
@@ -91,7 +90,7 @@ export const checkLoggedIn = async (setLoggedIn, navigate) => {
         }
       }
     } else {
-      setLoggedIn(true);
+      setLoggedStatus(true);
       logIn = true;
       navigate("/");
     }

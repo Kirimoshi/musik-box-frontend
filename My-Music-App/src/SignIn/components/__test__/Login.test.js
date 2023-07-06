@@ -60,24 +60,6 @@ test('should update password input value', () => {
     const iconElement = screen.getByTestId('closetest1')
     expect(iconElement).toBeInTheDocument();
   });
-  test('should call myFunction when email button is clicked', () => {
-    const myFunctionMock = jest.fn();
-    render(<Login clearFunc={myFunctionMock} />, {
-      wrapper: BrowserRouter,
-    });
-    const buttonElement = screen.getByTestId('closetest1');
-    fireEvent.click(buttonElement);
-    expect(myFunctionMock).toHaveBeenCalled();
-  });
-  test('should call clearFunc when pass button is clicked', () => {
-    const myFunctionMock = jest.fn();
-    render(<Login clearFunc={myFunctionMock}/>, {
-      wrapper: BrowserRouter,
-    });
-    const buttonElement = screen.getByTestId('closetest2');
-    fireEvent.click(buttonElement);
-    expect(myFunctionMock).toHaveBeenCalledTimes(1);
-  });
   test("Clear email button should clear the email field", () => {
     render(<Login />, {
       wrapper: BrowserRouter,

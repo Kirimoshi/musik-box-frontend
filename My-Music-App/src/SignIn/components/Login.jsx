@@ -6,9 +6,9 @@ import { SignInSchema } from "../schemas/SignInSchema";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { constants } from "../../constants";
+import { constants } from "../constants";
 import { useNavigate } from "react-router-dom";
-import { checkLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
+import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 const onSubmit = async (values, actions) => {
   console.log(values);
   console.log(actions);
@@ -18,10 +18,10 @@ const onSubmit = async (values, actions) => {
 export const Login = (props) => {
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedStatus, setLoggedStatus] = useState(false);
   useEffect(() => {
-    checkLoggedIn(setLoggedIn, navigate);
-  }, [setLoggedIn, navigate]);
+    isLoggedIn(setLoggedStatus, navigate);
+  }, [setLoggedStatus, navigate]);
   const {
     values,
     errors,

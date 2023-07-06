@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
-    "test:coverage": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\" --env=jsdom --watchAll=false --coverage --collectCoverageFrom=src/components/**/*.{js}"
+    "test:coverage": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\" --env=jsdom --watchAll=false --coverage --collectCoverageFrom=src/SignIn/components/**/*.{js}"
   },
   "eslintConfig": {
     "extends": [
