@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SignUpFormInput } from "./SignUpFormInput";
 import { validate } from "./SignUpValidation";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ export const SignUp = () => {
   };
   const [signUpValues, setSignUpValues] = useState(initialValues);
   const [signUpErrors, setSignUpErrors] = useState({});
+  const [disableButton, setDisableButton] = useState(1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,8 +31,18 @@ export const SignUp = () => {
 
   const resetDetails = (name) => {
     setSignUpValues({ ...signUpValues, [name]: "" });
+    setSignUpErrors({ ...signUpErrors, [name]: "" });
   };
-
+  useEffect(() => {
+    if (
+      signUpValues.nickname &&
+      signUpValues.email &&
+      signUpValues.password &&
+      signUpValues.confirmPassword
+    )
+      setDisableButton(0);
+    else setDisableButton(1);
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     setSignUpErrors(validate(signUpValues, backendErrors));
@@ -118,7 +129,14 @@ export const SignUp = () => {
             signUpErrors={signUpErrors.confirmPassword}
           />
           <div className="form-submit">
-            <button type="submit" className="submit-button">
+            <button
+              id="submit-confirm"
+              type="submit"
+              disabled={disableButton}
+              className={
+                disableButton ? "submit-disable-button" : "submit-button"
+              }
+            >
               {" "}
               Sign Up
             </button>

@@ -2,12 +2,12 @@
 :root {
   --error-color: #f2b8b5;
 }
-.container {
+.header-container {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: #1d1b20;
+  background: rgba(29, 27, 32, 1);;
   border-radius: 16px;
 }
 .header {
@@ -26,16 +26,16 @@
   flex-direction: row;
   align-items: flex-start;
 }
-.header-close {
-  font-family: "Roboto" ,"sans-serif";
+.login-container{
   display: flex;
-  font-size: 20px;
-  justify-content: flex-end;
-  flex: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
-.login-form {
+.login-container .login-form {
   display: flex;
+  width: 80%;
   height: 75vh;
   flex-direction: column;
   align-items: center;
@@ -198,7 +198,7 @@
   left: 23px;
   padding: 4px;
   z-index: 1;
-  background-color: #1d1b20;
+  background-color:rgba(29, 27, 32, 1);;
 }
 
 .label {

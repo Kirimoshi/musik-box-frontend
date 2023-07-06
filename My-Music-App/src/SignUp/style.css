@@ -16,13 +16,15 @@ body {
   cursor: pointer;
 }
 .signup-header {
-  margin-top: 10px;
+  margin-top: 24px;
   margin-left: 20px;
   margin-bottom: 20px;
 }
-.signup-header p{
-  color:rgba(202, 196, 208, 1);
-  font-size: 22px;
+.signup-header p {
+  margin: 0;
+  font-size: 25px;
+  line-height: 28px;
+  color: rgba(202, 196, 208, 1);
 }
 .signup-details {
   display: flex;
@@ -72,9 +74,19 @@ body {
   height: 2.5em;
   border: none;
   border-radius: 2em;
-  color:rgba(56, 30, 114, 1);
+  color: rgba(56, 30, 114, 1);
   background-color: rgb(208, 188, 255, 1);
   cursor: pointer;
+}
+.submit-disable-button {
+  width: 14em;
+  margin-bottom: 1em;
+  height: 2.5em;
+  border: none;
+  border-radius: 2em;
+  color: rgba(230, 224, 233, 1);
+  background-color: rgba(230, 224, 233, 0.12);
+  cursor: not-allowed;
 }
 .signup-form a {
   text-decoration: none;
