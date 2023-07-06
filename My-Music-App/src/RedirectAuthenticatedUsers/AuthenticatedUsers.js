@@ -7,6 +7,7 @@ export const checkLoggedIn = async (setLoggedIn, navigate) => {
   let accessToken = localStorage.getItem("accessToken");
   let accessExpiresAt = localStorage.getItem("accessExpiresAt");
   let refreshToken= localStorage.getItem("refreshToken");
+
   if (accessToken) {
     if (new Date(accessExpiresAt) < Date.now()) {
       console.log("access expired");

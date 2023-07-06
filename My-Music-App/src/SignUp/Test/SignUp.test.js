@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { SignUp } from "../components/SignUp";
@@ -98,10 +98,20 @@ describe("Clear Button Functionality", () => {
 });
 
 describe("Sign Up Validations", () => {
-  test("Nickname should be minimum of three characters", () => {
+  beforeEach(()=>{
     render(<SignUp />, {
       wrapper: BrowserRouter,
     });
+    const nicknameInput = screen.getByTestId("nickname");
+    const emailInput = screen.getByTestId("email");
+    const passwordInput = screen.getByTestId("password");
+    const confirmPasswordInput = screen.getByTestId("confirmPassword");
+    fireEvent.change(nicknameInput, { target: { value: "dummy" } });
+    fireEvent.change(emailInput, { target: { value: "dummy" } });
+    fireEvent.change(passwordInput, { target: { value: "dummy" } });
+    fireEvent.change(confirmPasswordInput, { target: { value: "dummy" } });
+  })
+  test("Nickname should be minimum of three characters", () => {
     const nicknameInput = screen.getByTestId("nickname");
     fireEvent.change(nicknameInput, { target: { value: "s" } });
     const submitButtonElement = screen.getByRole("button", {
@@ -115,9 +125,6 @@ describe("Sign Up Validations", () => {
   });
 
   test("Email Should be without any spaces and special characters", () => {
-    render(<SignUp />, {
-      wrapper: BrowserRouter,
-    });
     const emailInput = screen.getByTestId("email");
     fireEvent.change(emailInput, {
       target: { value: "sai prakash845@gmail.com" },
@@ -133,9 +140,6 @@ describe("Sign Up Validations", () => {
   });
 
   test("Password should contain atleast one special character", () => {
-    render(<SignUp />, {
-      wrapper: BrowserRouter,
-    });
     const passwordInput = screen.getByTestId("password");
     fireEvent.change(passwordInput, { target: { value: "Sai012345" } });
     const submitButtonElement = screen.getByRole("button", {
@@ -149,9 +153,6 @@ describe("Sign Up Validations", () => {
   });
 
   test("Password should contain atleast one lower case letter", () => {
-    render(<SignUp />, {
-      wrapper: BrowserRouter,
-    });
     const passwordInput = screen.getByTestId("password");
     fireEvent.change(passwordInput, { target: { value: "SAI@012345" } });
     const submitButtonElement = screen.getByRole("button", {
@@ -165,9 +166,6 @@ describe("Sign Up Validations", () => {
   });
 
   test("Password should contain atleast one upper case letter", () => {
-    render(<SignUp />, {
-      wrapper: BrowserRouter,
-    });
     const passwordInput = screen.getByTestId("password");
     fireEvent.change(passwordInput, { target: { value: "sai@012345" } });
     const submitButtonElement = screen.getByRole("button", {
@@ -181,9 +179,6 @@ describe("Sign Up Validations", () => {
   });
 
   test("Password should contain atleast one digit", () => {
-    render(<SignUp />, {
-      wrapper: BrowserRouter,
-    });
     const passwordInput = screen.getByTestId("password");
     fireEvent.change(passwordInput, { target: { value: "S@iPrakash" } });
     const submitButtonElement = screen.getByRole("button", {
@@ -196,9 +191,6 @@ describe("Sign Up Validations", () => {
     );
   });
   test("Confirm Password should be same as password", () => {
-    render(<SignUp />, {
-      wrapper: BrowserRouter,
-    });
     const passwordInput = screen.getByTestId("password");
     fireEvent.change(passwordInput, { target: { value: "Sai@012345" } });
     const confirmPasswordInput = screen.getByTestId("confirmPassword");
