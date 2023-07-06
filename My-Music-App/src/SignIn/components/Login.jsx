@@ -16,15 +16,12 @@ const onSubmit = async (values, actions) => {
   actions.resetForm();
 };
 export const Login = (props) => {
-
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-
   useEffect(() => {
     checkLoggedIn(setLoggedIn, navigate);
   }, [setLoggedIn, navigate]);
-
   const {
     values,
     errors,
