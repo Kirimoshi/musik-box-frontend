@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import { IoIosAddCircle } from "react-icons/io";
 import uploadImage from "../uploadImage.svg";
 import closeLogo from "../closeLogo.svg";
@@ -6,6 +7,7 @@ import { Link } from "react-router-dom";
 import "../styles.css";
 import { Validate } from "./CreateNewPlaylistValidation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
+
 export const CreateNewPlaylist = () => {
   const imageInputRef = useRef(null);
   const initialValues = {
@@ -16,29 +18,36 @@ export const CreateNewPlaylist = () => {
   const [playlistDetails, setPlaylistDetails] = useState(initialValues);
   const [createPlaylistErrors, setCreatePlaylistErrors] = useState({});
   const [confirmationDialogModal, setConfirmationDialogModal] = useState(false);
+
   const handleConfirmationDialog = () => {
     setConfirmationDialogModal(true);
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPlaylistDetails({ ...playlistDetails, [name]: value });
   };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
   useEffect(() => {
     setCreatePlaylistErrors(Validate(playlistDetails));
   }, [playlistDetails]);
+
   const handleImageClick = () => {
     imageInputRef.current.click();
     setCreatePlaylistErrors({ ...createPlaylistErrors, playlistLogo: "" });
   };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!createPlaylistErrors.playlistLogo) {
       setPlaylistDetails({ ...playlistDetails, playlistLogo: file });
     }
   };
+
   return (
     <div className="createplaylist-main">
       <div className="createplaylist-header">
