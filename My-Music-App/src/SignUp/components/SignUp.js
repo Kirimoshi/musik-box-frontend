@@ -37,8 +37,8 @@ export const SignUp = () => {
   };
 
   useEffect(() => {
-    isLoggedIn(setLoggedStatus, navigate);
-  }, [setLoggedStatus, navigate]);
+    isLoggedIn(loggedStatus, setLoggedStatus, navigate);
+  }, [loggedStatus, setLoggedStatus, navigate]);
 
   useEffect(() => {
     if (

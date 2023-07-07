@@ -2,29 +2,25 @@ import axios from "axios";
 import { parse } from "cookie";
 import { constants } from "./constants";
 
-export const isLoggedIn = async (setLoggedStatus, navigate) => {
+export const isLoggedIn = async (loggedStatus, setLoggedStatus, navigate) => {
   let logIn = false;
   const cookies = parse(document.cookie);
   let accessToken = localStorage.getItem("accessToken");
   let accessExpiresAt = localStorage.getItem("accessExpiresAt");
-  let refreshToken= localStorage.getItem("refreshToken");
+  let refreshToken = localStorage.getItem("refreshToken");
   if (accessToken) {
     if (new Date(accessExpiresAt) < Date.now()) {
       let response;
       try {
-        response = await axios.post(
-            constants.refreshURL,
-          null,
-          {
-            headers: {
-              "X-Refresh-Token": `${refreshToken}`
-            },
-          }
-        );
+        response = await axios.post(constants.refreshURL, null, {
+          headers: {
+            "X-Refresh-Token": `${refreshToken}`,
+          },
+        });
         accessToken = response.data.access;
         accessExpiresAt = response.data.access_expires_at;
-        localStorage.setItem('accessToken',accessToken)
-        localStorage.setItem('accessExpiresAt',accessExpiresAt)
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("accessExpiresAt", accessExpiresAt);
         if (cookies["accessToken"]) {
           document.cookie = `accessToken=${accessToken}; max-age=${accessExpiresAt}; path=/`;
           document.cookie = `accessExpiresAt=${accessExpiresAt}; path=/`;
@@ -62,14 +58,11 @@ export const isLoggedIn = async (setLoggedStatus, navigate) => {
     if (new Date(accessExpiresAt) < Date.now()) {
       let response;
       try {
-        response = await axios.post(
-           constants.refreshURL,
-          {
-            headers: {
-                "X-Refresh-Token": `${refreshToken}`
-            },
-          }
-        );
+        response = await axios.post(constants.refreshURL, {
+          headers: {
+            "X-Refresh-Token": `${refreshToken}`,
+          },
+        });
         accessToken = response.data.access;
         accessExpiresAt = response.data.access_expires_at;
         localStorage.setItem("accessToken", accessToken);

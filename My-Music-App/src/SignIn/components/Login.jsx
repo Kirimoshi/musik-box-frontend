@@ -20,8 +20,8 @@ export const Login = (props) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [loggedStatus, setLoggedStatus] = useState(false);
   useEffect(() => {
-    isLoggedIn(setLoggedStatus, navigate);
-  }, [setLoggedStatus, navigate]);
+    isLoggedIn(loggedStatus, setLoggedStatus, navigate);
+  }, [loggedStatus, setLoggedStatus, navigate]);
   const {
     values,
     errors,
@@ -55,8 +55,14 @@ export const Login = (props) => {
         if (response.status == 200) {
           localStorage.setItem("accessToken", response.data.access);
           localStorage.setItem("refreshToken", response.data.refresh);
-          localStorage.setItem("accessExpiresAt",response.data.access_expires_at);
-          localStorage.setItem("RefreshExpiresAt",response.data.refresh_expires_at);
+          localStorage.setItem(
+            "accessExpiresAt",
+            response.data.access_expires_at
+          );
+          localStorage.setItem(
+            "RefreshExpiresAt",
+            response.data.refresh_expires_at
+          );
           if (rememberMe) {
             document.cookie = `accessToken=${response.data.access}; max-age=${response.data.access_expires_at}; path=/`;
             document.cookie = `accessExpiresAt=${response.data.access_expires_at}; path=/`;
