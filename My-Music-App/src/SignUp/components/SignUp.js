@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../style.css";
 import { constants } from "../constants";
+import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export const SignUp = () => {
   const [signUpValues, setSignUpValues] = useState(initialValues);
   const [signUpErrors, setSignUpErrors] = useState({});
   const [disableButton, setDisableButton] = useState(1);
+  const [loggedStatus, setLoggedStatus] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +35,11 @@ export const SignUp = () => {
     setSignUpValues({ ...signUpValues, [name]: "" });
     setSignUpErrors({ ...signUpErrors, [name]: "" });
   };
+
+  useEffect(() => {
+    isLoggedIn(loggedStatus, setLoggedStatus, navigate);
+  }, [loggedStatus, setLoggedStatus, navigate]);
+
   useEffect(() => {
     if (
       signUpValues.nickname &&
