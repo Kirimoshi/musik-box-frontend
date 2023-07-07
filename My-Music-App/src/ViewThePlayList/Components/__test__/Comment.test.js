@@ -5,11 +5,13 @@ import Comment from "../Comment";
 describe("Comment component", () => {
   test("renders comment input and button", () => {
     render(<Comment />);
-    
+
     const commentInput = screen.getByLabelText("comment");
     expect(commentInput).toBeInTheDocument();
 
-    const commentButton = screen.getByRole("button", { name: "leave a comment" });
+    const commentButton = screen.getByRole("button", {
+      name: "leave a comment",
+    });
     expect(commentButton).toBeInTheDocument();
   });
 
@@ -17,7 +19,9 @@ describe("Comment component", () => {
     render(<Comment />);
 
     const commentInput = screen.getByLabelText("comment");
-    const commentButton = screen.getByRole("button", { name: "leave a comment" });
+    const commentButton = screen.getByRole("button", {
+      name: "leave a comment",
+    });
 
     fireEvent.change(commentInput, { target: { value: "New comment" } });
     fireEvent.click(commentButton);

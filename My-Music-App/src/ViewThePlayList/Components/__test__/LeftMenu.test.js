@@ -1,11 +1,11 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import LeftMenu from '../LeftMenu';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import LeftMenu from "../LeftMenu";
 
-describe('LeftMenu component', () => {
-  test('renders the left menu with correct content', () => {
+describe("LeftMenu component", () => {
+  test("renders the left menu with correct content", () => {
     render(<LeftMenu />);
-    
+
     const musicBoxLogo = screen.getByText(/Music Box/i);
     expect(musicBoxLogo).toBeInTheDocument();
 

@@ -5,9 +5,15 @@
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  background-image:  radial-gradient(50% 50% at 50% 50%, #080a0e 0%, #0D1927 100%),linear-gradient(180deg, #170D2E 0%, #1F192E 100%);
-  overflow-y:scroll;
+  background-image: radial-gradient(
+    50% 50% at 50% 50%,
+    #080a0e 0%,
+    #0d1927 100%
+  ),
+  linear-gradient(180deg, #170d2e 0%, #1f192e 100%);
+  overflow-y: scroll;
 }
+
 .profiledetails {
   color: white;
   width: 35%;
@@ -56,7 +62,6 @@
   height: 120px;
   width: 120px;
 }
-
 
 .playlistdetails {
   color: white;
@@ -139,7 +144,6 @@
   width: 90%;
 }
 
-
 @media (max-width: 600px) {
   .maincontainer {
     width: 60%;
@@ -163,11 +167,11 @@
   }
 
   .playlistimage {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: flex-start;
-    }
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
 
   .playlistname {
     font-size: 10px;
@@ -199,4 +203,3 @@
     size: 16px;
   }
 }
-

@@ -10,7 +10,7 @@ import { useState } from "react";
 import Comment from "./Comment";
 
 export default function MainContainer() {
-  const [openModel,setOpenModel]=useState(false);
+  const [openModel, setOpenModel] = useState(false);
   return (
     <div className="maincontainer">
       <div className="profiledetails">
@@ -20,19 +20,20 @@ export default function MainContainer() {
           <div className="otherdetails2">Amount of playlists: 3 </div>
         </div>
       </div>
-
       <div className="playlistimage">
         <img
           src={require("../images/image2.jpg")}
           alt=""
           className="img2"
         ></img>
-        <BsThreeDotsVertical className="vertical-menu" onClick={()=>{
-         setOpenModel((prev) => !prev);
-        }} />
-        {openModel && <Modal/>}
+        <BsThreeDotsVertical
+          className="vertical-menu"
+          onClick={() => {
+            setOpenModel((prev) => !prev);
+          }}
+        />
+        {openModel && <Modal />}
       </div>
-
       <div className="playlistdetails">
         <p className="playlistname">Mega Mix</p>
         <p className="playlistcontent">Good for training’s and so on... </p>
@@ -55,12 +56,11 @@ export default function MainContainer() {
         <IoIosAdd className="circle-icon" />
         <p className="addsong">Add Song</p>
       </div>
-      <div className="divider"></div>
-
+      <hr className="divider" />
       <div className="songsList" data-testid="song-list">
         <SongList />
       </div>
-      <Comment data-testid='comment-list'/>
+      <Comment data-testid="comment-list" />
     </div>
   );
 }
