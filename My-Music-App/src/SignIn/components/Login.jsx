@@ -6,7 +6,7 @@ import { SignInSchema } from "../schemas/SignInSchema";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import axios from "axios";
-import { constants } from '../../constants';
+import { constants } from '../constants';
 import {useNavigate} from "react-router-dom"
 const onSubmit = async (values, actions) => {
   console.log(values);
