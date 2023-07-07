@@ -1,10 +1,8 @@
 import React from "react";
-import "../styles/leftmenu.css";
-
 import { RiPencilFill } from "react-icons/ri";
 
+import "../styles/leftmenu.css";
 import Menu from "./Menu";
-
 import MenuList from "./MenuList";
 
 const LeftMenu = () => {
@@ -13,15 +11,13 @@ const LeftMenu = () => {
       <div className="logocontainer">
         <span>Music Box</span>
       </div>
-
       <div className="divider"></div>
-
       <div className="account_setting">
         <div className="account_image_details">
           <div className="account_image">
             <img
               src={require("../images/image1.jpg")}
-              alt=""
+              alt="User Profile Picture"
               className="img1"
             ></img>
           </div>
@@ -34,21 +30,15 @@ const LeftMenu = () => {
           </div>
         </div>
       </div>
-
       <Menu menuObject={MenuList} />
-
-      <div className="divider"></div>
-
+      <hr className="divider" />
       <div className="about_the_app">
         <p>About the app</p>
       </div>
-
       <div className="about_us">
         <p>About us</p>
       </div>
-
-      <div className="divider"></div>
-
+      <hr className="divider" />
       <div className="logout">
         <p>Log out</p>
       </div>
