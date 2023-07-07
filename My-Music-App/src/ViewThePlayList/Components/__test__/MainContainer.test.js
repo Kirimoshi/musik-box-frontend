@@ -1,11 +1,11 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import MainContainer from '../MainContainer';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import MainContainer from "../MainContainer";
 
-describe('MainContainer component', () => {
-  test('renders the main container with correct content', () => {
+describe("MainContainer component", () => {
+  test("renders the main container with correct content", () => {
     render(<MainContainer />);
-    
+
     const email = screen.getByText(/shevchuk@gmail.com/i);
     expect(email).toBeInTheDocument();
 
@@ -18,7 +18,9 @@ describe('MainContainer component', () => {
     const playlistName = screen.getByText(/Mega Mix/i);
     expect(playlistName).toBeInTheDocument();
 
-    const playlistContent = screen.getByText(/Good for training’s and so on.../i);
+    const playlistContent = screen.getByText(
+      /Good for training’s and so on.../i
+    );
     expect(playlistContent).toBeInTheDocument();
 
     const createdText = screen.getByText(/Created: 23 June 2023/i);
@@ -36,10 +38,10 @@ describe('MainContainer component', () => {
     const addSongText = screen.getByText(/Add Song/i);
     expect(addSongText).toBeInTheDocument();
 
-    const songsList = screen.getByTestId('song-list');
+    const songsList = screen.getByTestId("song-list");
     expect(songsList).toBeInTheDocument();
 
-    const commentSection = screen.getByTestId('comment-section');
+    const commentSection = screen.getByTestId("comment-section");
     expect(commentSection).toBeInTheDocument();
   });
 });

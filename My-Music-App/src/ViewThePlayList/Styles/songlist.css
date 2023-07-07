@@ -1,54 +1,50 @@
-
-.songsContainer{
+.songsContainer {
   height: 280px;
   overflow-y: scroll;
-  overflow-x:hidden;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 5px;
-
 }
 
-.song{
+.song {
   height: 90%;
-  display:flex;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
-border-radius: 12px;
-background-color: rgb(23, 23, 23);
+  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+  border-radius: 12px;
+  background-color: rgb(23, 23, 23);
 }
 
-.image1{
+.image1 {
   height: 100%;
   width: 80px;
 }
 
-
-.imageBox-artistinfo{
+.imageBox-artistinfo {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  gap:5px;
+  gap: 5px;
 }
 
-.artistInfo{
-  color: #E6E0E9;
-  font-family: 'Roboto',sans-serif;
+.artistInfo {
+  color: #e6e0e9;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.vertical-menu{
+.vertical-menu {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 }
-
 
 @media (max-width: 600px) {
   .songsContainer {
@@ -56,7 +52,7 @@ background-color: rgb(23, 23, 23);
   }
 
   .song {
-    width:90% ;
+    width: 90%;
     height: 96%;
     flex-direction: row;
     justify-content: center;
@@ -85,16 +81,16 @@ background-color: rgb(23, 23, 23);
     font-size: 12px;
     text-align: center;
   }
-  .vertical-menu{
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+
+  .vertical-menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 }
 
-
-.delete-icon-modal{
+.delete-icon-modal {
   display: flex;
   font-family: "Roboto", sans-serif;
   font-style: normal;
@@ -103,23 +99,24 @@ background-color: rgb(23, 23, 23);
   right: 15px;
   top: 35px;
   padding: 10px;
-  background: #211F26;
-
+  background: #211f26;
 }
 
-.delete-tag{
+.delete-tag {
   display: flex;
   justify-content: space-between;
   width: 185px;
 }
-.delete-button{
-  color: #F2B8B5;
-}
-i{
-  color: #F2B8B5;
+
+.delete-button {
+  color: #f2b8b5;
 }
 
-.songlist-vertical-menu{
+i {
+  color: #f2b8b5;
+}
+
+.songlist-vertical-menu {
   display: flex;
   flex-direction: column;
   justify-content: center;
