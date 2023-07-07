@@ -1,0 +1,266 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+:root {
+  --error-color: #f2b8b5;
+}
+.header-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background: rgba(29, 27, 32, 1);;
+  border-radius: 16px;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  color: white;
+}
+.header-content {
+  font-family: "Roboto" ,"sans-serif";
+  display: flex;
+  flex: 2;
+  font-size: 20px;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.login-container{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container .login-form {
+  display: flex;
+  width: 80%;
+  height: 75vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.login-form-inputcheckbox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  width: 40%;
+  color: white;
+}
+.inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #938f99;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 10px;
+}
+
+.inputbox {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  align-items: flex-start;
+  width: 380px;
+  height: 45px;
+  background: none;
+}
+
+.exclamation-circle {
+  color: var(--error-color);
+}
+
+.close-circle {
+  color: white;
+}
+
+.checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 4px;
+  width: 328px;
+}
+
+.checkboxes-dark {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  width: 18px;
+  height: 18px;
+  accent-color: #d0bcff;
+}
+
+.checkbox-text {
+  width: 110px;
+  height: 24px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.5px;
+  color: #e6e0e9;
+}
+
+.sigin-sigup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  gap: 20px;
+  width: 224px;
+  height: 132px;
+}
+
+.signin-button {
+  width: 224px;
+  height: 40px;
+  border-radius: 100px;
+  background-color: #d0bcff;
+  border: none;
+}
+
+.signin-error {
+  background-color: #e6e0e91f;
+}
+
+.signin-signup-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  width: 142px;
+  height: 60px;
+  color: #e6e0e9;
+}
+
+.p {
+  width: 135px;
+  height: 16px;
+  font-family: "Roboto" ,"sans-serif";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  color: #e6e0e9;
+}
+
+.signup {
+  font-family: "Roboto" ,"sans-serif";
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  width: 73px;
+  height: 40px;
+  border-radius: 100px;
+  background: none;
+  border: none;
+  color: #d0bcff;
+  text-decoration: none;
+}
+
+.label_div_ip1 {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: start;
+}
+
+.label_div_ip1 .label {
+  position: absolute;
+  top: -15px;
+  left: 23px;
+  padding: 4px;
+  z-index: 1;
+  background-color:rgba(29, 27, 32, 1);;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 500;
+  display: inline-block;
+  color: white;
+}
+
+.inputbox {
+  box-shadow: none !important;
+  border: none;
+  outline: none;
+  color: #e6e0e9;
+  font-family: "Roboto";
+}
+
+.ip-class-btn {
+  width: 20px;
+  height: 20px;
+}
+
+.error {
+  font-family: "Roboto";
+  color: var(--error-color);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  padding: 0px 15px;
+}
+
+.ip-error {
+  border: 1px solid var(--error-color);
+}
+
+.label-error {
+  color: var(--error-color);
+}
+
+@media only screen and ((max-width: 600px) and (min-width:320px) ) {
+  .container{
+    width: 100%;
+    height: 100vh;
+  }
+
+  .inputbox{
+    width:96% ;
+  }
+
+  .signin-button{
+    width: 140px;
+    height: 25px;
+    border-radius: 90px;
+  }  
+  .login-form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 55vh;
+  }
+  .login-form-inputcheckbox{
+        padding: 0px 5px;
+        width: 90%;
+        color: white;
+  }
+}
