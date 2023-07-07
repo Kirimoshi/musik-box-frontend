@@ -1,18 +1,19 @@
 import React from "react";
 import { SignUp } from "./SignUp/components/SignUp";
 import { Login } from "./SignIn/components/Login";
-import MyPlayListPage from "./ViewThePlayList/Components/MyPlayListPage"
+import {default as ViewThePlayList} from "./ViewThePlayList/Components/MyPlayListPage"
+import {default as ViewMyPlayLists} from './ViewMyPlayLists/components/MyPlayListPage';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
           <Route path="/" element={<h1>Home</h1>}/>
-          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/SignUp" element={<SignUp />} /> 
           <Route path="/SignIn" element={<Login/>}/>
-          <Route path="/ViewThePlayList" element={<MyPlayListPage/>}/>
+          <Route path="/ViewThePlayList" element={<ViewThePlayList/>}/>
+          <Route path="/viewmyplaylists" element={<ViewMyPlayLists/>}/>
         </Routes>
       </div>
     </BrowserRouter>
