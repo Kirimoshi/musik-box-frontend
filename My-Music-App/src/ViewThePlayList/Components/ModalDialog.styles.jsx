@@ -2,11 +2,6 @@ import styled from 'styled-components';
 
 export const ModalContainer = styled.dialog`
   &[open] {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    /* z-index: 01; */
-    transform: translate(-50%, -50%);
     /* Layout */
     max-width: 312px;
     display: flex;
@@ -19,6 +14,11 @@ export const ModalContainer = styled.dialog`
     border-radius: 4px;
     background: #211f26;
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  }
+  &[open]::backdrop {
+    /* Style */
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
   }
 `;
 
