@@ -1,5 +1,8 @@
 import React from "react";
-export const ConfirmationDialog = () => {
+export const ConfirmationDialog = ({
+  handleModalSubmit,
+  handleModalDiscard,
+}) => {
   return (
     <div className="confirmationdialog-main">
       <div className="confirmation-dialog-message">
@@ -8,10 +11,20 @@ export const ConfirmationDialog = () => {
       <hr className="dialog-divider" />
       <div className="confirmation-dialog-btns">
         <div className="confirmation-dialog">
-          <button className="confirmation-dialog-submit-btn">Submit</button>
+          <button
+            onClick={handleModalSubmit}
+            className="confirmation-dialog-submit-btn"
+          >
+            Discard
+          </button>
         </div>
         <div className="confirmation-dialog">
-          <button className="confirmation-dialog-discard-btn">Discard</button>
+          <button
+            onClick={handleModalDiscard}
+            className="confirmation-dialog-discard-btn"
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </div>

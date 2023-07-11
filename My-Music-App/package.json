@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "validy",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
+    "babel-preset-es2015": "^6.24.1",
     "formik": "^2.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -18,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "test:coverage": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\" --env=jsdom --watchAll=false --coverage --collectCoverageFrom=src/components/**/*.{js}"
   },
@@ -39,9 +40,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "eslint": "^5.12.0",
-    "react-scripts": "^2.1.3"
   }
 }

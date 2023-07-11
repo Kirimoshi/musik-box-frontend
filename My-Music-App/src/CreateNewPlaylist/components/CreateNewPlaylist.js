@@ -5,10 +5,10 @@ import uploadImage from "../uploadImage.svg";
 import closeLogo from "../closeLogo.svg";
 import { Link } from "react-router-dom";
 import "../styles.css";
-import { Validate } from "./CreateNewPlaylistValidation";
+import { validate } from "./CreateNewPlaylistValidation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 
-export const CreateNewPlaylist = () => {
+export const CreateNewPlaylist = ({ handleModalSubmit }) => {
   const imageInputRef = useRef(null);
   const initialValues = {
     playlistLogo: "",
@@ -22,18 +22,20 @@ export const CreateNewPlaylist = () => {
   const handleConfirmationDialog = () => {
     setConfirmationDialogModal(true);
   };
-
+  const handleModalDiscard = () => {
+    setConfirmationDialogModal(false);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPlaylistDetails({ ...playlistDetails, [name]: value });
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
   };
 
   useEffect(() => {
-    setCreatePlaylistErrors(Validate(playlistDetails));
+    setCreatePlaylistErrors(validate(playlistDetails));
   }, [playlistDetails]);
 
   const handleImageClick = () => {
@@ -104,7 +106,10 @@ export const CreateNewPlaylist = () => {
               </p>
             </div>
             {confirmationDialogModal && ConfirmationDialog && (
-              <ConfirmationDialog />
+              <ConfirmationDialog
+                handleModalSubmit={handleModalSubmit}
+                handleModalDiscard={handleModalDiscard}
+              />
             )}
           </div>
           <div className="createplaylist-description-main">
