@@ -6,11 +6,11 @@
   align-items: center;
   gap: 15px;
   background-image: radial-gradient(
-    50% 50% at 50% 50%,
-    #080a0e 0%,
-    #0d1927 100%
-  ),
-  linear-gradient(180deg, #170d2e 0%, #1f192e 100%);
+      50% 50% at 50% 50%,
+      #080a0e 0%,
+      #0d1927 100%
+    ),
+    linear-gradient(180deg, #0a0614 0%, #1f192e 100%);
   overflow-y: scroll;
 }
 
@@ -56,6 +56,20 @@
 
 .vertical-menu {
   color: white;
+  cursor: pointer;
+}
+
+.playlist-type-btn {
+  height: 20px;
+  width: 40px;
+  font-size: 10px;
+  position: absolute;
+  border-radius: 18px;
+  border: none;
+  color: white;
+  background: var(--m-3-ref-error-error-60, #e46962);
+  bottom: 5px;
+  right: 20px;
 }
 
 .img2 {
@@ -116,28 +130,30 @@
 
 .addsong {
   width: 90%;
+  padding: 10px;
   color: white;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: flex-start;
-  gap: 5px;
+  border-bottom: 1px solid rgba(73, 69, 79, 1);
 }
 
 .circle-icon {
   background: #d0bcff;
   border-radius: 100px;
   color: black;
-  size: 20px;
+  font-size: 20px;
 }
 
 .addsong {
-  font-family: "Roboto", sans-serif;
-  font-size: 12px;
+  cursor: pointer;
 }
 
-.divider {
-  width: 90%;
-  border: 1px solid #49454f;
+.addsong-name {
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  padding-left: 8px;
 }
 
 .songsList {

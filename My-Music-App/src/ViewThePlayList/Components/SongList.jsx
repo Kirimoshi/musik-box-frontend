@@ -1,8 +1,9 @@
-import { React, useState } from "react";
-import Songs from "./Songs";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import "../Styles/songlist.css";
+import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
+import Songs from "./Songs";
+import "../Styles/songlist.css";
 export default function SongList() {
   const someThing = () => {
     console.log("hi");
@@ -40,11 +41,11 @@ export default function SongList() {
                     }}
                   />
                   {openModel === song.id && (
-                    <div className="delete-icon-modal">
-                      <a href="#" onClick={someThing} className="delete-tag">
+                    <div className="delete-modal">
+                      <div onClick={someThing} className="delete-tag">
                         <RiDeleteBin6Line className="delete-button" />
-                        <i>Remove song from playlist</i>
-                      </a>
+                        <p>Remove song from playlist</p>
+                      </div>
                     </div>
                   )}
                 </div>

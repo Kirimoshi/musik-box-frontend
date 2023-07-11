@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import "../Styles/comment.css";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+
+import "../Styles/comment.css";
 import commentData from "./CommentData";
 export default function Comment() {
   let [input, updateInput] = useState("");

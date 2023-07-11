@@ -10,7 +10,7 @@ const LeftMenu = () => {
       <div className="logocontainer">
         <span>Music Box</span>
       </div>
-      <div className="divider"></div>
+      <hr className="divider" />
       <div className="account_setting">
         <div className="account_image_details">
           <div className="account_image">
@@ -37,7 +37,7 @@ const LeftMenu = () => {
       <div className="about_us">
         <p>About us</p>
       </div>
-      <hr className="divider"/>
+      <hr className="divider" />
       <div className="logout">
         <p>Log out</p>
       </div>

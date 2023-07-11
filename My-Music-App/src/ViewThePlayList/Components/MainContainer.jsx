@@ -1,12 +1,12 @@
-import React from "react";
-import "../Styles/maincontainer.css";
-import { RiDislikeLine } from "react-icons/ri";
+import React, { useState } from "react";
+import { IoIosAdd } from "react-icons/io";
 import { BiHeart } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { RiDislikeLine } from "react-icons/ri";
+
+import "../Styles/maincontainer.css";
 import SongList from "./SongList";
 import Modal from "./Modal";
-import { IoIosAdd } from "react-icons/io";
-import { useState } from "react";
 import Comment from "./Comment";
 
 export default function MainContainer() {
@@ -33,10 +33,11 @@ export default function MainContainer() {
           }}
         />
         {openModel && <Modal />}
+        <button className="playlist-type-btn">Public</button>
       </div>
       <div className="playlistdetails">
         <p className="playlistname">Mega Mix</p>
-        <p className="playlistcontent">Good for training’s and so on... </p>
+        <p className="playlistcontent">Good for training's and so on... </p>
         <div className="created-updated">
           <p>Created: 23 June 2023</p>
           <p>Updated: 12 Jul 2023</p>
@@ -54,9 +55,8 @@ export default function MainContainer() {
       </div>
       <div className="addsong">
         <IoIosAdd className="circle-icon" />
-        <p className="addsong">Add Song</p>
+        <p className="addsong-name">Add Song</p>
       </div>
-      <hr className="divider" />
       <div className="songsList" data-testid="song-list">
         <SongList />
       </div>
