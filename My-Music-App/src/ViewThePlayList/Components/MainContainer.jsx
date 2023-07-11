@@ -8,9 +8,19 @@ import "../Styles/maincontainer.css";
 import SongList from "./SongList";
 import Modal from "./Modal";
 import Comment from "./Comment";
+import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 
 export default function MainContainer() {
   const [openModel, setOpenModel] = useState(false);
+  const [addSongModal, setAddSongModal]= useState(false);
+
+  const handleAddSong=()=>{
+    setAddSongModal(true);
+  }
+
+  const handleCloseAddSongModal=()=>{
+    setAddSongModal(false);
+  }
   return (
     <div className="maincontainer">
       <div className="profiledetails">
@@ -54,8 +64,9 @@ export default function MainContainer() {
         </div>
       </div>
       <div className="addsong">
-        <IoIosAdd className="circle-icon" />
+        <IoIosAdd className="circle-icon" onClick={handleAddSong}/>
         <p className="addsong-name">Add Song</p>
+        {addSongModal && AddSongsToPlaylists && <AddSongsToPlaylists handleCloseAddSongModal={handleCloseAddSongModal}/>}
       </div>
       <div className="songsList" data-testid="song-list">
         <SongList />

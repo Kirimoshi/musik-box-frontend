@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import "../styles.css";
 import { validate } from "./CreateNewPlaylistValidation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
+import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 
 export const CreateNewPlaylist = ({ handleModalSubmit }) => {
   const imageInputRef = useRef(null);
@@ -18,6 +19,7 @@ export const CreateNewPlaylist = ({ handleModalSubmit }) => {
   const [playlistDetails, setPlaylistDetails] = useState(initialValues);
   const [createPlaylistErrors, setCreatePlaylistErrors] = useState({});
   const [confirmationDialogModal, setConfirmationDialogModal] = useState(false);
+  const [addSongModal, setAddSongModal]= useState(false);
 
   const handleConfirmationDialog = () => {
     setConfirmationDialogModal(true);
@@ -49,6 +51,14 @@ export const CreateNewPlaylist = ({ handleModalSubmit }) => {
       setPlaylistDetails({ ...playlistDetails, playlistLogo: file });
     }
   };
+  
+  const handleAddSong=()=>{
+    setAddSongModal(true);
+  }
+
+  const handleCloseAddSongModal=()=>{
+    setAddSongModal(false);
+  }
 
   return (
     <div className="createplaylist-main">
@@ -129,9 +139,10 @@ export const CreateNewPlaylist = ({ handleModalSubmit }) => {
               </p>
             </div>
           </div>
+          {addSongModal && AddSongsToPlaylists && <AddSongsToPlaylists handleCloseAddSongModal={handleCloseAddSongModal}/>}
           <div className="createplaylist-addsong">
-            <Link to="/addSong">
-              <IoIosAddCircle className="addsong-icon" />
+            <Link>
+              <IoIosAddCircle className="addsong-icon" onClick={handleAddSong}/>
             </Link>
             <p>Add Song</p>
           </div>
