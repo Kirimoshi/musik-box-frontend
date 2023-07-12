@@ -87,17 +87,29 @@
 }
 
 .delete-modal {
+  /* Layout */
   display: flex;
-  font-family: 'Roboto', sans-serif;
-  width: 210px;
-  font-style: normal;
-  font-size: 14px;
+  min-width: 210px;
+  max-width: 278px;
+  width: max-content;
+  padding: 8px 0px;
+  min-height: 40px;
+  align-items: center;
+
   position: absolute;
-  right: 30px;
-  top: 35px;
-  padding: 10px;
-  background: #211f26;
-  color: rgba(230, 224, 233, 1);
+  right: 150%;
+  top: 20%;
+  /* z-index: 1; */
+
+  /* Styling */
+  /* font-family: 'Roboto', sans-serif; */
+  /* font-style: normal; */
+  /* font-size: 14px; */
+  /* color: rgba(230, 224, 233, 1); */
+  border-radius: 4px;
+  background: var(--m-3-sys-dark-surface-container, #211f26);
+  /* M3/Elevation Dark/2 */
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
 }
 .delete-modal:hover {
   color: rgba(242, 184, 181, 1);
@@ -106,8 +118,21 @@
 
 .delete-tag {
   display: flex;
-  justify-content: space-between;
-  width: 185px;
+  height: 40px;
+  padding: 8px 12px;
+  align-items: center;
+  gap: 12px;
+  align-self: stretch;
+
+  color: var(--m-3-sys-dark-error, #f2b8b5);
+
+  /* M3/body/large */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.5px;
 }
 
 .songlist-vertical-menu {

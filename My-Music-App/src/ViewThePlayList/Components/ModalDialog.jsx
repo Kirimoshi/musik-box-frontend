@@ -14,6 +14,7 @@ import {
  * @param {boolean} isModalOpen Current state of the modal
  * @param {function} onAction Callback to handle desired action
  * @param {function} onClose Callback to close the modal
+ * @param {string} title Title of the modal
  * @param {string} actionButtonText Text to display on the action button
  * @param {string} closeButtonText Text to display on the close button
  */
