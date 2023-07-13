@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -9,20 +9,37 @@ import "../styles/playlists.css";
 import { constants } from "../constants";
 import { CreateOrModifyPlaylist } from "../../CreateOrModifyPlaylist/components/CreateOrModifyPlaylist";
 
+import {
+  Menu,
+  MenuItemDivider,
+  MenuItemDelete,
+  MenuItemEdit,
+} from "./Playlists.styles";
+
+import ModalDialog from "../../shared/ModalDialog";
+
 import { useSelector } from "react-redux";
 import { myPlaylistsSelector } from "../../store/myPlaylists/myPlaylists.selector";
 
 export default function Playlists({ handleViewThePlaylist }) {
+  // State
   const myPlaylists = useSelector(myPlaylistsSelector);
 
   const [modifyId, setModifyId] = useState(null);
   const [openModel, setOpenModel] = useState(null);
   const [modifyPlaylistModal, setModifyPlaylistModal] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // Current state of delete modal
+  const [idPlaylistsItemToDelete, setIdPlaylistsItemToDelete] = useState(null); // Store id seperate for readablity and transfer to modal delete
+
+  // Handlers
+
   const navigate = useNavigate();
   const handleModifyPlaylistModal = () => {
     handleClick(openModel);
     setModifyPlaylistModal(!modifyPlaylistModal);
   };
+
   const handleClick = (x) => {
     if (x === openModel) {
       setOpenModel(null);
@@ -31,13 +48,61 @@ export default function Playlists({ handleViewThePlaylist }) {
       setOpenModel(x);
     }
   };
+  // call from MENU delete button
+  const handleDeletePlaylistsItem = (playlistsItemId) => {
+    setIdPlaylistsItemToDelete(playlistsItemId);
+    handleOpenModal();
+  };
+
+  // Open modal handler just swith the state of modal inside Modal component
+  const handleOpenModal = () => setIsModalOpen(true);
+
+  // This callback will be called when the user click on the cancel button
+  // inside the modal, and this will update isModalOpen state to false
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  // this callback will be called when the user click on the remove button
+  const handlerRemove = () => {
+    if (!idPlaylistsItemToDelete) return;
+    const newPlaylists = playlistData.filter(
+      (playlistsItem) => playlistsItem.id !== idPlaylistsItemToDelete
+    );
+    setPlaylistData(newPlaylists);
+    setOpenModel(null);
+  };
   const handleNavigate = (id) => {
     handleViewThePlaylist();
     navigate(`/ViewMyPlaylists/ViewThePlaylist/${id}`);
   };
 
+  // Fetchers
+  const fetchPlaylistsData = async () => {
+    const data = await axios
+      .get(constants.GET_API_URL, {
+        params: { page: 1 },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        return response.data.data;
+      });
+    return data;
+  };
+
   return (
     <>
+      <ModalDialog
+        options={{
+          isModalOpen,
+          actionButtonText: "Delete playlist",
+          closeButtonText: "Cancel",
+          title:
+            "Are you sure you want to delete this playlist? You will not be able to restore it.",
+          onAction: handlerRemove,
+          onClose: handleCloseModal,
+        }}
+      />
       {modifyPlaylistModal && (
         <CreateOrModifyPlaylist
           modalValue="Edit Playlist"

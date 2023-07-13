@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 
 import mockedSongs from "./Songs";
 import "../Styles/songlist.css";
 import { constants } from "../constansts";
 
-import ModalDialog from "./ModalDialog";
+import ModalDialog from "../../shared/ModalDialog";
 
 export default function SongList({ playlistStore }) {
   // state
