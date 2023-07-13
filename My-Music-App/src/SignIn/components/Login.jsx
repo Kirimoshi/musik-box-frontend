@@ -10,8 +10,6 @@ import { constants } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 const onSubmit = async (values, actions) => {
-  console.log(values);
-  console.log(actions);
   await new Promise((resolve) => setTimeout(resolve, 10000));
   actions.resetForm();
 };
@@ -71,16 +69,14 @@ export const Login = (props) => {
         }
       })
       .catch((error) => {
-        console.log(error);
-        const response = error.response.data;
-        console.log(response.errors);
-        if (response.errors === "Invalid password") {
-          errors.password = response.errors;
-          setFieldError(errors.password);
-          console.log(errors.password);
-        } else {
-          errors.email = response.errors;
-          setFieldError(errors.email);
+        const response=error.response.data;
+        if(response.errors==="Invalid password"){
+          errors.password=response.errors
+          setFieldError(errors.password)
+        }
+        else{
+          errors.email=response.errors
+          setFieldError(errors.email)
         }
       });
   };
