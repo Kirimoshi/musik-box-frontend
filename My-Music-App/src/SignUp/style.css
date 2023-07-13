@@ -19,6 +19,7 @@ body {
   margin-top: 24px;
   margin-left: 20px;
   margin-bottom: 20px;
+  font-family: Roboto;
 }
 .signup-header p {
   margin: 0;
@@ -32,6 +33,7 @@ body {
   align-items: center;
 }
 .signup-form label {
+  font-family: Roboto;
   font-size: small;
   position: relative;
   left: 16px;
@@ -65,11 +67,13 @@ body {
   align-items: center;
 }
 .signin-query {
-  font-size: small;
+  font-family: Roboto;
+  font-size: 12px;
   color: rgb(235, 230, 230);
+  margin-bottom: 1.5em;
 }
 .submit-button {
-  width: 14em;
+  width: 15em;
   margin-bottom: 1em;
   height: 2.5em;
   border: none;
@@ -79,8 +83,8 @@ body {
   cursor: pointer;
 }
 .submit-disable-button {
-  width: 14em;
-  margin-bottom: 1em;
+  width: 15em;
+  margin-bottom: 2em;
   height: 2.5em;
   border: none;
   border-radius: 2em;
@@ -89,10 +93,14 @@ body {
   cursor: not-allowed;
 }
 .signup-form a {
+  font-family: Roboto;
   text-decoration: none;
   color: rgb(208, 188, 255);
 }
 .signup-error {
+  color: rgba(202, 196, 208, 1);
+  font-family: Roboto;
+  font-size: 14px;
   margin: 0;
   position: relative;
   width: 20em;
