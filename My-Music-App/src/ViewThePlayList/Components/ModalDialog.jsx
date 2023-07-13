@@ -1,5 +1,5 @@
-import { React, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { React, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 
 import {
   ModalContainer,
@@ -7,7 +7,7 @@ import {
   Divider,
   ActionButton,
   CancelButton,
-} from './ModalDialog.styles';
+} from "./ModalDialog.styles";
 
 /** Modal dialog component to confirm the song removal
  *
@@ -18,9 +18,15 @@ import {
  * @param {string} actionButtonText Text to display on the action button
  * @param {string} closeButtonText Text to display on the close button
  */
-const ModalDialog = ({ options }) => {
-  const { isModalOpen, title, actionButtonText, closeButtonText, onAction, onClose } =
-    options;
+function ModalDialog({ options }) {
+  const {
+    isModalOpen,
+    title,
+    actionButtonText,
+    closeButtonText,
+    onAction,
+    onClose,
+  } = options;
 
   const dialogRef = useRef(null); // dialog reference
 
@@ -43,18 +49,24 @@ const ModalDialog = ({ options }) => {
   };
   // TODO before merge: remove className from styled components
   return (
-    <ModalContainer ref={dialogRef} className='modal__container'>
-      <Title className='modal__title'>{title}</Title>
-      <Divider className='modal__divider' />
-      <ActionButton className='modal__btn modal__btn--remove' onClick={handleAction}>
+    <ModalContainer ref={dialogRef} className="modal__container">
+      <Title className="modal__title">{title}</Title>
+      <Divider className="modal__divider" />
+      <ActionButton
+        className="modal__btn modal__btn--remove"
+        onClick={handleAction}
+      >
         {`${actionButtonText}`}
       </ActionButton>
-      <CancelButton className='modal__btn modal__btn--cancel' onClick={handleClose}>
+      <CancelButton
+        className="modal__btn modal__btn--cancel"
+        onClick={handleClose}
+      >
         {`${closeButtonText}`}
       </CancelButton>
     </ModalContainer>
   );
-};
+}
 
 ModalDialog.propTypes = {
   options: PropTypes.shape({
