@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
-import {IoAddSharp} from "react-icons/io5";
-import {PiDotBold} from "react-icons/pi"
+import { IoAddSharp } from "react-icons/io5";
+import { PiDotBold } from "react-icons/pi";
 
 import closeLogo from "../closeLogo.svg";
 import Songs from "../../ViewThePlayList/Components/Songs";
 import "../styles.css";
-export const AddSongsToPlaylists = ({ handleCloseAddSongModal }) => {
+export const AddSongsToPlaylists = ({ handleAddSongModal }) => {
   return (
     <div className="addsongsToPlaylist-main">
       <div className="addsongs-header">
         <p>Songs</p>
-        <p
-          className="createplaylist-close-btn"
-          onClick={handleCloseAddSongModal}
-        >
+        <p className="addsong-close-btn" onClick={handleAddSongModal}>
           <img src={closeLogo} alt="button to close modal" />
         </p>
       </div>
@@ -43,16 +40,16 @@ export const AddSongsToPlaylists = ({ handleCloseAddSongModal }) => {
                 </div>
                 <div className="addsong-artistInfo">
                   <div className="addsong-song-title">
-                    <p>{song.title.substring(0,10)}</p>
+                    <p>{song.title.substring(0, 10)}</p>
                   </div>
                   <div className="addsong-song-info">
-                    <p>{song.artist.substring(0,5)}</p>
-                    <PiDotBold/>
-                    <p>{song.album.substring(0,5)}</p>
+                    <p>{song.artist.substring(0, 5)}</p>
+                    <PiDotBold />
+                    <p>{song.album.substring(0, 5)}</p>
                   </div>
                 </div>
                 <div>
-                   <IoAddSharp className="addsong-item-icon"/>
+                  <IoAddSharp className="addsong-item-icon" />
                 </div>
               </div>
             ))}
