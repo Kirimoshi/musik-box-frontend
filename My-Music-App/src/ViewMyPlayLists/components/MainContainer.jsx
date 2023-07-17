@@ -7,11 +7,15 @@ import Playlists from "./Playlists";
 
 export default function MainContainer() {
   const [createNewPlaylistModal, setCreateNewPlaylistModal] = useState(false);
-  const handleModalSubmit = () => {
-    setCreateNewPlaylistModal(false);
+  const handleCreatePlaylistModal = () => {
+    setCreateNewPlaylistModal(!createNewPlaylistModal);
   };
   return (
-    <div className="playlist-container">
+    <div
+      className={`playlist-container ${
+        createNewPlaylistModal ? "playlst-conatiner-pointer" : ""
+      }`}
+    >
       <div className="playlist-contents">
         <div className="playlist-header">My Playlist</div>
         <div className="playlist-search-wrapper">
@@ -24,7 +28,7 @@ export default function MainContainer() {
         </div>
         <div className="newplaylist-wrapper">
           <AiFillPlusCircle
-            onClick={() => setCreateNewPlaylistModal(true)}
+            onClick={handleCreatePlaylistModal}
             data-testid="newplaylist-btn"
             className="newplaylist-btn"
           />
@@ -32,7 +36,9 @@ export default function MainContainer() {
         </div>
         <div className="division" />
         {createNewPlaylistModal && CreateNewPlaylist && (
-          <CreateNewPlaylist handleModalSubmit={handleModalSubmit} />
+          <CreateNewPlaylist
+            handleCreatePlaylistModal={handleCreatePlaylistModal}
+          />
         )}
         <Playlists />
       </div>

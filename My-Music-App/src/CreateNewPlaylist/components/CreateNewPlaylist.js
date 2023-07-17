@@ -7,8 +7,9 @@ import { Link } from "react-router-dom";
 import "../styles.css";
 import { validate } from "./CreateNewPlaylistValidation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
+import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 
-export const CreateNewPlaylist = ({ handleModalSubmit }) => {
+export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
   const imageInputRef = useRef(null);
   const initialValues = {
     playlistLogo: "",
@@ -18,13 +19,12 @@ export const CreateNewPlaylist = ({ handleModalSubmit }) => {
   const [playlistDetails, setPlaylistDetails] = useState(initialValues);
   const [createPlaylistErrors, setCreatePlaylistErrors] = useState({});
   const [confirmationDialogModal, setConfirmationDialogModal] = useState(false);
+  const [addSongModal, setAddSongModal] = useState(false);
 
   const handleConfirmationDialog = () => {
-    setConfirmationDialogModal(true);
+    setConfirmationDialogModal(!confirmationDialogModal);
   };
-  const handleModalDiscard = () => {
-    setConfirmationDialogModal(false);
-  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPlaylistDetails({ ...playlistDetails, [name]: value });
@@ -50,8 +50,16 @@ export const CreateNewPlaylist = ({ handleModalSubmit }) => {
     }
   };
 
+  const handleAddSongModal = () => {
+    setAddSongModal(!addSongModal);
+  };
+
   return (
-    <div className="createplaylist-main">
+    <div
+      className={`createplaylist-main ${
+        addSongModal ? "createplaylist-main-pointer" : ""
+      }`}
+    >
       <div className="createplaylist-header">
         <p>New playlist</p>
         <p
@@ -107,8 +115,8 @@ export const CreateNewPlaylist = ({ handleModalSubmit }) => {
             </div>
             {confirmationDialogModal && ConfirmationDialog && (
               <ConfirmationDialog
-                handleModalSubmit={handleModalSubmit}
-                handleModalDiscard={handleModalDiscard}
+                handleCreatePlaylistModal={handleCreatePlaylistModal}
+                handleConfirmationDialog={handleConfirmationDialog}
               />
             )}
           </div>
@@ -129,9 +137,15 @@ export const CreateNewPlaylist = ({ handleModalSubmit }) => {
               </p>
             </div>
           </div>
+          {addSongModal && AddSongsToPlaylists && (
+            <AddSongsToPlaylists handleAddSongModal={handleAddSongModal} />
+          )}
           <div className="createplaylist-addsong">
-            <Link to="/addSong">
-              <IoIosAddCircle className="addsong-icon" />
+            <Link>
+              <IoIosAddCircle
+                className="addsong-icon"
+                onClick={handleAddSongModal}
+              />
             </Link>
             <p>Add Song</p>
           </div>

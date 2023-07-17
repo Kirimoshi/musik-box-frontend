@@ -8,11 +8,19 @@ import "../Styles/maincontainer.css";
 import SongList from "./SongList";
 import Modal from "./Modal";
 import Comment from "./Comment";
+import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 
 export default function MainContainer() {
   const [openModel, setOpenModel] = useState(false);
+  const [addSongModal, setAddSongModal] = useState(false);
+
+  const handleAddSongModal = () => {
+    setAddSongModal(!addSongModal);
+  };
   return (
-    <div className="maincontainer">
+    <div
+      className={`maincontainer ${addSongModal ? "maincontainer-pointer" : ""}`}
+    >
       <div className="profiledetails">
         <div className="email">shevchuk@gmail.com</div>
         <div className="otherdetails">
@@ -54,8 +62,11 @@ export default function MainContainer() {
         </div>
       </div>
       <div className="addsong">
-        <IoIosAdd className="circle-icon" />
+        <IoIosAdd className="circle-icon" onClick={handleAddSongModal} />
         <p className="addsong-name">Add Song</p>
+        {addSongModal && AddSongsToPlaylists && (
+          <AddSongsToPlaylists handleAddSongModal={handleAddSongModal} />
+        )}
       </div>
       <div className="songsList" data-testid="song-list">
         <SongList />

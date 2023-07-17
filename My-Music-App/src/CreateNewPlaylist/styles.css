@@ -11,6 +11,11 @@
   align-items: center;
   position: absolute;
   z-index: 1;
+  pointer-events: visible;
+}
+
+.createplaylist-main-pointer{
+  pointer-events: none;
 }
 
 .createplaylist-header {
