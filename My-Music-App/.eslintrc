@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended"],
+  "extends": ["react-app", "prettier"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -11,6 +11,24 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react"],
-  "rules": {}
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "jsxSingleQuote": false,
+        "singleQuote": false,
+        "trailingComma": "es5",
+        "semi": true,
+        "useTabs": false,
+        "endOfLine": "auto"
+      }
+    ],
+    "react/function-component-definition": [
+      "warn",
+      { "namedComponents": "function-declaration" }
+    ],
+    "react/jsx-pascal-case": "warn",
+    "react/prop-types": "warn"
+  }
 }

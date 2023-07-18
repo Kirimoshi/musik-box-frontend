@@ -90,7 +90,3 @@ export const CancelButton = styled(BaseButton)`
   color: var(--m-3-sys-dark-error-container, #8c1d18);
   font-weight: 700;
 `;
-// }
-// .modal__btn--cancel {
-
-// }
