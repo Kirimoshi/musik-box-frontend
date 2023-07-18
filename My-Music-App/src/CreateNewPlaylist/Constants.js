@@ -5,4 +5,5 @@ export const constants = {
   playlistNameMaxLength: 50,
   playlistDescriptionMinLength: 3,
   playlistDescriptionMaxLength: 1000,
+  API_URL: "http://127.0.0.1:3000/api/v1/my/playlists"
 };
