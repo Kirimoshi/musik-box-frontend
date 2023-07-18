@@ -1,40 +1,44 @@
-.songsContainer {
+.playlist-songsContainer {
   height: 360px;
   overflow-y: scroll;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 }
 
-.song {
-  height: 90%;
+.playlist-song {
+  height: 20%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  position: relative;
   box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
   border-radius: 12px;
   background-color: rgb(23, 23, 23);
 }
 
-.image1 {
+.displayTop {
+  z-index: 10;
+}
+
+.playlist-song-image {
   height: 100%;
   width: 80px;
 }
 
-.imageBox-artistinfo {
+.playlist-imageBox-artistinfo {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   gap: 5px;
 }
 
-.artistInfo {
+.playlist-artistInfo {
   color: #e6e0e9;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,6 +47,7 @@
 
 .artistinfo-playlistname {
   font-size: 14px;
+  margin-bottom: 8px;
 }
 
 .artistinfo-playlistsongs {
@@ -53,47 +58,59 @@
   text-overflow: ellipsis;
 }
 
-.vertical-menu {
+.playlist-vertical-menu {
   display: flex;
+  height: 100%;
   justify-content: center;
   align-items: center;
   position: relative;
   padding-right: 5px;
+  cursor: pointer;
 }
 
-.delete-icon-modal {
+.playlist-delete-icon-modal {
   display: flex;
   flex-direction: column;
   position: absolute;
   font-size: 12px;
+  top: 3em;
   width: 120px;
   height: 70px;
-  top: 10px;
   background: rgb(41, 41, 41);
-  right: 30px;
+  right: 2em;
 }
 
-.modal-first-element {
+.playlist-modal-first-element {
   display: flex;
-  color: #f2b8b5;
+  color: #e6e0e9;
   gap: 5px;
   height: 50%;
   padding: 10px;
+  cursor: pointer;
   border-bottom: 1px solid rgba(73, 69, 79, 1);
 }
 
-.modal-second-element {
+.playlist-modal-first-element:hover {
+  color: #f2b8b5;
+}
+
+.playlist-modal-second-element:hover {
+  color: #f2b8b5;
+}
+
+.playlist-modal-second-element {
   display: flex;
   gap: 5px;
-  color: white;
+  color: #e6e0e9;
+  cursor: pointer;
   padding: 10px;
 }
 @media (max-width: 600px) {
-  .songsContainer {
+  .playlist-songsContainer {
     height: 200px;
   }
 
-  .song {
+  .playlist-song {
     width: 90%;
     height: 96%;
     flex-direction: row;
@@ -107,24 +124,24 @@
     gap: 10px;
   }
 
-  .image1 {
+  .playlist-song-image {
     height: 80px;
     width: 80px;
   }
 
-  .imageBox-artistinfo {
+  .playlist-imageBox-artistinfo {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 5px;
   }
 
-  .artistInfo {
+  .playlist-artistInfo {
     font-size: 12px;
     text-align: center;
   }
 
-  .vertical-menu {
+  .playlist-vertical-menu {
     width: 100%;
     display: flex;
     flex-direction: column;

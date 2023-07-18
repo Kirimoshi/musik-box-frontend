@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 
 import { IoIosAddCircle } from "react-icons/io";
 import uploadImage from "../uploadImage.svg";
@@ -8,6 +9,7 @@ import "../styles.css";
 import { validate } from "./CreateNewPlaylistValidation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
+import { constants } from "../Constants";
 
 export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
   const imageInputRef = useRef(null);
@@ -32,6 +34,8 @@ export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    postToAPI();
+    handleCreatePlaylistModal();
   };
 
   useEffect(() => {
@@ -52,6 +56,19 @@ export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
 
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
+  };
+
+  const postToAPI = () => {
+    let formData = new FormData();
+    formData.append("name", playlistDetails.playlistName);
+    formData.append("logo", playlistDetails.playlistLogo);
+    formData.append("description", playlistDetails.description);
+    axios.post(constants.API_URL, formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        "Content-type": "multipart/form-data",
+      },
+    });
   };
 
   return (
@@ -150,7 +167,11 @@ export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
             <p>Add Song</p>
           </div>
           <div className="createplaylist-form-submit">
-            <button type="submit" className="createplaylist-create-btn">
+            <button
+              type="submit"
+              className="createplaylist-create-btn"
+              onSubmit={handleSubmit}
+            >
               Create
             </button>
           </div>
