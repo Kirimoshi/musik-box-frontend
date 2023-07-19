@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineSearch, AiFillPlusCircle } from "react-icons/ai";
 
-import { CreateNewPlaylist } from "../../CreateNewPlaylist/components/CreateNewPlaylist";
+import { CreateOrModifyPlaylist } from "../../CreateOrModifyPlaylist/components/CreateOrModifyPlaylist";
 import "../styles/maincontainer.css";
 import Playlists from "./Playlists";
 
@@ -35,9 +35,9 @@ export default function MainContainer() {
           <div className="newplaylist-txt">New playlist</div>
         </div>
         <div className="division" />
-        {createNewPlaylistModal && CreateNewPlaylist && (
-          <CreateNewPlaylist
-            handleCreatePlaylistModal={handleCreatePlaylistModal}
+        {createNewPlaylistModal && CreateOrModifyPlaylist && (
+          <CreateOrModifyPlaylist modalValue="New Playlist" modalPlaylistId={null}
+            handleCreateOrModifyPlaylistModal={handleCreatePlaylistModal}
           />
         )}
         <Playlists />

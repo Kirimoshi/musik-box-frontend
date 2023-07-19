@@ -1,6 +1,6 @@
 import React from "react";
 export const ConfirmationDialog = ({
-  handleCreatePlaylistModal,
+  handleCreateOrModifyPlaylistModal,
   handleConfirmationDialog,
 }) => {
   return (
@@ -12,7 +12,7 @@ export const ConfirmationDialog = ({
       <div className="confirmation-dialog-btns">
         <div className="confirmation-dialog">
           <button
-            onClick={handleCreatePlaylistModal}
+            onClick={handleCreateOrModifyPlaylistModal}
             className="confirmation-dialog-submit-btn"
           >
             Discard

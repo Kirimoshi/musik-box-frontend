@@ -11,7 +11,11 @@ import { ConfirmationDialog } from "./ConfirmationDialog";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 import { constants } from "../Constants";
 
-export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
+export const CreateOrModifyPlaylist = ({
+  modalValue,
+  modalPlaylistId,
+  handleCreateOrModifyPlaylistModal,
+}) => {
   const imageInputRef = useRef(null);
   const initialValues = {
     playlistLogo: "",
@@ -35,7 +39,7 @@ export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     postToAPI();
-    handleCreatePlaylistModal();
+    handleCreateOrModifyPlaylistModal();
   };
 
   useEffect(() => {
@@ -71,6 +75,28 @@ export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
     });
   };
 
+  const fetchPlaylistData = async () => {
+    const data = await axios
+      .get(`${constants.get_API_URL}/${modalPlaylistId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        return response.data.data;
+      });
+    return data;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchPlaylistData();
+      console.log(data);
+      setPlaylistDetails({...playlistDetails, playlistLogo:data.attributes.logo.id, playlistName: data.attributes.name, description: data.attributes.description})
+    };
+    fetchData();
+  }, []);
+
   return (
     <div
       className={`createplaylist-main ${
@@ -78,7 +104,7 @@ export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
       }`}
     >
       <div className="createplaylist-header">
-        <p>New playlist</p>
+        <p>{modalValue}</p>
         <p
           className="createplaylist-close-btn"
           onClick={handleConfirmationDialog}
@@ -93,7 +119,7 @@ export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
               {playlistDetails.playlistLogo &&
               !createPlaylistErrors.playlistLogo ? (
                 <img
-                  src={URL.createObjectURL(playlistDetails.playlistLogo)}
+                  src={`http://127.0.0.1:3000/uploads/store/${playlistDetails.playlistLogo}`}
                   alt="Playlist Logo"
                   className="actualImage"
                 />
@@ -132,7 +158,9 @@ export const CreateNewPlaylist = ({ handleCreatePlaylistModal }) => {
             </div>
             {confirmationDialogModal && ConfirmationDialog && (
               <ConfirmationDialog
-                handleCreatePlaylistModal={handleCreatePlaylistModal}
+                handleCreateOrModifyPlaylistModal={
+                  handleCreateOrModifyPlaylistModal
+                }
                 handleConfirmationDialog={handleConfirmationDialog}
               />
             )}
