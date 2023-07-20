@@ -6,14 +6,22 @@ import { FiEdit2 } from "react-icons/fi";
 
 import "../styles/playlists.css";
 import { constants } from "../constants";
+import { CreateOrModifyPlaylist } from "../../CreateOrModifyPlaylist/components/CreateOrModifyPlaylist";
 
 export default function Playlists() {
   const [playlistData, setPlaylistData] = useState([]);
+  const [modifyId, setModifyId] = useState(null);
   const [openModel, setOpenModel] = useState(null);
+  const [modifyPlaylistModal, setModifyPlaylistModal] = useState(false);
+  const handleModifyPlaylistModal = () => {
+    handleClick(openModel);
+    setModifyPlaylistModal(!modifyPlaylistModal);
+  };
   const handleClick = (x) => {
     if (x === openModel) {
       setOpenModel(null);
     } else {
+      setModifyId(x);
       setOpenModel(x);
     }
   };
@@ -41,79 +49,81 @@ export default function Playlists() {
   }, []);
 
   return (
-    <div className="playlist-songlist">
-      <div className="playlist-songsContainer">
-        {playlistData &&
-          playlistData.map((playlistItem) => (
-            <div
-              className={`playlist-song ${
-                openModel === playlistItem.id ? "displayTop" : ""
-              }`}
-              key={playlistItem.id}
-            >
-              <div className="playlist-imageBox-artistinfo">
-                <img
-                  src={`http://127.0.0.1:3000/uploads/store/${playlistItem.attributes.logo.id}`}
-                  alt="song preview"
-                  className="playlist-song-image"
+    <>
+      {modifyPlaylistModal && (
+        <CreateOrModifyPlaylist
+          modalValue="Edit Playlist"
+          modalPlaylistId={modifyId}
+          handleCreateOrModifyPlaylistModal={handleModifyPlaylistModal}
+        />
+      )}
+      <div className="playlist-songlist">
+        <div className="playlist-songsContainer">
+          {playlistData &&
+            playlistData.map((playlistItem) => (
+              <div
+                className={`playlist-song ${
+                  openModel === playlistItem.id ? "displayTop" : ""
+                }`}
+                key={playlistItem.id}
+              >
+                <div className="playlist-imageBox-artistinfo">
+                  <img
+                    src={constants.store_URL + playlistItem.attributes.logo.id}
+                    alt="song preview"
+                    className="playlist-song-image"
+                  />
+                  <div className="playlist-artistInfo">
+                    <p className="artistinfo-playlistname">
+                      {playlistItem.attributes.name}
+                    </p>
+                    <div className="artistinfo-playlistsongs">
+                      {playlistItem.attributes.first_ten_songs.data &&
+                        playlistItem.attributes.first_ten_songs.data.map(
+                          (song, index) => {
+                            let playlistSongslength =
+                              playlistItem.attributes.first_ten_songs.data
+                                .length - 1;
+                            return (
+                              <p>
+                                {song.attributes.title +
+                                  ` (` +
+                                  song.attributes.artist_name +
+                                  `)` +
+                                  (index == playlistSongslength ? "" : ",")}
+                                <span className="song-space" />
+                              </p>
+                            );
+                          }
+                        )}
+                    </div>
+                  </div>
+                </div>
+                <BsThreeDotsVertical
+                  className="playlist-vertical-menu"
+                  onClick={() => {
+                    handleClick(playlistItem.id);
+                  }}
                 />
-                <div className="playlist-artistInfo">
-                  <p className="artistinfo-playlistname">
-                    {playlistItem.attributes.name}
-                  </p>
-                  <div className="artistinfo-playlistsongs">
-                    {playlistItem.attributes.first_ten_songs.data &&
-                      playlistItem.attributes.first_ten_songs.data.map(
-                        (song, index) => {
-                          if (
-                            index !==
-                            playlistItem.attributes.first_ten_songs.data
-                              .length -
-                              1
-                          )
-                            return (
-                              <p>
-                                {song.attributes.title +
-                                  ` (` +
-                                  song.attributes.artist_name +
-                                  `),`}
-                              </p>
-                            );
-                          else
-                            return (
-                              <p>
-                                {song.attributes.title +
-                                  ` (` +
-                                  song.attributes.artist_name +
-                                  `)`}
-                              </p>
-                            );
-                        }
-                      )}
+                {openModel === playlistItem.id && (
+                  <div className="playlist-delete-icon-modal">
+                    <div className="playlist-modal-first-element">
+                      <RiDeleteBin6Line />
+                      <p>Delete Playlist</p>
+                    </div>
+                    <div
+                      className="playlist-modal-second-element"
+                      onClick={handleModifyPlaylistModal}
+                    >
+                      <FiEdit2 />
+                      <p>Edit</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-              <BsThreeDotsVertical
-                className="playlist-vertical-menu"
-                onClick={() => {
-                  handleClick(playlistItem.id);
-                }}
-              />
-              {openModel === playlistItem.id && (
-                <div className="playlist-delete-icon-modal">
-                  <div className="playlist-modal-first-element">
-                    <RiDeleteBin6Line />
-                    <p>Delete Playlist</p>
-                  </div>
-                  <div className="playlist-modal-second-element">
-                    <FiEdit2 />
-                    <p>Edit</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

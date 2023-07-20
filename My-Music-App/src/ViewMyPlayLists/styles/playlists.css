@@ -18,8 +18,12 @@
   background-color: rgb(23, 23, 23);
 }
 
+.song-space{
+  margin-left: 3px;
+}
+
 .displayTop {
-  z-index: 10;
+  z-index: 1;
 }
 
 .playlist-song-image {
