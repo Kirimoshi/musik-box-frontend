@@ -92,7 +92,12 @@ export const CreateOrModifyPlaylist = ({
     const fetchData = async () => {
       const data = await fetchPlaylistData();
       console.log(data);
-      setPlaylistDetails({...playlistDetails, playlistLogo:data.attributes.logo.id, playlistName: data.attributes.name, description: data.attributes.description})
+      setPlaylistDetails({
+        ...playlistDetails,
+        playlistLogo: data.attributes.logo.id,
+        playlistName: data.attributes.name,
+        description: data.attributes.description,
+      });
     };
     fetchData();
   }, []);
@@ -119,7 +124,7 @@ export const CreateOrModifyPlaylist = ({
               {playlistDetails.playlistLogo &&
               !createPlaylistErrors.playlistLogo ? (
                 <img
-                  src={`http://127.0.0.1:3000/uploads/store/${playlistDetails.playlistLogo}`}
+                  src={constants.store_URL + playlistDetails.playlistLogo}
                   alt="Playlist Logo"
                   className="actualImage"
                 />
@@ -156,7 +161,7 @@ export const CreateOrModifyPlaylist = ({
                 {createPlaylistErrors.playlistName}
               </p>
             </div>
-            {confirmationDialogModal && ConfirmationDialog && (
+            {confirmationDialogModal && (
               <ConfirmationDialog
                 handleCreateOrModifyPlaylistModal={
                   handleCreateOrModifyPlaylistModal
@@ -182,7 +187,7 @@ export const CreateOrModifyPlaylist = ({
               </p>
             </div>
           </div>
-          {addSongModal && AddSongsToPlaylists && (
+          {addSongModal && (
             <AddSongsToPlaylists handleAddSongModal={handleAddSongModal} />
           )}
           <div className="createplaylist-addsong">

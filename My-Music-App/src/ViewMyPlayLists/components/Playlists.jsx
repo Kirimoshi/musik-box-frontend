@@ -10,7 +10,7 @@ import { CreateOrModifyPlaylist } from "../../CreateOrModifyPlaylist/components/
 
 export default function Playlists() {
   const [playlistData, setPlaylistData] = useState([]);
-  const [modifyId, setModifyId]= useState(null);
+  const [modifyId, setModifyId] = useState(null);
   const [openModel, setOpenModel] = useState(null);
   const [modifyPlaylistModal, setModifyPlaylistModal] = useState(false);
   const handleModifyPlaylistModal = () => {
@@ -50,8 +50,10 @@ export default function Playlists() {
 
   return (
     <>
-      {modifyPlaylistModal && CreateOrModifyPlaylist && (
-        <CreateOrModifyPlaylist modalValue="Edit Playlist" modalPlaylistId={modifyId}
+      {modifyPlaylistModal && (
+        <CreateOrModifyPlaylist
+          modalValue="Edit Playlist"
+          modalPlaylistId={modifyId}
           handleCreateOrModifyPlaylistModal={handleModifyPlaylistModal}
         />
       )}
@@ -67,7 +69,7 @@ export default function Playlists() {
               >
                 <div className="playlist-imageBox-artistinfo">
                   <img
-                    src={`http://127.0.0.1:3000/uploads/store/${playlistItem.attributes.logo.id}`}
+                    src={constants.store_URL + playlistItem.attributes.logo.id}
                     alt="song preview"
                     className="playlist-song-image"
                   />
@@ -79,29 +81,19 @@ export default function Playlists() {
                       {playlistItem.attributes.first_ten_songs.data &&
                         playlistItem.attributes.first_ten_songs.data.map(
                           (song, index) => {
-                            if (
-                              index !==
+                            let playlistSongslength =
                               playlistItem.attributes.first_ten_songs.data
-                                .length -
-                                1
-                            )
-                              return (
-                                <p>
-                                  {song.attributes.title +
-                                    ` (` +
-                                    song.attributes.artist_name +
-                                    `),`}
-                                </p>
-                              );
-                            else
-                              return (
-                                <p>
-                                  {song.attributes.title +
-                                    ` (` +
-                                    song.attributes.artist_name +
-                                    `)`}
-                                </p>
-                              );
+                                .length - 1;
+                            return (
+                              <p>
+                                {song.attributes.title +
+                                  ` (` +
+                                  song.attributes.artist_name +
+                                  `)` +
+                                  (index == playlistSongslength ? "" : ",")}
+                                <span className="song-space" />
+                              </p>
+                            );
                           }
                         )}
                     </div>

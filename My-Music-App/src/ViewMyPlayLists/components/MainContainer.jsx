@@ -35,8 +35,10 @@ export default function MainContainer() {
           <div className="newplaylist-txt">New playlist</div>
         </div>
         <div className="division" />
-        {createNewPlaylistModal && CreateOrModifyPlaylist && (
-          <CreateOrModifyPlaylist modalValue="New Playlist" modalPlaylistId={null}
+        {createNewPlaylistModal && (
+          <CreateOrModifyPlaylist
+            modalValue="New Playlist"
+            modalPlaylistId={null}
             handleCreateOrModifyPlaylistModal={handleCreatePlaylistModal}
           />
         )}

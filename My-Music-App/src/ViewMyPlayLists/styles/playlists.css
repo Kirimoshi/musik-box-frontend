@@ -18,6 +18,10 @@
   background-color: rgb(23, 23, 23);
 }
 
+.song-space{
+  margin-left: 3px;
+}
+
 .displayTop {
   z-index: 1;
 }
