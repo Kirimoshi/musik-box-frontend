@@ -78,8 +78,11 @@ export default function SongList() {
           }}
         />
         {Songs?.map((song) => (
-          <div className="songs" key={song.id}>
-            <div className={`song${openModel === song.id ? " top" : ""}`}>
+          <div
+            className={`songs ${openModel === song.id ? "top" : ""}`}
+            key={song.id}
+          >
+            <div className={`song`}>
               <div className="imageBox-artistinfo">
                 <img src={song.picture} alt="song preview" className="image1" />
                 <div className="artistInfo">
