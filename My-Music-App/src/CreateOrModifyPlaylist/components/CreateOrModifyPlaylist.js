@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 import { IoIosAddCircle } from "react-icons/io";
+
 import uploadImage from "../uploadImage.svg";
 import closeLogo from "../closeLogo.svg";
-import { Link } from "react-router-dom";
 import "../styles.css";
 import { validate } from "./CreateNewPlaylistValidation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
@@ -75,32 +75,26 @@ export const CreateOrModifyPlaylist = ({
     });
   };
 
-  const fetchPlaylistData = async () => {
-    const data = await axios
-      .get(`${constants.get_API_URL}/${modalPlaylistId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then((response) => {
-        return response.data.data;
-      });
-    return data;
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchPlaylistData();
-      console.log(data);
-      setPlaylistDetails({
-        ...playlistDetails,
-        playlistLogo: data.attributes.logo.id,
-        playlistName: data.attributes.name,
-        description: data.attributes.description,
-      });
-    };
-    fetchData();
-  }, []);
+  // const fetchPlaylistData = async () => {
+  //   await axios
+  //     .get(`${constants.get_API_URL}/${modalPlaylistId}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       const data= response.data.data;
+  //       setPlaylistDetails({
+  //         ...playlistDetails,
+  //         playlistLogo: data.attributes.logo.id,
+  //         playlistName: data.attributes.name,
+  //         description: data.attributes.description,
+  //       });
+  //     });
+  // };
+  // if(modalPlaylistId){
+  //   fetchPlaylistData();
+  // }
 
   return (
     <div
@@ -124,7 +118,7 @@ export const CreateOrModifyPlaylist = ({
               {playlistDetails.playlistLogo &&
               !createPlaylistErrors.playlistLogo ? (
                 <img
-                  src={constants.store_URL + playlistDetails.playlistLogo}
+                  src={URL.createObjectURL(playlistDetails.playlistLogo)}
                   alt="Playlist Logo"
                   className="actualImage"
                 />
