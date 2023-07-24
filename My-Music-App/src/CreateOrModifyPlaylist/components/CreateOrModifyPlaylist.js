@@ -75,6 +75,7 @@ export const CreateOrModifyPlaylist = ({
     });
   };
 
+<<<<<<< Updated upstream
   const fetchPlaylistData = async () => {
     const data = await axios
       .get(`${constants.get_API_URL}/${modalPlaylistId}`, {
@@ -102,6 +103,8 @@ export const CreateOrModifyPlaylist = ({
     fetchData();
   }, []);
 
+=======
+>>>>>>> Stashed changes
   return (
     <div
       className={`createplaylist-main ${
