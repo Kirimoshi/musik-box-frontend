@@ -1,6 +1,9 @@
 // reenable after we have links to the pages
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+
+import { MenuContainer, MenuItem } from "./SidebarMenu.styles";
 
 function SidebarMenu({ menuObject }) {
   const [highlightedButton, setHighlightedButton] = useState(null);
@@ -8,25 +11,33 @@ function SidebarMenu({ menuObject }) {
     setHighlightedButton(index);
   };
   return (
-    <div className="MenuContainer">
+    <MenuContainer>
       <ul>
         {menuObject?.map((li, index) => (
-          <li key={String(Symbol(index))}>
+          <MenuItem key={String(Symbol(index))}>
             <a
+              data-highlighted={highlightedButton === index}
               href="#"
-              className={
-                highlightedButton === index ? "highlighted-button" : ""
-              }
               onClick={() => handleClick(index)}
             >
-              <i className="list_icon">{li.icon}</i>
-              <span className="list_name">{li.name}</span>
+              <i>{li.icon}</i>
+              <span>{li.name}</span>
             </a>
-          </li>
+          </MenuItem>
         ))}
       </ul>
-    </div>
+    </MenuContainer>
   );
 }
+
+SidebarMenu.propTypes = {
+  menuObject: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      icon: PropTypes.element.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ),
+};
 
 export default SidebarMenu;

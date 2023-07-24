@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
-const footerHeight = "64px";
-const sidebarWidth = "360px";
+export const footerHeight = "64";
+export const sidebarWidth = "360";
 
 export const HomeContainer = styled.div`
   max-width: 1680px;
   /* width: max-content; */
   margin: 0 auto;
   display: grid;
-  grid-template-columns: ${sidebarWidth} auto;
-  grid-template-rows: auto 64px;
+  grid-template-columns: ${sidebarWidth}px auto;
+  grid-template-rows: auto ${footerHeight}px;
   grid-template-areas:
     "sidebar main"
     "footer footer";
@@ -17,16 +17,15 @@ export const HomeContainer = styled.div`
 
 export const SidebarContainer = styled.aside`
   grid-area: sidebar;
-  outline: 1px solid red;
-  min-height: calc(100vh - ${footerHeight});
+  min-height: calc(100vh - ${footerHeight}px);
 `;
 
 export const MainContainer = styled.main`
   grid-area: main;
-  outline: 1px solid blue;
 `;
 
 export const FooterContainer = styled.footer`
   grid-area: footer;
-  outline: 1px solid green;
+  max-height: ${footerHeight}px;
+  height: ${footerHeight}px;
 `;

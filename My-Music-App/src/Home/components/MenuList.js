@@ -3,6 +3,7 @@ import { MdMusicNote } from "react-icons/md";
 import { BiShareAlt } from "react-icons/bi";
 import { RiPlayListFill } from "react-icons/ri";
 import { FaUserFriends } from "react-icons/fa";
+import PropTypes from "prop-types";
 
 const MenuList = [
   {
@@ -27,4 +28,9 @@ const MenuList = [
   },
 ];
 
+MenuList.propTypes = {
+  id: PropTypes.number.isRequired,
+  icon: PropTypes.element.isRequired,
+  name: PropTypes.string.isRequired,
+};
 export default MenuList;

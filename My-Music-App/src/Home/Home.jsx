@@ -1,6 +1,8 @@
 import React from "react";
 
 import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
+import Main from "./components/Main";
 
 import {
   HomeContainer,
@@ -15,8 +17,12 @@ function Home() {
       <SidebarContainer>
         <Sidebar />
       </SidebarContainer>
-      <MainContainer>Home</MainContainer>
-      <FooterContainer>footer</FooterContainer>
+      <MainContainer>
+        <Main />
+      </MainContainer>
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
     </HomeContainer>
   );
 }
