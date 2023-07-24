@@ -4,8 +4,7 @@ export const footerHeight = "64";
 export const sidebarWidth = "360";
 
 export const HomeContainer = styled.div`
-  max-width: 1680px;
-  /* width: max-content; */
+  /* max-width: 1680px; */
   margin: 0 auto;
   display: grid;
   grid-template-columns: ${sidebarWidth}px auto;
@@ -22,6 +21,7 @@ export const SidebarContainer = styled.aside`
 
 export const MainContainer = styled.main`
   grid-area: main;
+  position: relative;
 `;
 
 export const FooterContainer = styled.footer`

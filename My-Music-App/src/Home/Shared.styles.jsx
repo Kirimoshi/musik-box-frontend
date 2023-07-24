@@ -21,19 +21,15 @@ export const Subtitle = styled.h3`
 `;
 
 export const BaseCarouselContainer = styled.div`
-  outline: 1px solid green;
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
 
-export const BaseCarousel = styled.div`
-  outline: 1px solid blue;
-`;
+export const BaseCarousel = styled.div``;
 
-export const BaseCarouselItem = styled.div`
-  outline: 1px solid yellow;
-`;
+export const BaseCarouselItem = styled.div``;
+
 export const BaseCarouselControls = styled.div`
   display: flex;
   gap: 24px;

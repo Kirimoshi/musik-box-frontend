@@ -6,9 +6,7 @@ import {
   BaseCarouselItem,
 } from "../Shared.styles";
 
-export const SongsContainer = styled.section`
-  outline: 1px solid white;
-`;
+export const SongsContainer = styled.section``;
 
 export const SongsCarouselContainer = styled(BaseCarouselContainer)`
   margin-top: 12px;

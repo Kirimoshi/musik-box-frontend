@@ -29,7 +29,7 @@ function Sidebar() {
       <UserInfo>
         <UserAvatar>
           <img
-            src={require("../assets/image1.jpg")} // TODO replace with current user avatar from backend
+            src={require("../assets/image1.jpg")} // will be replaced with current user avatar from backend
             alt="current user avatar"
           />
         </UserAvatar>

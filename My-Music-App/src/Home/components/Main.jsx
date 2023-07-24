@@ -5,9 +5,11 @@ import Songs from "./Songs";
 
 function Main() {
   return (
-    <MainContainer>
-      <Songs />
-    </MainContainer>
+    <>
+      <MainContainer>
+        <Songs />
+      </MainContainer>
+    </>
   );
 }
 

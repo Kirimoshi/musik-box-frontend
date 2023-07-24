@@ -6,8 +6,6 @@ export const MenuContainer = styled.div`
 `;
 
 export const MenuItem = styled.li`
-  // TODO somewhere in styles we have styled li, mb this is a good place to write
-  // all: unset;
   height: 45px;
   color: white;
   display: flex;
