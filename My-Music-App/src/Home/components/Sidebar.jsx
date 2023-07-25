@@ -1,5 +1,4 @@
 import React from "react";
-// import "../Styles/leftmenu.css";
 import { RiPencilFill } from "react-icons/ri";
 import SidebarMenu from "./SidebarMenu";
 import MenuList from "./MenuList";

@@ -1,5 +1,3 @@
-// reenable after we have links to the pages
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
