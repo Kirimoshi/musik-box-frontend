@@ -4,22 +4,61 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useFormik } from "formik";
 import { SignInSchema } from "../schemas/SignInSchema";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { constants } from "../constants";
-import { useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
+
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, setIsRemembered } from "../../store/user/user.reducer";
+import {
+  isAuthenticatedSelector,
+  errorSelector,
+} from "../../store/user/user.selector";
+
 const onSubmit = async (values, actions) => {
   await new Promise((resolve) => setTimeout(resolve, 10000));
   actions.resetForm();
 };
+
 export function Login(props) {
+  const dispatch = useDispatch();
+  // TODO deconstruct only needed field and mb useCallback
+  const user = useSelector((state) => state.user);
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const AuthError = useSelector(errorSelector);
+
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const [loggedStatus, setLoggedStatus] = useState(false);
+
+  // useEffect(() => {
+  //   isLoggedIn(loggedStatus, setLoggedStatus, navigate);
+  // }, [loggedStatus, setLoggedStatus, navigate]);
+
+  // Thi
   useEffect(() => {
-    isLoggedIn(loggedStatus, setLoggedStatus, navigate);
-  }, [loggedStatus, setLoggedStatus, navigate]);
+    // TODO: Get possible errors from backend team
+    if (AuthError === "Invalid password") {
+      console.log(user.error);
+      errors.password = user.error;
+      setFieldError(errors.password);
+      return;
+    }
+
+    if (AuthError) {
+      errors.email = user.error;
+      setFieldError(errors.email);
+      return;
+    }
+
+    if (isAuthenticated) {
+      alert("You are logged in");
+      // TODO: turn on redirect to home page
+      // navigate("/");
+    }
+  }, [AuthError, isAuthenticated]);
+
   const {
     values,
     errors,
@@ -42,42 +81,44 @@ export function Login(props) {
   const clearFunc = (name) => {
     setFieldValue(name, "");
   };
+
   const post = () => {
     const userData = {
       email: values.email,
       password: values.password,
     };
-    axios
-      .post(constants.API_URL, userData)
-      .then((response) => {
-        if (response.status == 200) {
-          localStorage.setItem("accessToken", response.data.access);
-          localStorage.setItem("refreshToken", response.data.refresh);
-          localStorage.setItem(
-            "accessExpiresAt",
-            response.data.access_expires_at
-          );
-          localStorage.setItem(
-            "RefreshExpiresAt",
-            response.data.refresh_expires_at
-          );
-          if (rememberMe) {
-            document.cookie = `accessToken=${response.data.access}; max-age=${response.data.access_expires_at}; path=/`;
-            document.cookie = `accessExpiresAt=${response.data.access_expires_at}; path=/`;
-          }
-          navigate("/");
-        }
-      })
-      .catch((error) => {
-        const response = error.response.data;
-        if (response.errors === "Invalid password") {
-          errors.password = response.errors;
-          setFieldError(errors.password);
-        } else {
-          errors.email = response.errors;
-          setFieldError(errors.email);
-        }
-      });
+    dispatch(loginUser(userData)); // Call login thunk
+    // axios
+    //   .post(constants.API_URL, userData)
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       localStorage.setItem("accessToken", response.data.access);
+    //       localStorage.setItem("refreshToken", response.data.refresh);
+    //       localStorage.setItem(
+    //         "accessExpiresAt",
+    //         response.data.access_expires_at
+    //       );
+    //       localStorage.setItem(
+    //         "RefreshExpiresAt",
+    //         response.data.refresh_expires_at
+    //       );
+    //       if (rememberMe) {
+    //         document.cookie = `accessToken=${response.data.access}; max-age=${response.data.access_expires_at}; path=/`;
+    //         document.cookie = `accessExpiresAt=${response.data.access_expires_at}; path=/`;
+    //       }
+    //       navigate("/");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     const response = error.response.data;
+    //     if (response.errors === "Invalid password") {
+    //       errors.password = response.errors;
+    //       setFieldError(errors.password);
+    //     } else {
+    //       errors.email = response.errors;
+    //       setFieldError(errors.email);
+    //     }
+    //   });
   };
 
   return (
@@ -88,7 +129,7 @@ export function Login(props) {
         </span>
       </div>
       <div className="login-container">
-        <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
+        <form className="login-form" onSubmit={handleSubmit} autoComplete="on">
           <div className="login-form-inputcheckbox">
             <div className="inputs">
               <div className="label_div_ip1">
@@ -183,7 +224,7 @@ export function Login(props) {
                   id="checkbox"
                   name="checkbox"
                   onClick={(e) => {
-                    setRememberMe(e.target.checked);
+                    dispatch(setIsRemembered(e.target.checked));
                   }}
                 />
               </div>

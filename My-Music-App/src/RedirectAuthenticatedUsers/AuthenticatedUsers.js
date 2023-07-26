@@ -31,8 +31,8 @@ export const isLoggedIn = async (loggedStatus, setLoggedStatus, navigate) => {
       } catch (error) {
         if (
           error.response.data.errors[0].status &&
-          error.response.data.errors[0].status == 401 &&
-          error.response.data.errors[0].detail == "not authorized"
+          error.response.data.errors[0].status === 401 &&
+          error.response.data.errors[0].detail === "not authorized"
         ) {
           localStorage.removeItem(accessToken);
           localStorage.removeItem(accessExpiresAt);
