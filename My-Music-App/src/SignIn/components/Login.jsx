@@ -13,7 +13,7 @@ const onSubmit = async (values, actions) => {
   await new Promise((resolve) => setTimeout(resolve, 10000));
   actions.resetForm();
 };
-export const Login = (props) => {
+export function Login(props) {
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const [loggedStatus, setLoggedStatus] = useState(false);
@@ -218,4 +218,4 @@ export const Login = (props) => {
       </div>
     </div>
   );
-};
+}
