@@ -1,20 +1,20 @@
 import React from "react";
 
 import LeftMenu from "./LeftMenu";
-import MainContainer from "./MainContainer";
+import MainContainerMyPlaylists from "./MainContainerMyPlaylists";
 import "../styles/myplaylistpage.css";
 import Footer from "./Footer";
 import "../styles/reset.css";
 
-const MyPlayListPage = () => {
+function MyPlayListPage() {
   return (
     <div className="myplaylist-container">
       <LeftMenu />
-      <MainContainer />
+      <MainContainerMyPlaylists />
       <div className="background"></div>
       <Footer />
     </div>
   );
-};
+}
 
 export default MyPlayListPage;

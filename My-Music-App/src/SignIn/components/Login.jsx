@@ -69,14 +69,13 @@ export function Login(props) {
         }
       })
       .catch((error) => {
-        const response=error.response.data;
-        if(response.errors==="Invalid password"){
-          errors.password=response.errors
-          setFieldError(errors.password)
-        }
-        else{
-          errors.email=response.errors
-          setFieldError(errors.email)
+        const response = error.response.data;
+        if (response.errors === "Invalid password") {
+          errors.password = response.errors;
+          setFieldError(errors.password);
+        } else {
+          errors.email = response.errors;
+          setFieldError(errors.email);
         }
       });
   };

@@ -6,7 +6,7 @@ import { PiDotBold } from "react-icons/pi";
 import closeLogo from "../closeLogo.svg";
 import Songs from "../../ViewThePlayList/Components/Songs";
 import "../styles.css";
-export const AddSongsToPlaylists = ({ handleAddSongModal }) => {
+export function AddSongsToPlaylists({ handleAddSongModal }) {
   return (
     <div className="addsongsToPlaylist-main">
       <div className="addsongs-header">
@@ -57,4 +57,4 @@ export const AddSongsToPlaylists = ({ handleAddSongModal }) => {
       </div>
     </div>
   );
-};
+}

@@ -6,7 +6,7 @@ import "../Styles/reset.css";
 import "../Styles/myplaylistpage.css";
 import Footer from "./Footer";
 
-const MyPlayListPage = () => {
+function MyPlayListPage() {
   return (
     <div className="myplaylist-container">
       <LeftMenu />
@@ -15,5 +15,5 @@ const MyPlayListPage = () => {
       <Footer />
     </div>
   );
-};
+}
 export default MyPlayListPage;

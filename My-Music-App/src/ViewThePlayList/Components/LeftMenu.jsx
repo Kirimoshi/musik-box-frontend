@@ -15,7 +15,7 @@ function LeftMenu() {
           <div className="account_image">
             <img
               src={require("../images/image1.jpg")}
-              alt="User Profile Picture"
+              alt="User Profile"
               className="img1"
             ></img>
           </div>
