@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit2 } from "react-icons/fi";
@@ -8,11 +9,12 @@ import "../styles/playlists.css";
 import { constants } from "../constants";
 import { CreateOrModifyPlaylist } from "../../CreateOrModifyPlaylist/components/CreateOrModifyPlaylist";
 
-export default function Playlists() {
+export default function Playlists({ handleViewThePlaylist }) {
   const [playlistData, setPlaylistData] = useState([]);
   const [modifyId, setModifyId] = useState(null);
   const [openModel, setOpenModel] = useState(null);
   const [modifyPlaylistModal, setModifyPlaylistModal] = useState(false);
+  const navigate = useNavigate();
   const handleModifyPlaylistModal = () => {
     handleClick(openModel);
     setModifyPlaylistModal(!modifyPlaylistModal);
@@ -25,7 +27,10 @@ export default function Playlists() {
       setOpenModel(x);
     }
   };
-
+  const handleNavigate = (id) => {
+    handleViewThePlaylist();
+    navigate(`/ViewMyPlaylists/ViewThePlaylist/${id}`);
+  };
   const fetchPlaylistsData = async () => {
     const data = await axios
       .get(constants.GET_API_URL, {
@@ -57,6 +62,7 @@ export default function Playlists() {
           handleCreateOrModifyPlaylistModal={handleModifyPlaylistModal}
         />
       )}
+
       <div className="playlist-songlist">
         <div className="playlist-songsContainer">
           {playlistData &&
@@ -67,7 +73,12 @@ export default function Playlists() {
                 }`}
                 key={playlistItem.id}
               >
-                <div className="playlist-imageBox-artistinfo">
+                <div
+                  className="playlist-imageBox-artistinfo"
+                  onClick={() => {
+                    handleNavigate(playlistItem.id);
+                  }}
+                >
                   <img
                     src={constants.store_URL + playlistItem.attributes.logo.id}
                     alt="song preview"

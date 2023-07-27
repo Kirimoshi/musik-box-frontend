@@ -13,7 +13,7 @@ const onSubmit = async (values, actions) => {
   await new Promise((resolve) => setTimeout(resolve, 10000));
   actions.resetForm();
 };
-export const Login = (props) => {
+export function Login(props) {
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const [loggedStatus, setLoggedStatus] = useState(false);
@@ -69,14 +69,13 @@ export const Login = (props) => {
         }
       })
       .catch((error) => {
-        const response=error.response.data;
-        if(response.errors==="Invalid password"){
-          errors.password=response.errors
-          setFieldError(errors.password)
-        }
-        else{
-          errors.email=response.errors
-          setFieldError(errors.email)
+        const response = error.response.data;
+        if (response.errors === "Invalid password") {
+          errors.password = response.errors;
+          setFieldError(errors.password);
+        } else {
+          errors.email = response.errors;
+          setFieldError(errors.email);
         }
       });
   };
@@ -218,4 +217,4 @@ export const Login = (props) => {
       </div>
     </div>
   );
-};
+}

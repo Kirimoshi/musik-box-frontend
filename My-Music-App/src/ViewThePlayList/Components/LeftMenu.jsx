@@ -4,7 +4,7 @@ import { RiPencilFill } from "react-icons/ri";
 import Menu from "./Menu";
 import MenuList from "./MenuList";
 
-const LeftMenu = () => {
+function LeftMenu() {
   return (
     <div className="leftmenu">
       <div className="logocontainer">
@@ -16,7 +16,7 @@ const LeftMenu = () => {
           <div className="account_image">
             <img
               src={require("../images/image1.jpg")}
-              alt="User Profile Picture"
+              alt="User Profile"
               className="img1"
             ></img>
           </div>
@@ -43,5 +43,5 @@ const LeftMenu = () => {
       </div>
     </div>
   );
-};
+}
 export default LeftMenu;

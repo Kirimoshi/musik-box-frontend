@@ -1,4 +1,4 @@
-.maincontainer {
+/* .maincontainer {
   background-image: radial-gradient(
       50% 50% at 50% 50%,
       #080a0e 0%,
@@ -6,6 +6,9 @@
     ),
     linear-gradient(180deg, #170d2e 0%, #1f192e 100%);
   width: 100%;
+} */
+.hidden{
+  display: none;
 }
 .playlst-conatiner-pointer{
   pointer-events: none;
