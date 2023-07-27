@@ -10,7 +10,8 @@ import { constants } from "../constants";
 import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, setIsRemembered } from "../../store/user/user.reducer";
+import { setIsRemembered, clearError } from "../../store/user/user.reducer";
+import { loginUser, refreshToken } from "../../store/user/user.thunks";
 import {
   isAuthenticatedSelector,
   errorSelector,
@@ -26,7 +27,7 @@ export function Login(props) {
   // TODO deconstruct only needed field and mb useCallback
   const user = useSelector((state) => state.user);
   const isAuthenticated = useSelector(isAuthenticatedSelector);
-  const AuthError = useSelector(errorSelector);
+  const loginError = useSelector(errorSelector); // despite error in state is global, in login component it is only login error
 
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
@@ -36,28 +37,9 @@ export function Login(props) {
   //   isLoggedIn(loggedStatus, setLoggedStatus, navigate);
   // }, [loggedStatus, setLoggedStatus, navigate]);
 
-  // Thi
-  useEffect(() => {
-    // TODO: Get possible errors from backend team
-    if (AuthError === "Invalid password") {
-      console.log(user.error);
-      errors.password = user.error;
-      setFieldError(errors.password);
-      return;
-    }
-
-    if (AuthError) {
-      errors.email = user.error;
-      setFieldError(errors.email);
-      return;
-    }
-
-    if (isAuthenticated) {
-      alert("You are logged in");
-      // TODO: turn on redirect to home page
-      // navigate("/");
-    }
-  }, [AuthError, isAuthenticated]);
+  const handleTest = () => {
+    dispatch(refreshToken());
+  };
 
   const {
     values,
@@ -88,41 +70,35 @@ export function Login(props) {
       password: values.password,
     };
     dispatch(loginUser(userData)); // Call login thunk
-    // axios
-    //   .post(constants.API_URL, userData)
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       localStorage.setItem("accessToken", response.data.access);
-    //       localStorage.setItem("refreshToken", response.data.refresh);
-    //       localStorage.setItem(
-    //         "accessExpiresAt",
-    //         response.data.access_expires_at
-    //       );
-    //       localStorage.setItem(
-    //         "RefreshExpiresAt",
-    //         response.data.refresh_expires_at
-    //       );
-    //       if (rememberMe) {
-    //         document.cookie = `accessToken=${response.data.access}; max-age=${response.data.access_expires_at}; path=/`;
-    //         document.cookie = `accessExpiresAt=${response.data.access_expires_at}; path=/`;
-    //       }
-    //       navigate("/");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     const response = error.response.data;
-    //     if (response.errors === "Invalid password") {
-    //       errors.password = response.errors;
-    //       setFieldError(errors.password);
-    //     } else {
-    //       errors.email = response.errors;
-    //       setFieldError(errors.email);
-    //     }
-    //   });
   };
+  // Thunk results handling
+  useEffect(() => {
+    // TODO: Get possible errors from backend team
+    if (loginError === "Invalid password") {
+      console.error(loginError);
+      errors.password = loginError;
+      setFieldError(errors.password);
+      dispatch(clearError());
+      return;
+    }
+
+    if (loginError) {
+      errors.email = loginError;
+      setFieldError(errors.email);
+      dispatch(clearError());
+      return;
+    }
+
+    if (isAuthenticated) {
+      alert("You are logged in");
+      // TODO: turn on redirect to home page
+      // navigate("/");
+    }
+  }, [loginError, isAuthenticated, errors]);
 
   return (
     <div className="header-container">
+      <button onClick={handleTest}>test</button>
       <div className="header">
         <span className="header-content" data-testid="signin">
           Sign In
