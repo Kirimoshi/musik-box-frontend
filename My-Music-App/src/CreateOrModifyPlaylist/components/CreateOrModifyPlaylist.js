@@ -11,11 +11,11 @@ import { ConfirmationDialog } from "./ConfirmationDialog";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 import { constants } from "../Constants";
 
-export const CreateOrModifyPlaylist = ({
+export function CreateOrModifyPlaylist({
   modalValue,
   modalPlaylistId,
   handleCreateOrModifyPlaylistModal,
-}) => {
+}) {
   const imageInputRef = useRef(null);
   const initialValues = {
     playlistLogo: "",
@@ -74,27 +74,6 @@ export const CreateOrModifyPlaylist = ({
       },
     });
   };
-
-  // const fetchPlaylistData = async () => {
-  //   await axios
-  //     .get(`${constants.get_API_URL}/${modalPlaylistId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       const data= response.data.data;
-  //       setPlaylistDetails({
-  //         ...playlistDetails,
-  //         playlistLogo: data.attributes.logo.id,
-  //         playlistName: data.attributes.name,
-  //         description: data.attributes.description,
-  //       });
-  //     });
-  // };
-  // if(modalPlaylistId){
-  //   fetchPlaylistData();
-  // }
 
   return (
     <div
@@ -206,4 +185,4 @@ export const CreateOrModifyPlaylist = ({
       </div>
     </div>
   );
-};
+}

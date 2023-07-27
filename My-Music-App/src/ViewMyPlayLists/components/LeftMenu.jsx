@@ -5,7 +5,7 @@ import "../styles/leftmenu.css";
 import Menu from "./Menu";
 import MenuList from "./MenuList";
 
-const LeftMenu = () => {
+function LeftMenu() {
   return (
     <div className="leftmenu">
       <div className="logocontainer">
@@ -44,5 +44,5 @@ const LeftMenu = () => {
       </div>
     </div>
   );
-};
+}
 export default LeftMenu;

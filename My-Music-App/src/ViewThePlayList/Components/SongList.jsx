@@ -1,24 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 
 import mockedSongs from "./Songs";
 import "../Styles/songlist.css";
+import { constants } from "../constansts";
 
 import ModalDialog from "./ModalDialog";
 
-export default function SongList() {
+export default function SongList({ playlistStore }) {
   // state
-  const navigate = useNavigate();
-  const [loggedStatus, setLoggedStatus] = useState(false);
 
   const [openModel, setOpenModel] = useState(null);
   const [Songs, setSongs] = useState(structuredClone(mockedSongs));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idSongToDelete, setIdSongToDelete] = useState(null);
-
   // Handlers
   // Open modal handler just swith the state of modal inside Modal component
   const handleOpenModal = () => {
@@ -43,7 +39,7 @@ export default function SongList() {
     setIdSongToDelete(songId);
     handleOpenModal();
   };
-  // call from tree dots vertical menu
+  // call from three dots vertical menu
   const verticalMenuToggle = (x) => {
     if (x === openModel) {
       setOpenModel(null);
@@ -52,17 +48,6 @@ export default function SongList() {
     }
   };
 
-  // Effects
-  // Acquire logged status
-  useEffect(() => {
-    isLoggedIn(loggedStatus, setLoggedStatus, navigate);
-  }, [loggedStatus, setLoggedStatus, navigate]);
-  // Mock logged status
-  useEffect(() => {
-    setLoggedStatus(true);
-  }, []);
-
-  // Element
   return (
     <div className="SongList">
       <div className="songsContainer">
@@ -77,17 +62,24 @@ export default function SongList() {
             onClose: handleCloseModal,
           }}
         />
-        {Songs?.map((song) => (
+        {playlistStore?.included?.slice(1).map((song) => (
           <div
             className={`songs ${openModel === song.id ? "top" : ""}`}
             key={song.id}
           >
             <div className={`song`}>
               <div className="imageBox-artistinfo">
-                <img src={song.picture} alt="song preview" className="image1" />
+                <img
+                  src={
+                    constants.store_URL +
+                    playlistStore?.data?.attributes?.logo.id
+                  }
+                  alt="song preview"
+                  className="image1"
+                />
                 <div className="artistInfo">
-                  <p>{song.title}</p>
-                  <p>{song.artist}</p>
+                  <p>{song.attributes.title}</p>
+                  <p>{song.attributes.artist_name}</p>
                 </div>
               </div>
               <div className="songlist-vertical-menu">
@@ -99,7 +91,7 @@ export default function SongList() {
 
                 {openModel === song.id && (
                   <div className="delete-modal">
-                    {loggedStatus && (
+                    {
                       <div
                         onClick={() => handleDeleteSong(song.id)}
                         className="delete-tag"
@@ -107,7 +99,7 @@ export default function SongList() {
                         <RiDeleteBin6Line className="delete-button" />
                         <span>Remove song from playlist</span>
                       </div>
-                    )}
+                    }
                   </div>
                 )}
               </div>

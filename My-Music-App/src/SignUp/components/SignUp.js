@@ -7,7 +7,7 @@ import "../style.css";
 import { constants } from "../constants";
 import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 
-export const SignUp = () => {
+export function SignUp() {
   const navigate = useNavigate();
   const backendErrors = {
     nicknameExistingError: false,
@@ -156,4 +156,4 @@ export const SignUp = () => {
       </div>
     </div>
   );
-};
+}

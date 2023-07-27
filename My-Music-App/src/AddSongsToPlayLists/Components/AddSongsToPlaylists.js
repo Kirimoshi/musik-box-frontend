@@ -79,4 +79,4 @@ export const AddSongsToPlaylists = ({ handleAddSongModal }) => {
       </div>
     </div>
   );
-};
+}
