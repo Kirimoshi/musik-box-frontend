@@ -20,7 +20,7 @@ export const loginUser = createAsyncThunk("user/login", async (userData) => {
   try {
     const response = await axios.post(LOGIN_URL, userData);
     // TODO: remove console.log
-    console.log("response:", response.data);
+    // console.log("response:", response.data);
     return response.data; // transferred to loginUserFulfilled action.payload
   } catch (error) {
     throw error.response.data.errors; // transferred to loginUserRejected action.error
@@ -35,7 +35,7 @@ export const loginUserPending = (state) => {
 
 export const loginUserFulfilled = (state, action) => {
   state.loading = false;
-  // update state
+  // update state from form data, note: rememberMe already in state
   state.isAuthenticated = true;
   state.accessToken = action.payload.access;
   state.accessExpiresAt = action.payload.access_expires_at;
@@ -45,7 +45,7 @@ export const loginUserFulfilled = (state, action) => {
   setLocalStorage("accessToken", state.accessToken);
   setLocalStorage("accessExpiresAt", state.accessExpiresAt);
   setLocalStorage("refreshToken", state.refreshToken);
-  setLocalStorage("RefreshExpiresAt", state.refreshExpiresAt);
+  setLocalStorage("refreshExpiresAt", state.refreshExpiresAt);
   setLocalStorage("isRemembered", state.isRemembered);
 
   // TODO: cookie-remove Remove, unnecessary cookies, we dont use them for any info storage, only as flag to "remember me" user answer
@@ -62,7 +62,7 @@ export const loginUserRejected = (state, action) => {
 };
 
 // Refrehs User auth token Thunk
-export const refreshToken = createAsyncThunk(
+export const refreshUser = createAsyncThunk(
   "user/refreshAuth",
   async (_, { getState }) => {
     const refreshToken = getState().user.refreshToken;
@@ -72,6 +72,7 @@ export const refreshToken = createAsyncThunk(
           "X-Refresh-Token": `${refreshToken}`,
         },
       });
+      console.log("file: user.thunks.js:76 ~ response.data:", response.data);
       return response.data; // transferred to refreshTokenFulfilled action.payload
     } catch (error) {
       throw error.response.data.errors; // transferred to refreshTokenRejected action.error
@@ -79,12 +80,12 @@ export const refreshToken = createAsyncThunk(
   }
 );
 // TODO: pending status same as login, maybe we can use the same reducer
-export const refreshTokenPending = (state) => {
+export const refreshUserPending = (state) => {
   state.loading = true;
   state.isAuthenticated = false;
   state.error = null;
 };
-export const refreshTokenFulfilled = (state, action) => {
+export const refreshUserFulfilled = (state, action) => {
   state.loading = false;
   // update state
   state.isAuthenticated = true;
@@ -97,9 +98,20 @@ export const refreshTokenFulfilled = (state, action) => {
   setUpCookie("accessToken", state.accessToken, state.accessExpiresAt);
   setUpCookie("accessExpiresAt", state.accessExpiresAt, state.accessExpiresAt);
 };
-export const refreshTokenRejected = (state, action) => {
-  // TODO: error handling
+export const refreshUserRejected = (state, action) => {
+  // update state
   state.loading = false;
   state.isAuthenticated = false;
   state.error = action.error;
+  // if there is auth error, we need to delete all cookies and localStorage
+  deleteCookie("accessToken");
+  deleteCookie("accessExpiresAt");
+
+  [
+    "accessToken",
+    "accessExpiresAt",
+    "refreshToken",
+    "refreshExpiresAt",
+    "isRemembered",
+  ].forEach((key) => localStorage.removeItem(key)); // i prefer do not use .clear() method, because it will delete all
 };

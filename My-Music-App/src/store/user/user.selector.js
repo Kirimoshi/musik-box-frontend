@@ -1,3 +1,8 @@
+/** User slice
+ * @type {{loading: boolean, isAuthenticated: boolean, error: null | string, accessToken: null | string, accessExpiresAt: null | string, refreshToken: null | string, refreshExpiresAt: null | string, isRemembered: boolean | null }}
+ */
+export const userSelector = (state) => state.user;
+
 /** Returns "remember me" flag from sign in page
  * @return {boolean}
  */

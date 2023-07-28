@@ -11,7 +11,7 @@ import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers"
 
 import { useDispatch, useSelector } from "react-redux";
 import { setIsRemembered, clearError } from "../../store/user/user.reducer";
-import { loginUser, refreshToken } from "../../store/user/user.thunks";
+import { loginUser, refreshUser } from "../../store/user/user.thunks";
 import {
   isAuthenticatedSelector,
   errorSelector,
@@ -38,7 +38,7 @@ export function Login(props) {
   // }, [loggedStatus, setLoggedStatus, navigate]);
 
   const handleTest = () => {
-    dispatch(refreshToken());
+    dispatch(refreshUser());
   };
 
   const {
@@ -89,16 +89,17 @@ export function Login(props) {
       return;
     }
 
+    // TODO: turn on redirect to home page
+    // move this to sepatate useEffect
+    // navigate("/");
     if (isAuthenticated) {
-      alert("You are logged in");
-      // TODO: turn on redirect to home page
-      // navigate("/");
+      // alert("You are logged in");
     }
   }, [loginError, isAuthenticated, errors]);
 
   return (
     <div className="header-container">
-      <button onClick={handleTest}>test</button>
+      <button onClick={handleTest}>refresh</button>
       <div className="header">
         <span className="header-content" data-testid="signin">
           Sign In

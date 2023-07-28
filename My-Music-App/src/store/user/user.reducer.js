@@ -49,9 +49,9 @@ export const userSlice = createSlice({
       .addCase(thunks.loginUser.pending, thunks.loginUserPending)
       .addCase(thunks.loginUser.fulfilled, thunks.loginUserFulfilled)
       .addCase(thunks.loginUser.rejected, thunks.loginUserRejected)
-      .addCase(thunks.refreshToken.pending, thunks.refreshTokenPending)
-      .addCase(thunks.refreshToken.fulfilled, thunks.refreshTokenFulfilled)
-      .addCase(thunks.refreshToken.rejected, thunks.refreshTokenRejected);
+      .addCase(thunks.refreshUser.pending, thunks.refreshUserPending)
+      .addCase(thunks.refreshUser.fulfilled, thunks.refreshUserFulfilled)
+      .addCase(thunks.refreshUser.rejected, thunks.refreshUserRejected);
   },
 });
 
