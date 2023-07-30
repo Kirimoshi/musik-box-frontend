@@ -75,36 +75,6 @@ export const CreateOrModifyPlaylist = ({
     });
   };
 
-<<<<<<< Updated upstream
-  const fetchPlaylistData = async () => {
-    const data = await axios
-      .get(`${constants.get_API_URL}/${modalPlaylistId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then((response) => {
-        return response.data.data;
-      });
-    return data;
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchPlaylistData();
-      console.log(data);
-      setPlaylistDetails({
-        ...playlistDetails,
-        playlistLogo: data.attributes.logo.id,
-        playlistName: data.attributes.name,
-        description: data.attributes.description,
-      });
-    };
-    fetchData();
-  }, []);
-
-=======
->>>>>>> Stashed changes
   return (
     <div
       className={`createplaylist-main ${
