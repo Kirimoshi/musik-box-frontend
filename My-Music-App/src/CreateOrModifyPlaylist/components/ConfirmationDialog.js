@@ -1,8 +1,8 @@
 import React from "react";
-export const ConfirmationDialog = ({
+export function ConfirmationDialog({
   handleCreateOrModifyPlaylistModal,
   handleConfirmationDialog,
-}) => {
+}) {
   return (
     <div className="confirmationdialog-main">
       <div className="confirmation-dialog-message">
@@ -29,4 +29,4 @@ export const ConfirmationDialog = ({
       </div>
     </div>
   );
-};
+}

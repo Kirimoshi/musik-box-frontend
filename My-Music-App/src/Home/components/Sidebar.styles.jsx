@@ -1,0 +1,127 @@
+import styled from "styled-components";
+
+export const SidebarContainer = styled.div`
+  height: 100%;
+  background: #010f19;
+  padding: 24px 36px 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Logo = styled.div`
+  margin-bottom: 24px;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 28px;
+`;
+
+export const Divider = styled.hr`
+  width: 288px;
+  height: 1px;
+  background-color: #49454f;
+  border: none;
+`;
+
+const avatarWidth = "60"; //px
+const penIconWidth = "24"; //px
+const userInfoPadding = "16"; //px
+export const UserInfo = styled.div`
+  // Layout
+  display: grid;
+  grid-template-columns: ${avatarWidth}px auto ${penIconWidth}px;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: ${userInfoPadding}px;
+  position: relative;
+  margin-top: 24px;
+  // Style
+  border-radius: 18px;
+  background: #4f378b;
+`;
+export const UserAvatar = styled.div`
+  height: 60px;
+  & > img {
+    width: ${avatarWidth}px;
+    aspect-ratio: 1/1;
+    border-radius: 100px;
+  }
+`;
+export const AccountDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  & > span:first-child {
+    color: #fff;
+    /* M3/title/large */
+    font-family: Roboto, sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 28px; /* 127.273% */
+  }
+  & > span:last-child {
+    color: var(--m-3-ref-neutral-neutral-80, #cac5cd);
+    /* M3/body/medium */
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: 0.25px;
+  }
+`;
+export const AccountEdit = styled.div`
+  width: ${penIconWidth}px;
+  height: ${penIconWidth}px;
+  align-self: end;
+  transform: translate(
+    ${Math.round(userInfoPadding / 2)}px,
+    ${Math.round(userInfoPadding / 2)}px
+  );
+  & > svg {
+    /* Icon takes width/height from fontsize */
+    font-size: ${penIconWidth}px;
+    color: #ffffff;
+  }
+`;
+
+export const AboutApp = styled.div`
+  margin-top: 24px;
+  margin-bottom: 12px;
+  color: var(--m-3-ref-neutral-neutral-70, #aea9b1);
+  /* M3/label/medium */
+  font-family: Roboto;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px; /* 133.333% */
+  letter-spacing: 0.5px;
+`;
+
+export const AboutUs = styled.div`
+  margin-bottom: 24px;
+  color: var(--m-3-sys-dark-on-surface, #e6e0e9);
+  /* M3/body/large */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.5px;
+`;
+export const Logout = styled.div`
+  margin-top: 36px;
+  color: var(--m-3-sys-dark-primary, #d0bcff);
+  text-align: center;
+
+  /* M3/label/large */
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: 0.1px;
+`;

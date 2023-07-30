@@ -1,5 +1,5 @@
 import React from "react";
-export const SignUpFormInput = ({
+export function SignUpFormInput({
   label,
   type,
   name,
@@ -7,7 +7,7 @@ export const SignUpFormInput = ({
   onChange,
   resetDetails,
   signUpErrors,
-}) => {
+}) {
   return (
     <div>
       <label>{label}</label>
@@ -44,4 +44,4 @@ export const SignUpFormInput = ({
       </p>
     </div>
   );
-};
+}

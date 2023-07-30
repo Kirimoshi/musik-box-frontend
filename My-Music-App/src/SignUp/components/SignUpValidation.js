@@ -60,10 +60,13 @@ export const validate = (values, backendErrors) => {
   } else if (!specialCharacterRegex.test(values.password)) {
     error.password =
       "Please enter a password that includes at least one special character.";
-  } else if (notAllowedRegex.test(values.password) || values.password.includes("\\0")) {
+  } else if (
+    notAllowedRegex.test(values.password) ||
+    values.password.includes("\\0")
+  ) {
     error.password =
       "Please enter the password that does not include characters such as Backslash (\\), Single Quote (' or '), Double Quote (\" or \"), Null Byte (\\0).";
-  } 
+  }
   if (!values.confirmPassword) {
     error.confirmPassword = "Please confirm your password.";
   } else if (values.password !== values.confirmPassword) {

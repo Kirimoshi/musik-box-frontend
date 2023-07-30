@@ -98,7 +98,7 @@ describe("Clear Button Functionality", () => {
 });
 
 describe("Sign Up Validations", () => {
-  beforeEach(()=>{
+  beforeEach(() => {
     render(<SignUp />, {
       wrapper: BrowserRouter,
     });
@@ -110,7 +110,7 @@ describe("Sign Up Validations", () => {
     fireEvent.change(emailInput, { target: { value: "dummy" } });
     fireEvent.change(passwordInput, { target: { value: "dummy" } });
     fireEvent.change(confirmPasswordInput, { target: { value: "dummy" } });
-  })
+  });
   test("Nickname should be minimum of three characters", () => {
     const nicknameInput = screen.getByTestId("nickname");
     fireEvent.change(nicknameInput, { target: { value: "s" } });

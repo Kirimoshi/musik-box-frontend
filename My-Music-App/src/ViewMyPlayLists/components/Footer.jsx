@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/footer.css";
-const Footer = () => {
+function Footer() {
   const date = new Date();
   return (
     <div className="footer-container">
@@ -10,6 +10,6 @@ const Footer = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Footer;

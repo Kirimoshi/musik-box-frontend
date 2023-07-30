@@ -11,11 +11,11 @@ import { ConfirmationDialog } from "./ConfirmationDialog";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 import { constants } from "../Constants";
 
-export const CreateOrModifyPlaylist = ({
+export function CreateOrModifyPlaylist({
   modalValue,
   modalPlaylistId,
   handleCreateOrModifyPlaylistModal,
-}) => {
+}) {
   const imageInputRef = useRef(null);
   const initialValues = {
     playlistLogo: "",
@@ -185,4 +185,4 @@ export const CreateOrModifyPlaylist = ({
       </div>
     </div>
   );
-};
+}
