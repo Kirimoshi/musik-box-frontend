@@ -18,7 +18,7 @@ export default function MainContainer() {
   const [openModel, setOpenModel] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
   const [playlistStore, setPlaylistStore] = useState(null);
-  const [myState, setMyState]= useState(false);
+  const [myState, setMyState] = useState(false);
   const { id } = useParams();
 
   const fetchPlaylistData = async () => {
@@ -53,7 +53,6 @@ export default function MainContainer() {
     >
       <div className="profiledetails">
         <div className="email">
-          {/* {playlistStore?.included[0]?.attributes !== undefined && playlistStore.included[0].attributes.email } */}
           {playlistStore?.included[0]?.attributes?.email}
         </div>
         <div className="otherdetails">
