@@ -161,7 +161,10 @@ export function CreateOrModifyPlaylist({
             </div>
           </div>
           {addSongModal && (
-            <AddSongsToPlaylists handleAddSongModal={handleAddSongModal} />
+            <AddSongsToPlaylists
+              handleAddSongModal={handleAddSongModal}
+              modalPlaylistId={modalPlaylistId}
+            />
           )}
           <div className="createplaylist-addsong">
             <Link>

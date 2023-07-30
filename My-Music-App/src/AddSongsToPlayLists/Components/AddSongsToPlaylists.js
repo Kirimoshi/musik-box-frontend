@@ -8,24 +8,47 @@ import closeLogo from "../closeLogo.svg";
 import media from "../media.jpg";
 import "../styles.css";
 import { constants } from "../Constants";
-export const AddSongsToPlaylists = ({ handleAddSongModal }) => {
-  const [songs, setSongs]= useState([]);
-  const [searchSong, setSearchSong]= useState(null);
+export function AddSongsToPlaylists({
+  handleAddSongModal,
+  modalPlaylistId,
+  setMyState,
+  myState,
+}) {
+  const [songs, setSongs] = useState([]);
+  const [searchSong, setSearchSong] = useState(null);
 
-  const handleSearch=(e)=>{
+  const handleSearch = (e) => {
     setSearchSong(e.target.value);
-  }
+  };
   const fetchSongsData = async () => {
     await axios
       .get(constants.Songs_API_URL, {
-        params :{page: 1, search: searchSong, include: "album"},
+        params: { page: 1, search: searchSong, include: "album" },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
       .then((response) => {
-        console.log(response);
         setSongs(response.data.songs.data);
+      });
+  };
+
+  const postSongsData = (id) => {
+    axios
+      .post(
+        constants.CreateNewPlaylistSong_API_URL +
+          modalPlaylistId +
+          "/playlist_songs/?song_id=" +
+          id,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        setMyState(!myState);
       });
   };
 
@@ -39,10 +62,15 @@ export const AddSongsToPlaylists = ({ handleAddSongModal }) => {
       </div>
       <div className="addsongs-searchbar">
         <div className="searchbar-input-box">
-          <input type="text" placeholder="Type something" value={searchSong} onChange={handleSearch}/>
+          <input
+            type="text"
+            placeholder="Type something"
+            value={searchSong}
+            onChange={handleSearch}
+          />
         </div>
         <div className="searchbar-searchIcon">
-          <IoSearchSharp className="searchIcon" onClick={fetchSongsData}/>
+          <IoSearchSharp className="searchIcon" onClick={fetchSongsData} />
         </div>
       </div>
       <div className="addsongs-main">
@@ -71,7 +99,10 @@ export const AddSongsToPlaylists = ({ handleAddSongModal }) => {
                   </div>
                 </div>
                 <div>
-                  <IoAddSharp className="addsong-item-icon" />
+                  <IoAddSharp
+                    className="addsong-item-icon"
+                    onClick={() => postSongsData(song.id)}
+                  />
                 </div>
               </div>
             ))}
