@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 import { IoIosAddCircle } from "react-icons/io";
+
 import uploadImage from "../uploadImage.svg";
 import closeLogo from "../closeLogo.svg";
-import { Link } from "react-router-dom";
 import "../styles.css";
 import { validate } from "./CreateNewPlaylistValidation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
@@ -97,7 +97,7 @@ export function CreateOrModifyPlaylist({
               {playlistDetails.playlistLogo &&
               !createPlaylistErrors.playlistLogo ? (
                 <img
-                  src={constants.store_URL + playlistDetails.playlistLogo}
+                  src={URL.createObjectURL(playlistDetails.playlistLogo)}
                   alt="Playlist Logo"
                   className="actualImage"
                 />
@@ -161,7 +161,10 @@ export function CreateOrModifyPlaylist({
             </div>
           </div>
           {addSongModal && (
-            <AddSongsToPlaylists handleAddSongModal={handleAddSongModal} />
+            <AddSongsToPlaylists
+              handleAddSongModal={handleAddSongModal}
+              modalPlaylistId={modalPlaylistId}
+            />
           )}
           <div className="createplaylist-addsong">
             <Link>

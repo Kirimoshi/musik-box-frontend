@@ -2,11 +2,56 @@ import React, { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { IoAddSharp } from "react-icons/io5";
 import { PiDotBold } from "react-icons/pi";
+import axios from "axios";
 
 import closeLogo from "../closeLogo.svg";
-import Songs from "../../ViewThePlayList/Components/Songs";
+import media from "../media.jpg";
 import "../styles.css";
-export function AddSongsToPlaylists({ handleAddSongModal }) {
+import { constants } from "../Constants";
+export function AddSongsToPlaylists({
+  handleAddSongModal,
+  modalPlaylistId,
+  setMyState,
+  myState,
+}) {
+  const [songs, setSongs] = useState([]);
+  const [searchSong, setSearchSong] = useState(null);
+
+  const handleSearch = (e) => {
+    setSearchSong(e.target.value);
+  };
+  const fetchSongsData = async () => {
+    await axios
+      .get(constants.Songs_API_URL, {
+        params: { page: 1, search: searchSong, include: "album" },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        setSongs(response.data.songs.data);
+      });
+  };
+
+  const postSongsData = (id) => {
+    axios
+      .post(
+        constants.CreateNewPlaylistSong_API_URL +
+          modalPlaylistId +
+          "/playlist_songs/?song_id=" +
+          id,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        setMyState(!myState);
+      });
+  };
+
   return (
     <div className="addsongsToPlaylist-main">
       <div className="addsongs-header">
@@ -17,10 +62,15 @@ export function AddSongsToPlaylists({ handleAddSongModal }) {
       </div>
       <div className="addsongs-searchbar">
         <div className="searchbar-input-box">
-          <input type="text" placeholder="Type something" />
+          <input
+            type="text"
+            placeholder="Type something"
+            value={searchSong}
+            onChange={handleSearch}
+          />
         </div>
         <div className="searchbar-searchIcon">
-          <IoSearchSharp className="searchIcon" />
+          <IoSearchSharp className="searchIcon" onClick={fetchSongsData} />
         </div>
       </div>
       <div className="addsongs-main">
@@ -28,28 +78,31 @@ export function AddSongsToPlaylists({ handleAddSongModal }) {
           <p>Most Popular</p>
         </div>
         <div className="addsongs-songlist">
-          {Songs &&
-            Songs.map((song) => (
+          {songs &&
+            songs.map((song) => (
               <div className="addsong-item" key={song.id}>
                 <div className="addsong-song-item-img">
                   <img
-                    src={song.picture}
+                    src={media}
                     alt="song preview"
                     className="addsong-song-img"
                   />
                 </div>
                 <div className="addsong-artistInfo">
                   <div className="addsong-song-title">
-                    <p>{song.title.substring(0, 10)}</p>
+                    <p>{song.attributes.title}</p>
                   </div>
                   <div className="addsong-song-info">
-                    <p>{song.artist.substring(0, 5)}</p>
+                    <p>{song.attributes.artist}</p>
                     <PiDotBold />
-                    <p>{song.album.substring(0, 5)}</p>
+                    <p>album</p>
                   </div>
                 </div>
                 <div>
-                  <IoAddSharp className="addsong-item-icon" />
+                  <IoAddSharp
+                    className="addsong-item-icon"
+                    onClick={() => postSongsData(song.id)}
+                  />
                 </div>
               </div>
             ))}

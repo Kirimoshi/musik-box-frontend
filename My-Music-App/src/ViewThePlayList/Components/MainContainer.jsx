@@ -18,6 +18,7 @@ export default function MainContainer() {
   const [openModel, setOpenModel] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
   const [playlistStore, setPlaylistStore] = useState(null);
+  const [myState, setMyState] = useState(false);
   const { id } = useParams();
 
   const fetchPlaylistData = async () => {
@@ -41,7 +42,7 @@ export default function MainContainer() {
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [myState]);
 
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
@@ -52,7 +53,6 @@ export default function MainContainer() {
     >
       <div className="profiledetails">
         <div className="email">
-          {/* {playlistStore?.included[0]?.attributes !== undefined && playlistStore.included[0].attributes.email } */}
           {playlistStore?.included[0]?.attributes?.email}
         </div>
         <div className="otherdetails">
@@ -126,7 +126,12 @@ export default function MainContainer() {
         <IoIosAdd className="circle-icon" onClick={handleAddSongModal} />
         <p className="addsong-name">Add Song</p>
         {addSongModal && AddSongsToPlaylists && (
-          <AddSongsToPlaylists handleAddSongModal={handleAddSongModal} />
+          <AddSongsToPlaylists
+            handleAddSongModal={handleAddSongModal}
+            modalPlaylistId={playlistStore?.data?.id}
+            setMyState={setMyState}
+            myState={myState}
+          />
         )}
       </div>
       <div className="songsList" data-testid="song-list">
