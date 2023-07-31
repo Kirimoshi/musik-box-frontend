@@ -15,11 +15,20 @@
   gap: 3px;
 }
 
-.commenttextinput {
-  border-radius: 4px 4px 0px 0px;
+.input-and-close-circle {
   width: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.commenttextinput {
+  border: none;
+  border-radius: 4px 4px 0px 0px;
   color: white;
   padding: 10px 7px;
+  background: transparent;
+  resize: none;
+  outline: none;
 }
 
 .commenttextfield {
@@ -67,14 +76,34 @@ label {
   justify-content: flex-start;
 }
 
-.comment-button button {
+.comment-button {
+  width: 150px;
+}
+
+.button-submit {
   width: 150px;
   border: 1px solid #938f99;
   border-radius: 100px;
   color: #d0bcff;
   background: none;
   padding: 10px;
+  cursor: pointer;
   flex: none;
+}
+
+.button-disable {
+  color: rgba(230, 224, 233, 1);
+  background-color: rgba(230, 224, 233, 0.12);
+  cursor: not-allowed;
+}
+
+.comment-error {
+  font-family: Roboto;
+  font-size: small;
+}
+
+.hide-error {
+  display: none;
 }
 
 .comments-list {
@@ -185,10 +214,4 @@ label {
     display: flex;
     flex-direction: row;
   }
-}
-
-.input-and-close-circle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
