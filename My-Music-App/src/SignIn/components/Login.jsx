@@ -27,6 +27,16 @@ export function Login(props) {
 
   const navigate = useNavigate();
 
+  const onSubmit = () => {
+    const userData = {
+      email: values.email,
+      password: values.password,
+    };
+    setIsSubmitted(true);
+    loginError && dispatch(clearError()); // Clear error from state
+    dispatch(loginUser(userData)); // Call login thunk
+  };
+
   const {
     values,
     errors,
@@ -44,6 +54,7 @@ export function Login(props) {
       password: "",
     },
     validationSchema: SignInSchema,
+    onSubmit,
   });
 
   const clearFunc = (name) => {
@@ -63,16 +74,6 @@ export function Login(props) {
     setFieldValue(fieldName, fieldValue);
   };
 
-  const post = () => {
-    const userData = {
-      email: values.email,
-      password: values.password,
-    };
-    setIsSubmitted(true);
-    loginError && dispatch(clearError()); // Clear error from state
-    dispatch(loginUser(userData)); // Call login thunk
-  };
-
   // Thunk results handling
   useEffect(() => {
     // TODO: Get possible errors from backend team
@@ -85,7 +86,7 @@ export function Login(props) {
 
   useEffect(() => {
     if (isAuthenticated) {
-      alert("You are logged in");
+      // alert("You are logged in");
       navigate("/");
     }
   }, [isAuthenticated]);
@@ -208,7 +209,7 @@ export function Login(props) {
             <button
               className={`signin-button ${!isValid ? "signin-error" : ""}`}
               type="submit"
-              onClick={post}
+              onClick={onSubmit}
             >
               Sign In
             </button>

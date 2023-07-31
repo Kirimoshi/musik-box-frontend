@@ -30,8 +30,7 @@ function App() {
   // if user checked "remember me" checkbox and it currently NOT logged in, then we need to try
   // 2.1 check if tokens are expired
   // 2.2 if expired, then refresh tokens
-  // 2.3 if not expired and access token is valid, then raise isAuthenticated flag (but how to check if token is valid?)
-  // we don`t have such endpoint, so I still use refresh thunk
+  // 2.3 if not expired and access token is valid, then raise isAuthenticated flag (but how to check if token is valid?) we don`t have such endpoint, so I still use refresh thunk
 
   useEffect(() => {
     // if user is not remembered, then we dont need to check anything related to login
