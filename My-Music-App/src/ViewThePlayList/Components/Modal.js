@@ -3,7 +3,7 @@ import { RiPencilFill, RiDeleteBin6Line } from "react-icons/ri";
 
 import "../Styles/modal.css";
 
-export default function Modal() {
+export default function Modal({ handlePlaylistType }) {
   return (
     <div>
       <div className="submodal-container">
@@ -18,9 +18,30 @@ export default function Modal() {
         </div>
         <div className="division" />
         <div className="submodal-change-playlist">
-          <span className="p1">Make Private</span>
-          <span className="p2">Make Shared</span>
-          <span className="p3">Make Public</span>
+          <span
+            className="p1"
+            onClick={() => {
+              handlePlaylistType("Private");
+            }}
+          >
+            Make Private
+          </span>
+          <span
+            className="p2"
+            onClick={() => {
+              handlePlaylistType("Shared");
+            }}
+          >
+            Make Shared
+          </span>
+          <span
+            className="p3"
+            onClick={() => {
+              handlePlaylistType("Public");
+            }}
+          >
+            Make Public
+          </span>
         </div>
       </div>
     </div>

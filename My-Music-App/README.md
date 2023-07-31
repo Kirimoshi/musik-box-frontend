@@ -10,7 +10,8 @@ sometimes for correct operation, npm commands must be run from the My-Music-App 
 
 Front-End Testing End Points:
 
-1. /signin : to enter into sign in page.
-2. /signup : to enter into sign up page.
-3. /viewtheplaylist : to enter into view the playlists page.
+1. Default Page is the Home Page.
+2. /signin : to enter into sign in page.
+3. /signup : to enter into sign up page.
 4. /viewmyplaylists : to enter into view my playlists page.
+5. /ViewMyPlaylists/ViewThePlaylist/:id : to enter into a playlist page when clicked on a playlist in viewmyplaylist page for authenticated users only.
