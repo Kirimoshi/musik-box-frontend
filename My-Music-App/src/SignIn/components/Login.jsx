@@ -11,35 +11,21 @@ import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers"
 
 import { useDispatch, useSelector } from "react-redux";
 import { setIsRemembered, clearError } from "../../store/user/user.reducer";
-import { loginUser, refreshUser } from "../../store/user/user.thunks";
+import { loginUser } from "../../store/user/user.thunks";
 import {
   isAuthenticatedSelector,
   errorSelector,
 } from "../../store/user/user.selector";
 
-const onSubmit = async (values, actions) => {
-  await new Promise((resolve) => setTimeout(resolve, 10000));
-  actions.resetForm();
-};
-
 export function Login(props) {
   const dispatch = useDispatch();
-  // TODO deconstruct only needed field and mb useCallback
-  const user = useSelector((state) => state.user);
+
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const loginError = useSelector(errorSelector); // despite error in state is global, in login component it is only login error
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const navigate = useNavigate();
-  const [rememberMe, setRememberMe] = useState(false);
-  const [loggedStatus, setLoggedStatus] = useState(false);
-
-  // useEffect(() => {
-  //   isLoggedIn(loggedStatus, setLoggedStatus, navigate);
-  // }, [loggedStatus, setLoggedStatus, navigate]);
-
-  const handleTest = () => {
-    dispatch(refreshUser());
-  };
 
   const {
     values,
@@ -51,17 +37,30 @@ export function Login(props) {
     isValid,
     setFieldValue,
     setFieldError,
+    setErrors,
   } = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: SignInSchema,
-    onSubmit,
   });
 
   const clearFunc = (name) => {
     setFieldValue(name, "");
+  };
+
+  // Altering default change handler
+  // we need to clear errors and loginError if user is typing and this errors comes from unsuccessful login
+  const handleFormChange = (event) => {
+    const fieldName = event.target.name;
+    const fieldValue = event.target.value;
+    if (isSubmitted && loginError) {
+      dispatch(clearError());
+      setIsSubmitted(false);
+      setErrors({});
+    }
+    setFieldValue(fieldName, fieldValue);
   };
 
   const post = () => {
@@ -69,37 +68,30 @@ export function Login(props) {
       email: values.email,
       password: values.password,
     };
+    setIsSubmitted(true);
+    loginError && dispatch(clearError()); // Clear error from state
     dispatch(loginUser(userData)); // Call login thunk
   };
+
   // Thunk results handling
   useEffect(() => {
     // TODO: Get possible errors from backend team
-    if (loginError === "Invalid password") {
-      console.error(loginError);
-      errors.password = loginError;
-      setFieldError(errors.password);
-      dispatch(clearError());
-      return;
-    }
-
     if (loginError) {
+      console.error(loginError);
       errors.email = loginError;
       setFieldError(errors.email);
-      dispatch(clearError());
-      return;
     }
+  }, [loginError, errors]);
 
-    // TODO: turn on redirect to home page
-    // move this to sepatate useEffect
-    // navigate("/");
+  useEffect(() => {
     if (isAuthenticated) {
-      // alert("You are logged in");
+      alert("You are logged in");
+      navigate("/");
     }
-  }, [loginError, isAuthenticated, errors]);
+  }, [isAuthenticated]);
 
   return (
     <div className="header-container">
-      <button onClick={handleTest}>refresh</button>
       <div className="header">
         <span className="header-content" data-testid="signin">
           Sign In
@@ -127,7 +119,7 @@ export function Login(props) {
                   </label>
                   <input
                     value={values.email}
-                    onChange={handleChange}
+                    onChange={handleFormChange}
                     className="inputbox"
                     type="email"
                     name="email"
@@ -170,7 +162,7 @@ export function Login(props) {
                     className="inputbox"
                     id="password-label"
                     value={values.password}
-                    onChange={handleChange}
+                    onChange={handleFormChange}
                     onBlur={handleBlur}
                     name="password"
                     data-testid="passwordtest"

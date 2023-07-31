@@ -34,6 +34,9 @@ function App() {
   // we don`t have such endpoint, so I still use refresh thunk
 
   useEffect(() => {
+    // if user is not remembered, then we dont need to check anything related to login
+    if (!isRemembered) return;
+
     // if we dont have refresh token, then we can`t refresh access token and can`t login
     if (!refreshToken || !refreshExpiresAt) return;
 
@@ -50,9 +53,10 @@ function App() {
     if (isAccessExpied && !isAuthenticated) {
       dispatch(refreshUser());
     }
-    // login if all good (both tokens are valid, isRemeber - true and user is not authenticated)
-    if (!isAccessExpied && !isAuthenticated && isRemembered) {
+    // login if all good (both tokens are valid and user is not authenticated)
+    if (!isAccessExpied && !isAuthenticated) {
       dispatch(refreshUser());
+      return;
     }
   }, [
     accessExpiresAt,
