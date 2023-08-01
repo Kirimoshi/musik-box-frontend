@@ -13,12 +13,16 @@ import Modal from "./Modal";
 import Comment from "./Comment";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 import { constants } from "../constansts";
+import { PlaylistTypeConfirmation } from "./PlaylistTypeConfirmation";
 
 export default function MainContainer() {
   const [openModel, setOpenModel] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
   const [playlistStore, setPlaylistStore] = useState(null);
   const [myState, setMyState] = useState(false);
+  const [playlistType, setPlaylistType] = useState("Public");
+  const [confirmationDialog, setConfirmationDialog] = useState(false);
+  const [dialogSubmit, setDialogSubmit] = useState("Public");
   const { id } = useParams();
 
   const fetchPlaylistData = async () => {
@@ -46,6 +50,18 @@ export default function MainContainer() {
 
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
+  };
+
+  const handleConfirmationDialog = (type, value) => {
+    if (type === "submit") setPlaylistType(value);
+    setConfirmationDialog(false);
+  };
+
+  const handlePlaylistType = (value) => {
+    if (playlistType !== "Shared") {
+      setConfirmationDialog(true);
+      setDialogSubmit(value);
+    }
   };
   return (
     <div
@@ -80,8 +96,8 @@ export default function MainContainer() {
             setOpenModel((prev) => !prev);
           }}
         />
-        {openModel && <Modal />}
-        <button className="playlist-type-btn">Public</button>
+        {openModel && <Modal handlePlaylistType={handlePlaylistType} />}
+        <button className="playlist-type-btn">{playlistType}</button>
       </div>
       <div className="playlistdetails">
         <p className="playlistname">{playlistStore?.data?.attributes?.name}</p>
@@ -134,6 +150,12 @@ export default function MainContainer() {
           />
         )}
       </div>
+      {confirmationDialog && (
+        <PlaylistTypeConfirmation
+          dialogSubmit={dialogSubmit}
+          handleConfirmationDialog={handleConfirmationDialog}
+        />
+      )}
       <div className="songsList" data-testid="song-list">
         <SongList playlistStore={playlistStore} />
       </div>
