@@ -19,8 +19,6 @@ const setLocalStorage = (key, value) =>
 export const loginUser = createAsyncThunk("user/login", async (userData) => {
   try {
     const response = await axios.post(LOGIN_URL, userData);
-    // TODO: remove console.log
-    // console.log("response:", response.data);
     return response.data; // transferred to loginUserFulfilled action.payload
   } catch (error) {
     throw error.response.data.errors; // transferred to loginUserRejected action.error
@@ -48,9 +46,9 @@ export const loginUserFulfilled = (state, action) => {
   setLocalStorage("refreshExpiresAt", state.refreshExpiresAt);
   setLocalStorage("isRemembered", state.isRemembered);
 
-  // TODO: cookie-remove Remove, unnecessary cookies, we dont use them for any info storage, only as flag to "remember me" user answer
+  // TODO: cookie-remove, cookies is unnecessary, we dont use them for any info storage, only as flag to "remember me" user answer
   // i transfered the flag to localStorage
-  // if user selected "remember me" option, we need to store access token in cookies
+  // before if user selected "remember me" option, we stored access token in cookies
   setUpCookie("accessToken", state.accessToken, state.accessExpiresAt);
   setUpCookie("accessExpiresAt", state.accessExpiresAt, state.accessExpiresAt);
 };
@@ -72,7 +70,6 @@ export const refreshUser = createAsyncThunk(
           "X-Refresh-Token": `${refreshToken}`,
         },
       });
-      console.log("file: user.thunks.js:76 ~ response.data:", response.data);
       return response.data; // transferred to refreshTokenFulfilled action.payload
     } catch (error) {
       throw error.response.data.errors; // transferred to refreshTokenRejected action.error

@@ -4,8 +4,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 
-import { useSelector } from "react-redux";
-
 import mockedSongs from "./Songs";
 import "../Styles/songlist.css";
 import { constants } from "../constansts";
@@ -19,9 +17,6 @@ export default function SongList({ playlistStore }) {
   const [Songs, setSongs] = useState(structuredClone(mockedSongs));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idSongToDelete, setIdSongToDelete] = useState(null);
-
-  const user = useSelector((state) => state.user);
-  console.log("user:", user);
 
   // Handlers
   // Open modal handler just swith the state of modal inside Modal component
