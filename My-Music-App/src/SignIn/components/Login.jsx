@@ -74,7 +74,6 @@ export function Login() {
   useEffect(() => {
     // TODO: Get possible errors from backend team
     if (loginError) {
-      console.error(loginError);
       errors.email = loginError;
       setFieldError(errors.email);
     }
@@ -204,7 +203,6 @@ export function Login() {
             <button
               className={`signin-button ${!isValid ? "signin-error" : ""}`}
               type="submit"
-              onClick={onSubmit}
             >
               Sign In
             </button>

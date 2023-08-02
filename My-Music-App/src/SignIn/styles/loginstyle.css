@@ -84,6 +84,15 @@
   font-family: Roboto, sans-serif;
 }
 
+.input-wrapper > input:-webkit-autofill,
+.input-wrapper > input:-webkit-autofill:hover,
+.input-wrapper > input:-webkit-autofill:focus,
+.input-wrapper > input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #ffffff;
+  box-shadow: inset 0 0 20px 20px #23232329; /* fallback for old browsers */
+}
+
 .exclamation-circle {
   color: var(--error-color);
 }
