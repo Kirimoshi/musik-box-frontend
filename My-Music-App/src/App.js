@@ -21,36 +21,27 @@ function App() {
     refreshExpiresAt,
   } = useSelector(userSelector);
 
-  // Step 1 Rehydrate tokens from localStorage, run once on start
   useEffect(() => {
-    dispatch(rehydrateTokens());
+    dispatch(rehydrateTokens()); // Rehydrate tokens from localStorage, run once on start
   }, [dispatch]);
 
-  // Step 2
-  // if user checked "remember me" checkbox and it currently NOT logged in, then we need to try
-  // 2.1 check if tokens are expired
-  // 2.2 if expired, then refresh tokens
-  // 2.3 if not expired and access token is valid, then raise isAuthenticated flag (but how to check if token is valid?) we don`t have such endpoint, so I still use refresh thunk
-
   useEffect(() => {
-    // if user is not remembered, then we dont need to check anything related to login
-    if (!isRemembered) return;
+    if (!isRemembered) return; // if user is not remembered, then we dont need to check anything related to login
 
-    // if we dont have refresh token, then we can`t refresh access token and can`t login
-    if (!refreshToken || !refreshExpiresAt) return;
+    if (!refreshToken || !refreshExpiresAt) return; // if we dont have refresh token, then we can`t refresh access token and can`t login
 
     const isRefreshExpied = refreshToken
       ? new Date(refreshExpiresAt) < new Date()
       : true;
-    // if refresh token is expired, then we can`t refresh access token
-    if (isRefreshExpied) return;
+    if (isRefreshExpied) return; // if refresh token is expired, then we can`t refresh access token and can`t login
 
     const isAccessExpied = accessToken
       ? new Date(accessExpiresAt) < new Date()
       : true;
-    // if access token is expired, then we need to refresh it, but if user is already authenticated, then we dont need to refresh it
+
     if (isAccessExpied && !isAuthenticated) {
-      dispatch(refreshUser());
+      dispatch(refreshUser()); // if access token is expired, then we need to refresh it, but if user is already authenticated, then we dont need to refresh it
+      return;
     }
     // login if all good (both tokens are valid and user is not authenticated)
     if (!isAccessExpied && !isAuthenticated) {

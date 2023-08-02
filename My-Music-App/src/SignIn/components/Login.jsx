@@ -5,9 +5,6 @@ import { useFormik } from "formik";
 import { SignInSchema } from "../schemas/SignInSchema";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { constants } from "../constants";
-import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setIsRemembered, clearError } from "../../store/user/user.reducer";
@@ -17,7 +14,7 @@ import {
   errorSelector,
 } from "../../store/user/user.selector";
 
-export function Login(props) {
+export function Login() {
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector(isAuthenticatedSelector);
@@ -33,8 +30,8 @@ export function Login(props) {
       password: values.password,
     };
     setIsSubmitted(true);
-    loginError && dispatch(clearError()); // Clear error from state
-    dispatch(loginUser(userData)); // Call login thunk
+    loginError && dispatch(clearError()); // Clearing error from state befor next login attempt
+    dispatch(loginUser(userData));
   };
 
   const {
@@ -61,8 +58,7 @@ export function Login(props) {
     setFieldValue(name, "");
   };
 
-  // Altering default change handler
-  // we need to clear errors and loginError if user is typing and this errors comes from unsuccessful login
+  // Altering default change handler coz we need to clear errors and loginError if user is typing and this errors comes from unsuccessful login
   const handleFormChange = (event) => {
     const fieldName = event.target.name;
     const fieldValue = event.target.value;
@@ -86,7 +82,6 @@ export function Login(props) {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // alert("You are logged in");
       navigate("/");
     }
   }, [isAuthenticated]);
