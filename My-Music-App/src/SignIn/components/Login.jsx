@@ -4,22 +4,36 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useFormik } from "formik";
 import { SignInSchema } from "../schemas/SignInSchema";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { constants } from "../constants";
-import { useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
-const onSubmit = async (values, actions) => {
-  await new Promise((resolve) => setTimeout(resolve, 10000));
-  actions.resetForm();
-};
-export function Login(props) {
+import { Link, useNavigate } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import { setIsRemembered, clearError } from "../../store/user/user.reducer";
+import { loginUser } from "../../store/user/user.thunks";
+import {
+  isAuthenticatedSelector,
+  errorSelector,
+} from "../../store/user/user.selector";
+
+export function Login() {
+  const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const loginError = useSelector(errorSelector); // despite error in state is global, in login component it is only login error
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const navigate = useNavigate();
-  const [rememberMe, setRememberMe] = useState(false);
-  const [loggedStatus, setLoggedStatus] = useState(false);
-  useEffect(() => {
-    isLoggedIn(loggedStatus, setLoggedStatus, navigate);
-  }, [loggedStatus, setLoggedStatus, navigate]);
+
+  const onSubmit = () => {
+    const userData = {
+      email: values.email,
+      password: values.password,
+    };
+    setIsSubmitted(true);
+    loginError && dispatch(clearError()); // Clearing error from state befor next login attempt
+    dispatch(loginUser(userData));
+  };
+
   const {
     values,
     errors,
@@ -30,6 +44,7 @@ export function Login(props) {
     isValid,
     setFieldValue,
     setFieldError,
+    setErrors,
   } = useFormik({
     initialValues: {
       email: "",
@@ -42,43 +57,34 @@ export function Login(props) {
   const clearFunc = (name) => {
     setFieldValue(name, "");
   };
-  const post = () => {
-    const userData = {
-      email: values.email,
-      password: values.password,
-    };
-    axios
-      .post(constants.API_URL, userData)
-      .then((response) => {
-        if (response.status == 200) {
-          localStorage.setItem("accessToken", response.data.access);
-          localStorage.setItem("refreshToken", response.data.refresh);
-          localStorage.setItem(
-            "accessExpiresAt",
-            response.data.access_expires_at
-          );
-          localStorage.setItem(
-            "RefreshExpiresAt",
-            response.data.refresh_expires_at
-          );
-          if (rememberMe) {
-            document.cookie = `accessToken=${response.data.access}; max-age=${response.data.access_expires_at}; path=/`;
-            document.cookie = `accessExpiresAt=${response.data.access_expires_at}; path=/`;
-          }
-          navigate("/");
-        }
-      })
-      .catch((error) => {
-        const response = error.response.data;
-        if (response.errors === "Invalid password") {
-          errors.password = response.errors;
-          setFieldError(errors.password);
-        } else {
-          errors.email = response.errors;
-          setFieldError(errors.email);
-        }
-      });
+
+  // Altering default change handler coz we need to clear errors and loginError if user is typing and this errors comes from unsuccessful login
+  const handleFormChange = (event) => {
+    const fieldName = event.target.name;
+    const fieldValue = event.target.value;
+    if (isSubmitted && loginError) {
+      dispatch(clearError());
+      setIsSubmitted(false);
+      setErrors({});
+    }
+    setFieldValue(fieldName, fieldValue);
   };
+
+  // Thunk results handling
+  useEffect(() => {
+    // TODO: Get possible errors from backend team
+    if (loginError) {
+      console.error(loginError);
+      errors.email = loginError;
+      setFieldError(errors.email);
+    }
+  }, [loginError, errors]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="header-container">
@@ -88,7 +94,7 @@ export function Login(props) {
         </span>
       </div>
       <div className="login-container">
-        <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
+        <form className="login-form" onSubmit={handleSubmit} autoComplete="on">
           <div className="login-form-inputcheckbox">
             <div className="inputs">
               <div className="label_div_ip1">
@@ -109,7 +115,7 @@ export function Login(props) {
                   </label>
                   <input
                     value={values.email}
-                    onChange={handleChange}
+                    onChange={handleFormChange}
                     className="inputbox"
                     type="email"
                     name="email"
@@ -152,7 +158,7 @@ export function Login(props) {
                     className="inputbox"
                     id="password-label"
                     value={values.password}
-                    onChange={handleChange}
+                    onChange={handleFormChange}
                     onBlur={handleBlur}
                     name="password"
                     data-testid="passwordtest"
@@ -183,7 +189,7 @@ export function Login(props) {
                   id="checkbox"
                   name="checkbox"
                   onClick={(e) => {
-                    setRememberMe(e.target.checked);
+                    dispatch(setIsRemembered(e.target.checked));
                   }}
                 />
               </div>
@@ -198,7 +204,7 @@ export function Login(props) {
             <button
               className={`signin-button ${!isValid ? "signin-error" : ""}`}
               type="submit"
-              onClick={post}
+              onClick={onSubmit}
             >
               Sign In
             </button>

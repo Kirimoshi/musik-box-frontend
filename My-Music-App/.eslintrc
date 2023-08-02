@@ -29,6 +29,7 @@
       { "namedComponents": "function-declaration" }
     ],
     "react/jsx-pascal-case": "warn",
-    "react/prop-types": "warn"
+    "react/prop-types": "warn",
+    "no-unused-vars": "warn"
   }
 }
