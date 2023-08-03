@@ -18,10 +18,12 @@ import {
 
 import ModalDialog from "../../shared/ModalDialog";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { myPlaylistsSelector } from "../../store/myPlaylists/myPlaylists.selector";
+import { deleteMyPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
 
 export default function Playlists({ handleViewThePlaylist }) {
+  const dispatch = useDispatch();
   // State
   const myPlaylists = useSelector(myPlaylistsSelector);
 
@@ -32,6 +34,7 @@ export default function Playlists({ handleViewThePlaylist }) {
   const [isModalOpen, setIsModalOpen] = useState(false); // Current state of delete modal
   const [idPlaylistsItemToDelete, setIdPlaylistsItemToDelete] = useState(null); // Store id seperate for readablity and transfer to modal delete
 
+  const [playlistData, setPlaylistData] = useState([]);
   // Handlers
 
   const navigate = useNavigate();
@@ -64,30 +67,20 @@ export default function Playlists({ handleViewThePlaylist }) {
   // this callback will be called when the user click on the remove button
   const handlerRemove = () => {
     if (!idPlaylistsItemToDelete) return;
-    const newPlaylists = playlistData.filter(
-      (playlistsItem) => playlistsItem.id !== idPlaylistsItemToDelete
+    // const newPlaylists = playlistData.filter(
+    //   (playlistsItem) => playlistsItem.id !== idPlaylistsItemToDelete
+    // );
+    // setPlaylistData(newPlaylists);
+    console.log(
+      "file: Playlists.jsx:75 ~ handlerRemove ~ idPlaylistsItemToDelete:",
+      idPlaylistsItemToDelete
     );
-    setPlaylistData(newPlaylists);
+    dispatch(deleteMyPlaylist(idPlaylistsItemToDelete));
     setOpenModel(null);
   };
   const handleNavigate = (id) => {
     handleViewThePlaylist();
     navigate(`/ViewMyPlaylists/ViewThePlaylist/${id}`);
-  };
-
-  // Fetchers
-  const fetchPlaylistsData = async () => {
-    const data = await axios
-      .get(constants.GET_API_URL, {
-        params: { page: 1 },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then((response) => {
-        return response.data.data;
-      });
-    return data;
   };
 
   return (
@@ -163,19 +156,19 @@ export default function Playlists({ handleViewThePlaylist }) {
                 }}
               />
               {openModel === playlistItem.id && (
-                <div className="playlist-delete-icon-modal">
-                  <div className="playlist-modal-first-element">
+                <Menu>
+                  <MenuItemDelete
+                    onClick={() => handleDeletePlaylistsItem(playlistItem.id)}
+                  >
                     <RiDeleteBin6Line />
                     <p>Delete Playlist</p>
-                  </div>
-                  <div
-                    className="playlist-modal-second-element"
-                    onClick={handleModifyPlaylistModal}
-                  >
+                  </MenuItemDelete>
+                  <MenuItemDivider />
+                  <MenuItemEdit onClick={handleModifyPlaylistModal}>
                     <FiEdit2 />
                     <p>Edit</p>
-                  </div>
-                </div>
+                  </MenuItemEdit>
+                </Menu>
               )}
             </div>
           ))}

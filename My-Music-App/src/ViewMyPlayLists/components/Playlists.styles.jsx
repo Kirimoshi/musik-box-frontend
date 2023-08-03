@@ -6,7 +6,7 @@ const flexCenter = css`
   align-items: center;
 `;
 
-export const Menu = styled.div`
+export const Menu = styled.ul`
   // Layout
   display: grid;
   grid-template-columns: 1fr;
@@ -45,18 +45,22 @@ const commonMenuItem = css`
     letter-spacing: 0.5px;
   }
 `;
-export const MenuItemDivider = styled.div`
+export const MenuItemDivider = styled.li`
   width: 100%;
   height: 1px;
   margin: 8px 0px;
   background: #49454f;
 `;
-export const MenuItemDelete = styled.p`
+export const MenuItemDelete = styled.li`
   ${commonMenuItem}
   color: var(--m-3-sys-dark-error, #F2B8B5);
   cursor: pointer;
 `;
-export const MenuItemEdit = styled.p`
+export const MenuItemEdit = styled.li`
   ${commonMenuItem}
   color: var(--m-3-sys-dark-on-surface, #E6E0E9);
+  cursor: pointer;
+  &:hover {
+    color: #f2b8b5;
+  }
 `;

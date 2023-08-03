@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 
 import LeftMenu from "./LeftMenu";
 import MainContainerMyPlaylists from "./MainContainerMyPlaylists";
@@ -7,44 +6,25 @@ import "../styles/myplaylistpage.css";
 import Footer from "./Footer";
 import "../styles/reset.css";
 
+import { fetchMyPlaylistData } from "../../store/myPlaylists/myPlaylists.thunks";
+
 import { useSelector, useDispatch } from "react-redux";
-import { GET_MY_PLAYLIST_URL } from "../../store/constants";
 import { userSelector } from "../../store/user/user.selector";
-import {
-  setMyPlaylists,
-  setSongs,
-} from "../../store/myPlaylists/myPlaylists.reducer";
-
-const getMyPlaylistData = async (page, accessToken) => {
-  const headersList = {
-    Accept: "*/*",
-    Authorization: `Bearer ${accessToken}`,
-  };
-
-  const reqOptions = {
-    url: `${GET_MY_PLAYLIST_URL}?page=${page}&include=songs`,
-    method: "GET",
-    headers: headersList,
-  };
-
-  const response = await axios.request(reqOptions);
-  return response.data;
-};
+import { errorSelector } from "../../store/myPlaylists/myPlaylists.selector";
 
 function MyPlayListPage() {
   const dispatch = useDispatch();
-  const { accessToken, isAuthenticated } = useSelector(userSelector);
+  const { isAuthenticated } = useSelector(userSelector);
+  const error = useSelector(errorSelector);
 
   useEffect(() => {
     if (!isAuthenticated) return;
+    dispatch(fetchMyPlaylistData("1")); // TODO: "1" is a magic number for page of playlists, i don't know where to get it from
+  }, [dispatch, isAuthenticated]);
 
-    const fetchData = async () => {
-      const responce = await getMyPlaylistData("1", accessToken); //TODO: 1 is magic number, ask mentor or backend team where to get this value
-      dispatch(setMyPlaylists(responce.data));
-      dispatch(setSongs(responce.included));
-    };
-    fetchData(); //TODO: add error handling, preferably using thunk approach
-  }, [accessToken, dispatch, isAuthenticated]);
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
 
   return (
     <div className="myplaylist-container">
