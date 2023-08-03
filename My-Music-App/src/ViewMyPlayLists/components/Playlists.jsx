@@ -24,7 +24,6 @@ import { deleteMyPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
 
 export default function Playlists({ handleViewThePlaylist }) {
   const dispatch = useDispatch();
-  // State
   const myPlaylists = useSelector(myPlaylistsSelector);
 
   const [modifyId, setModifyId] = useState(null);
@@ -33,9 +32,6 @@ export default function Playlists({ handleViewThePlaylist }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false); // Current state of delete modal
   const [idPlaylistsItemToDelete, setIdPlaylistsItemToDelete] = useState(null); // Store id seperate for readablity and transfer to modal delete
-
-  const [playlistData, setPlaylistData] = useState([]);
-  // Handlers
 
   const navigate = useNavigate();
   const handleModifyPlaylistModal = () => {
@@ -51,26 +47,18 @@ export default function Playlists({ handleViewThePlaylist }) {
       setOpenModel(x);
     }
   };
-  // call from MENU delete button
-  const handleDeletePlaylistsItem = (playlistsItemId) => {
+
+  const handleDeletePlaylistsItem = (playlistsItemId) => () => {
     setIdPlaylistsItemToDelete(playlistsItemId);
     handleOpenModal();
   };
 
-  // Open modal handler just swith the state of modal inside Modal component
   const handleOpenModal = () => setIsModalOpen(true);
 
-  // This callback will be called when the user click on the cancel button
-  // inside the modal, and this will update isModalOpen state to false
   const handleCloseModal = () => setIsModalOpen(false);
 
-  // this callback will be called when the user click on the remove button
   const handlerRemove = () => {
     if (!idPlaylistsItemToDelete) return;
-    // const newPlaylists = playlistData.filter(
-    //   (playlistsItem) => playlistsItem.id !== idPlaylistsItemToDelete
-    // );
-    // setPlaylistData(newPlaylists);
     console.log(
       "file: Playlists.jsx:75 ~ handlerRemove ~ idPlaylistsItemToDelete:",
       idPlaylistsItemToDelete
@@ -106,34 +94,37 @@ export default function Playlists({ handleViewThePlaylist }) {
 
       <div className="playlist-songlist">
         <div className="playlist-songsContainer">
-          {myPlaylists?.map((playlistItem) => (
-            <div
-              className={`playlist-song ${
-                openModel === playlistItem.id ? "displayTop" : ""
-              }`}
-              key={playlistItem.id}
-            >
+          {myPlaylists.map(
+            ({
+              id,
+              attributes: {
+                logo,
+                name,
+                first_ten_songs: { data: firstTenSongs },
+              },
+            }) => (
               <div
-                className="playlist-imageBox-artistinfo"
-                onClick={() => {
-                  handleNavigate(playlistItem.id);
-                }}
+                className={`playlist-song ${
+                  openModel === id ? "displayTop" : ""
+                }`}
+                key={id}
               >
-                <img
-                  src={constants.store_URL + playlistItem.attributes.logo.id}
-                  alt="song preview"
-                  className="playlist-song-image"
-                />
-                <div className="playlist-artistInfo">
-                  <p className="artistinfo-playlistname">
-                    {playlistItem.attributes.name}
-                  </p>
-                  <div className="artistinfo-playlistsongs">
-                    {playlistItem.attributes.first_ten_songs.data.map(
-                      (song, index) => {
-                        let playlistSongslength =
-                          playlistItem.attributes.first_ten_songs.data.length -
-                          1;
+                <div
+                  className="playlist-imageBox-artistinfo"
+                  onClick={() => {
+                    handleNavigate(id);
+                  }}
+                >
+                  <img
+                    src={constants.store_URL + logo.id}
+                    alt="song preview"
+                    className="playlist-song-image"
+                  />
+                  <div className="playlist-artistInfo">
+                    <p className="artistinfo-playlistname">{name}</p>
+                    <div className="artistinfo-playlistsongs">
+                      {firstTenSongs.map((song, index) => {
+                        let playlistSongslength = firstTenSongs.length - 1;
                         return (
                           <p key={song.id}>
                             {song.attributes.title +
@@ -144,34 +135,32 @@ export default function Playlists({ handleViewThePlaylist }) {
                             <span className="song-space" />
                           </p>
                         );
-                      }
-                    )}
+                      })}
+                    </div>
                   </div>
                 </div>
+                <BsThreeDotsVertical
+                  className="playlist-vertical-menu"
+                  onClick={() => {
+                    handleClick(id);
+                  }}
+                />
+                {openModel === id && (
+                  <Menu>
+                    <MenuItemDelete onClick={handleDeletePlaylistsItem(id)}>
+                      <RiDeleteBin6Line />
+                      <p>Delete Playlist</p>
+                    </MenuItemDelete>
+                    <MenuItemDivider />
+                    <MenuItemEdit onClick={handleModifyPlaylistModal}>
+                      <FiEdit2 />
+                      <p>Edit</p>
+                    </MenuItemEdit>
+                  </Menu>
+                )}
               </div>
-              <BsThreeDotsVertical
-                className="playlist-vertical-menu"
-                onClick={() => {
-                  handleClick(playlistItem.id);
-                }}
-              />
-              {openModel === playlistItem.id && (
-                <Menu>
-                  <MenuItemDelete
-                    onClick={() => handleDeletePlaylistsItem(playlistItem.id)}
-                  >
-                    <RiDeleteBin6Line />
-                    <p>Delete Playlist</p>
-                  </MenuItemDelete>
-                  <MenuItemDivider />
-                  <MenuItemEdit onClick={handleModifyPlaylistModal}>
-                    <FiEdit2 />
-                    <p>Edit</p>
-                  </MenuItemEdit>
-                </Menu>
-              )}
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
     </>
