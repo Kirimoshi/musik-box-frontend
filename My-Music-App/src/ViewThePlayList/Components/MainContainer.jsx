@@ -29,8 +29,12 @@ export default function MainContainer() {
     const data = await axios
       .get(constants.playlistAPI_URL + id, {
         params: { id: id },
+        // TODO: right now i just fixed access to local storage, but we need to move this to thunks,
+        // or at least always use JSON.parse and JSON.stringify, coz local storage can store only strings
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("accessToken")
+          )}`,
         },
       })
       .then((response) => {

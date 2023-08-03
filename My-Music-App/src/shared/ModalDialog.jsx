@@ -47,23 +47,15 @@ function ModalDialog({ options }) {
   const handleClose = () => {
     onClose();
   };
-  // TODO before merge: remove className from styled components
+
   return (
-    <ModalContainer ref={dialogRef} className="modal__container">
-      <Title className="modal__title">{title}</Title>
-      <Divider className="modal__divider" />
-      <ActionButton
-        className="modal__btn modal__btn--remove"
-        onClick={handleAction}
-      >
+    <ModalContainer ref={dialogRef}>
+      <Title>{title}</Title>
+      <Divider />
+      <ActionButton onClick={handleAction}>
         {`${actionButtonText}`}
       </ActionButton>
-      <CancelButton
-        className="modal__btn modal__btn--cancel"
-        onClick={handleClose}
-      >
-        {`${closeButtonText}`}
-      </CancelButton>
+      <CancelButton onClick={handleClose}>{`${closeButtonText}`}</CancelButton>
     </ModalContainer>
   );
 }
