@@ -29,11 +29,13 @@ export const userSlice = createSlice({
     // I thick adding redux-persist is overkill right now, so rehydration was implemented manually
     rehydrateTokens: (state) => {
       // Initial state is null so it better parse each localStorage item, especially if it boolean
-      state.accessToken = getItemFromLocalStorage("accessToken");
-      state.accessExpiresAt = getItemFromLocalStorage("accessExpiresAt");
-      state.refreshToken = getItemFromLocalStorage("refreshToken");
-      state.refreshExpiresAt = getItemFromLocalStorage("refreshExpiresAt");
       state.isRemembered = getItemFromLocalStorage("isRemembered");
+      if (state.isRemembered) {
+        state.accessToken = getItemFromLocalStorage("accessToken");
+        state.accessExpiresAt = getItemFromLocalStorage("accessExpiresAt");
+        state.refreshToken = getItemFromLocalStorage("refreshToken");
+        state.refreshExpiresAt = getItemFromLocalStorage("refreshExpiresAt");
+      }
     },
     // isRemembered flag in form implemented as stand alone checkbox, so we need "personal" reducer for it
     setIsRemembered: (state, action) => {
