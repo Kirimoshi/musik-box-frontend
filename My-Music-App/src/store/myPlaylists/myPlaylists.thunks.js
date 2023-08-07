@@ -14,7 +14,7 @@ export const fetchMyPlaylistData = createAsyncThunk(
     };
 
     const reqOptions = {
-      url: `${MY_PLAYLIST_URL}?page=${page}&include=songs`,
+      url: `${MY_PLAYLIST_URL}?page=${page}`,
       method: "GET",
       headers: headersList,
     };
@@ -76,6 +76,46 @@ export const deleteMyPlaylistFulfilled = (state, action) => {
   );
 };
 export const deleteMyPlaylistRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+// Delete song from My Playlist Thunk
+// Url http://127.0.0.1:3000/api/v1/my/playlists/${playlist id}/playlist_songs/${song id}
+// I reuse loading and error from deleteMyPlaylist, in logic this is same request but deeper
+export const deleteSongFromMyPlaylist = createAsyncThunk(
+  "myPlaylistsSlice/deleteSongFromMyPlaylist",
+  async ({ playlistId, songId }, { getState }) => {
+    const accessToken = getState().user.accessToken;
+
+    const headersList = {
+      Accept: "*/*",
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    const reqOptions = {
+      url: `${MY_PLAYLIST_URL}/${playlistId}/playlist_songs/${songId}`,
+      method: "DELETE",
+      headers: headersList,
+    };
+    try {
+      const response = await axios.request(reqOptions);
+      return { data: response.data, songId };
+    } catch (error) {
+      throw error.response.data.errors;
+    }
+  }
+);
+export const deleteSongFromMyPlaylistPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const deleteSongFromMyPlaylistFulfilled = (state, action) => {
+  state.loading = false;
+  // REDO THIS, this is not correct song massive, need to access playlist hierarhy and delete song from there
+  state.songs = state.songs.filter((song) => song.id !== action.payload.songId);
+};
+export const deleteSongFromMyPlaylistRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

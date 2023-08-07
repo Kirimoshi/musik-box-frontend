@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-import mockedSongs from "./Songs";
 import "../Styles/songlist.css";
 import { constants } from "../constansts";
 
 import ModalDialog from "../../shared/ModalDialog";
 
+import { useDispatch } from "react-redux";
+
 export default function SongList({ playlistStore }) {
   // state
+  const dispatch = useDispatch();
+
+  const [playlist, setPlaylist] = useState({});
+  const [songs, setSongs] = useState([]);
+  console.log("file: SongList.jsx:24 ~ SongList ~ songs:", songs);
+
+  useEffect(() => {
+    setPlaylist(playlistStore.data);
+  }, [playlistStore.data]);
+
+  useEffect(() => {
+    setSongs(playlistStore.included.filter((song) => song.type === "song"));
+  }, [playlistStore.included]);
 
   const [openModel, setOpenModel] = useState(null);
-  const [Songs, setSongs] = useState(structuredClone(mockedSongs));
+  // const [Songs, setSongs] = useState(structuredClone(mockedSongs));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idSongToDelete, setIdSongToDelete] = useState(null);
 
@@ -30,7 +44,7 @@ export default function SongList({ playlistStore }) {
   // this callback will be called when the user click on the remove button
   const handlerRemove = () => {
     if (!idSongToDelete) return;
-    const newSongs = Songs.filter((song) => song.id !== idSongToDelete);
+    const newSongs = songs.filter((song) => song.id !== idSongToDelete);
     setSongs(newSongs);
     setOpenModel(null);
   };
@@ -63,50 +77,53 @@ export default function SongList({ playlistStore }) {
             onClose: handleCloseModal,
           }}
         />
-        {playlistStore?.included?.slice(1).map((song) => (
-          <div
-            className={`songs ${openModel === song.id ? "top" : ""}`}
-            key={song.id}
-          >
-            <div className={`song`}>
-              <div className="imageBox-artistinfo">
-                <img
-                  src={
-                    constants.store_URL +
-                    playlistStore?.data?.attributes?.logo.id
-                  }
-                  alt="song preview"
-                  className="image1"
-                />
-                <div className="artistInfo">
-                  <p>{song.attributes.title}</p>
-                  <p>{song.attributes.artist_name}</p>
+        {songs.map(
+          ({
+            id,
+            attributes: {
+              title,
+              artist_name: artistName,
+              cover: { id: coverFileName },
+            },
+          }) => (
+            <div className={`songs ${openModel === id ? "top" : ""}`} key={id}>
+              <div className={`song`}>
+                <div className="imageBox-artistinfo">
+                  <img
+                    src={`${constants.store_URL}/${coverFileName} `}
+                    alt="song cover"
+                    className="image1"
+                  />
+                  <div className="artistInfo">
+                    <p>{title}</p>
+                    <p>{artistName}</p>
+                  </div>
+                </div>
+                <div className="songlist-vertical-menu">
+                  <BsThreeDotsVertical
+                    onClick={() => {
+                      verticalMenuToggle(id);
+                    }}
+                  />
+
+                  {openModel === id && (
+                    <div className="delete-modal">
+                      {
+                        <div
+                          onClick={() => handleDeleteSong(id)}
+                          className="delete-tag"
+                        >
+                          <RiDeleteBin6Line className="delete-button" />
+                          <span>Remove song from playlist</span>
+                        </div>
+                      }
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="songlist-vertical-menu">
-                <BsThreeDotsVertical
-                  onClick={() => {
-                    verticalMenuToggle(song.id);
-                  }}
-                />
-
-                {openModel === song.id && (
-                  <div className="delete-modal">
-                    {
-                      <div
-                        onClick={() => handleDeleteSong(song.id)}
-                        className="delete-tag"
-                      >
-                        <RiDeleteBin6Line className="delete-button" />
-                        <span>Remove song from playlist</span>
-                      </div>
-                    }
-                  </div>
-                )}
-              </div>
             </div>
-          </div>
-        ))}
+          )
+        )}
       </div>
     </div>
   );
