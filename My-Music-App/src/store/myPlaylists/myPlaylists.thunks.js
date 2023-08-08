@@ -32,8 +32,8 @@ export const fetchMyPlaylistDataPending = (state) => {
 };
 export const fetchMyPlaylistDataFulfilled = (state, action) => {
   state.loading = false;
-  state.myPlaylists = action.payload.data;
-  state.songs = action.payload.included;
+  state.myPlaylists = action.payload.playlists.data;
+  state.songs = action.payload.playlists.included;
 };
 export const fetchMyPlaylistDataRejected = (state, action) => {
   state.loading = false;
