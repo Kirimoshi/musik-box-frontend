@@ -3,8 +3,8 @@ import axios from "axios";
 import { MY_PLAYLIST_URL } from "../constants";
 
 // Fetch My Playlist Data Thunk
-export const fetchMyPlaylistData = createAsyncThunk(
-  "myPlaylistsSlice/fetchMyPlaylistData",
+export const fetchMyPlaylistsData = createAsyncThunk(
+  "myPlaylistsSlice/fetchMyPlaylistsData",
   async (page, { getState }) => {
     const accessToken = getState().user.accessToken;
 
@@ -26,16 +26,16 @@ export const fetchMyPlaylistData = createAsyncThunk(
     }
   }
 );
-export const fetchMyPlaylistDataPending = (state) => {
+export const fetchMyPlaylistsDataPending = (state) => {
   state.loading = true;
   state.error = null;
 };
-export const fetchMyPlaylistDataFulfilled = (state, action) => {
+export const fetchMyPlaylistsDataFulfilled = (state, action) => {
   state.loading = false;
   state.myPlaylists = action.payload.playlists.data;
   state.songs = action.payload.playlists.included;
 };
-export const fetchMyPlaylistDataRejected = (state, action) => {
+export const fetchMyPlaylistsDataRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };
@@ -81,8 +81,6 @@ export const deleteMyPlaylistRejected = (state, action) => {
 };
 
 // Delete song from My Playlist Thunk
-// Url http://127.0.0.1:3000/api/v1/my/playlists/${playlist id}/playlist_songs/${song id}
-// I reuse loading and error from deleteMyPlaylist, in logic this is same request but deeper
 export const deleteSongFromMyPlaylist = createAsyncThunk(
   "myPlaylistsSlice/deleteSongFromMyPlaylist",
   async ({ playlistId, songId }, { getState }) => {

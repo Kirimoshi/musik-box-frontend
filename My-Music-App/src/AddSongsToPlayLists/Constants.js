@@ -1,4 +1,4 @@
-export const constants={
-    Songs_API_URL: "http://127.0.0.1:3000/api/v1/songs",
-    CreateNewPlaylistSong_API_URL: "http://127.0.0.1:3000/api/v1/my/playlists/",
-}
+export const constants = {
+  Songs_API_URL: "http://127.0.0.1:3000/api/v1/songs",
+  CreateNewPlaylistSong_API_URL: "http://127.0.0.1:3000/api/v1/my/playlists/",
+};

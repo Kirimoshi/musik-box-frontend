@@ -6,7 +6,7 @@ import "../styles/myplaylistpage.css";
 import Footer from "./Footer";
 import "../styles/reset.css";
 
-import { fetchMyPlaylistData } from "../../store/myPlaylists/myPlaylists.thunks";
+import { fetchMyPlaylistsData } from "../../store/myPlaylists/myPlaylists.thunks";
 
 import { useSelector, useDispatch } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
@@ -19,7 +19,7 @@ function MyPlayListPage() {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    dispatch(fetchMyPlaylistData("1")); // TODO: "1" is a magic number for page of playlists, i don't know where to get it from
+    dispatch(fetchMyPlaylistsData("1")); // TODO: "1" is a magic number for page of playlists, i don't know where to get it from
   }, [dispatch, isAuthenticated]);
 
   useEffect(() => {

@@ -22,16 +22,16 @@ export const myPlaylistsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(
-        thunks.fetchMyPlaylistData.pending,
-        thunks.fetchMyPlaylistDataPending
+        thunks.fetchMyPlaylistsData.pending,
+        thunks.fetchMyPlaylistsDataPending
       )
       .addCase(
-        thunks.fetchMyPlaylistData.fulfilled,
-        thunks.fetchMyPlaylistDataFulfilled
+        thunks.fetchMyPlaylistsData.fulfilled,
+        thunks.fetchMyPlaylistsDataFulfilled
       )
       .addCase(
-        thunks.fetchMyPlaylistData.rejected,
-        thunks.fetchMyPlaylistDataRejected
+        thunks.fetchMyPlaylistsData.rejected,
+        thunks.fetchMyPlaylistsDataRejected
       )
       .addCase(thunks.deleteMyPlaylist.pending, thunks.deleteMyPlaylistPending)
       .addCase(

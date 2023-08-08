@@ -1,21 +1,42 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import "../Styles/songlist.css";
 import { constants } from "../constansts";
 
+import { useSelector } from "react-redux";
+import { userSelector } from "../../store/user/user.selector";
+import { MY_PLAYLIST_URL } from "../../store/constants";
+
 import ModalDialog from "../../shared/ModalDialog";
 
-import { useDispatch } from "react-redux";
+const fetchDeleteSongFromPlaylist = async (accessToken, playlistId, songId) => {
+  const headersList = {
+    Accept: "*/*",
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const reqOptions = {
+    url: `${MY_PLAYLIST_URL}/${playlistId}/playlist_songs/${songId}`,
+    method: "DELETE",
+    headers: headersList,
+  };
+  try {
+    const response = await axios.request(reqOptions);
+    return { data: response.data, songId };
+  } catch (error) {
+    throw error.response.data.errors;
+  }
+};
 
 export default function SongList({ playlistStore }) {
   // state
-  const dispatch = useDispatch();
-
+  const { accessToken, isAuthenticated } = useSelector(userSelector);
   const [playlist, setPlaylist] = useState({});
   const [songs, setSongs] = useState([]);
-  console.log("file: SongList.jsx:24 ~ SongList ~ songs:", songs);
 
   useEffect(() => {
     setPlaylist(playlistStore.data);
@@ -26,26 +47,28 @@ export default function SongList({ playlistStore }) {
   }, [playlistStore.included]);
 
   const [openModel, setOpenModel] = useState(null);
-  // const [Songs, setSongs] = useState(structuredClone(mockedSongs));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idSongToDelete, setIdSongToDelete] = useState(null);
 
   // Handlers
-  // Open modal handler just swith the state of modal inside Modal component
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
-  // This callback gonna be called when the user click on the cancel button
-  // inside the modal, and this will update isModalOpen state to false
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-  // this callback will be called when the user click on the remove button
   const handlerRemove = () => {
-    if (!idSongToDelete) return;
-    const newSongs = songs.filter((song) => song.id !== idSongToDelete);
-    setSongs(newSongs);
+    if (!idSongToDelete || !isAuthenticated) return;
+
+    try {
+      fetchDeleteSongFromPlaylist(accessToken, playlist.id, idSongToDelete);
+      const newSongs = songs.filter((song) => song.id !== idSongToDelete);
+      setSongs(newSongs);
+    } catch (error) {
+      console.error(error);
+    }
+
     setOpenModel(null);
   };
 
@@ -96,7 +119,7 @@ export default function SongList({ playlistStore }) {
                   />
                   <div className="artistInfo">
                     <p>{title}</p>
-                    <p>{artistName}</p>
+                    <p>{artistName.join(", ")}</p>
                   </div>
                 </div>
                 <div className="songlist-vertical-menu">
@@ -128,3 +151,24 @@ export default function SongList({ playlistStore }) {
     </div>
   );
 }
+
+SongList.propTypes = {
+  playlistStore: PropTypes.shape({
+    data: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+    included: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        attributes: PropTypes.shape({
+          title: PropTypes.string,
+          artist_name: PropTypes.arrayOf(PropTypes.string),
+          cover: PropTypes.shape({
+            id: PropTypes.string,
+          }),
+        }),
+      })
+    ),
+  }),
+};

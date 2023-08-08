@@ -28,7 +28,7 @@ export default function MainContainer() {
   const [dialogSubmit, setDialogSubmit] = useState("Public");
   const { id } = useParams();
 
-  const { accessToken } = useSelector(userSelector);
+  const { accessToken, isAuthenticated } = useSelector(userSelector);
 
   const fetchPlaylistData = async () => {
     const data = await axios
@@ -47,13 +47,14 @@ export default function MainContainer() {
   };
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     const fetchData = async () => {
       const data = await fetchPlaylistData();
       setPlaylistStore(data);
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myState]);
+  }, [myState, isAuthenticated]);
 
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
