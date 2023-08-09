@@ -3,8 +3,8 @@ import axios from "axios";
 import { MY_PLAYLIST_URL } from "../constants";
 
 // Fetch My Playlist Data Thunk
-export const fetchMyPlaylistData = createAsyncThunk(
-  "myPlaylistsSlice/fetchMyPlaylistData",
+export const fetchMyPlaylistsData = createAsyncThunk(
+  "myPlaylistsSlice/fetchMyPlaylistsData",
   async (page, { getState }) => {
     const accessToken = getState().user.accessToken;
 
@@ -14,7 +14,7 @@ export const fetchMyPlaylistData = createAsyncThunk(
     };
 
     const reqOptions = {
-      url: `${MY_PLAYLIST_URL}?page=${page}&include=songs`,
+      url: `${MY_PLAYLIST_URL}?page=${page}`,
       method: "GET",
       headers: headersList,
     };
@@ -26,16 +26,16 @@ export const fetchMyPlaylistData = createAsyncThunk(
     }
   }
 );
-export const fetchMyPlaylistDataPending = (state) => {
+export const fetchMyPlaylistsDataPending = (state) => {
   state.loading = true;
   state.error = null;
 };
-export const fetchMyPlaylistDataFulfilled = (state, action) => {
+export const fetchMyPlaylistsDataFulfilled = (state, action) => {
   state.loading = false;
   state.myPlaylists = action.payload.playlists.data;
   state.songs = action.payload.playlists.included;
 };
-export const fetchMyPlaylistDataRejected = (state, action) => {
+export const fetchMyPlaylistsDataRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

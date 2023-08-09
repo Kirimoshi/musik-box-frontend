@@ -59,10 +59,6 @@ export default function Playlists({ handleViewThePlaylist }) {
 
   const handlerRemove = () => {
     if (!idPlaylistsItemToDelete) return;
-    console.log(
-      "file: Playlists.jsx:75 ~ handlerRemove ~ idPlaylistsItemToDelete:",
-      idPlaylistsItemToDelete
-    );
     dispatch(deleteMyPlaylist(idPlaylistsItemToDelete));
     setOpenModel(null);
   };

@@ -15,6 +15,9 @@ import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSon
 import { constants } from "../constansts";
 import { PlaylistTypeConfirmation } from "./PlaylistTypeConfirmation";
 
+import { useSelector } from "react-redux";
+import { userSelector } from "../../store/user/user.selector";
+
 export default function MainContainer() {
   const [openModel, setOpenModel] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
@@ -25,16 +28,16 @@ export default function MainContainer() {
   const [dialogSubmit, setDialogSubmit] = useState("Public");
   const { id } = useParams();
 
+  const { accessToken, isAuthenticated } = useSelector(userSelector);
+
   const fetchPlaylistData = async () => {
     const data = await axios
       .get(constants.playlistAPI_URL + id, {
         params: { id: id },
-        // TODO: right now i just fixed access to local storage, but we need to move this to thunks,
-        // or at least always use JSON.parse and JSON.stringify, coz local storage can store only strings
+        // TODO: there is some delay when we write/access localstorage, so i use accessToken from redux store, it always has the latest value
+        // still we have to rewrite this to use thunk
         headers: {
-          Authorization: `Bearer ${JSON.parse(
-            localStorage.getItem("accessToken")
-          )}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((response) => {
@@ -44,13 +47,14 @@ export default function MainContainer() {
   };
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     const fetchData = async () => {
       const data = await fetchPlaylistData();
       setPlaylistStore(data);
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myState]);
+  }, [myState, isAuthenticated]);
 
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
@@ -161,7 +165,9 @@ export default function MainContainer() {
         />
       )}
       <div className="songsList" data-testid="song-list">
-        <SongList playlistStore={playlistStore} />
+        {
+          playlistStore && <SongList playlistStore={playlistStore} /> // don`t render until we get the data
+        }
       </div>
       <Comment data-testid="comment-list" />
     </div>

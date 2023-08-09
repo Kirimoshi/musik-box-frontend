@@ -1,37 +1,74 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-import mockedSongs from "./Songs";
 import "../Styles/songlist.css";
 import { constants } from "../constansts";
 
+import { useSelector } from "react-redux";
+import { userSelector } from "../../store/user/user.selector";
+import { MY_PLAYLIST_URL } from "../../store/constants";
+
 import ModalDialog from "../../shared/ModalDialog";
+
+const fetchDeleteSongFromPlaylist = async (accessToken, playlistId, songId) => {
+  const headersList = {
+    Accept: "*/*",
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const reqOptions = {
+    url: `${MY_PLAYLIST_URL}/${playlistId}/playlist_songs/${songId}`,
+    method: "DELETE",
+    headers: headersList,
+  };
+  try {
+    const response = await axios.request(reqOptions);
+    return { data: response.data, songId };
+  } catch (error) {
+    throw error.response.data.errors;
+  }
+};
 
 export default function SongList({ playlistStore }) {
   // state
+  const { accessToken, isAuthenticated } = useSelector(userSelector);
+  const [playlist, setPlaylist] = useState({});
+  const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    setPlaylist(playlistStore.data);
+  }, [playlistStore.data]);
+
+  useEffect(() => {
+    setSongs(playlistStore.included.filter((song) => song.type === "song"));
+  }, [playlistStore.included]);
 
   const [openModel, setOpenModel] = useState(null);
-  const [Songs, setSongs] = useState(structuredClone(mockedSongs));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idSongToDelete, setIdSongToDelete] = useState(null);
 
   // Handlers
-  // Open modal handler just swith the state of modal inside Modal component
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
-  // This callback gonna be called when the user click on the cancel button
-  // inside the modal, and this will update isModalOpen state to false
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-  // this callback will be called when the user click on the remove button
   const handlerRemove = () => {
-    if (!idSongToDelete) return;
-    const newSongs = Songs.filter((song) => song.id !== idSongToDelete);
-    setSongs(newSongs);
+    if (!idSongToDelete || !isAuthenticated) return;
+
+    try {
+      fetchDeleteSongFromPlaylist(accessToken, playlist.id, idSongToDelete);
+      const newSongs = songs.filter((song) => song.id !== idSongToDelete);
+      setSongs(newSongs);
+    } catch (error) {
+      console.error(error);
+    }
+
     setOpenModel(null);
   };
 
@@ -63,51 +100,75 @@ export default function SongList({ playlistStore }) {
             onClose: handleCloseModal,
           }}
         />
-        {playlistStore?.included?.slice(1).map((song) => (
-          <div
-            className={`songs ${openModel === song.id ? "top" : ""}`}
-            key={song.id}
-          >
-            <div className={`song`}>
-              <div className="imageBox-artistinfo">
-                <img
-                  src={
-                    constants.store_URL +
-                    playlistStore?.data?.attributes?.logo.id
-                  }
-                  alt="song preview"
-                  className="image1"
-                />
-                <div className="artistInfo">
-                  <p>{song.attributes.title}</p>
-                  <p>{song.attributes.artist_name}</p>
+        {songs.map(
+          ({
+            id,
+            attributes: {
+              title,
+              artist_name: artistName,
+              cover: { id: coverFileName },
+            },
+          }) => (
+            <div className={`songs ${openModel === id ? "top" : ""}`} key={id}>
+              <div className={`song`}>
+                <div className="imageBox-artistinfo">
+                  <img
+                    src={`${constants.store_URL}/${coverFileName} `}
+                    alt="song cover"
+                    className="image1"
+                  />
+                  <div className="artistInfo">
+                    <p>{title}</p>
+                    <p>{artistName.join(", ")}</p>
+                  </div>
+                </div>
+                <div className="songlist-vertical-menu">
+                  <BsThreeDotsVertical
+                    onClick={() => {
+                      verticalMenuToggle(id);
+                    }}
+                  />
+
+                  {openModel === id && (
+                    <div className="delete-modal">
+                      {
+                        <div
+                          onClick={() => handleDeleteSong(id)}
+                          className="delete-tag"
+                        >
+                          <RiDeleteBin6Line className="delete-button" />
+                          <span>Remove song from playlist</span>
+                        </div>
+                      }
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="songlist-vertical-menu">
-                <BsThreeDotsVertical
-                  onClick={() => {
-                    verticalMenuToggle(song.id);
-                  }}
-                />
-
-                {openModel === song.id && (
-                  <div className="delete-modal">
-                    {
-                      <div
-                        onClick={() => handleDeleteSong(song.id)}
-                        className="delete-tag"
-                      >
-                        <RiDeleteBin6Line className="delete-button" />
-                        <span>Remove song from playlist</span>
-                      </div>
-                    }
-                  </div>
-                )}
-              </div>
             </div>
-          </div>
-        ))}
+          )
+        )}
       </div>
     </div>
   );
 }
+
+SongList.propTypes = {
+  playlistStore: PropTypes.shape({
+    data: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+    included: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        attributes: PropTypes.shape({
+          title: PropTypes.string,
+          artist_name: PropTypes.arrayOf(PropTypes.string),
+          cover: PropTypes.shape({
+            id: PropTypes.string,
+          }),
+        }),
+      })
+    ),
+  }),
+};
