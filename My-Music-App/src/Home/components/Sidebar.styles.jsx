@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const SidebarContainer = styled.div`
   height: 100%;
@@ -28,10 +29,16 @@ export const Divider = styled.hr`
 const avatarWidth = "60"; //px
 const penIconWidth = "24"; //px
 const userInfoPadding = "16"; //px
+const authUserInfoColumnTemplate = `${avatarWidth}px auto ${penIconWidth}px`;
+const unAuthUserInfoColumnTemplate = `${avatarWidth}px auto`;
+
 export const UserInfo = styled.div`
   // Layout
   display: grid;
-  grid-template-columns: ${avatarWidth}px auto ${penIconWidth}px;
+  grid-template-columns: ${(props) =>
+    props.authState
+      ? authUserInfoColumnTemplate
+      : unAuthUserInfoColumnTemplate};
   align-items: center;
   gap: 12px;
   min-height: 60px;
@@ -93,7 +100,7 @@ export const AboutApp = styled.div`
   margin-bottom: 12px;
   color: var(--m-3-ref-neutral-neutral-70, #aea9b1);
   /* M3/label/medium */
-  font-family: Roboto;
+  font-family: "Roboto", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -105,7 +112,7 @@ export const AboutUs = styled.div`
   margin-bottom: 24px;
   color: var(--m-3-sys-dark-on-surface, #e6e0e9);
   /* M3/body/large */
-  font-family: Roboto;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -118,10 +125,49 @@ export const Logout = styled.div`
   text-align: center;
 
   /* M3/label/large */
-  font-family: Roboto;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: 20px; /* 142.857% */
   letter-spacing: 0.1px;
+`;
+
+export const SignIn = styled.div`
+  //
+`;
+
+export const LoginWrapper = styled.div`
+  display: grid;
+  grid-template: repeat(2, auto) / auto 1px auto;
+  justify-content: center;
+  gap: 4px 8px;
+
+  & > p {
+    grid-column: 1 / -1;
+    color: var(--m-3-ref-neutral-neutral-80, #cac5cd);
+    /* M3/body/small */
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 133.333% */
+  }
+`;
+
+export const VerticvalDivider = styled.div`
+  width: 1px;
+  background: #fff;
+`;
+
+export const LoginLink = styled(Link)`
+  text-align: center;
+  color: #fff;
+  /* M3/title/large */
+  font-family: "Roboto", sans-serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 127.273% */
 `;

@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { MenuContainer, MenuItem } from "./SidebarMenu.styles";
 
 function SidebarMenu({ menuObject }) {
+  const isAuth = false;
+
   const [highlightedButton, setHighlightedButton] = useState(null);
   const handleClick = (index) => {
     setHighlightedButton(index);
@@ -11,15 +13,15 @@ function SidebarMenu({ menuObject }) {
   return (
     <MenuContainer>
       <ul>
-        {menuObject?.map((li, index) => (
-          <MenuItem key={String(Symbol(index))}>
+        {menuObject?.map((menuItem, index) => (
+          <MenuItem key={menuItem.id}>
             <a
               data-highlighted={highlightedButton === index}
               href="#"
               onClick={() => handleClick(index)}
             >
-              <i>{li.icon}</i>
-              <span>{li.name}</span>
+              <i>{menuItem.icon}</i>
+              <span>{menuItem.name}</span>
             </a>
           </MenuItem>
         ))}

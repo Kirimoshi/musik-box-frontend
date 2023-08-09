@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { LOGIN_URL, REFRESH_URL } from "../constants";
+import { LOGIN_URL, REFRESH_URL, LOGOUT_URL } from "../constants";
 
 // helpers
 const setUpCookie = (cookieName, cookieValue, cookieExpiresAt) => {
@@ -19,6 +19,7 @@ const setLocalStorage = (key, value) =>
 export const loginUser = createAsyncThunk("user/login", async (userData) => {
   try {
     const response = await axios.post(LOGIN_URL, userData);
+    console.log("file: user.thunks.js:22 ~ loginUser ~ response:", response);
     return response.data; // transferred to loginUserFulfilled action.payload
   } catch (error) {
     throw error.response.data.errors; // transferred to loginUserRejected action.error
@@ -112,3 +113,23 @@ export const refreshUserRejected = (state, action) => {
     "isRemembered",
   ].forEach((key) => localStorage.removeItem(key)); // i prefer do not use .clear() method, because it will delete all
 };
+
+export const logoutUser = createAsyncThunk(
+  "user/logout",
+  async (_, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    let headersList = {
+      Accept: "*/*",
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    let reqOptions = {
+      url: `${LOGOUT_URL}`,
+      method: "DELETE",
+      headers: headersList,
+    };
+
+    let response = await axios.request(reqOptions);
+    console.log(response.data);
+  }
+);
