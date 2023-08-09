@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Home from "./Home/Home";
 import { SignUp } from "./SignUp/components/SignUp";
 import { Login } from "./SignIn/components/Login";
@@ -40,11 +43,13 @@ function App() {
       : true;
 
     if (isAccessExpied && !isAuthenticated) {
+      console.log("refreshing user first if");
       dispatch(refreshUser()); // if access token is expired, then we need to refresh it, but if user is already authenticated, then we dont need to refresh it
       return;
     }
     // login if all good (both tokens are valid and user is not authenticated)
     if (!isAccessExpied && !isAuthenticated) {
+      console.log("refreshing user second if");
       dispatch(refreshUser());
       return;
     }
@@ -71,6 +76,7 @@ function App() {
           />
           <Route path="/ViewMyPlaylists" element={<ViewMyPlayLists />} />
         </Routes>
+        <ToastContainer />
       </div>
     </BrowserRouter>
   );

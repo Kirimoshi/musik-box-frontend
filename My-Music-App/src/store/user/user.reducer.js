@@ -58,7 +58,10 @@ export const userSlice = createSlice({
       .addCase(thunks.loginUser.rejected, thunks.loginUserRejected)
       .addCase(thunks.refreshUser.pending, thunks.refreshUserPending)
       .addCase(thunks.refreshUser.fulfilled, thunks.refreshUserFulfilled)
-      .addCase(thunks.refreshUser.rejected, thunks.refreshUserRejected);
+      .addCase(thunks.refreshUser.rejected, thunks.refreshUserRejected)
+      .addCase(thunks.logoutUser.pending, thunks.logoutUserPending)
+      .addCase(thunks.logoutUser.fulfilled, thunks.logoutUserFulfilled)
+      .addCase(thunks.logoutUser.rejected, thunks.logoutUserRejected);
   },
 });
 

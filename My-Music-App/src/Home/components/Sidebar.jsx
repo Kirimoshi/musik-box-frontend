@@ -1,8 +1,7 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
-
-import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../store/user/user.thunks";
 
 import { RiPencilFill } from "react-icons/ri";
 import SidebarMenu from "./SidebarMenu";
@@ -23,16 +22,89 @@ import {
   LoginWrapper,
   LoginLink,
   VerticvalDivider,
+  ToatsMsg,
 } from "./Sidebar.styles";
+
+import { toast } from "react-toastify";
+import { clearError } from "../../store/user/user.reducer";
+
+function LogoutPendigMessage() {
+  return (
+    <ToatsMsg>
+      <p>Logging out...</p>
+    </ToatsMsg>
+  );
+}
+function LogoutSuccessMessage() {
+  return (
+    <ToatsMsg>
+      <p>You have been successfully logged out</p>
+      <p>Come back anytime!</p>
+    </ToatsMsg>
+  );
+}
+
+function LogooutErrorMessage() {
+  return (
+    <ToatsMsg>
+      <p>Something went wrong</p>
+      <p>Please try again</p>
+    </ToatsMsg>
+  );
+}
 
 function Sidebar() {
   const userName = "Olsheer";
   const userEmail = "email@.com";
-  const { isAuthenticated } = useSelector(userSelector);
+  const dispatch = useDispatch();
+  const toastId = React.useRef(null);
+  const { isAuthenticated: isAuth, loading, error } = useSelector(userSelector);
 
-  const navigate = useNavigate();
+  const [isLogoutClicked, setIsLogoutClicked] = useState(false);
 
-  const isAuth = false;
+  const notify = () =>
+    (toastId.current = toast(<LogoutPendigMessage />, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    }));
+  const notifyError = () =>
+    toast.update(toastId.current, {
+      type: toast.TYPE.ERROR,
+      autoClose: 2000,
+      render: <LogooutErrorMessage />,
+    });
+  const notifySuccess = () =>
+    toast.update(toastId.current, {
+      type: toast.TYPE.SUCCESS,
+      autoClose: 2000,
+      render: <LogoutSuccessMessage />,
+    });
+
+  useEffect(() => {
+    if (isLogoutClicked && loading) {
+      notify();
+    }
+    if (isLogoutClicked && !loading && error) {
+      notifyError();
+      setIsLogoutClicked(false);
+      dispatch(clearError());
+    }
+    if (isLogoutClicked && !loading && !error) {
+      notifySuccess();
+      setIsLogoutClicked(false);
+    }
+  }, [isLogoutClicked, loading, error]);
+
+  const handleLogout = () => {
+    setIsLogoutClicked(true);
+    dispatch(logoutUser());
+  };
 
   return (
     <SidebarContainer>
@@ -40,7 +112,7 @@ function Sidebar() {
         <span>Music Box</span>
       </Logo>
       <Divider />
-      <UserInfo authState={isAuth}>
+      <UserInfo $authState={isAuth}>
         {isAuth ? (
           <>
             <UserAvatar>
@@ -80,8 +152,8 @@ function Sidebar() {
         <p>About us</p>
       </AboutUs>
       <Divider />
-      <Logout>
-        <p>Log out</p>
+      <Logout onClick={handleLogout}>
+        <span>Log out</span>
       </Logout>
     </SidebarContainer>
   );

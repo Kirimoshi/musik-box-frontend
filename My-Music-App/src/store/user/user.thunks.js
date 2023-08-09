@@ -13,6 +13,16 @@ const deleteCookie = (cookieName) => {
 const setLocalStorage = (key, value) =>
   localStorage.setItem(key, JSON.stringify(value));
 
+const cleanLocalStorage = () => {
+  [
+    "accessToken",
+    "accessExpiresAt",
+    "refreshToken",
+    "refreshExpiresAt",
+    "isRemembered",
+  ].forEach((key) => localStorage.removeItem(key)); // i prefer do not use .clear() method, because it will delete all
+};
+
 /** Login Thunk. Accepts user login data and returns a promise with user data.
  * @param {Object} userData - user login data as object {email, password}
  */
@@ -105,31 +115,60 @@ export const refreshUserRejected = (state, action) => {
   deleteCookie("accessToken");
   deleteCookie("accessExpiresAt");
 
-  [
-    "accessToken",
-    "accessExpiresAt",
-    "refreshToken",
-    "refreshExpiresAt",
-    "isRemembered",
-  ].forEach((key) => localStorage.removeItem(key)); // i prefer do not use .clear() method, because it will delete all
+  cleanLocalStorage();
 };
 
 export const logoutUser = createAsyncThunk(
   "user/logout",
-  async (_, { getState }) => {
+  async (messageObj, { getState }) => {
+    console.log("file: user.thunks.js:124 ~ messageObj:", messageObj);
     const accessToken = getState().user.accessToken;
-    let headersList = {
+    const headersList = {
       Accept: "*/*",
       Authorization: `Bearer ${accessToken}`,
     };
 
-    let reqOptions = {
+    const reqOptions = {
       url: `${LOGOUT_URL}`,
       method: "DELETE",
       headers: headersList,
     };
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    try {
+      await delay(3000);
+      const response = await axios.request(reqOptions);
 
-    let response = await axios.request(reqOptions);
-    console.log(response.data);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      throw error.response.data.errors;
+    }
   }
 );
+export const logoutUserPending = (state, action) => {
+  console.log("Pending", action);
+  state.loading = true;
+  state.error = null;
+};
+export const logoutUserFulfilled = (state, action) => {
+  console.log(
+    "file: user.thunks.js:146 ~ logoutUserFulfilled ~ action:",
+    action
+  );
+  state.loading = false;
+  state.isAuthenticated = false;
+  state.accessToken = null;
+  state.accessExpiresAt = null;
+  state.refreshToken = null;
+  state.refreshExpiresAt = null;
+  state.isRemembered = false;
+  cleanLocalStorage();
+};
+export const logoutUserRejected = (state, action) => {
+  console.log(
+    "file: user.thunks.js:152 ~ logoutUserRejected ~ action:",
+    action
+  );
+  state.loading = false;
+  state.error = action.error;
+};

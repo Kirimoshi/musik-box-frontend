@@ -36,7 +36,7 @@ export const UserInfo = styled.div`
   // Layout
   display: grid;
   grid-template-columns: ${(props) =>
-    props.authState
+    props.$authState
       ? authUserInfoColumnTemplate
       : unAuthUserInfoColumnTemplate};
   align-items: center;
@@ -123,6 +123,7 @@ export const Logout = styled.div`
   margin-top: 36px;
   color: var(--m-3-sys-dark-primary, #d0bcff);
   text-align: center;
+  cursor: pointer;
 
   /* M3/label/large */
   font-family: "Roboto", sans-serif;
@@ -170,4 +171,23 @@ export const LoginLink = styled(Link)`
   font-style: normal;
   font-weight: 400;
   line-height: 28px; /* 127.273% */
+`;
+
+export const ToatsMsg = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  & > P {
+    color: var(--m-3-white, #fff);
+    text-align: center;
+    /* M3/body/large */
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+    letter-spacing: 0.5px;
+  }
 `;
