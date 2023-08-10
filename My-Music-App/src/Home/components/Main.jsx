@@ -1,13 +1,13 @@
 import React from "react";
 
 import { MainContainer } from "./Main.styles";
-import Songs from "./Songs";
+import PopularPlaylists from "./PopularPlaylists";
 
 function Main() {
   return (
     <>
       <MainContainer>
-        <Songs />
+        <PopularPlaylists />
       </MainContainer>
     </>
   );
