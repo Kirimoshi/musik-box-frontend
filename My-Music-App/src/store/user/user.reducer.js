@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import * as thunks from "./user.thunks";
+import { USER_CRED } from "../constants";
 
 const getItemFromLocalStorage = (key) => {
   const item = localStorage.getItem(key);
@@ -8,17 +9,20 @@ const getItemFromLocalStorage = (key) => {
 };
 
 /** Initial state of user slice
- * @type {{loading: boolean, isAuthenticated: boolean, error: null | string, accessToken: null | string, accessExpiresAt: null | string, refreshToken: null | string, refreshExpiresAt: null | string, isRemembered: boolean | null }}
+ * @type {{loading: boolean, isAuthenticated: boolean, error: null | string, accessToken: null | string, accessExpiresAt: null | string, refreshToken: null | string, refreshExpiresAt: null | string, isRemembered: boolean | null, displayName: null | string, email: nulll | string }}
  */
 const INITIAL_STATE = {
   loading: false,
   isAuthenticated: false,
   error: null,
+  loginError: null,
   accessToken: null,
   accessExpiresAt: null,
   refreshToken: null,
   refreshExpiresAt: null,
   isRemembered: false,
+  displayName: null,
+  email: null,
 };
 
 export const userSlice = createSlice({
@@ -35,6 +39,8 @@ export const userSlice = createSlice({
         state.accessExpiresAt = getItemFromLocalStorage("accessExpiresAt");
         state.refreshToken = getItemFromLocalStorage("refreshToken");
         state.refreshExpiresAt = getItemFromLocalStorage("refreshExpiresAt");
+        state.displayName = USER_CRED.displayName; // TODO: ask backend to somehow provide this info
+        state.email = USER_CRED.email;
       }
     },
     // isRemembered flag in form implemented as stand alone checkbox, so we need "personal" reducer for it
@@ -43,6 +49,9 @@ export const userSlice = createSlice({
     },
     clearError: (state) => {
       state.error = null;
+    },
+    clearLoginError: (state) => {
+      state.loginError = null;
     },
   },
   // asynchronous reducers
@@ -53,11 +62,14 @@ export const userSlice = createSlice({
       .addCase(thunks.loginUser.rejected, thunks.loginUserRejected)
       .addCase(thunks.refreshUser.pending, thunks.refreshUserPending)
       .addCase(thunks.refreshUser.fulfilled, thunks.refreshUserFulfilled)
-      .addCase(thunks.refreshUser.rejected, thunks.refreshUserRejected);
+      .addCase(thunks.refreshUser.rejected, thunks.refreshUserRejected)
+      .addCase(thunks.logoutUser.pending, thunks.logoutUserPending)
+      .addCase(thunks.logoutUser.fulfilled, thunks.logoutUserFulfilled)
+      .addCase(thunks.logoutUser.rejected, thunks.logoutUserRejected);
   },
 });
 
-export const { setIsRemembered, rehydrateTokens, clearError } =
+export const { setIsRemembered, rehydrateTokens, clearError, clearLoginError } =
   userSlice.actions;
 
 export const userReducer = userSlice.reducer;

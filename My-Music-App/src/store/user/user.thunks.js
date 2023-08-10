@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { LOGIN_URL, REFRESH_URL } from "../constants";
+import { LOGIN_URL, REFRESH_URL, LOGOUT_URL } from "../constants";
 
 // helpers
 const setUpCookie = (cookieName, cookieValue, cookieExpiresAt) => {
@@ -12,6 +12,16 @@ const deleteCookie = (cookieName) => {
 // helper to stringify and store objects in localStorage
 const setLocalStorage = (key, value) =>
   localStorage.setItem(key, JSON.stringify(value));
+
+const cleanLocalStorage = () => {
+  [
+    "accessToken",
+    "accessExpiresAt",
+    "refreshToken",
+    "refreshExpiresAt",
+    "isRemembered",
+  ].forEach((key) => localStorage.removeItem(key)); // i prefer do not use .clear() method, because it will delete all
+};
 
 /** Login Thunk. Accepts user login data and returns a promise with user data.
  * @param {Object} userData - user login data as object {email, password}
@@ -28,7 +38,7 @@ export const loginUser = createAsyncThunk("user/login", async (userData) => {
 export const loginUserPending = (state) => {
   state.loading = true;
   state.isAuthenticated = false;
-  state.error = null;
+  state.loginError = null;
 };
 
 export const loginUserFulfilled = (state, action) => {
@@ -56,7 +66,7 @@ export const loginUserFulfilled = (state, action) => {
 export const loginUserRejected = (state, action) => {
   state.loading = false;
   state.isAuthenticated = false;
-  state.error = action.error.message;
+  state.loginError = action.error.message;
 };
 
 // Refrehs User auth token Thunk
@@ -104,11 +114,46 @@ export const refreshUserRejected = (state, action) => {
   deleteCookie("accessToken");
   deleteCookie("accessExpiresAt");
 
-  [
-    "accessToken",
-    "accessExpiresAt",
-    "refreshToken",
-    "refreshExpiresAt",
-    "isRemembered",
-  ].forEach((key) => localStorage.removeItem(key)); // i prefer do not use .clear() method, because it will delete all
+  cleanLocalStorage();
+};
+
+export const logoutUser = createAsyncThunk(
+  "user/logout",
+  async (messageObj, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    const headersList = {
+      Accept: "*/*",
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    const reqOptions = {
+      url: `${LOGOUT_URL}`,
+      method: "DELETE",
+      headers: headersList,
+    };
+    try {
+      const response = await axios.request(reqOptions);
+      return response.data;
+    } catch (error) {
+      throw error.response.data.errors;
+    }
+  }
+);
+export const logoutUserPending = (state, action) => {
+  state.loading = true;
+  state.error = null;
+};
+export const logoutUserFulfilled = (state, action) => {
+  state.loading = false;
+  state.isAuthenticated = false;
+  state.accessToken = null;
+  state.accessExpiresAt = null;
+  state.refreshToken = null;
+  state.refreshExpiresAt = null;
+  state.isRemembered = false;
+  cleanLocalStorage();
+};
+export const logoutUserRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error;
 };

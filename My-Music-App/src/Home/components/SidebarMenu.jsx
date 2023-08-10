@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { userSelector } from "../../store/user/user.selector";
 
-import { MenuContainer, MenuItem } from "./SidebarMenu.styles";
+import { MenuContainer, MenuItem, MenuLink } from "./SidebarMenu.styles";
 
 function SidebarMenu({ menuObject }) {
+  const { isAuthenticated: isAuth } = useSelector(userSelector);
+
   const [highlightedButton, setHighlightedButton] = useState(null);
   const handleClick = (index) => {
     setHighlightedButton(index);
@@ -11,18 +15,22 @@ function SidebarMenu({ menuObject }) {
   return (
     <MenuContainer>
       <ul>
-        {menuObject?.map((li, index) => (
-          <MenuItem key={String(Symbol(index))}>
-            <a
-              data-highlighted={highlightedButton === index}
-              href="#"
-              onClick={() => handleClick(index)}
-            >
-              <i>{li.icon}</i>
-              <span>{li.name}</span>
-            </a>
-          </MenuItem>
-        ))}
+        {menuObject
+          ?.filter(
+            (menuItem) => menuItem.isAuthOnly === isAuth || !menuItem.isAuthOnly // auth user must see all menu items
+          )
+          .map((menuItem, index) => (
+            <MenuItem key={menuItem.id}>
+              <MenuLink
+                data-highlighted={highlightedButton === index}
+                onClick={() => handleClick(index)}
+                to={menuItem.path}
+              >
+                <i>{menuItem.icon}</i>
+                <span>{menuItem.name}</span>
+              </MenuLink>
+            </MenuItem>
+          ))}
       </ul>
     </MenuContainer>
   );

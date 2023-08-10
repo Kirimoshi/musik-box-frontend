@@ -13,7 +13,9 @@ export const isRememberedSelector = (state) => state.user.isRemembered;
  */
 export const isAuthenticatedSelector = (state) => state.user.isAuthenticated;
 
-/** Returns auth error string from state or null if there is no error
+/** Returns error string from state or null if there is no error
  * @return {string | null}
  */
 export const errorSelector = (state) => state.user.error;
+
+export const loginErrorSelector = (state) => state.user.loginError;

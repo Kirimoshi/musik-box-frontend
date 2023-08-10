@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Home from "./Home/Home";
 import { SignUp } from "./SignUp/components/SignUp";
 import { Login } from "./SignIn/components/Login";
@@ -71,6 +74,7 @@ function App() {
           />
           <Route path="/ViewMyPlaylists" element={<ViewMyPlayLists />} />
         </Routes>
+        <ToastContainer />
       </div>
     </BrowserRouter>
   );
