@@ -26,7 +26,6 @@ export const BasePlaylistsContainer = styled.section`
   gap: 24px;
   margin-bottom: 12px;
 `;
-
 export const Loader = styled.div`
   width: 48px;
   height: 48px;
@@ -37,6 +36,12 @@ export const Loader = styled.div`
   &::before {
     content: "";
     box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  & > span {
+    display: block;
+    padding: 12px;
+    height: 48px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
