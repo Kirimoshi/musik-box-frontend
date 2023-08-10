@@ -43,13 +43,11 @@ function App() {
       : true;
 
     if (isAccessExpied && !isAuthenticated) {
-      console.log("refreshing user first if");
       dispatch(refreshUser()); // if access token is expired, then we need to refresh it, but if user is already authenticated, then we dont need to refresh it
       return;
     }
     // login if all good (both tokens are valid and user is not authenticated)
     if (!isAccessExpied && !isAuthenticated) {
-      console.log("refreshing user second if");
       dispatch(refreshUser());
       return;
     }

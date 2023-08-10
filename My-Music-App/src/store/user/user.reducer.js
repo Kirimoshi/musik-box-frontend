@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   loading: false,
   isAuthenticated: false,
   error: null,
+  loginError: null,
   accessToken: null,
   accessExpiresAt: null,
   refreshToken: null,
@@ -49,6 +50,9 @@ export const userSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    clearLoginError: (state) => {
+      state.loginError = null;
+    },
   },
   // asynchronous reducers
   extraReducers: (builder) => {
@@ -65,7 +69,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setIsRemembered, rehydrateTokens, clearError } =
+export const { setIsRemembered, rehydrateTokens, clearError, clearLoginError } =
   userSlice.actions;
 
 export const userReducer = userSlice.reducer;

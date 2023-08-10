@@ -157,7 +157,7 @@ export const LoginWrapper = styled.div`
   }
 `;
 
-export const VerticvalDivider = styled.div`
+export const VerticalDivider = styled.div`
   width: 1px;
   background: #fff;
 `;
@@ -171,23 +171,4 @@ export const LoginLink = styled(Link)`
   font-style: normal;
   font-weight: 400;
   line-height: 28px; /* 127.273% */
-`;
-
-export const ToatsMsg = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  & > P {
-    color: var(--m-3-white, #fff);
-    text-align: center;
-    /* M3/body/large */
-    font-family: "Roboto", sans-serif;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px; /* 150% */
-    letter-spacing: 0.5px;
-  }
 `;

@@ -1,5 +1,5 @@
 import "../styles/loginstyle.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useFormik } from "formik";
 import { SignInSchema } from "../schemas/SignInSchema";
@@ -7,22 +7,35 @@ import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setIsRemembered, clearError } from "../../store/user/user.reducer";
+import {
+  setIsRemembered,
+  clearLoginError,
+} from "../../store/user/user.reducer";
 import { loginUser } from "../../store/user/user.thunks";
 import {
   isAuthenticatedSelector,
-  errorSelector,
+  loginErrorSelector,
 } from "../../store/user/user.selector";
+
+import { toast } from "react-toastify";
+import { baseToastConfig, LoginSuccessMessage } from "../../shared/Toasts";
 
 export function Login() {
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector(isAuthenticatedSelector);
-  const loginError = useSelector(errorSelector); // despite error in state is global, in login component it is only login error
+  const loginError = useSelector(loginErrorSelector);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigate = useNavigate();
+  const toastId = React.useRef(null);
+  const notify = useCallback(() => {
+    toastId.current = toast(<LoginSuccessMessage />, {
+      ...baseToastConfig,
+      type: toast.TYPE.SUCCESS,
+    });
+  }, []);
 
   const onSubmit = () => {
     const userData = {
@@ -30,7 +43,7 @@ export function Login() {
       password: values.password,
     };
     setIsSubmitted(true);
-    loginError && dispatch(clearError()); // Clearing error from state befor next login attempt
+    loginError && dispatch(clearLoginError()); // Clearing error from state befor next login attempt
     dispatch(loginUser(userData));
   };
 
@@ -63,7 +76,7 @@ export function Login() {
     const fieldName = event.target.name;
     const fieldValue = event.target.value;
     if (isSubmitted && loginError) {
-      dispatch(clearError());
+      dispatch(clearLoginError());
       setIsSubmitted(false);
       setErrors({});
     }
@@ -81,6 +94,7 @@ export function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
+      notify();
       navigate("/");
     }
   }, [isAuthenticated]);

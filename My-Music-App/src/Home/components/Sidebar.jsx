@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
 import { logoutUser } from "../../store/user/user.thunks";
@@ -21,37 +21,16 @@ import {
   Logout,
   LoginWrapper,
   LoginLink,
-  VerticvalDivider,
-  ToatsMsg,
+  VerticalDivider,
 } from "./Sidebar.styles";
 
 import { toast } from "react-toastify";
-import { clearError } from "../../store/user/user.reducer";
-
-function LogoutPendigMessage() {
-  return (
-    <ToatsMsg>
-      <p>Logging out...</p>
-    </ToatsMsg>
-  );
-}
-function LogoutSuccessMessage() {
-  return (
-    <ToatsMsg>
-      <p>You have been successfully logged out</p>
-      <p>Come back anytime!</p>
-    </ToatsMsg>
-  );
-}
-
-function LogooutErrorMessage() {
-  return (
-    <ToatsMsg>
-      <p>Something went wrong</p>
-      <p>Please try again</p>
-    </ToatsMsg>
-  );
-}
+import {
+  baseToastConfig,
+  LogoutPendigMessage,
+  LogoutSuccessMessage,
+  LogoutErrorMessage,
+} from "../../shared/Toasts";
 
 function Sidebar() {
   const userName = "Olsheer";
@@ -62,29 +41,25 @@ function Sidebar() {
 
   const [isLogoutClicked, setIsLogoutClicked] = useState(false);
 
-  const notify = () =>
-    (toastId.current = toast(<LogoutPendigMessage />, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    }));
-  const notifyError = () =>
+  const notify = useCallback(() => {
+    toastId.current = toast(<LogoutPendigMessage />, baseToastConfig);
+  }, []);
+
+  const notifyError = useCallback(() => {
     toast.update(toastId.current, {
       type: toast.TYPE.ERROR,
       autoClose: 2000,
-      render: <LogooutErrorMessage />,
+      render: <LogoutErrorMessage />,
     });
-  const notifySuccess = () =>
+  }, []);
+
+  const notifySuccess = useCallback(() => {
     toast.update(toastId.current, {
       type: toast.TYPE.SUCCESS,
       autoClose: 2000,
       render: <LogoutSuccessMessage />,
     });
+  }, []);
 
   useEffect(() => {
     if (isLogoutClicked && loading) {
@@ -93,13 +68,12 @@ function Sidebar() {
     if (isLogoutClicked && !loading && error) {
       notifyError();
       setIsLogoutClicked(false);
-      dispatch(clearError());
     }
     if (isLogoutClicked && !loading && !error) {
       notifySuccess();
       setIsLogoutClicked(false);
     }
-  }, [isLogoutClicked, loading, error]);
+  }, [isLogoutClicked, loading, error, notify, notifyError, notifySuccess]);
 
   const handleLogout = () => {
     setIsLogoutClicked(true);
@@ -136,7 +110,7 @@ function Sidebar() {
             </UserAvatar>
             <LoginWrapper className="logWrap">
               <LoginLink to={"/SignIn"}>Sign in</LoginLink>
-              <VerticvalDivider />
+              <VerticalDivider />
               <LoginLink to={"/SignUp"}>Sign up</LoginLink>
               <p>Log in for advanced features</p>
             </LoginWrapper>
@@ -152,9 +126,11 @@ function Sidebar() {
         <p>About us</p>
       </AboutUs>
       <Divider />
-      <Logout onClick={handleLogout}>
-        <span>Log out</span>
-      </Logout>
+      {isAuth && (
+        <Logout onClick={handleLogout}>
+          <span>Log out</span>
+        </Logout>
+      )}
     </SidebarContainer>
   );
 }

@@ -29,7 +29,6 @@ const cleanLocalStorage = () => {
 export const loginUser = createAsyncThunk("user/login", async (userData) => {
   try {
     const response = await axios.post(LOGIN_URL, userData);
-    console.log("file: user.thunks.js:22 ~ loginUser ~ response:", response);
     return response.data; // transferred to loginUserFulfilled action.payload
   } catch (error) {
     throw error.response.data.errors; // transferred to loginUserRejected action.error
@@ -39,7 +38,7 @@ export const loginUser = createAsyncThunk("user/login", async (userData) => {
 export const loginUserPending = (state) => {
   state.loading = true;
   state.isAuthenticated = false;
-  state.error = null;
+  state.loginError = null;
 };
 
 export const loginUserFulfilled = (state, action) => {
@@ -67,7 +66,7 @@ export const loginUserFulfilled = (state, action) => {
 export const loginUserRejected = (state, action) => {
   state.loading = false;
   state.isAuthenticated = false;
-  state.error = action.error.message;
+  state.loginError = action.error.message;
 };
 
 // Refrehs User auth token Thunk
@@ -121,7 +120,6 @@ export const refreshUserRejected = (state, action) => {
 export const logoutUser = createAsyncThunk(
   "user/logout",
   async (messageObj, { getState }) => {
-    console.log("file: user.thunks.js:124 ~ messageObj:", messageObj);
     const accessToken = getState().user.accessToken;
     const headersList = {
       Accept: "*/*",
@@ -133,12 +131,8 @@ export const logoutUser = createAsyncThunk(
       method: "DELETE",
       headers: headersList,
     };
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     try {
-      await delay(3000);
       const response = await axios.request(reqOptions);
-
-      console.log(response.data);
       return response.data;
     } catch (error) {
       throw error.response.data.errors;
@@ -146,15 +140,10 @@ export const logoutUser = createAsyncThunk(
   }
 );
 export const logoutUserPending = (state, action) => {
-  console.log("Pending", action);
   state.loading = true;
   state.error = null;
 };
 export const logoutUserFulfilled = (state, action) => {
-  console.log(
-    "file: user.thunks.js:146 ~ logoutUserFulfilled ~ action:",
-    action
-  );
   state.loading = false;
   state.isAuthenticated = false;
   state.accessToken = null;
@@ -165,10 +154,6 @@ export const logoutUserFulfilled = (state, action) => {
   cleanLocalStorage();
 };
 export const logoutUserRejected = (state, action) => {
-  console.log(
-    "file: user.thunks.js:152 ~ logoutUserRejected ~ action:",
-    action
-  );
   state.loading = false;
   state.error = action.error;
 };
