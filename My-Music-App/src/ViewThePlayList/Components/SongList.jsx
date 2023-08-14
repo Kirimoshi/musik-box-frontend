@@ -119,7 +119,7 @@ export default function SongList({ playlistStore }) {
                   />
                   <div className="artistInfo">
                     <p>{title}</p>
-                    <p>{artistName.join(", ")}</p>
+                    <p>{artistName?.join(", ")}</p>
                   </div>
                 </div>
                 <div className="songlist-vertical-menu">
