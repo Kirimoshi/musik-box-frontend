@@ -5,6 +5,10 @@ import { userSelector } from "../../store/user/user.selector";
 
 import { AiOutlineHeart } from "react-icons/ai";
 import {
+  MdKeyboardDoubleArrowUp,
+  MdKeyboardDoubleArrowDown,
+} from "react-icons/md";
+import {
   PlaylistsContainer,
   PlaylistCard,
   CardTitle,
@@ -16,10 +20,11 @@ import {
 } from "./PopularPlaylists.styles";
 import { Subtitle, Title } from "../Shared.styles";
 
-const fetchFeaturedPlaylists = async (accessToken) => {
+const MAX_CHARS = 99;
+
+const fetchPopularPlaylists = async (accessToken) => {
   let headersList = {
     Accept: "*/*",
-    Authorization: `Bearer ${accessToken}`,
   };
 
   let reqOptions = {
@@ -40,8 +45,20 @@ function PopularPlaylists() {
 
   const fetchPlaylists = async () => {
     try {
-      const data = await fetchFeaturedPlaylists(accessToken);
+      const data = await fetchPopularPlaylists(accessToken);
       const first4playlists = data.playlists.data.filter((_, i) => i < 4);
+      console.log(
+        "file: PopularPlaylists.jsx:49 ~ fetchPlaylists ~ first4playlists:",
+        first4playlists
+      );
+      // description is empty for the first playlist
+      first4playlists[0].attributes.description = "";
+      // description is too long for the second playlist
+      first4playlists[1].attributes.description =
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique culpa quasi voluptate sapiente aspernatur ipsa incidunt velit harum optio commodi totam adipisci magnam recusandae officiis laboriosam fugit doloribus, ratione dolorum quam iure earum! Et quo error dolor harum assumenda molestiae quia voluptatem sit facere non totam, necessitatibus sequi. Blanditiis, unde?";
+      // desctiption exactly 99 chars for the third playlist
+      first4playlists[2].attributes.description =
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique culpa quasi voluptate?ss";
       setPlaylistData(first4playlists);
     } catch (error) {
       console.error(error);
@@ -49,9 +66,8 @@ function PopularPlaylists() {
   };
 
   useEffect(() => {
-    if (!isAuthenticated) return;
     fetchPlaylists();
-  }, [isAuthenticated]);
+  }, []);
 
   const handleMore = (playlistId) => () => {
     setExpandedPlaylistId(playlistId);
@@ -82,23 +98,30 @@ function PopularPlaylists() {
               key={id}
               $isExpanded={expandedPlaylistId === id}
             >
+              {/* {console.log(description.length)} */}
               <CardTitle className="_playlist__name">{name}</CardTitle>
               <CardOwner className="_playlist__owner">{`Created by: Playlist owner`}</CardOwner>
               <CardLike className="_playlist__like">
                 <AiOutlineHeart />
               </CardLike>
-              {expandedPlaylistId === id ? (
-                <CardShowLess onClick={handleLess}>Less</CardShowLess>
-              ) : (
-                <CardShowMore onClick={handleMore(id)}>more</CardShowMore>
+              {expandedPlaylistId !== id && description.length >= MAX_CHARS && (
+                <CardShowMore onClick={handleMore(id)}>
+                  <MdKeyboardDoubleArrowUp />
+                </CardShowMore>
               )}
-              <CardDescription
-                $maxLines={expandedPlaylistId === id ? 5 : 2}
-                $isExpanded={expandedPlaylistId === id}
-                className="_playlist__desc"
-              >
-                <p>{description}</p>
-              </CardDescription>
+              {expandedPlaylistId === id && description.length >= MAX_CHARS && (
+                <CardShowLess onClick={handleLess}>
+                  <MdKeyboardDoubleArrowDown />
+                </CardShowLess>
+              )}
+              {description.length !== 0 && (
+                <CardDescription
+                  $isExpanded={expandedPlaylistId === id}
+                  className="_playlist__desc"
+                >
+                  <p>{description}</p>
+                </CardDescription>
+              )}
             </PlaylistCard>
           )
         )}

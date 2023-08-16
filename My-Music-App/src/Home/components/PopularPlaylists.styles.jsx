@@ -1,8 +1,9 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const PlaylistsContainer = styled.section`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 `;
 
 const likeSize = "52.364"; //px
@@ -11,9 +12,12 @@ const descriptionHeight = "74.182"; //px
 const cardWidth = "264"; //px
 const cardHeight = "288"; //px
 const moreHeight = "16"; //px
-let maxLines = 2;
+const descrLineHeight = "20"; //px
+const descrMinLines = 3;
+const descrMaxLines = 6;
+const descrVersPaddSum = 34.19; //px
 
-const padding = {
+const cardPadding = {
   top: "22.64",
   right: "13.09",
   bottom: "20.55",
@@ -38,17 +42,18 @@ export const PlaylistCard = styled.figure`
   display: grid;
   grid-template-rows: ${likeSize}px auto ${moreHeight}px ${(props) =>
       props.$isExpanded
-        ? Math.floor((descriptionHeight / 2) * 5)
-        : descriptionHeight}px;
+        ? descrLineHeight * descrMaxLines + descrVersPaddSum
+        : descrLineHeight * descrMinLines + descrVersPaddSum}px;
   grid-template-columns: auto ${likeSize}px;
   grid-template-areas:
     "name like"
     "owner owner"
-    "none more"
+    "more none"
     "description description";
 
   align-items: center;
-  transition: grid-template-rows 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
 `;
 
 export const CardTitle = styled.h3`
@@ -60,8 +65,8 @@ export const CardTitle = styled.h3`
   font-weight: 400;
   line-height: 36px; /* 128.571% */
   text-transform: capitalize;
-  padding-top: ${padding.top}px;
-  padding-left: ${padding.left}px;
+  padding-top: ${cardPadding.top}px;
+  padding-left: ${cardPadding.left}px;
 `;
 
 export const CardLike = styled.div`
@@ -69,8 +74,8 @@ export const CardLike = styled.div`
   height: ${likeSize}px;
   padding: 9.818px;
   grid-area: like;
-  padding-top: ${padding.top}px;
-  padding-right: ${padding.right}px;
+  padding-top: ${cardPadding.top}px;
+  padding-right: ${cardPadding.right}px;
 
   & > svg {
     height: 32.7px;
@@ -81,8 +86,20 @@ export const CardLike = styled.div`
 export const CardOwner = styled.div`
   grid-area: owner;
   align-self: start;
-  padding-left: ${padding.left}px;
+  padding-top: 6.64px;
+  padding-left: ${cardPadding.left}px;
+
+  color: var(--m-3-white, #fff);
+  /* M3/title/medium */
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.15px;
 `;
+
+const descrFontSize = "14"; //px // need to sync height of fonts with trapezoid height
+const descrBgColor = "rgba(191, 129, 173, 0.5)";
 
 export const CardDescription = styled.div`
   padding: 13.64px 19.64px 20.55px 19.64px;
@@ -90,34 +107,48 @@ export const CardDescription = styled.div`
   /* width: 100%; */
   grid-area: description;
   border-radius: 0px 0px 18px 18px;
-  background: rgba(191, 129, 173, 0.5);
+  background: ${descrBgColor};
   align-self: end;
   /* text-align: center; */
   & > p {
     display: -webkit-box;
-    -webkit-line-clamp: ${(props) => (props.$isExpanded ? "5" : "2")};
+    -webkit-line-clamp: ${(props) =>
+      props.$isExpanded ? descrMaxLines : descrMinLines};
     -webkit-box-orient: vertical;
     overflow: hidden;
 
     color: var(--m-3-white, #fff);
     text-align: center;
     /* M3/label/large */
-    font-family: Roboto;
-    font-size: 14px;
+    font-size: ${descrFontSize}px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 142.857% */
+    line-height: ${descrLineHeight}px;
     letter-spacing: 0.1px;
   }
 `;
 
-export const CardShowMore = styled.span`
-  grid-area: more;
-  color: red;
+const moreLessCommon = css`
   cursor: pointer;
+  border-bottom: 16px solid ${descrBgColor};
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  height: 0;
+  width: 40%;
+  text-align: center;
+  color: var(--m-3-white, #fff);
+  text-align: center;
+  font-size: ${descrFontSize}px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: ${descrLineHeight}px;
+  letter-spacing: 0.1px;
+  grid-area: more;
+`;
+
+export const CardShowMore = styled.span`
+  ${moreLessCommon}
 `;
 export const CardShowLess = styled.span`
-  grid-area: more;
-  color: green;
-  cursor: pointer;
+  ${moreLessCommon}
 `;
