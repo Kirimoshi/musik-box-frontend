@@ -37,7 +37,6 @@ export default function SongList({ playlistStore }) {
   const { accessToken, isAuthenticated } = useSelector(userSelector);
   const [playlist, setPlaylist] = useState({});
   const [songs, setSongs] = useState([]);
-  console.log("file: SongList.jsx:40 ~ SongList ~ songs:", songs);
 
   useEffect(() => {
     setPlaylist(playlistStore.data);

@@ -1,14 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const PlaylistsContainer = styled.section`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-`;
-
 const likeSize = "52.364"; //px
-const ownerHeight = "24"; //px
-const descriptionHeight = "74.182"; //px
 const cardWidth = "264"; //px
 const cardHeight = "288"; //px
 const moreHeight = "16"; //px
@@ -16,6 +8,8 @@ const descrLineHeight = "20"; //px
 const descrMinLines = 3;
 const descrMaxLines = 6;
 const descrVersPaddSum = 34.19; //px
+const descrFontSize = "14"; //px /* M3/label/large */
+const descrBgColor = "rgba(191, 129, 173, 0.5)";
 
 const cardPadding = {
   top: "22.64",
@@ -23,6 +17,12 @@ const cardPadding = {
   bottom: "20.55",
   left: "19.64",
 };
+
+export const PlaylistsContainer = styled.section`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+`;
 
 export const PlaylistCard = styled.figure`
   width: ${cardWidth}px;
@@ -34,10 +34,6 @@ export const PlaylistCard = styled.figure`
   background-position: center, center, 50%;
   background-size: cover, cover, cover;
   background-repeat: no-repeat, no-repeat, no-repeat;
-
-  padding: 0;
-
-  font-family: "Roboto", sans-serif;
 
   display: grid;
   grid-template-rows: ${likeSize}px auto ${moreHeight}px ${(props) =>
@@ -52,8 +48,10 @@ export const PlaylistCard = styled.figure`
     "description description";
 
   align-items: center;
-  transition: all 0.3s ease-in-out;
+  transition: grid-template-rows 0.2s ease-in-out;
+  font-family: "Roboto", sans-serif;
   overflow: hidden;
+  padding: 0;
 `;
 
 export const CardTitle = styled.h3`
@@ -63,7 +61,7 @@ export const CardTitle = styled.h3`
   font-size: 28px;
   font-style: normal;
   font-weight: 400;
-  line-height: 36px; /* 128.571% */
+  line-height: 36px;
   text-transform: capitalize;
   padding-top: ${cardPadding.top}px;
   padding-left: ${cardPadding.left}px;
@@ -94,22 +92,17 @@ export const CardOwner = styled.div`
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 24px; /* 150% */
+  line-height: 24px;
   letter-spacing: 0.15px;
 `;
-
-const descrFontSize = "14"; //px // need to sync height of fonts with trapezoid height
-const descrBgColor = "rgba(191, 129, 173, 0.5)";
 
 export const CardDescription = styled.div`
   padding: 13.64px 19.64px 20.55px 19.64px;
   height: 100%;
-  /* width: 100%; */
   grid-area: description;
   border-radius: 0px 0px 18px 18px;
   background: ${descrBgColor};
   align-self: end;
-  /* text-align: center; */
   & > p {
     display: -webkit-box;
     -webkit-line-clamp: ${(props) =>
@@ -119,7 +112,7 @@ export const CardDescription = styled.div`
 
     color: var(--m-3-white, #fff);
     text-align: center;
-    /* M3/label/large */
+
     font-size: ${descrFontSize}px;
     font-style: normal;
     font-weight: 500;
@@ -128,7 +121,7 @@ export const CardDescription = styled.div`
   }
 `;
 
-const moreLessCommon = css`
+export const DescriptionCTA = styled.span`
   cursor: pointer;
   border-bottom: 16px solid ${descrBgColor};
   border-left: 15px solid transparent;
@@ -144,11 +137,4 @@ const moreLessCommon = css`
   line-height: ${descrLineHeight}px;
   letter-spacing: 0.1px;
   grid-area: more;
-`;
-
-export const CardShowMore = styled.span`
-  ${moreLessCommon}
-`;
-export const CardShowLess = styled.span`
-  ${moreLessCommon}
 `;

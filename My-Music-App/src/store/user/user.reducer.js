@@ -9,11 +9,12 @@ const getItemFromLocalStorage = (key) => {
 };
 
 /** Initial state of user slice
- * @type {{loading: boolean, isAuthenticated: boolean, error: null | string, accessToken: null | string, accessExpiresAt: null | string, refreshToken: null | string, refreshExpiresAt: null | string, isRemembered: boolean | null, displayName: null | string, email: nulll | string }}
+ * @type {{loading: boolean, isAuthenticated: boolean, isRehydrated: boolean, error: null | string, accessToken: null | string, accessExpiresAt: null | string, refreshToken: null | string, refreshExpiresAt: null | string, isRemembered: boolean | null, displayName: null | string, email: nulll | string }}
  */
 const INITIAL_STATE = {
   loading: false,
   isAuthenticated: false,
+  isRehydrated: false,
   error: null,
   loginError: null,
   accessToken: null,
@@ -32,7 +33,7 @@ export const userSlice = createSlice({
   reducers: {
     // I thick adding redux-persist is overkill right now, so rehydration was implemented manually
     rehydrateTokens: (state) => {
-      // Initial state is null so it better parse each localStorage item, especially if it boolean
+      state.isRehydrated = true;
       state.isRemembered = getItemFromLocalStorage("isRemembered");
       if (state.isRemembered) {
         state.accessToken = getItemFromLocalStorage("accessToken");

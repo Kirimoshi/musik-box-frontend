@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,6 +18,7 @@ function App() {
   const {
     isRemembered,
     isAuthenticated,
+    isRehydrated,
     accessToken,
     accessExpiresAt,
     refreshToken,
@@ -25,8 +26,8 @@ function App() {
   } = useSelector(userSelector);
 
   useEffect(() => {
-    dispatch(rehydrateTokens()); // Rehydrate tokens from localStorage, run once on start
-  }, [dispatch]);
+    if (!isRehydrated) dispatch(rehydrateTokens());
+  }, [dispatch, isRehydrated]);
 
   useEffect(() => {
     if (!isRemembered) return; // if user is not remembered, then we dont need to check anything related to login
