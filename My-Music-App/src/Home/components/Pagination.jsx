@@ -4,17 +4,24 @@ import { PaginationControls } from "./Pagination.styles";
 import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
 
 function Pagination({
-  onClickLeft,
-  onClickRight,
+  handleClick,
   isLeftActive = false,
   isRightActive = false,
 }) {
   return (
     <PaginationControls>
-      <button disabled={!isLeftActive} onClick={onClickLeft}>
+      <button
+        disabled={!isLeftActive}
+        onClick={() => handleClick("left")}
+        data-left-arrow-id="pagination-left-arrow"
+      >
         <BsArrowLeftShort />
       </button>
-      <button disabled={!isRightActive} onClick={onClickRight}>
+      <button
+        disabled={!isRightActive}
+        onClick={() => handleClick("right")}
+        data-right-arrow-id="pagination-right-arrow"
+      >
         <BsArrowRightShort />
       </button>
     </PaginationControls>
@@ -22,8 +29,7 @@ function Pagination({
 }
 
 Pagination.propTypes = {
-  onClickLeft: PropTypes.func.isRequired,
-  onClickRight: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
   isLeftActive: PropTypes.bool,
   isRightActive: PropTypes.bool,
 };
