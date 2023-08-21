@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
 
 import { MainContainer } from "./Main.styles";
-import PopularPlaylists from "./PopularPlaylists";
+import PlaylistsPopular from "./PlaylistsPopular";
+
+import { fetchPopularPlaylists } from "../../store/homePage/homePage.thunks";
+import { popularPlaylistsSelector } from "../../store/homePage/homePage.selector";
 
 function Main() {
+  const dispatch = useDispatch();
+  const playlistsPopular = useSelector(popularPlaylistsSelector);
+
+  useEffect(() => {
+    dispatch(fetchPopularPlaylists());
+  }, [dispatch]);
+
   return (
     <>
       <MainContainer>
-        <PopularPlaylists />
+        {playlistsPopular.length !== 0 && (
+          <PlaylistsPopular playlists={playlistsPopular} />
+        )}
       </MainContainer>
     </>
   );

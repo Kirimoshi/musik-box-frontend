@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const likeSize = "52.364"; //px
 const cardWidth = "264"; //px

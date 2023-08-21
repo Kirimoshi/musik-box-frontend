@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { popularPlaylistsSelector } from "../../store/homePage/homePage.selector";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import { AiOutlineHeart } from "react-icons/ai";
 import {
@@ -15,21 +14,13 @@ import {
   CardOwner,
   CardDescription,
   DescriptionCTA,
-} from "./PopularPlaylists.styles";
+} from "./PlaylistsPopular.styles";
 import { Subtitle, Title } from "../Shared.styles";
-
-import { fetchPopularPlaylists } from "../../store/homePage/homePage.thunks";
 
 const MAX_CHARS = 99;
 
-function PopularPlaylists() {
-  const dispatch = useDispatch();
-  const playlistData = useSelector(popularPlaylistsSelector);
+function PlaylistsPopular({ playlists }) {
   const [expandedPlaylistId, setExpandedPlaylistId] = useState(null);
-
-  useEffect(() => {
-    if (playlistData.length === 0) dispatch(fetchPopularPlaylists());
-  }, [dispatch, playlistData]);
 
   const handleMore = (playlistId) => () => {
     setExpandedPlaylistId(playlistId);
@@ -43,7 +34,7 @@ function PopularPlaylists() {
       <Title>Playlists</Title>
       <Subtitle>Most popular</Subtitle>
       <PlaylistsContainer className="_playlists-wrapper">
-        {playlistData?.map(
+        {playlists?.map(
           ({
             id,
             attributes: {
@@ -90,4 +81,21 @@ function PopularPlaylists() {
   );
 }
 
-export default PopularPlaylists;
+PlaylistsPopular.propTypes = {
+  playlists: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      type: PropTypes.string,
+      attributes: PropTypes.shape({
+        description: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        logo: PropTypes.shape({
+          id: PropTypes.string,
+          storage: PropTypes.string,
+        }),
+      }),
+    })
+  ),
+};
+
+export default PlaylistsPopular;
