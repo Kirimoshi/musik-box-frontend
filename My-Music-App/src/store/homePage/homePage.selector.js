@@ -1,4 +1,13 @@
-export const homePageSelector = (state) => state.homePageSlice;
+import { createSelector } from "@reduxjs/toolkit";
 
-export const popularPlaylistsSelector = (state) =>
-  state.homePageSlice.popularPlaylists;
+const homePageSelector = (state) => state.homePageSlice;
+
+export const homePageLoadingSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.loading
+);
+
+export const popularPlaylistsSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.popularPlaylists
+);

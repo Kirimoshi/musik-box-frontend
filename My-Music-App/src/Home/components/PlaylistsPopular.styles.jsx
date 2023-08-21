@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { BasePlaylistsContainer, Title, Subtitle } from "../Shared.styles";
 
 const likeSize = "52.364"; //px
 const cardWidth = "264"; //px
@@ -18,10 +19,17 @@ const cardPadding = {
   left: "19.64",
 };
 
-export const PlaylistsContainer = styled.section`
+export const PlaylistsTitle = styled(Title)`
+  margin-bottom: 12px;
+`;
+export const PlaylistsSubtitle = styled(Subtitle)`
+  margin-bottom: 8px;
+`;
+
+export const PlaylistsContainer = styled(BasePlaylistsContainer)`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, ${cardWidth}px);
+  height: ${cardHeight}px;
 `;
 
 export const PlaylistCard = styled.figure`
@@ -29,7 +37,7 @@ export const PlaylistCard = styled.figure`
   height: ${cardHeight}px;
 
   border-radius: 18px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${(props) => props.$coverUrl}), linear-gradient(lightgray, lightgray);
   background-position: center, center, 50%;
   background-size: cover, cover, cover;

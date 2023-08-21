@@ -7,6 +7,8 @@ import {
   MdKeyboardDoubleArrowDown,
 } from "react-icons/md";
 import {
+  PlaylistsTitle,
+  PlaylistsSubtitle,
   PlaylistsContainer,
   PlaylistCard,
   CardTitle,
@@ -15,7 +17,7 @@ import {
   CardDescription,
   DescriptionCTA,
 } from "./PlaylistsPopular.styles";
-import { Subtitle, Title } from "../Shared.styles";
+import { UPLOADS_URL } from "../../store/constants";
 
 const MAX_CHARS = 99;
 
@@ -31,27 +33,26 @@ function PlaylistsPopular({ playlists }) {
 
   return (
     <div>
-      <Title>Playlists</Title>
-      <Subtitle>Most popular</Subtitle>
-      <PlaylistsContainer className="_playlists-wrapper">
+      <PlaylistsTitle>Playlists</PlaylistsTitle>
+      <PlaylistsSubtitle>Most popular</PlaylistsSubtitle>
+      <PlaylistsContainer>
         {playlists?.map(
           ({
             id,
             attributes: {
               name,
               description,
-
               logo: { id: coverUrl, storage },
             },
           }) => (
             <PlaylistCard
-              $coverUrl={`http://127.0.0.1:3000/uploads/${storage}/${coverUrl}`}
+              $coverUrl={`${UPLOADS_URL}/${storage}/${coverUrl}`}
               key={id}
               $isExpanded={expandedPlaylistId === id}
             >
               <CardTitle>{name}</CardTitle>
               {/* TODO: Add owner as backend team provide it */}
-              <CardOwner>{`Created by: Playlist owner`}</CardOwner>{" "}
+              <CardOwner>{`Created by: Playlist owner`}</CardOwner>
               <CardLike>
                 <AiOutlineHeart />
               </CardLike>
@@ -66,10 +67,7 @@ function PlaylistsPopular({ playlists }) {
                 </DescriptionCTA>
               )}
               {description.length !== 0 && (
-                <CardDescription
-                  $isExpanded={expandedPlaylistId === id}
-                  className="_playlist__desc"
-                >
+                <CardDescription $isExpanded={expandedPlaylistId === id}>
                   <p>{description}</p>
                 </CardDescription>
               )}
