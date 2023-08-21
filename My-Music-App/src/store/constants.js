@@ -5,4 +5,6 @@ export const MY_PLAYLIST_URL = "http://127.0.0.1:3000/api/v1/my/playlists";
 export const HOMEPAGE_ENDPOINT_URL =
   "http://127.0.0.1:3000/api/v1/home_playlists";
 export const UPLOADS_URL = "http://127.0.0.1:3000/uploads";
+export const DEFAULT_PLAYLIST_COVER =
+  "http://127.0.0.1:3000/uploads/default.jpg";
 export const USER_CRED = { displayName: "Olsheer", email: "email@.com" };

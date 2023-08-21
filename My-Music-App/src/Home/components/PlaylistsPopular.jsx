@@ -17,7 +17,7 @@ import {
   CardDescription,
   DescriptionCTA,
 } from "./PlaylistsPopular.styles";
-import { UPLOADS_URL } from "../../store/constants";
+import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 
 const MAX_CHARS = 99;
 
@@ -36,44 +36,39 @@ function PlaylistsPopular({ playlists }) {
       <PlaylistsTitle>Playlists</PlaylistsTitle>
       <PlaylistsSubtitle>Most popular</PlaylistsSubtitle>
       <PlaylistsContainer>
-        {playlists?.map(
-          ({
-            id,
-            attributes: {
-              name,
-              description,
-              logo: { id: coverUrl, storage },
-            },
-          }) => (
-            <PlaylistCard
-              $coverUrl={`${UPLOADS_URL}/${storage}/${coverUrl}`}
-              key={id}
-              $isExpanded={expandedPlaylistId === id}
-            >
-              <CardTitle>{name}</CardTitle>
-              {/* TODO: Add owner as backend team provide it */}
-              <CardOwner>{`Created by: Playlist owner`}</CardOwner>
-              <CardLike>
-                <AiOutlineHeart />
-              </CardLike>
-              {expandedPlaylistId !== id && description.length >= MAX_CHARS && (
-                <DescriptionCTA onClick={handleMore(id)}>
-                  <MdKeyboardDoubleArrowUp />
-                </DescriptionCTA>
-              )}
-              {expandedPlaylistId === id && description.length >= MAX_CHARS && (
-                <DescriptionCTA onClick={handleLess}>
-                  <MdKeyboardDoubleArrowDown />
-                </DescriptionCTA>
-              )}
-              {description.length !== 0 && (
-                <CardDescription $isExpanded={expandedPlaylistId === id}>
-                  <p>{description}</p>
-                </CardDescription>
-              )}
-            </PlaylistCard>
-          )
-        )}
+        {playlists?.map(({ id, attributes: { name, description, logo } }) => (
+          <PlaylistCard
+            $coverUrl={
+              logo
+                ? DEFAULT_PLAYLIST_COVER
+                : `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+            }
+            key={id}
+            $isExpanded={expandedPlaylistId === id}
+          >
+            <CardTitle>{name}</CardTitle>
+            {/* TODO: Add owner as backend team provide it */}
+            <CardOwner>{`Created by: Playlist owner`}</CardOwner>
+            <CardLike>
+              <AiOutlineHeart />
+            </CardLike>
+            {expandedPlaylistId !== id && description.length >= MAX_CHARS && (
+              <DescriptionCTA onClick={handleMore(id)}>
+                <MdKeyboardDoubleArrowUp />
+              </DescriptionCTA>
+            )}
+            {expandedPlaylistId === id && description.length >= MAX_CHARS && (
+              <DescriptionCTA onClick={handleLess}>
+                <MdKeyboardDoubleArrowDown />
+              </DescriptionCTA>
+            )}
+            {description.length !== 0 && (
+              <CardDescription $isExpanded={expandedPlaylistId === id}>
+                <p>{description}</p>
+              </CardDescription>
+            )}
+          </PlaylistCard>
+        ))}
       </PlaylistsContainer>
     </div>
   );
