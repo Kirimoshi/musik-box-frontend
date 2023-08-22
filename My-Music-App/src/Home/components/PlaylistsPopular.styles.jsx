@@ -22,6 +22,7 @@ const cardPadding = {
 export const PlaylistsTitle = styled(Title)`
   margin-bottom: 12px;
 `;
+
 export const PlaylistsSubtitle = styled(Subtitle)`
   margin-bottom: 8px;
 `;
@@ -35,7 +36,6 @@ export const PlaylistsContainer = styled(BasePlaylistsContainer)`
 export const PlaylistCard = styled.figure`
   width: ${cardWidth}px;
   height: ${cardHeight}px;
-
   border-radius: 18px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${(props) => props.$coverUrl}), linear-gradient(lightgray, lightgray);
@@ -65,7 +65,6 @@ export const PlaylistCard = styled.figure`
 export const CardTitle = styled.h3`
   grid-area: name;
   color: var(--m-3-white, #fff);
-  /* M3/headline/medium */
   font-size: 28px;
   font-style: normal;
   font-weight: 400;

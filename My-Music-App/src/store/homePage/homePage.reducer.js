@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as thunks from "./homePage.thunks";
 
-const INITIAL_STATE = {
+const initialState = {
   loading: false,
   error: null,
   popularPlaylists: [],
@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 
 export const homePageSlice = createSlice({
   name: "homePageSlice",
-  initialState: INITIAL_STATE,
+  initialState: initialState,
   reducers: {
     setPopularPlaylists: (state, action) => {
       state.popularPlaylists = action.payload;

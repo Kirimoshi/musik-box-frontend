@@ -1,8 +1,5 @@
 import styled from "styled-components";
 
-const activeColor = "#fff";
-const inactiveColor = "#9b9b9b";
-
 export const PaginationControls = styled.div`
   display: flex;
   gap: 24px;
@@ -23,9 +20,9 @@ export const PaginationControls = styled.div`
 
   & > button:disabled {
     cursor: not-allowed;
-    color: ${inactiveColor};
+    color: #9b9b9b;
   }
   & > button:enabled {
-    color: ${activeColor};
+    color: #fff;
   }
 `;
