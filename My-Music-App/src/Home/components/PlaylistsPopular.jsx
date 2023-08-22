@@ -22,10 +22,6 @@ import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 const MAX_CHARS = 99;
 
 function PlaylistsPopular({ playlists }) {
-  console.log(
-    "file: PlaylistsPopular.jsx:25 ~ PlaylistsPopular ~ playlists:",
-    playlists
-  );
   const [expandedPlaylistId, setExpandedPlaylistId] = useState(null);
 
   const handleMore = (playlistId) => () => {
