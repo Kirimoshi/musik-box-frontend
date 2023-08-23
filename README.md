@@ -1,8 +1,8 @@
 # How to run this project task:
 
-- Minimum version of nodejs requried by React is 14, we recommend 18+
-- Install dependencies by looking up into package.json file, "npm install" will do it for you.
-- Open the terminal in VS Code and enter the command "npm install" and it will run the applicati-on in browser.
+- Make sure you have the NodeJs library, minimum version required by React is 14, recommended 18+.
+- Dependencies are installed from the console with the `npm install` command (or `npm i`), you can see dependencies in the package.json file in the `dependencies` and `devDependencies` keys,
+- Dev version of the application is started with the command `npm run start` (can be shortened to `npm start`).
 - To run unit test cases open another terminal and enter the command "npm run test" or "npm test" and you can watch the results in terminal itself.
 - To watch the coverage of unit test cases of the application, open another terminal and enter the command "npm run test:coverage" and you can watch the coverage table in the terminal itself.
 
@@ -11,6 +11,7 @@
 - sometimes for correct operation, npm commands must be run from the My-Music-App folder level, since the repository is initialized in the "frontend-music-app" folder, and the application itself is located in the "My-Music-App" folder.
 - we periodically add new libraries to the project, so if you have any problems with the launch, please start the command "npm install" again.
 - while backed is runnig locally, you maybe need to update their part as well
+- for backend compatibility the application starts on port 3001 using the cross-env library, if you have problems with this start method use the standard one which is saved with the postfix :stndb the start command in this case looks like `npm run start:stnd`
 
 ### Front-End Testing End Points:
 
