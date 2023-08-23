@@ -12,8 +12,12 @@ export const popularPlaylistsSelector = createSelector(
   (homePageSlice) => homePageSlice.popularPlaylists
 );
 
-export const featuredPlaylistsSelector = (state) =>
-  state.homePageSlice.featuredPlaylists;
+export const featuredPlaylistsSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.featuredPlaylists
+);
 
-export const latestPlaylistsSelector = (state) =>
-  state.homePageSlice.latestPlaylists;
+export const latestPlaylistsSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.latestPlaylists
+);

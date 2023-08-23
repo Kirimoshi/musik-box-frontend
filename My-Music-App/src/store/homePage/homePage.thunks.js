@@ -1,30 +1,32 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { HOMEPAGE_ENDPOINT_URL as url } from "../constants";
+import { API_URL } from "../constants";
+
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: {
+    Accept: "*/*",
+  },
+});
+const endpoint = "/home_playlists";
 
 export const fetchPopularPlaylists = createAsyncThunk(
   "homePageSlice/fetchPopularPlaylists",
   async () => {
-    const headersList = {
-      Accept: "*/*",
-    };
-    const reqOptions = {
-      url: `${url}?query=popular`,
-      method: "GET",
-      headers: headersList,
-    };
     try {
-      const response = await axios.request(reqOptions);
+      const response = await axiosInstance.get(endpoint, {
+        params: { query: "popular" },
+      });
       //TODO: Remove this filter after backend team implement the correct query for slicing the playlists
       const first4playlists = response.data.playlists.data.filter(
         (_, i) => i < 4
       );
       // TODO: remove this after backend team fix the seed
-      first4playlists[0].attributes.description = ""; // description is empty for the first playlist
-      first4playlists[1].attributes.description = // description is too long for the second playlist
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique culpa quasi voluptate sapiente aspernatur ipsa incidunt velit harum optio commodi totam adipisci magnam recusandae officiis laboriosam fugit doloribus, ratione dolorum quam iure earum! Et quo error dolor harum assumenda molestiae quia voluptatem sit facere non totam, necessitatibus sequi. Blanditiis, unde?";
-      first4playlists[2].attributes.description = // desctiption exactly 99 chars for the third playlist
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similiques culpa quasis voluptate?";
+      // first4playlists[0].attributes.description = ""; // description is empty for the first playlist
+      // first4playlists[1].attributes.description = // description is too long for the second playlist
+      //   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique culpa quasi voluptate sapiente aspernatur ipsa incidunt velit harum optio commodi totam adipisci magnam recusandae officiis laboriosam fugit doloribus, ratione dolorum quam iure earum! Et quo error dolor harum assumenda molestiae quia voluptatem sit facere non totam, necessitatibus sequi. Blanditiis, unde?";
+      // first4playlists[2].attributes.description = // desctiption exactly 99 chars for the third playlist
+      //   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similiques culpa quasis voluptate?";
       return first4playlists;
     } catch (error) {
       if (error.response.data.error) throw error.response.data.error;
@@ -48,16 +50,10 @@ export const fetchPopularPlaylistsRejected = (state, action) => {
 export const fetchFeaturedPlaylists = createAsyncThunk(
   "homePageSlice/fetchFeaturedPlaylists",
   async () => {
-    const headersList = {
-      Accept: "*/*",
-    };
-    const reqOptions = {
-      url: `${url}?query=popular`, // TODO change to featured when backend team fix the seed
-      method: "GET",
-      headers: headersList,
-    };
     try {
-      const response = await axios.request(reqOptions);
+      const response = await axiosInstance.get(endpoint, {
+        params: { query: "last" },
+      });
       const first6playlists = response.data.playlists.data.filter(
         (_, i) => i < 6
       );
@@ -87,16 +83,10 @@ export const fetchFeaturedPlaylistsRejected = (state, action) => {
 export const fetchLatestPlaylists = createAsyncThunk(
   "homePageSlice/fetchLatestPlaylists",
   async () => {
-    const headersList = {
-      Accept: "*/*",
-    };
-    const reqOptions = {
-      url: `${url}?query=last`,
-      method: "GET",
-      headers: headersList,
-    };
     try {
-      const response = await axios.request(reqOptions);
+      const response = await axiosInstance.get(endpoint, {
+        params: { query: "last" },
+      });
       const first6playlists = response.data.playlists.data.filter(
         (_, i) => i < 6
       );
