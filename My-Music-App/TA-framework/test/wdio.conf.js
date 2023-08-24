@@ -1,3 +1,6 @@
+const fs = require('node:fs/promises');
+let { generate } = require('multiple-cucumber-html-reporter');
+
 exports.config = {
     //
     // ====================
@@ -52,7 +55,23 @@ exports.config = {
     //
     capabilities: [{
         // capabilities for local browser web tests
-        browserName: 'chrome' // or "firefox", "microsoftedge", "safari"
+        browserName: 'chrome', // or "firefox", "microsoftedge", "safari"
+        'cjson:metadata': {
+            // For a browser
+            browser: {
+                name: 'chrome',
+                version: '116',
+            },
+            // for an app
+            app: {
+                name: 'My-Music-App',
+                version: '0.1.0',
+            },
+            platform: {
+                name: 'windows',
+                version: '10'
+            }
+        }
     }],
 
     //
@@ -102,7 +121,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver','edgedriver'],
+    services: ['chromedriver', 'edgedriver'],
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -124,7 +143,14 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
+    reporters: [['spec', {
+        showPreface: false,
+    }],
+        ['cucumberjs-json', {
+            jsonFolder: 'TA-framework/reports/json_report',
+        },
+        ],
+    ],
 
     //
     // If you are using Cucumber you need to specify the location of your step definitions.
@@ -152,7 +178,7 @@ exports.config = {
         // <boolean> Enable this config to treat undefined definitions as warnings.
         ignoreUndefinedDefinitions: false
     },
-    
+
     //
     // =====
     // Hooks
@@ -166,8 +192,9 @@ exports.config = {
      * @param {object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    onPrepare: function (config, capabilities) {
+        return fs.rm('TA-framework/reports/', { recursive: true });
+    },
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -273,7 +300,7 @@ exports.config = {
      */
     // afterFeature: function (uri, feature) {
     // },
-    
+
     /**
      * Runs after a WebdriverIO command gets executed
      * @param {string} commandName hook command name
@@ -308,8 +335,17 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    // onComplete: function(exitCode, config, capabilities, results) {
-    // },
+    onComplete: function (exitCode, config, capabilities, results) {
+        // Generate the report when it all tests are done
+        generate({
+            // Required
+            // This part needs to be the same path where you store the JSON files
+            // default = '.tmp/json/'
+            jsonDir: 'TA-framework/reports/json_report/',
+            reportPath: 'TA-framework/reports/html_report/',
+            // for more options see https://github.com/wswebcreation/multiple-cucumber-html-reporter#options
+        });
+    }
     /**
     * Gets executed when a refresh happens.
     * @param {string} oldSessionId session ID of the old session
