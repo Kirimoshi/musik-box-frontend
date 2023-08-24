@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+/TA-framework/reports/html_report
+/TA-framework/reports/json_report
 
 # production
 /build
@@ -22,3 +24,4 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/logs
