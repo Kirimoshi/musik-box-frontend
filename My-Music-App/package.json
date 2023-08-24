@@ -60,7 +60,6 @@
     "eject": "react-scripts eject",
     "test:coverage": "react-scripts test --env=jsdom --watchAll=false --coverage",
     "wdio": "wdio run TA-framework/test/wdio.conf.js",
-    "report": "node node_modules/wdio-html-nice-reporter/lib/makeReport.js master-report.html 'reports/html-reports/'",
     "eslint:fix": "eslint --fix --ext .js --ext .jsx src",
     "eslint": "eslint --ext .js --ext .jsx src"
   },
