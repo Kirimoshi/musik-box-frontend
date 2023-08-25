@@ -14,8 +14,17 @@ import {
   CardDescription,
   DescriptionCTA,
 } from "./PlaylistsSmall.styles";
+import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 
 const MAX_CHARS = 25;
+
+function DescriptionToggle({ isExpanded, onExpand, onCollapse }) {
+  return (
+    <DescriptionCTA onClick={isExpanded ? onCollapse : onExpand}>
+      {isExpanded ? <MdKeyboardDoubleArrowDown /> : <MdKeyboardDoubleArrowUp />}
+    </DescriptionCTA>
+  );
+}
 
 function PlaylistsSmall({ playlists, subtitle }) {
   const [expandedPlaylistId, setExpandedPlaylistId] = useState(null);
@@ -31,60 +40,49 @@ function PlaylistsSmall({ playlists, subtitle }) {
     <div>
       <Subtitle>{subtitle}</Subtitle>
       <PlaylistContainer data-test-name="cards wraper">
-        {playlists?.map(
-          ({ id, attributes: { name, description, logo }, ...rest }) => (
-            <PlaylistCard
-              key={id}
-              data-test-name="card"
-              $isExpanded={expandedPlaylistId === id}
-            >
+        {playlists?.map(({ id, attributes: { name, description, logo } }) => {
+          const isExpanded = expandedPlaylistId === id;
+          const shouldRenderDescription = description !== null;
+          const hasLongDescription =
+            description && description.length >= MAX_CHARS;
+          const coverUrl = logo
+            ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+            : DEFAULT_PLAYLIST_COVER;
+
+          return (
+            <PlaylistCard key={id} $isExpanded={isExpanded}>
               <Cover
                 role="img"
                 aria-label={`playlist ${name} cover`}
-                data-test-name="picture"
-                $isExpanded={expandedPlaylistId === id}
-                // TODO add default image
-                $coverUrl={
-                  logo
-                    ? `http://127.0.0.1:3000/uploads/${logo.storage}/${logo.id}`
-                    : `path to default image`
-                }
-              >
-                {/* <div data-test-name="icon"></div> */}
-              </Cover>
-              <CardTitle data-test-name="_title">{name}</CardTitle>
-              <CardOwner data-test-name="_owner">By: {`Owner`}</CardOwner>
-              {description.length !== 0 && description.length > MAX_CHARS && (
-                <DescriptionCTA>
-                  {expandedPlaylistId !== id ? (
-                    <MdKeyboardDoubleArrowUp onClick={handleMore(id)} />
-                  ) : (
-                    <MdKeyboardDoubleArrowDown onClick={handleLess} />
-                  )}
-                </DescriptionCTA>
+                $isExpanded={isExpanded}
+                $coverUrl={coverUrl}
+              />
+              <CardTitle>{name}</CardTitle>
+              <CardOwner>By: {`Owner`}</CardOwner>
+              {hasLongDescription && (
+                <DescriptionToggle
+                  isExpanded={isExpanded}
+                  onExpand={handleMore(id)}
+                  onCollapse={handleLess}
+                />
               )}
-              {description.length !== 0 && (
-                <CardDescription
-                  $isExpanded={expandedPlaylistId === id}
-                  data-test-name="_description"
-                >
+              {shouldRenderDescription && (
+                <CardDescription $isExpanded={isExpanded}>
                   {description}
                 </CardDescription>
               )}
             </PlaylistCard>
-          )
-        )}
+          );
+        })}
       </PlaylistContainer>
     </div>
   );
 }
 
 PlaylistsSmall.propTypes = {
-  subtitle: PropTypes.string.isRequired,
   playlists: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
-      type: PropTypes.string,
       attributes: PropTypes.shape({
         description: PropTypes.string,
         name: PropTypes.string.isRequired,
@@ -95,6 +93,12 @@ PlaylistsSmall.propTypes = {
       }),
     })
   ),
+  subtitle: PropTypes.string.isRequired,
+};
+DescriptionToggle.propTypes = {
+  isExpanded: PropTypes.bool.isRequired,
+  onExpand: PropTypes.func.isRequired,
+  onCollapse: PropTypes.func.isRequired,
 };
 
 export default PlaylistsSmall;

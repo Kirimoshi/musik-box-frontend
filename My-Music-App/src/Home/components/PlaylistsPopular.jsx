@@ -21,6 +21,13 @@ import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 
 const MAX_CHARS = 99;
 
+function DescriptionToggle({ isExpanded, onExpand, onCollapse }) {
+  return (
+    <DescriptionCTA onClick={isExpanded ? onCollapse : onExpand}>
+      {isExpanded ? <MdKeyboardDoubleArrowDown /> : <MdKeyboardDoubleArrowUp />}
+    </DescriptionCTA>
+  );
+}
 function PlaylistsPopular({ playlists }) {
   const [expandedPlaylistId, setExpandedPlaylistId] = useState(null);
 
@@ -36,39 +43,42 @@ function PlaylistsPopular({ playlists }) {
       <PlaylistsTitle>Playlists</PlaylistsTitle>
       <PlaylistsSubtitle>Most popular</PlaylistsSubtitle>
       <PlaylistsContainer>
-        {playlists?.map(({ id, attributes: { name, description, logo } }) => (
-          <PlaylistCard
-            $coverUrl={
-              logo
-                ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-                : DEFAULT_PLAYLIST_COVER
-            }
-            key={id}
-            $isExpanded={expandedPlaylistId === id}
-          >
-            <CardTitle>{name}</CardTitle>
-            {/* TODO: Add owner as backend team provide it */}
-            <CardOwner>{`Created by: Playlist owner`}</CardOwner>
-            <CardLike>
-              <AiOutlineHeart />
-            </CardLike>
-            {expandedPlaylistId !== id && description.length >= MAX_CHARS && (
-              <DescriptionCTA onClick={handleMore(id)}>
-                <MdKeyboardDoubleArrowUp />
-              </DescriptionCTA>
-            )}
-            {expandedPlaylistId === id && description.length >= MAX_CHARS && (
-              <DescriptionCTA onClick={handleLess}>
-                <MdKeyboardDoubleArrowDown />
-              </DescriptionCTA>
-            )}
-            {description.length !== 0 && (
-              <CardDescription $isExpanded={expandedPlaylistId === id}>
-                <p>{description}</p>
-              </CardDescription>
-            )}
-          </PlaylistCard>
-        ))}
+        {playlists?.map(({ id, attributes: { name, description, logo } }) => {
+          const isExpanded = expandedPlaylistId === id;
+          const shouldRenderDescription = description !== null;
+          const hasLongDescription =
+            description && description.length >= MAX_CHARS;
+          const coverUrl = logo
+            ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+            : DEFAULT_PLAYLIST_COVER;
+
+          return (
+            <PlaylistCard
+              $coverUrl={coverUrl}
+              key={id}
+              $isExpanded={isExpanded}
+            >
+              <CardTitle>{name}</CardTitle>
+              {/* TODO: Add owner as backend team provide it */}
+              <CardOwner>{`Created by: Playlist owner`}</CardOwner>
+              <CardLike>
+                <AiOutlineHeart />
+              </CardLike>
+              {hasLongDescription && (
+                <DescriptionToggle
+                  isExpanded={isExpanded}
+                  onExpand={handleMore(id)}
+                  onCollapse={handleLess}
+                />
+              )}
+              {shouldRenderDescription && (
+                <CardDescription $isExpanded={isExpanded}>
+                  <p>{description}</p>
+                </CardDescription>
+              )}
+            </PlaylistCard>
+          );
+        })}
       </PlaylistsContainer>
     </div>
   );
@@ -78,7 +88,6 @@ PlaylistsPopular.propTypes = {
   playlists: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
-      type: PropTypes.string,
       attributes: PropTypes.shape({
         description: PropTypes.string,
         name: PropTypes.string.isRequired,
@@ -89,6 +98,12 @@ PlaylistsPopular.propTypes = {
       }),
     })
   ),
+};
+
+DescriptionToggle.propTypes = {
+  isExpanded: PropTypes.bool.isRequired,
+  onExpand: PropTypes.func.isRequired,
+  onCollapse: PropTypes.func.isRequired,
 };
 
 export default PlaylistsPopular;
