@@ -8,8 +8,8 @@
 
 # testing
 /coverage
-/TA-framework/reports/html_report
-/TA-framework/reports/json_report
+/TA-framework/reports/html_report/*
+/TA-framework/reports/json_report/*
 
 # production
 /build
