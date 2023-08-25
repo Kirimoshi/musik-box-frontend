@@ -29,7 +29,8 @@ function Main() {
     dispatch(fetchPopularPlaylists());
     dispatch(fetchFeaturedPlaylists());
     dispatch(fetchLatestPlaylists());
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Dispatch is not a dependency, it remains unchanged from the initialization of store.
 
   // TODO: Pagination implementation will be based on additional queries to the backend
   // we will be able to send to API max number of playlists per page and page number
