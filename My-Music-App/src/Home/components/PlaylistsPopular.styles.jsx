@@ -6,14 +6,14 @@ import {
   oneLineEllipsis,
 } from "../Shared.styles";
 
-const likeSize = 52; //px
-const cardWidth = 264; //px
-const cardHeight = 288; //px
-const moreHeight = 16; //px
-const descrLineHeight = 20; //px
+const likeSize = 52;
+const cardWidth = 264;
+const cardHeight = 288;
+const moreHeight = 16;
+const descrLineHeight = 20;
 const descrMinLines = 3;
 const descrMaxLines = 6;
-const descrFontSize = 14; //px
+const descrFontSize = 14;
 const descrBgColor = "rgba(191, 129, 173, 0.5)";
 const cardPadd = {
   top: 22,
@@ -27,7 +27,7 @@ const descPadd = {
   bottom: 20,
   left: 19,
 };
-const descrVertPaddSum = descPadd.top + descPadd.bottom; //px
+const descrVertPaddSum = descPadd.top + descPadd.bottom;
 
 export const PlaylistsTitle = styled(Title)`
   margin-bottom: 12px;

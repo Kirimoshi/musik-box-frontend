@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { BasePlaylistsContainer, oneLineEllipsis } from "../Shared.styles";
 
-const cardWidth = 168; //px
-const cardHeight = 270; //px
-const coverHeight = 182; //px
-const descrLineHeight = 20; //px
-const moreLessiconSize = 24; //px
+const cardWidth = 168;
+const cardHeight = 270;
+const coverHeight = 182;
+const descrLineHeight = 20;
+const moreLessiconSize = 24;
 const descrMinLines = 1;
 const descrMaxLines = 3;
 const transitionType = "0.2s ease-in-out";

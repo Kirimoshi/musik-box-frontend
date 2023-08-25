@@ -26,9 +26,9 @@ export const Divider = styled.hr`
   border: none;
 `;
 
-const avatarWidth = "60"; //px
-const penIconWidth = "24"; //px
-const userInfoPadding = "16"; //px
+const avatarWidth = "60";
+const penIconWidth = "24";
+const userInfoPadding = "16";
 const authUserInfoColumnTemplate = `${avatarWidth}px auto ${penIconWidth}px`;
 const unAuthUserInfoColumnTemplate = `${avatarWidth}px auto`;
 

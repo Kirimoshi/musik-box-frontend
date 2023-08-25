@@ -29,7 +29,7 @@ function Main() {
     dispatch(fetchPopularPlaylists());
     dispatch(fetchFeaturedPlaylists());
     dispatch(fetchLatestPlaylists());
-  }, [dispatch]);
+  }, []);
 
   // TODO: Pagination implementation will be based on additional queries to the backend
   // we will be able to send to API max number of playlists per page and page number
@@ -48,7 +48,7 @@ function Main() {
           />
         </>
         <>
-          <PlaylistsSmall subtitle={"Featured"} playlists={playlistsFeatured} />
+          <PlaylistsSmall subtitle="Featured" playlists={playlistsFeatured} />
           <Pagination
             onClickLeft={onClickLeft}
             onClickRight={onClickRight}
@@ -56,7 +56,7 @@ function Main() {
           />
         </>
         <>
-          <PlaylistsSmall subtitle={"Latest"} playlists={playlistsLatest} />
+          <PlaylistsSmall subtitle="Latest" playlists={playlistsLatest} />
           <Pagination
             onClickLeft={onClickLeft}
             onClickRight={onClickRight}
