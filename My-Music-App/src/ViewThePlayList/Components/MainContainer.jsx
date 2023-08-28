@@ -51,9 +51,13 @@ export default function MainContainer() {
   const {
     data: {
       id: playlistId,
-      attributes: { description, logo },
+      attributes: { description, logo, name },
     },
   } = playlistStore;
+  console.log(
+    "file: MainContainer.jsx:57 ~ MainContainer ~ playlistStore:",
+    playlistStore
+  );
   const shouldRenderDescription = description !== null;
   const coverUrl = logo
     ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
@@ -123,7 +127,7 @@ export default function MainContainer() {
         </div>
       </div>
       <div className="playlistimage">
-        <img src={coverUrl} alt="" className="img2"></img>
+        <img src={coverUrl} alt={`Playlist ${name} cover`} className="img2" />
         <BsThreeDotsVertical
           className="vertical-menu"
           onClick={() => {
