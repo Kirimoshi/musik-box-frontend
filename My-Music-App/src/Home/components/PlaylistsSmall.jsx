@@ -1,25 +1,22 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-
-import { AiOutlineHeart } from "react-icons/ai";
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
 } from "react-icons/md";
+import { Subtitle } from "../Shared.styles";
 import {
-  PlaylistsTitle,
-  PlaylistsSubtitle,
-  PlaylistsContainer,
+  PlaylistContainer,
   PlaylistCard,
+  Cover,
   CardTitle,
-  CardLike,
   CardOwner,
   CardDescription,
   DescriptionCTA,
-} from "./PlaylistsPopular.styles";
+} from "./PlaylistsSmall.styles";
 import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 
-const MAX_CHARS = 99;
+const MAX_CHARS = 25;
 
 function DescriptionToggle({ isExpanded, onExpand, onCollapse }) {
   return (
@@ -28,7 +25,8 @@ function DescriptionToggle({ isExpanded, onExpand, onCollapse }) {
     </DescriptionCTA>
   );
 }
-function PlaylistsPopular({ playlists }) {
+
+function PlaylistsSmall({ playlists, subtitle }) {
   const [expandedPlaylistId, setExpandedPlaylistId] = useState(null);
 
   const handleMore = (playlistId) => () => {
@@ -40,9 +38,8 @@ function PlaylistsPopular({ playlists }) {
 
   return (
     <div>
-      <PlaylistsTitle>Playlists</PlaylistsTitle>
-      <PlaylistsSubtitle>Most popular</PlaylistsSubtitle>
-      <PlaylistsContainer>
+      <Subtitle>{subtitle}</Subtitle>
+      <PlaylistContainer data-test-name="cards wraper">
         {playlists?.map(({ id, attributes: { name, description, logo } }) => {
           const isExpanded = expandedPlaylistId === id;
           const shouldRenderDescription = description !== null;
@@ -53,17 +50,15 @@ function PlaylistsPopular({ playlists }) {
             : DEFAULT_PLAYLIST_COVER;
 
           return (
-            <PlaylistCard
-              $coverUrl={coverUrl}
-              key={id}
-              $isExpanded={isExpanded}
-            >
+            <PlaylistCard key={id} $isExpanded={isExpanded}>
+              <Cover
+                role="img"
+                aria-label={`playlist ${name} cover`}
+                $isExpanded={isExpanded}
+                $coverUrl={coverUrl}
+              />
               <CardTitle>{name}</CardTitle>
-              {/* TODO: Add owner as backend team provide it */}
-              <CardOwner>{`Created by: Playlist owner`}</CardOwner>
-              <CardLike>
-                <AiOutlineHeart />
-              </CardLike>
+              <CardOwner>By: {`Owner`}</CardOwner>
               {hasLongDescription && (
                 <DescriptionToggle
                   isExpanded={isExpanded}
@@ -73,18 +68,18 @@ function PlaylistsPopular({ playlists }) {
               )}
               {shouldRenderDescription && (
                 <CardDescription $isExpanded={isExpanded}>
-                  <p>{description}</p>
+                  {description}
                 </CardDescription>
               )}
             </PlaylistCard>
           );
         })}
-      </PlaylistsContainer>
+      </PlaylistContainer>
     </div>
   );
 }
 
-PlaylistsPopular.propTypes = {
+PlaylistsSmall.propTypes = {
   playlists: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -98,12 +93,12 @@ PlaylistsPopular.propTypes = {
       }),
     })
   ),
+  subtitle: PropTypes.string.isRequired,
 };
-
 DescriptionToggle.propTypes = {
   isExpanded: PropTypes.bool.isRequired,
   onExpand: PropTypes.func.isRequired,
   onCollapse: PropTypes.func.isRequired,
 };
 
-export default PlaylistsPopular;
+export default PlaylistsSmall;

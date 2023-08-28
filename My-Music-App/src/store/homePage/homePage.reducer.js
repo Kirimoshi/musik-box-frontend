@@ -5,6 +5,8 @@ const initialState = {
   loading: false,
   error: null,
   popularPlaylists: [],
+  featuredPlaylists: [],
+  latestPlaylists: [],
 };
 
 export const homePageSlice = createSlice({
@@ -28,6 +30,30 @@ export const homePageSlice = createSlice({
       .addCase(
         thunks.fetchPopularPlaylists.rejected,
         thunks.fetchPopularPlaylistsRejected
+      )
+      .addCase(
+        thunks.fetchFeaturedPlaylists.pending,
+        thunks.fetchFeaturedPlaylistsPending
+      )
+      .addCase(
+        thunks.fetchFeaturedPlaylists.fulfilled,
+        thunks.fetchFeaturedPlaylistsFulfilled
+      )
+      .addCase(
+        thunks.fetchFeaturedPlaylists.rejected,
+        thunks.fetchFeaturedPlaylistsRejected
+      )
+      .addCase(
+        thunks.fetchLatestPlaylists.pending,
+        thunks.fetchLatestPlaylistsPending
+      )
+      .addCase(
+        thunks.fetchLatestPlaylists.fulfilled,
+        thunks.fetchLatestPlaylistsFulfilled
+      )
+      .addCase(
+        thunks.fetchLatestPlaylists.rejected,
+        thunks.fetchLatestPlaylistsRejected
       );
   },
 });

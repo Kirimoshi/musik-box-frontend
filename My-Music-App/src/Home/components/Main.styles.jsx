@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 import { footerHeight } from "../Home.styles";
 
-const containerPaddingLeft = 80; // px
-const containerPaddingRight = 112; // px
-const containerPaddingTop = 56; // px
+const containerPaddingLeft = 80;
+const containerPaddingRight = 112;
+const containerPaddingTop = 56;
 
 export const MainContainer = styled.div`
   padding-left: ${containerPaddingLeft}px;
