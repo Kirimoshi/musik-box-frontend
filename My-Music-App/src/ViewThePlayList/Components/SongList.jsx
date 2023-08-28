@@ -10,7 +10,11 @@ import { constants } from "../constansts";
 
 import { useSelector } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
-import { MY_PLAYLIST_URL } from "../../store/constants";
+import {
+  DEFAULT_SONG_COVER,
+  MY_PLAYLIST_URL,
+  UPLOADS_URL,
+} from "../../store/constants";
 
 import ModalDialog from "../../shared/ModalDialog";
 
@@ -72,12 +76,11 @@ export default function SongList({ playlistStore }) {
     setOpenModel(null);
   };
 
-  // call from delete song button
   const handleDeleteSong = (songId) => {
     setIdSongToDelete(songId);
     handleOpenModal();
   };
-  // call from three dots vertical menu
+
   const verticalMenuToggle = (x) => {
     if (x === openModel) {
       setOpenModel(null);
@@ -101,51 +104,48 @@ export default function SongList({ playlistStore }) {
           }}
         />
         {songs.map(
-          ({
-            id,
-            attributes: {
-              title,
-              artist_name: artistName,
-              cover: { id: coverFileName },
-            },
-          }) => (
-            <div className={`songs ${openModel === id ? "top" : ""}`} key={id}>
-              <div className={`song`}>
-                <div className="imageBox-artistinfo">
-                  <img
-                    src={`${constants.store_URL}/${coverFileName} `}
-                    alt="song cover"
-                    className="image1"
-                  />
-                  <div className="artistInfo">
-                    <p>{title}</p>
-                    <p>{artistName?.join(", ")}</p>
+          ({ id, attributes: { title, artist_name: artistName, cover } }) => {
+            const coverUrl = cover
+              ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
+              : DEFAULT_SONG_COVER;
+            return (
+              <div
+                className={`songs ${openModel === id ? "top" : ""}`}
+                key={id}
+              >
+                <div className={`song`}>
+                  <div className="imageBox-artistinfo">
+                    <img src={coverUrl} alt="song cover" className="image1" />
+                    <div className="artistInfo">
+                      <p>{title}</p>
+                      <p>{artistName?.join(", ")}</p>
+                    </div>
+                  </div>
+                  <div className="songlist-vertical-menu">
+                    <BsThreeDotsVertical
+                      onClick={() => {
+                        verticalMenuToggle(id);
+                      }}
+                    />
+
+                    {openModel === id && (
+                      <div className="delete-modal">
+                        {
+                          <div
+                            onClick={() => handleDeleteSong(id)}
+                            className="delete-tag"
+                          >
+                            <RiDeleteBin6Line className="delete-button" />
+                            <span>Remove song from playlist</span>
+                          </div>
+                        }
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="songlist-vertical-menu">
-                  <BsThreeDotsVertical
-                    onClick={() => {
-                      verticalMenuToggle(id);
-                    }}
-                  />
-
-                  {openModel === id && (
-                    <div className="delete-modal">
-                      {
-                        <div
-                          onClick={() => handleDeleteSong(id)}
-                          className="delete-tag"
-                        >
-                          <RiDeleteBin6Line className="delete-button" />
-                          <span>Remove song from playlist</span>
-                        </div>
-                      }
-                    </div>
-                  )}
-                </div>
               </div>
-            </div>
-          )
+            );
+          }
         )}
       </div>
     </div>

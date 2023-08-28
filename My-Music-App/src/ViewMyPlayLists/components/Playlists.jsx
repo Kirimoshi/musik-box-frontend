@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit2 } from "react-icons/fi";
 
 import "../styles/playlists.css";
-import { constants } from "../constants";
 import { CreateOrModifyPlaylist } from "../../CreateOrModifyPlaylist/components/CreateOrModifyPlaylist";
 
 import {
@@ -21,6 +19,7 @@ import ModalDialog from "../../shared/ModalDialog";
 import { useSelector, useDispatch } from "react-redux";
 import { myPlaylistsSelector } from "../../store/myPlaylists/myPlaylists.selector";
 import { deleteMyPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
+import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 
 export default function Playlists({ handleViewThePlaylist }) {
   const dispatch = useDispatch();
@@ -98,64 +97,69 @@ export default function Playlists({ handleViewThePlaylist }) {
                 name,
                 first_ten_songs: { data: firstTenSongs },
               },
-            }) => (
-              <div
-                className={`playlist-song ${
-                  openModel === id ? "displayTop" : ""
-                }`}
-                key={id}
-              >
+            }) => {
+              const coverUrl = logo
+                ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+                : DEFAULT_PLAYLIST_COVER;
+              return (
                 <div
-                  className="playlist-imageBox-artistinfo"
-                  onClick={() => {
-                    handleNavigate(id);
-                  }}
+                  className={`playlist-song ${
+                    openModel === id ? "displayTop" : ""
+                  }`}
+                  key={id}
                 >
-                  <img
-                    src={constants.store_URL + logo.id}
-                    alt="song preview"
-                    className="playlist-song-image"
-                  />
-                  <div className="playlist-artistInfo">
-                    <p className="artistinfo-playlistname">{name}</p>
-                    <div className="artistinfo-playlistsongs">
-                      {firstTenSongs.map((song, index) => {
-                        let playlistSongslength = firstTenSongs.length - 1;
-                        return (
-                          <p key={song.id}>
-                            {song.attributes.title +
-                              ` (` +
-                              song.attributes.artist_name +
-                              `)` +
-                              (index === playlistSongslength ? "" : ",")}
-                            <span className="song-space" />
-                          </p>
-                        );
-                      })}
+                  <div
+                    className="playlist-imageBox-artistinfo"
+                    onClick={() => {
+                      handleNavigate(id);
+                    }}
+                  >
+                    <img
+                      src={coverUrl}
+                      alt="song preview"
+                      className="playlist-song-image"
+                    />
+                    <div className="playlist-artistInfo">
+                      <p className="artistinfo-playlistname">{name}</p>
+                      <div className="artistinfo-playlistsongs">
+                        {firstTenSongs.map((song, index) => {
+                          let playlistSongslength = firstTenSongs.length - 1;
+                          return (
+                            <p key={song.id}>
+                              {song.attributes.title +
+                                ` (` +
+                                song.attributes.artist_name +
+                                `)` +
+                                (index === playlistSongslength ? "" : ",")}
+                              <span className="song-space" />
+                            </p>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
+                  <BsThreeDotsVertical
+                    className="playlist-vertical-menu"
+                    onClick={() => {
+                      handleClick(id);
+                    }}
+                  />
+                  {openModel === id && (
+                    <Menu>
+                      <MenuItemDelete onClick={handleDeletePlaylistsItem(id)}>
+                        <RiDeleteBin6Line />
+                        <p>Delete Playlist</p>
+                      </MenuItemDelete>
+                      <MenuItemDivider />
+                      <MenuItemEdit onClick={handleModifyPlaylistModal}>
+                        <FiEdit2 />
+                        <p>Edit</p>
+                      </MenuItemEdit>
+                    </Menu>
+                  )}
                 </div>
-                <BsThreeDotsVertical
-                  className="playlist-vertical-menu"
-                  onClick={() => {
-                    handleClick(id);
-                  }}
-                />
-                {openModel === id && (
-                  <Menu>
-                    <MenuItemDelete onClick={handleDeletePlaylistsItem(id)}>
-                      <RiDeleteBin6Line />
-                      <p>Delete Playlist</p>
-                    </MenuItemDelete>
-                    <MenuItemDivider />
-                    <MenuItemEdit onClick={handleModifyPlaylistModal}>
-                      <FiEdit2 />
-                      <p>Edit</p>
-                    </MenuItemEdit>
-                  </Menu>
-                )}
-              </div>
-            )
+              );
+            }
           )}
         </div>
       </div>
