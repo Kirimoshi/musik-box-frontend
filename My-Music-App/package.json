@@ -59,7 +59,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "test:coverage": "react-scripts test --env=jsdom --watchAll=false --coverage",
-    "wdio": "wdio run TA-framework/test/wdio.conf.js",
+    "wdio": "wdio run TA-framework/test/wdio.conf.js --cucumberOpts.tagExpression",
     "eslint:fix": "eslint --fix --ext .js --ext .jsx src",
     "eslint": "eslint --ext .js --ext .jsx src"
   },
