@@ -54,10 +54,6 @@ export default function MainContainer() {
       attributes: { description, logo, name },
     },
   } = playlistStore;
-  console.log(
-    "file: MainContainer.jsx:57 ~ MainContainer ~ playlistStore:",
-    playlistStore
-  );
   const shouldRenderDescription = description !== null;
   const coverUrl = logo
     ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`

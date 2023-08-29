@@ -105,9 +105,6 @@ export default function SongList({ playlistStore }) {
         />
         {songs.map(
           ({ id, attributes: { title, artist_name: artistName, cover } }) => {
-            const coverUrl = cover
-              ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
-              : DEFAULT_SONG_COVER;
             return (
               <div
                 className={`songs ${openModel === id ? "top" : ""}`}
@@ -115,7 +112,15 @@ export default function SongList({ playlistStore }) {
               >
                 <div className={`song`}>
                   <div className="imageBox-artistinfo">
-                    <img src={coverUrl} alt="song cover" className="image1" />
+                    <img
+                      src={
+                        cover
+                          ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
+                          : DEFAULT_SONG_COVER
+                      }
+                      alt="song cover"
+                      className="image1"
+                    />
                     <div className="artistInfo">
                       <p>{title}</p>
                       <p>{artistName?.join(", ")}</p>

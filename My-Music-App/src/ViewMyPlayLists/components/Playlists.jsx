@@ -61,7 +61,7 @@ export default function Playlists({ handleViewThePlaylist }) {
     dispatch(deleteMyPlaylist(idPlaylistsItemToDelete));
     setOpenModel(null);
   };
-  const handleNavigate = (id) => {
+  const handleNavigate = (id) => () => {
     handleViewThePlaylist();
     navigate(`/ViewMyPlaylists/ViewThePlaylist/${id}`);
   };
@@ -98,9 +98,6 @@ export default function Playlists({ handleViewThePlaylist }) {
                 first_ten_songs: { data: firstTenSongs },
               },
             }) => {
-              const coverUrl = logo
-                ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-                : DEFAULT_PLAYLIST_COVER;
               return (
                 <div
                   className={`playlist-song ${
@@ -110,12 +107,14 @@ export default function Playlists({ handleViewThePlaylist }) {
                 >
                   <div
                     className="playlist-imageBox-artistinfo"
-                    onClick={() => {
-                      handleNavigate(id);
-                    }}
+                    onClick={handleNavigate(id)}
                   >
                     <img
-                      src={coverUrl}
+                      src={
+                        logo
+                          ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+                          : DEFAULT_PLAYLIST_COVER
+                      }
                       alt="song preview"
                       className="playlist-song-image"
                     />
