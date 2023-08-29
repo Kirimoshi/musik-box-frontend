@@ -17,11 +17,29 @@ import { PlaylistTypeConfirmation } from "./PlaylistTypeConfirmation";
 
 import { useSelector } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
+import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
+
+const playlistStoreEmpty = {
+  data: {
+    id: null,
+    attributes: {
+      created_on: null,
+      description: null,
+      logo: null,
+      name: null,
+      number_likes_dislikes: null,
+      updated_on: null,
+      playlist_type: null,
+    },
+    type: null,
+  },
+  included: [],
+};
 
 export default function MainContainer() {
   const [openModel, setOpenModel] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
-  const [playlistStore, setPlaylistStore] = useState(null);
+  const [playlistStore, setPlaylistStore] = useState(playlistStoreEmpty);
   const [myState, setMyState] = useState(false);
   const [playlistType, setPlaylistType] = useState("Public");
   const [confirmationDialog, setConfirmationDialog] = useState(false);
@@ -29,6 +47,17 @@ export default function MainContainer() {
   const { id } = useParams();
 
   const { accessToken, isAuthenticated } = useSelector(userSelector);
+
+  const {
+    data: {
+      id: playlistId,
+      attributes: { description, logo, name },
+    },
+  } = playlistStore;
+  const shouldRenderDescription = description !== null;
+  const coverUrl = logo
+    ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+    : DEFAULT_PLAYLIST_COVER;
 
   const fetchPlaylistData = async () => {
     const data = await axios
@@ -71,6 +100,7 @@ export default function MainContainer() {
       setDialogSubmit(value);
     }
   };
+
   return (
     <div
       className={`maincontainer ${addSongModal ? "maincontainer-pointer" : ""}`}
@@ -93,11 +123,7 @@ export default function MainContainer() {
         </div>
       </div>
       <div className="playlistimage">
-        <img
-          src={constants.store_URL + playlistStore?.data?.attributes?.logo.id}
-          alt=""
-          className="img2"
-        ></img>
+        <img src={coverUrl} alt={`Playlist ${name} cover`} className="img2" />
         <BsThreeDotsVertical
           className="vertical-menu"
           onClick={() => {
@@ -110,8 +136,7 @@ export default function MainContainer() {
       <div className="playlistdetails">
         <p className="playlistname">{playlistStore?.data?.attributes?.name}</p>
         <p className="playlistcontent">
-          {playlistStore?.data?.attributes?.description?.substring(0, 30) +
-            "..."}
+          {shouldRenderDescription && description.substring(0, 30) + "..."}
         </p>
         <div className="created-updated">
           <p>
@@ -166,7 +191,7 @@ export default function MainContainer() {
       )}
       <div className="songsList" data-testid="song-list">
         {
-          playlistStore && <SongList playlistStore={playlistStore} /> // don`t render until we get the data
+          playlistId && <SongList playlistStore={playlistStore} /> // don`t render until we get the data
         }
       </div>
       <Comment data-testid="comment-list" />
