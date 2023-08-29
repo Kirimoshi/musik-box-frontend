@@ -1,0 +1,52 @@
+@001 @signUp
+
+Feature: The SingUp feature
+  Background: Opening "signUp" page
+    Given the user is open "signUp" page
+
+  Scenario Outline: Verify that the user with valid data can sing up
+    When the user sing-ups with <nickname>, <email>, <password>, and <confirm password>
+    Then the user is on the "SignIn" page
+
+    Examples:
+      | nickname | email             | password    | confirm password |
+      | "Scj15"  | "Valid25@ukr.net" | "Qwer212@#" | "Qwer212@#"      |
+
+  Scenario Outline: Verify nickname data validation and nickname error messages during sign-up
+    When the user sing-ups with <nickname>, <email>, <password>, and <confirm password>
+    Then "signUp" "Nick Name" "Error" text is: <error message>
+
+    Examples:
+      | nickname | email            | password    | confirm password | error message                                                          |
+      | "Ne"     | "barfoo"         | "Qwer212@#" | "Qwer212@#"      | "Please enter the nickname that includes between 3 and 50 characters." |
+      | "We w"   | "Test@email.com" | "Super5qs!" | "Super5qs!"      | "Please enter a nickname that doesn't include spaces."                 |
+
+  Scenario Outline: Verify email data validation and email error messages during sign-up
+    When the user sing-ups with <nickname>, <email>, <password>, and <confirm password>
+    Then "signUp" "Email" "Error" text is: <error message>
+
+    Examples:
+      | nickname | email                           | password    | confirm password | error message                                                                  |
+      | "Tom"    | "cdw@sc.cs"                     | "1234Sa#4a" | "1234Sa#4a"      | "Please enter a valid email domain."                                           |
+      | "Mack4"  | "Mack 4@epam.com"               | "C"         | "M"              | "Please enter a valid email address without any spaces or special characters." |
+      | "Jek"    | "Jec$%&'*+/=?^`{\|}~@gmail.com" | "Q"         | "Q"              | "Please enter a valid email address without any spaces or special characters." |
+
+  Scenario Outline: Verify password data validation and password error messages during sign-up
+    When the user sing-ups with <nickname>, <email>, <password>, and <confirm password>
+    Then "signUp" "Password" "Error" text is: <error message>
+
+    Examples:
+      | nickname    | email                | password     | confirm password | error message                                                           |
+      | "New"       | "test23@ukr.com "    | "Qwe#212"    | "Qwe#212"        | "Please enter a password with a minimum of 8 characters."               |
+      | "Wew"       | "Test@email.com"     | "super5qs!"  | "super5qs!"      | "Please enter a password that includes at least one uppercase letter."  |
+      | "BobMartin" | "BobMartin@epam.com" | "UPPER6@8"   | "UPPER6@8"       | "Please enter a password that includes at least one lowercase letter."  |
+      | "Simon"     | "Simon12@gmail.com"  | "No@Numbers" | "No@Numbers"     | "Please enter a password that includes at least one number."            |
+      | "S"         | "4"                  | "0Chapters"  | "0Chapters"      | "Please enter a password that includes at least one special character." |
+
+  Scenario Outline: Verify confirm password data validation and confirm password error messages during sign-up
+    When the user sing-ups with <nickname>, <email>, <password>, and <confirm password>
+    Then "signUp" "Confirm Password" "Error" text is: <error message>
+
+    Examples:
+      | nickname | email            | password    | confirm password | error message                                               |
+      | "EPAM"   | "Test@email.com" | "Super5qs!" | "super5qs!"      | "The passwords you entered do not match. Please try again." |
