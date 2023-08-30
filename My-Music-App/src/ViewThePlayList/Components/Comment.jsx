@@ -116,7 +116,7 @@ export default function Comment() {
       <ul className="comments-list">
         {commentList.map((comment) => {
           return (
-            <li className="comment-details">
+            <li key={comment.id} className="comment-details">
               <div className="commentor-details">
                 <div className="commentor-image">
                   <img

@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
 import {
   DEFAULT_SONG_COVER,
-  MY_PLAYLIST_URL,
+  MY_PLAYLISTS_URL,
   UPLOADS_URL,
 } from "../../store/constants";
 
@@ -24,7 +24,7 @@ const fetchDeleteSongFromPlaylist = async (accessToken, playlistId, songId) => {
     Authorization: `Bearer ${accessToken}`,
   };
   const reqOptions = {
-    url: `${MY_PLAYLIST_URL}/${playlistId}/playlist_songs/${songId}`,
+    url: `${MY_PLAYLISTS_URL}/${playlistId}/playlist_songs/${songId}`,
     method: "DELETE",
     headers: headersList,
   };

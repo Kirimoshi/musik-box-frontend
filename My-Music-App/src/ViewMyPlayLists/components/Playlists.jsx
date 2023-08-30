@@ -17,13 +17,16 @@ import {
 import ModalDialog from "../../shared/ModalDialog";
 
 import { useSelector, useDispatch } from "react-redux";
-import { myPlaylistsSelector } from "../../store/myPlaylists/myPlaylists.selector";
-import { deleteMyPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
+import { pageOfMyPlaylistsSelector } from "../../store/myPlaylists/myPlaylists.selector";
+import {
+  deleteMyPlaylist,
+  fetchSingleMyPlaylist,
+} from "../../store/myPlaylists/myPlaylists.thunks";
 import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 
 export default function Playlists({ handleViewThePlaylist }) {
   const dispatch = useDispatch();
-  const myPlaylists = useSelector(myPlaylistsSelector);
+  const myPlaylists = useSelector(pageOfMyPlaylistsSelector);
 
   const [modifyId, setModifyId] = useState(null);
   const [openModel, setOpenModel] = useState(null);
@@ -63,6 +66,7 @@ export default function Playlists({ handleViewThePlaylist }) {
   };
   const handleNavigate = (id) => () => {
     handleViewThePlaylist();
+
     navigate(`/ViewMyPlaylists/ViewThePlaylist/${id}`);
   };
 

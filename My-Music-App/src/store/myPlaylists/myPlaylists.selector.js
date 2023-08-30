@@ -1,6 +1,18 @@
-export const myPlaylistsSelector = (state) =>
-  state.myPlaylistsSlice.myPlaylists;
+import { createSelector } from "@reduxjs/toolkit";
 
-export const songsSelector = (state) => state.myPlaylistsSlice.songs;
+const myPlaylistsSliceSelector = (state) => state.myPlaylistsSlice;
 
-export const errorSelector = (state) => state.myPlaylistsSlice.error;
+export const pageOfMyPlaylistsSelector = createSelector(
+  myPlaylistsSliceSelector,
+  (myPlaylistsSlice) => myPlaylistsSlice.myPlaylists
+);
+
+export const myPlaylistErrorSelector = createSelector(
+  myPlaylistsSliceSelector,
+  (myPlaylistsSlice) => myPlaylistsSlice.error
+);
+
+export const currentPlaylistSelector = createSelector(
+  myPlaylistsSliceSelector,
+  (myPlaylistsSlice) => myPlaylistsSlice.currentPlaylist
+);
