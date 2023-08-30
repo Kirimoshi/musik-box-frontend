@@ -6,10 +6,7 @@ import "../styles/myplaylistpage.css";
 import Footer from "./Footer";
 import "../styles/reset.css";
 
-import {
-  fetchPageOfMyPlaylists,
-  fetchSingleMyPlaylist,
-} from "../../store/myPlaylists/myPlaylists.thunks";
+import { fetchPageOfMyPlaylists } from "../../store/myPlaylists/myPlaylists.thunks";
 
 import { useSelector, useDispatch } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";

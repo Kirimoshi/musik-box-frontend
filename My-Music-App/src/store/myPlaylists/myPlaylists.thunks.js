@@ -130,7 +130,7 @@ export const fetchSingleMyPlaylistFulfilled = (state, action) => {
   state.currentPlaylist.ownerInfo = {
     email: ownerInfo.attributes.email,
     registerDate: formatDateDDmmmYYYY(ownerInfo.attributes.register_date),
-    playlistsOwned: ownerInfo.attributes.playlists_owned,
+    playlistsOwned: ownerInfo.attributes.playlists_number,
   };
   state.currentPlaylist.songs = songs;
 };

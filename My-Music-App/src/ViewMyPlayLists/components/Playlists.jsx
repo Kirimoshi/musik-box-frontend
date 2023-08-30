@@ -18,10 +18,7 @@ import ModalDialog from "../../shared/ModalDialog";
 
 import { useSelector, useDispatch } from "react-redux";
 import { pageOfMyPlaylistsSelector } from "../../store/myPlaylists/myPlaylists.selector";
-import {
-  deleteMyPlaylist,
-  fetchSingleMyPlaylist,
-} from "../../store/myPlaylists/myPlaylists.thunks";
+import { deleteMyPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
 import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 
 export default function Playlists({ handleViewThePlaylist }) {

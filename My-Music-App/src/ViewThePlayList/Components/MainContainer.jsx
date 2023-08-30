@@ -4,15 +4,12 @@ import { BiHeart } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDislikeLine } from "react-icons/ri";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import moment from "moment";
 
 import "../Styles/maincontainer.css";
 import SongList from "./SongList";
 import Modal from "./Modal";
 import Comment from "./Comment";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
-import { constants } from "../constansts";
 import { PlaylistTypeConfirmation } from "./PlaylistTypeConfirmation";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -21,30 +18,12 @@ import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
 import { currentPlaylistSelector } from "../../store/myPlaylists/myPlaylists.selector";
 import { fetchSingleMyPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
 
-const playlistStoreEmpty = {
-  data: {
-    id: null,
-    attributes: {
-      created_on: null,
-      description: null,
-      logo: null,
-      name: null,
-      number_likes_dislikes: null,
-      updated_on: null,
-      playlist_type: null,
-    },
-    type: null,
-  },
-  included: [],
-};
-
-export default function MainContainer() {
+function MainContainer() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(userSelector);
 
   const [openModel, setOpenModel] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
-  const [playlistStore, setPlaylistStore] = useState(playlistStoreEmpty);
   const [myState, setMyState] = useState(false);
   const [playlistType, setPlaylistType] = useState("Public");
   const [confirmationDialog, setConfirmationDialog] = useState(false);
@@ -91,7 +70,6 @@ export default function MainContainer() {
     if (!isAuthenticated || !navigateId) return;
     dispatch(fetchSingleMyPlaylist(navigateId));
   }, [dispatch, navigateId, isAuthenticated]);
-
   // TODO: we need some kind of loader, but for now prevent render until we get the data
   return (
     playlistId === navigateId && (
@@ -125,9 +103,7 @@ export default function MainContainer() {
           <button className="playlist-type-btn">{playlistPrivacyType}</button>
         </div>
         <div className="playlistdetails">
-          <p className="playlistname">
-            {playlistStore?.data?.attributes?.name}
-          </p>
+          <p className="playlistname">{playlistName}</p>
           <p className="playlistcontent">
             {shouldRenderDescription && description.substring(0, 30) + "..."}
           </p>
@@ -152,7 +128,7 @@ export default function MainContainer() {
           {addSongModal && AddSongsToPlaylists && (
             <AddSongsToPlaylists
               handleAddSongModal={handleAddSongModal}
-              modalPlaylistId={playlistStore?.data?.id}
+              modalPlaylistId={playlistId}
               setMyState={setMyState}
               myState={myState}
             />
@@ -165,12 +141,12 @@ export default function MainContainer() {
           />
         )}
         <div className="songsList" data-testid="song-list">
-          {
-            playlistId && <SongList playlistStore={playlistStore} /> // don`t render until we get the data
-          }
+          <SongList />
         </div>
         <Comment data-testid="comment-list" />
       </div>
     )
   );
 }
+
+export default MainContainer;
