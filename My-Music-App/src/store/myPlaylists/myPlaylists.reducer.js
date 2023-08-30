@@ -72,6 +72,18 @@ export const myPlaylistsSlice = createSlice({
       .addCase(
         thunks.fetchSingleMyPlaylist.rejected,
         thunks.fetchSingleMyPlaylistRejected
+      )
+      .addCase(
+        thunks.deleteSongFromPlaylist.pending,
+        thunks.deleteSongFromPlaylistPending
+      )
+      .addCase(
+        thunks.deleteSongFromPlaylist.fulfilled,
+        thunks.deleteSongFromPlaylistFulfilled
+      )
+      .addCase(
+        thunks.deleteSongFromPlaylist.rejected,
+        thunks.deleteSongFromPlaylistRejected
       );
   },
 });

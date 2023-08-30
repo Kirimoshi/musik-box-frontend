@@ -1,54 +1,23 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
+import React, { useState } from "react";
 
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import "../Styles/songlist.css";
-import { constants } from "../constansts";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
-import {
-  DEFAULT_SONG_COVER,
-  MY_PLAYLISTS_URL,
-  UPLOADS_URL,
-} from "../../store/constants";
+import { DEFAULT_SONG_COVER, UPLOADS_URL } from "../../store/constants";
 
 import ModalDialog from "../../shared/ModalDialog";
+import { currentPlaylistSelector } from "../../store/myPlaylists/myPlaylists.selector";
+import { deleteSongFromPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
 
-const fetchDeleteSongFromPlaylist = async (accessToken, playlistId, songId) => {
-  const headersList = {
-    Accept: "*/*",
-    Authorization: `Bearer ${accessToken}`,
-  };
-  const reqOptions = {
-    url: `${MY_PLAYLISTS_URL}/${playlistId}/playlist_songs/${songId}`,
-    method: "DELETE",
-    headers: headersList,
-  };
-  try {
-    const response = await axios.request(reqOptions);
-    return { data: response.data, songId };
-  } catch (error) {
-    throw error.response.data.errors;
-  }
-};
-
-export default function SongList({ playlistStore }) {
+export default function SongList() {
   // state
-  const { accessToken, isAuthenticated } = useSelector(userSelector);
-  const [playlist, setPlaylist] = useState({});
-  const [songs, setSongs] = useState([]);
-
-  useEffect(() => {
-    setPlaylist(playlistStore.data);
-  }, [playlistStore.data]);
-
-  useEffect(() => {
-    setSongs(playlistStore.included.filter((song) => song.type === "song"));
-  }, [playlistStore.included]);
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(userSelector);
+  const { songs } = useSelector(currentPlaylistSelector);
 
   const [openModel, setOpenModel] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,9 +35,7 @@ export default function SongList({ playlistStore }) {
     if (!idSongToDelete || !isAuthenticated) return;
 
     try {
-      fetchDeleteSongFromPlaylist(accessToken, playlist.id, idSongToDelete);
-      const newSongs = songs.filter((song) => song.id !== idSongToDelete);
-      setSongs(newSongs);
+      dispatch(deleteSongFromPlaylist(idSongToDelete));
     } catch (error) {
       console.error(error);
     }
@@ -156,24 +123,3 @@ export default function SongList({ playlistStore }) {
     </div>
   );
 }
-
-SongList.propTypes = {
-  playlistStore: PropTypes.shape({
-    data: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }),
-    included: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        attributes: PropTypes.shape({
-          title: PropTypes.string,
-          artist_name: PropTypes.arrayOf(PropTypes.string),
-          cover: PropTypes.shape({
-            id: PropTypes.string,
-          }),
-        }),
-      })
-    ),
-  }),
-};

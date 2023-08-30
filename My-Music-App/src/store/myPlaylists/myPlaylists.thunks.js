@@ -1,8 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import moment from "moment";
 import { MY_PLAYLISTS_URL, PLAYLISTS_URL } from "../constants";
-import { parseLikesDislikes } from "../helpers";
+import { formatDateDDmmmYYYY, parseLikesDislikes } from "../helpers";
 
 // Fetch page of ten My Playlist Data Thunk
 export const fetchPageOfMyPlaylists = createAsyncThunk(
@@ -87,10 +86,6 @@ export const fetchSingleMyPlaylist = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(
-        "file: myPlaylists.thunks.js:89 ~ response.data:",
-        response.data
-      );
       return response.data;
     } catch (error) {
       throw error.response.data.errors;
@@ -123,8 +118,8 @@ export const fetchSingleMyPlaylistFulfilled = (state, action) => {
   const ownerInfo = included.filter((item) => item.type === "user")[0];
   state.currentPlaylist.playlistInfo = {
     playlistId,
-    createdOn: moment(createdOnZ).format("DD MMM YYYY"),
-    updatedOn: moment(updatedOnZ).format("DD MMM YYYY"),
+    createdOn: formatDateDDmmmYYYY(createdOnZ),
+    updatedOn: formatDateDDmmmYYYY(updatedOnZ),
     playlistName,
     playlistType,
     logo,
@@ -134,14 +129,49 @@ export const fetchSingleMyPlaylistFulfilled = (state, action) => {
   };
   state.currentPlaylist.ownerInfo = {
     email: ownerInfo.attributes.email,
-    registerDate: moment(ownerInfo.attributes.register_date).format(
-      "DD MMM YYYY"
-    ),
+    registerDate: formatDateDDmmmYYYY(ownerInfo.attributes.register_date),
     playlistsOwned: ownerInfo.attributes.playlists_owned,
   };
   state.currentPlaylist.songs = songs;
 };
 export const fetchSingleMyPlaylistRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const deleteSongFromPlaylist = createAsyncThunk(
+  "myPlaylistsSlice/deleteSongFromPlaylist",
+  async (idSongToDelete, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    const playlistId =
+      getState().myPlaylistsSlice.currentPlaylist.playlistInfo.playlistId;
+    try {
+      const response = await axios({
+        url: `${MY_PLAYLISTS_URL}/${playlistId}/playlist_songs/${idSongToDelete}`,
+        method: "DELETE",
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return { data: response.data, idSongToDelete };
+    } catch (error) {
+      throw error.response.data.errors;
+    }
+  }
+);
+export const deleteSongFromPlaylistPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const deleteSongFromPlaylistFulfilled = (state, action) => {
+  state.loading = false;
+  state.currentPlaylist.songs = state.currentPlaylist.songs.filter(
+    //If all OK, no need to refetch fetchSingleMyPlaylist, just delete same song from state
+    (song) => song.id !== action.payload.idSongToDelete
+  );
+};
+export const deleteSongFromPlaylistRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

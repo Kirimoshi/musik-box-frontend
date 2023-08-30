@@ -6,3 +6,10 @@ export const parseLikesDislikes = (str) => {
     dislikes: dislikesMatch ? parseInt(dislikesMatch[1]) : 0,
   };
 };
+
+export const formatDateDDmmmYYYY = (dateString, locale = "en-GB") =>
+  new Date(dateString).toLocaleDateString(locale, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });

@@ -64,7 +64,6 @@ export default function MainContainer() {
       dislikes,
     },
     ownerInfo: { email, registerDate, playlistsOwned },
-    songs,
   } = useSelector(currentPlaylistSelector);
 
   const shouldRenderDescription = description !== null;
