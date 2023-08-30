@@ -15,13 +15,23 @@ Given(/the user is open "([^"]*)" page/, async function (page) {
     await Pages[page].open();
 });
 
-When(/the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
-    async function (nickname, email, password, confirmPassword) {
-    await Pages['signUp'].singUpToTheApplication(nickname, email, password, confirmPassword);
+When(/^The user sing-ups with (.*), (.*), (.*), and (.*)$/, async (nickname, email, password, confirmPassword) => {
+    await Pages.signUp.singUp(nickname, email, password, confirmPassword);
 });
 
-Then(/"([^"]*)" "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (page, element, type, expectedText) {
-    let currentText
+When(/^The user sing-ins with (.*) and (.*)$/, async (email, password) => {
+    await Pages.signIn.singIn(email, password);
+});
+
+When(/^The user logging out$/, async () => {
+    await Pages.home.logout();
+});
+
+Then(/^(.*) message should be displayed: (.*)$/, async (elementType, errorMessage) => {
+    await Pages.signUp.checkErrorMessage(elementType, errorMessage);
+});
+
+Then(/^the user should be redirected to the (\w+) page$/, async (page) => {
     await browser.waitUntil(async function () {
         currentText = await Pages[page][camelize(`${element}${type}`)].getText()
         return currentText
