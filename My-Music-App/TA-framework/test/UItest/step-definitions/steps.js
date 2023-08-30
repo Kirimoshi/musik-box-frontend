@@ -1,23 +1,46 @@
 import {Given, When, Then} from "@wdio/cucumber-framework";
-import Pages from "../pageObjects/Pages";
+import Pages from "../pageObjects/pages";
 
-Given(/^the user is on the (\w+) page$/, async (page) => {
+const browserOption = browser.options;
+
+const {
+    camelize
+} = require("../utils/helpers");
+
+const {
+    assert
+} = require('chai');
+
+Given(/the user is open "([^"]*)" page/, async function (page) {
     await Pages[page].open();
 });
 
-When(/^The user sing-ups with (.*), (.*), (.*), and (.*)$/, async (nickname, email, password, confirmPassword) => {
-    await Pages.signUp.singUp(nickname, email, password, confirmPassword);
+When(/the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
+    async function (nickname, email, password, confirmPassword) {
+    await Pages['signUp'].singUpToTheApplication(nickname, email, password, confirmPassword);
 });
 
-Then(/^(.*) message should be displayed: (.*)$/, async (elementType, errorMessage) => {
-    await Pages.signUp.checkErrorMessage(elementType, errorMessage);
-});
-
-Then(/^the user should be redirected to the (\w+) page$/, async (page) => {
+Then(/"([^"]*)" "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (page, element, type, expectedText) {
+    let currentText
     await browser.waitUntil(async function () {
-        return (await browser.getUrl()).includes(page);
+        currentText = await Pages[page][camelize(`${element}${type}`)].getText()
+        return currentText
+    },{
+        timeout: 5000,
+        timeoutMsg: 'expected text to be changed after 5s'
+    })
+    assert.equal(currentText, expectedText, `${page} doesn't match ${expectedText} value`)
+});
+
+Then(/the user is on the "([^"]*)" page/, async function (page) {
+    let expectedUrl;
+    const actualUrl = browserOption.baseUrl + page;
+    await browser.waitUntil(async function() {
+        expectedUrl = await browser.getUrl();
+        return expectedUrl === actualUrl
     }, {
         timeout: 5000,
-        timeoutMsg: `Error: expected page was changed to ${page}`
+        timeoutMsg: 'expected link to be changed after 5s'
     });
+    assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });

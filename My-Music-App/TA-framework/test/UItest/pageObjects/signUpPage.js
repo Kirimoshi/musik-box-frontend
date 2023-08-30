@@ -1,43 +1,49 @@
 import {BasePage} from "./basePage";
 
-export class SignUpPage extends BasePage {
+export class SignUpPage extends BasePage{
+    constructor() {
+        super();
+        this.url = `SignUp`
+        this.form = `form.signup-form`
+    }
+
     get inputNickname() {
-        return $("[data-testid=nickname]");
+        return $(`${this.form} input[data-testid=nickname]`);
     }
 
     get inputEmail() {
-        return $('[data-testid=email]');
+        return $(`${this.form} input[data-testid=email]`);
     }
 
     get inputPassword() {
-        return $('[data-testid=password]');
+        return $(`${this.form} input[data-testid=password]`);
     }
 
     get inputPasswordConfirmation() {
-        return $('[data-testid=confirmPassword]');
+        return $(`${this.form} input[data-testid=confirmPassword]`);
     }
 
     get btnSignUp() {
-        return $('button[type="submit"]');
+        return $(`${this.form} button[type="submit"]`);
     }
 
-    get nicknameError () {
-        return $('[data-testid=nicknameError]');
+    get nickNameError () {
+        return $(`${this.form} [data-testid=nicknameError]`);
     }
 
     get emailError () {
-        return $('[data-testid=emailError]');
+        return $(`${this.form} [data-testid=emailError]`);
     }
 
     get passwordError () {
-        return $('[data-testid=passwordError]');
+        return $(`${this.form} [data-testid=passwordError]`);
     }
 
     get confirmPasswordError () {
-        return $('[data-testid=confirmPasswordError]');
+        return $(`${this.form} [data-testid=confirmPasswordError]`);
     }
 
-    async singUp(nickname, email, password, confirmPassword) {
+    async singUpToTheApplication(nickname, email, password, confirmPassword) {
         await this.inputNickname.setValue(nickname);
         await this.inputEmail.setValue(email);
         await this.inputPassword.setValue(password);
@@ -45,15 +51,7 @@ export class SignUpPage extends BasePage {
         await this.btnSignUp.click();
     }
 
-     async checkErrorMessage(element, message){
-        if (!this[element]) {
-            throw new Error(`Element type "${this[element]}" not found.`);
-        }
-        await expect(this[element]).toBeExisting();
-        await expect(this[element]).toHaveTextContaining(message);
-    }
-
-    open () {
-        return super.open('SignUp');
+    async open () {
+        await super.open(this.url);
     }
 }
