@@ -6,8 +6,18 @@ import { RiDislikeLine } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 
 import "../Styles/maincontainer.css";
+import {
+  ProfilePlaylistName,
+  ProfileContainer,
+  ProfileCover,
+  ProfileEmail,
+  ProfileText,
+  ProfileVerticalMenu,
+  ProfileDescription,
+  ProfileRating,
+} from "./MainContainer.styles";
+import MenuDropdownProfile from "./MenuDropdownProfile";
 import SongList from "./SongList";
-import Modal from "./Modal";
 import Comment from "./Comment";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 import { PlaylistTypeConfirmation } from "./PlaylistTypeConfirmation";
@@ -59,7 +69,7 @@ function MainContainer() {
     setConfirmationDialog(false);
   };
 
-  const handlePlaylistType = (value) => {
+  const handlePlaylistType = () => (value) => {
     if (playlistType !== "Shared") {
       setConfirmationDialog(true);
       setDialogSubmit(value);
@@ -73,55 +83,72 @@ function MainContainer() {
   // TODO: we need some kind of loader, but for now prevent render until we get the data
   return (
     playlistId === navigateId && (
-      <div
+      <main
         className={`maincontainer ${
           addSongModal ? "maincontainer-pointer" : ""
         }`}
       >
-        <div className="profiledetails">
-          <div className="email">{email}</div>
-          <div className="otherdetails">
-            <div className="otherdetails1">Here since: {registerDate}</div>
-            <div className="otherdetails2">
-              Amount of playlists: {playlistsOwned}
-            </div>
-          </div>
-        </div>
-        <div className="playlistimage">
-          <img
-            src={coverUrl}
-            alt={`Playlist ${playlistName === null ? "" : playlistName} cover`}
-            className="img2"
-          />
-          <BsThreeDotsVertical
-            className="vertical-menu"
-            onClick={() => {
-              setOpenModel((prev) => !prev);
-            }}
-          />
-          {openModel && <Modal handlePlaylistType={handlePlaylistType} />}
-          <button className="playlist-type-btn">{playlistPrivacyType}</button>
-        </div>
-        <div className="playlistdetails">
-          <p className="playlistname">{playlistName}</p>
-          <p className="playlistcontent">
-            {shouldRenderDescription && description.substring(0, 30) + "..."}
-          </p>
-          <div className="created-updated">
-            <p>Created:{createdOn}</p>
-            <p>Updated:{updatedOn === null ? "Never" : updatedOn}</p>
-          </div>
-        </div>
-        <div className="likedislike">
-          <div className="dislike">
+        <ProfileContainer className="playlist__profile">
+          <ProfileEmail className="profile__email">{email}</ProfileEmail>
+          <ProfileText className="profile__text--register">
+            Here since: {registerDate}
+          </ProfileText>
+          <ProfileText className="profile__text--playlist-amount">
+            Amount of playlists: {playlistsOwned}
+          </ProfileText>
+          <ProfileCover
+            $coverUlr={coverUrl}
+            role="img"
+            aria-label={`Playlist "${
+              playlistName === null ? "" : playlistName
+            }" cover`}
+            className="profile__playlist-cover"
+          >
+            <span className="profile__playlist-type">
+              {playlistPrivacyType}
+            </span>
+
+            {/* Menu is not actually a child of image, but positioned relative to it */}
+            <ProfileVerticalMenu className="_playlistimage">
+              <BsThreeDotsVertical
+                className="vertical-menu"
+                onClick={() => {
+                  setOpenModel((prev) => !prev);
+                }}
+              />
+              {openModel && (
+                <MenuDropdownProfile
+                  handlePlaylistType={handlePlaylistType}
+                  playlistId={playlistId}
+                />
+              )}
+            </ProfileVerticalMenu>
+          </ProfileCover>
+          <ProfilePlaylistName className="profile__playlist-name">
+            {playlistName}
+          </ProfilePlaylistName>
+          {shouldRenderDescription && (
+            <ProfileDescription className="profile__description">
+              {description}
+            </ProfileDescription>
+          )}
+          <ProfileText className="profile__text--created">
+            Created:{createdOn}
+          </ProfileText>
+          <ProfileText className="profile__text--updated">
+            Updated:{updatedOn === null ? "Never" : updatedOn}
+          </ProfileText>
+
+          <ProfileRating className="profile__rating--dislike">
             {dislikes}
             <RiDislikeLine />
-          </div>
-          <div className="like">
+          </ProfileRating>
+          <ProfileRating className="profile__rating--like">
             {likes}
             <BiHeart />
-          </div>
-        </div>
+          </ProfileRating>
+        </ProfileContainer>
+
         <div className="addsong">
           <IoIosAdd className="circle-icon" onClick={handleAddSongModal} />
           <p className="addsong-name">Add Song</p>
@@ -144,7 +171,7 @@ function MainContainer() {
           <SongList />
         </div>
         <Comment data-testid="comment-list" />
-      </div>
+      </main>
     )
   );
 }
