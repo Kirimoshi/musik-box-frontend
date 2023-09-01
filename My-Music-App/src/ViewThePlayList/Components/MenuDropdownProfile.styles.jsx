@@ -32,6 +32,10 @@ export const MenuItem = styled.li`
   & > svg {
     font-size: 24px;
   }
+
+  &.profile-menu__delete {
+    color: var(--m-3-sys-dark-error, #f2b8b5);
+  }
 `;
 
 export const MenuDivider = styled.hr`

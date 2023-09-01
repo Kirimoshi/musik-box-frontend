@@ -120,7 +120,6 @@ export const ProfilePlaylistName = styled.span`
 export const ProfileDescription = styled.span`
   grid-area: description;
   ${flexCenter}
-  width: 100%;
   color: var(--m-3-ref-neutral-neutral-70, #aea9b1);
   font-size: 16px;
   font-weight: 500;
