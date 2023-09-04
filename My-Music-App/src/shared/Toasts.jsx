@@ -29,7 +29,7 @@ OneLineMessage.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-export function LogoutPendigMessage() {
+export function LogoutPendingMessage() {
   return (
     <ToatsMsg className="toast__logout--pending">
       <p>Logging out...</p>

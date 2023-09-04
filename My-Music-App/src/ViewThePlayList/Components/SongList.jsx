@@ -76,8 +76,8 @@ export default function SongList() {
               <div
                 className={`songs ${openModel === id ? "top" : ""}`}
                 key={id}
+                data-song-id={id}
               >
-                {/* TODO add id as data attribute */}
                 <div className={`song`}>
                   <div className="imageBox-artistinfo">
                     <img

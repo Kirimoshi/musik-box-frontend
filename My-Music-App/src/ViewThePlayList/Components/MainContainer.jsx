@@ -81,7 +81,7 @@ function MainContainer() {
             Amount of playlists: {playlistsOwned}
           </ProfileText>
           <ProfileCover
-            $coverUlr={coverUrl}
+            $coverUrl={coverUrl}
             role="img"
             aria-label={`Playlist "${
               playlistName === null ? "" : playlistName
@@ -92,7 +92,7 @@ function MainContainer() {
               {playlistPrivacyType}
             </span>
             {/* Menu is not actually a child of image, but positioned relative to it */}
-            <ProfileVerticalMenu className="_playlistimage">
+            <ProfileVerticalMenu className="profile__dropdown-menu">
               <BsThreeDotsVertical
                 className="vertical-menu"
                 onClick={() => {
@@ -117,10 +117,10 @@ function MainContainer() {
             </ProfileDescription>
           )}
           <ProfileText className="profile__text--created">
-            Created:{createdOn}
+            Created:&nbsp;{createdOn}
           </ProfileText>
           <ProfileText className="profile__text--updated">
-            Updated:{updatedOn === null ? "Never" : updatedOn}
+            Updated:&nbsp;{updatedOn === null ? "Never" : updatedOn}
           </ProfileText>
 
           <ProfileRating className="profile__rating--dislike">

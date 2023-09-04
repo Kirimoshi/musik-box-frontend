@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { MY_PLAYLISTS_URL, PLAYLISTS_URL } from "../constants";
+import { MY_PLAYLISTS_URL, PUBLIC_PLAYLIST_URL } from "../constants";
 import { formatDateDDmmmYYYY, parseLikesDislikes } from "../helpers";
 
 // Fetch page of ten My Playlist Data Thunk
@@ -79,7 +79,7 @@ export const fetchSingleMyPlaylist = createAsyncThunk(
     const accessToken = getState().user.accessToken;
     try {
       const response = await axios({
-        url: `${PLAYLISTS_URL}/${playlistId}`,
+        url: `${PUBLIC_PLAYLIST_URL}/${playlistId}`,
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${accessToken}`,
@@ -191,7 +191,6 @@ export const changePlaylistType = createAsyncThunk(
         },
       });
       return {
-        chagedPlaylistId: response.data.data.id,
         newPlaylistType: response.data.data.attributes.playlist_type,
       };
     } catch (error) {

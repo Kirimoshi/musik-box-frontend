@@ -32,10 +32,6 @@ function MenuDropdownProfile({
   setIsProfileMenuOpen,
   shoudRenderTypeChange,
 }) {
-  console.log(
-    "file: MenuDropdownProfile.jsx:35 ~ shoudRenderTypeChange:",
-    shoudRenderTypeChange
-  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loading = useSelector(myPlaylistLoadingSelector);

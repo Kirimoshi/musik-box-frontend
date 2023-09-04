@@ -82,7 +82,7 @@ export const ProfileCover = styled.div`
   height: 100%;
   aspect-ratio: 1/1;
   border-radius: 18px;
-  background-image: url(${(props) => props.$coverUlr}),
+  background-image: url(${(props) => props.$coverUrl}),
     linear-gradient(lightgray, lightgray);
   background-size: cover;
   background-position: center;
