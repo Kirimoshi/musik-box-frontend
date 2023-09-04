@@ -29,7 +29,6 @@ export const fetchPageOfMyPlaylistsPending = (state) => {
 export const fetchPageOfMyPlaylistsFulfilled = (state, action) => {
   state.loading = false;
   state.myPlaylists = action.payload.playlists.data;
-  state.songs = action.payload.playlists.included;
 };
 export const fetchPageOfMyPlaylistsRejected = (state, action) => {
   state.loading = false;
@@ -172,6 +171,47 @@ export const deleteSongFromPlaylistFulfilled = (state, action) => {
   );
 };
 export const deleteSongFromPlaylistRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const changePlaylistType = createAsyncThunk(
+  "myPlaylistsSlice/changePlaylistType",
+  async (newPlaylistType, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    const playlistId =
+      getState().myPlaylistsSlice.currentPlaylist.playlistInfo.playlistId;
+    try {
+      const response = await axios({
+        url: `${MY_PLAYLISTS_URL}/${playlistId}/playlist_type?playlist_type=${newPlaylistType}`,
+        method: "PUT",
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return {
+        chagedPlaylistId: response.data.data.id,
+        newPlaylistType: response.data.data.attributes.playlist_type,
+      };
+    } catch (error) {
+      if (error.response.status === 422)
+        throw new Error("422 Unprocessable Entity");
+
+      throw error.response.data.errors;
+    }
+  }
+);
+export const changePlaylistTypePending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const changePlaylistTypeFulfilled = (state, action) => {
+  state.loading = false;
+  state.currentPlaylist.playlistInfo.playlistType =
+    action.payload.newPlaylistType;
+};
+export const changePlaylistTypeRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

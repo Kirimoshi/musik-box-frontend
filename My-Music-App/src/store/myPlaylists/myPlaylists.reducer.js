@@ -24,7 +24,6 @@ const INITIAL_STATE = {
     },
     songs: [],
   },
-  songs: [],
 };
 
 export const myPlaylistsSlice = createSlice({
@@ -33,9 +32,6 @@ export const myPlaylistsSlice = createSlice({
   reducers: {
     setMyPlaylists: (state, action) => {
       state.myPlaylists = action.payload;
-    },
-    setSongs: (state, action) => {
-      state.songs = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -84,10 +80,22 @@ export const myPlaylistsSlice = createSlice({
       .addCase(
         thunks.deleteSongFromPlaylist.rejected,
         thunks.deleteSongFromPlaylistRejected
+      )
+      .addCase(
+        thunks.changePlaylistType.pending,
+        thunks.changePlaylistTypePending
+      )
+      .addCase(
+        thunks.changePlaylistType.fulfilled,
+        thunks.changePlaylistTypeFulfilled
+      )
+      .addCase(
+        thunks.changePlaylistType.rejected,
+        thunks.changePlaylistTypeRejected
       );
   },
 });
 
-export const { setMyPlaylists, setSongs } = myPlaylistsSlice.actions;
+export const { setMyPlaylists } = myPlaylistsSlice.actions;
 
 export const myPlaylistsReducer = myPlaylistsSlice.reducer;

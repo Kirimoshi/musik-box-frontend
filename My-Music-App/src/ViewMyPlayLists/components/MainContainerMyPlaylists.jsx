@@ -15,8 +15,6 @@ export default function MainContainerMyPlaylists() {
   const handleViewThePlaylist = () => {
     setShowThePlaylist(true);
   };
-
-  // TODO: rewirte ASAP, coz useEffect without a list of dependencies, this can lead to an infinite chain of updates.
   useEffect(() => {
     // eslint-disable-next-line no-restricted-globals
     if (location.pathname == "/viewmyplaylists") {

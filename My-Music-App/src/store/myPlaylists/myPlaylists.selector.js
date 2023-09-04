@@ -16,3 +16,8 @@ export const currentPlaylistSelector = createSelector(
   myPlaylistsSliceSelector,
   (myPlaylistsSlice) => myPlaylistsSlice.currentPlaylist
 );
+
+export const myPlaylistLoadingSelector = createSelector(
+  myPlaylistsSliceSelector,
+  (myPlaylistsSlice) => myPlaylistsSlice.loading
+);

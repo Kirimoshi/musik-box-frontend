@@ -32,7 +32,7 @@ function MainContainer() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(userSelector);
 
-  const [openModel, setOpenModel] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
   const [myState, setMyState] = useState(false);
   const [playlistType, setPlaylistType] = useState("Public");
@@ -107,19 +107,19 @@ function MainContainer() {
             <span className="profile__playlist-type">
               {playlistPrivacyType}
             </span>
-
             {/* Menu is not actually a child of image, but positioned relative to it */}
             <ProfileVerticalMenu className="_playlistimage">
               <BsThreeDotsVertical
                 className="vertical-menu"
                 onClick={() => {
-                  setOpenModel((prev) => !prev);
+                  setIsProfileMenuOpen((prev) => !prev);
                 }}
               />
-              {openModel && (
+              {isProfileMenuOpen && (
                 <MenuDropdownProfile
-                  handlePlaylistType={handlePlaylistType}
                   playlistId={playlistId}
+                  setIsProfileMenuOpen={setIsProfileMenuOpen}
+                  shoudRenderTypeChange={playlistPrivacyType !== "shared"}
                 />
               )}
             </ProfileVerticalMenu>

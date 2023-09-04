@@ -10,3 +10,10 @@ export const DEFAULT_PLAYLIST_COVER =
 export const DEFAULT_SONG_COVER =
   "http://127.0.0.1:3000/uploads/store/d33e404966d5c4422bb9917a959022c2.png";
 export const USER_CRED = { displayName: "Olsheer", email: "email@.com" };
+
+export const STATE_STATUSES = {
+  FAILED: "failed",
+  IDLE: "idle",
+  PROGRESS: "progress",
+  SUCCESS: "success",
+};

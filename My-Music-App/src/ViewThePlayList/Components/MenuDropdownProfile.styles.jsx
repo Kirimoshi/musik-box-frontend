@@ -36,6 +36,10 @@ export const MenuItem = styled.li`
   &.profile-menu__delete {
     color: var(--m-3-sys-dark-error, #f2b8b5);
   }
+
+  &.profile-menu__edit {
+    cursor: not-allowed;
+  }
 `;
 
 export const MenuDivider = styled.hr`

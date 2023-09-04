@@ -95,11 +95,12 @@ export const ProfileCover = styled.div`
     position: absolute;
     right: 24px;
     bottom: 24px;
-    display: inline-flex;
     height: 32px;
     padding: 6px 12px;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
+    text-transform: capitalize;
     border-radius: 18px;
     background: var(--m-3-ref-error-error-60, #e46962);
   }
@@ -107,7 +108,8 @@ export const ProfileCover = styled.div`
 
 export const ProfilePlaylistName = styled.span`
   grid-area: name;
-  ${flexCenter}
+  place-self: center;
+  text-align: center;
   width: 100%;
   font-size: 24px;
   font-weight: 400;
@@ -119,7 +121,9 @@ export const ProfilePlaylistName = styled.span`
 
 export const ProfileDescription = styled.span`
   grid-area: description;
-  ${flexCenter}
+  text-align: center;
+  place-self: center;
+  width: 100%;
   color: var(--m-3-ref-neutral-neutral-70, #aea9b1);
   font-size: 16px;
   font-weight: 500;
