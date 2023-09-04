@@ -1,15 +1,16 @@
-import {BasePage} from "./basePage";
+/* eslint-disable no-undef */
+import { BasePage } from "./basePage";
 
 export class SignUpPage extends BasePage{
-    constructor() {
-        super();
-        this.url = `SignUp`
-        this.form = `form.signup-form`
-    }
+  constructor() {
+      super();
+      this.url = `SignUp`
+      this.form = `form.signup-form`
+  }
 
-    get inputNickname() {
-        return $(`${this.form} input[data-testid=nickname]`);
-    }
+  get inputNickname() {
+      return $(`${this.form} input[data-testid=nickname]`);
+  }
 
     get inputEmail() {
         return $(`${this.form} input[data-testid=email]`);
@@ -51,7 +52,15 @@ export class SignUpPage extends BasePage{
         await this.btnSignUp.click();
     }
 
-    async open () {
-        await super.open(this.url);
+  async checkErrorMessage(element, message) {
+    if (!this[element]) {
+      throw new Error(`Element type "${this[element]}" not found.`);
     }
+    await expect(this[element]).toBeExisting();
+    await expect(this[element]).toHaveTextContaining(message);
+  }
+
+  open() {
+    return super.open("SignUp");
+  }
 }
