@@ -20,7 +20,6 @@ import MenuDropdownProfile from "./MenuDropdownProfile";
 import SongList from "./SongList";
 import Comment from "./Comment";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
-import { PlaylistTypeConfirmation } from "./PlaylistTypeConfirmation";
 
 import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
@@ -35,9 +34,6 @@ function MainContainer() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
   const [myState, setMyState] = useState(false);
-  const [playlistType, setPlaylistType] = useState("Public");
-  const [confirmationDialog, setConfirmationDialog] = useState(false);
-  const [dialogSubmit, setDialogSubmit] = useState("Public");
   const { id: navigateId } = useParams();
 
   const {
@@ -62,18 +58,6 @@ function MainContainer() {
 
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
-  };
-
-  const handleConfirmationDialog = (type, value) => {
-    if (type === "submit") setPlaylistType(value);
-    setConfirmationDialog(false);
-  };
-
-  const handlePlaylistType = () => (value) => {
-    if (playlistType !== "Shared") {
-      setConfirmationDialog(true);
-      setDialogSubmit(value);
-    }
   };
 
   useEffect(() => {
@@ -115,7 +99,7 @@ function MainContainer() {
                   setIsProfileMenuOpen((prev) => !prev);
                 }}
               />
-              {isProfileMenuOpen && (
+              {isAuthenticated && isProfileMenuOpen && (
                 <MenuDropdownProfile
                   playlistId={playlistId}
                   setIsProfileMenuOpen={setIsProfileMenuOpen}
@@ -161,12 +145,6 @@ function MainContainer() {
             />
           )}
         </div>
-        {confirmationDialog && (
-          <PlaylistTypeConfirmation
-            dialogSubmit={dialogSubmit}
-            handleConfirmationDialog={handleConfirmationDialog}
-          />
-        )}
         <div className="songsList" data-testid="song-list">
           <SongList />
         </div>
