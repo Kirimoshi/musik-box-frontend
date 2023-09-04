@@ -9,9 +9,5 @@ class Pages {
         this.home = new HomePage();
         // Add more instances as needed
     }
-
-    async click(element) {
-       await element.click();
-    }
 }
 export default Pages = new Pages();

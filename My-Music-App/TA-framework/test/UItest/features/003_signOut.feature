@@ -3,7 +3,7 @@
 Feature: EPMRDPEMAP-207 - The SingOut feature
 
   Scenario Outline: 1. Verify that the user with valid data can sing in
-    Given the user is on the signIn page
+    Given the user is open "signIn" page
     When The user sing-ins with <email> and <password>
     Then the User should be redirected to the Home page
 
@@ -22,7 +22,7 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
       | You have been successfully logged out | Come back anytime! |
 
   Scenario Outline: 2. Verify that the user with valid data can sing in
-    Given the user is on the signIn page
+    Given the user is open "signIn" page
     When The user sing-ins with <email> and <password>
     Then the User should be redirected to the Home page
 

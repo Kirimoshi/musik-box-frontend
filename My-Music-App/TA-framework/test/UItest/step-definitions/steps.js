@@ -3,16 +3,67 @@ import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
 let expect = require("chai").expect;
 const { camelize } = require("../utils/helpers");
-const { assert } = require('chai');
+const { assert } = require("chai");
 const browserOption = browser.options;
 
 Given(/the user is open "([^"]*)" page/, async function (page) {
   await Pages[page].open();
 });
 
-When(/^The user sing-ups with (.*), (.*), (.*), and (.*)$/, async (nickname, email, password, confirmPassword) => {
-  await Pages.signUp.singUp(nickname, email, password, confirmPassword);
-}
+Then(/the user is on the "([^"]*)" page/, async function (page) {
+  let expectedUrl;
+  const actualUrl = browserOption.baseUrl + page;
+  await browser.waitUntil(
+    async function () {
+      expectedUrl = await browser.getUrl();
+      return expectedUrl === actualUrl;
+    },
+    {
+      timeout: 5000,
+      timeoutMsg: "expected link to be changed after 5s",
+    }
+  );
+  assert.equal(
+    expectedUrl,
+    actualUrl,
+    `Expected url: ${actualUrl} is not found`
+  );
+});
+
+When(
+  /the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
+  async function (nickname, email, password, confirmPassword) {
+    await Pages["signUp"].singUpToTheApplication(
+      nickname,
+      email,
+      password,
+      confirmPassword
+    );
+  }
+);
+
+Then(
+  /"([^"]*)" "([^"]*)" "([^"]*)" text is: "([^"]*)"/,
+  async function (page, element, type, expectedText) {
+    let currentText;
+    await browser.waitUntil(
+      async function () {
+        currentText = await Pages[page][
+          camelize(`${element}${type}`)
+        ].getText();
+        return currentText;
+      },
+      {
+        timeout: 5000,
+        timeoutMsg: "expected text to be changed after 5s",
+      }
+    );
+    assert.equal(
+      currentText,
+      expectedText,
+      `${page} doesn't match ${expectedText} value`
+    );
+  }
 );
 
 When(/^The user sing-ins with (.*) and (.*)$/, async (email, password) => {
@@ -23,26 +74,17 @@ When(/^The user logging out$/, async () => {
   await Pages.home.logout();
 });
 
-Then(/^(.*) message should be displayed: (.*)$/, async (elementType, errorMessage) => {
-  const currentPageUrl = await browser.getUrl();
-  if (currentPageUrl.includes("SignUp")) {
-    await Pages.signUp.checkErrorMessage(elementType, errorMessage);
-  } else {
-    await Pages.home.checkLogoutMessage(elementType, errorMessage);
+Then(
+  /^(.*) message should be displayed: (.*)$/,
+  async (elementType, errorMessage) => {
+    const currentPageUrl = await browser.getUrl();
+    if (currentPageUrl.includes("SignUp")) {
+      await Pages.signUp.checkErrorMessage(elementType, errorMessage);
+    } else {
+      await Pages.home.checkLogoutMessage(elementType, errorMessage);
+    }
   }
-}
 );
-
-Then(/^the user should be redirected to the (\w+) page$/, async (page) => {
-  await browser.waitUntil(
-    async function () {
-      return (await browser.getUrl()).includes(page);
-    },
-    {
-      timeout: 5000,
-      timeoutMsg: `Error: expected page was changed to ${page}`
-    });
-});
 
 Then(/^the User should be redirected to the Home page$/, async () => {
   await browser.waitUntil(
@@ -60,4 +102,4 @@ Then(/^the User should be redirected to the Home page$/, async () => {
 
 When(/^the Internet connection is interrupted$/, async () => {
   await browser.throttle("offline");
-})
+});
