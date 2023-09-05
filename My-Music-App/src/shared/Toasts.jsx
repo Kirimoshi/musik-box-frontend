@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { ToatsMsg } from "./Toasts.styles";
-// configs
+
 export const baseToastConfig = {
   position: "top-center",
   autoClose: 5000,
@@ -13,10 +13,7 @@ export const baseToastConfig = {
   theme: "dark",
 };
 
-// helper
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// messages
 
 export function OneLineMessage({ message }) {
   return (
@@ -36,6 +33,7 @@ export function LogoutPendingMessage() {
     </ToatsMsg>
   );
 }
+
 export function LogoutSuccessMessage() {
   return (
     <ToatsMsg className="toast__logout--success">
