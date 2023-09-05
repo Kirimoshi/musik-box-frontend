@@ -1,9 +1,8 @@
 /* eslint-disable no-undef */
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
-let expect = require("chai").expect;
 const { camelize } = require("../utils/helpers");
-const { assert } = require("chai");
+const { assert, expect } = require("chai");
 const browserOption = browser.options;
 
 Given(/the user is open "([^"]*)" page/, async function (page) {
