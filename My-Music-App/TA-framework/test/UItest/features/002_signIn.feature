@@ -8,6 +8,5 @@ Feature: EPMRDPEMAP-201 - The SingIn feature
     Then the User should be redirected to the Home page
 
     Examples:
-      | email                    | password  |
-      | test.user@example.com    | secreT!123 |
-   
+      | email                 | password   |
+      | test.user@example.com | secreT!123 |
