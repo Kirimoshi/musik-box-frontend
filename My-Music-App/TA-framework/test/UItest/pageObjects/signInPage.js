@@ -1,31 +1,33 @@
-/* eslint-disable no-undef */
-import { BasePage } from "./basePage";
+import {BasePage} from "./basePage";
 
-export class SignInPage extends BasePage {
-  get inputEmail() {
-    return $("[data-testid=emailtest]");
-  }
+export class SignInPage extends BasePage{
+    constructor() {
+        super();
+        this.url = `SignIn`
+        this.form = `form.login-form`
+    }
 
-  get inputPassword() {
-    return $("[data-testid=passwordtest]");
-  }
+    get inputEmail() {
+        return $(`${this.form} input[name="email"]`);
+    }
 
-  get btnSignIn() {
-    return $("button[class='signin-button ']");
-  }
+    get inputPassword() {
+        return $(`${this.form} input[name="password"]`);
+    }
 
-  get checkboxRememberMe() {
-    return $("#checkbox");
-  }
+    get rememberMeCheckbox() {
+        return $(`${this.form} input#checkbox`);
+    }
 
-  async singIn(email, password) {
-    await this.inputEmail.setValue(email);
-    await this.inputPassword.setValue(password);
-    await this.checkboxRememberMe.click();
-    await this.btnSignIn.click();
-  }
 
-  open() {
-    return super.open("SignIn");
-  }
+    get btnSignIn() {
+        return $(`${this.form} button.signin-button`);
+    }
+
+   
+    async singInToTheApplication(email, password) {
+        await this.inputEmail.setValue(email);
+        await this.inputPassword.setValue(password);
+        await this.btnSignIn.click();
+    }
 }

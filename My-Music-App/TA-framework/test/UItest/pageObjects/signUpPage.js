@@ -51,16 +51,4 @@ export class SignUpPage extends BasePage{
         await this.inputPasswordConfirmation.setValue(confirmPassword)
         await this.btnSignUp.click();
     }
-
-  async checkErrorMessage(element, message) {
-    if (!this[element]) {
-      throw new Error(`Element type "${this[element]}" not found.`);
-    }
-    await expect(this[element]).toBeExisting();
-    await expect(this[element]).toHaveTextContaining(message);
-  }
-
-  open() {
-    return super.open("SignUp");
-  }
 }
