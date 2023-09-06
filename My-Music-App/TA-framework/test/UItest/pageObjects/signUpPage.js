@@ -2,12 +2,6 @@
 import { BasePage } from "./basePage";
 
 export class SignUpPage extends BasePage{
-//   constructor() {
-//       super();
-//       this.url = `SignUp`
-//       this.form = `form.signup-form`
-//   }
-
   get inputNickname() {
       return $("input[data-testid='nickname']");
   }
@@ -51,7 +45,16 @@ export class SignUpPage extends BasePage{
         await this.inputPasswordConfirmation.setValue(confirmPassword)
         await this.btnSignUp.click();
     }
-    open() {
-        return super.open("SignUp");
-      }
+
+  async checkErrorMessage(element, message) {
+    if (!this[element]) {
+      throw new Error(`Element type "${this[element]}" not found.`);
+    }
+    await expect(this[element]).toBeExisting();
+    await expect(this[element]).toHaveTextContaining(message);
+  }
+
+  open() {
+    return super.open("SignUp");
+  }
 }

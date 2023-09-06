@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { BasePage } from "./basePage";
 
 export class SignInPage extends BasePage {

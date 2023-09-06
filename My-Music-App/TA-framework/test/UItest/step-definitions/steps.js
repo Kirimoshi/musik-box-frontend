@@ -6,25 +6,8 @@ const { assert, expect } = require("chai");
 const browserOption = browser.options;
 
 Given(/the user is open "([^"]*)" page/, async function (page) {
-    await Pages[page].open();
+  await Pages[page].open();
 });
-
-When(/the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
-    async function (nickname, email, password, confirmPassword) {
-    await Pages['signUp'].singUpToTheApplication(nickname, email, password, confirmPassword);
-});
-
-When(/the user clicks on the "([^"]*)" "([^"]*)" in the "([^"]*)" page/, async function (element, type, page) {
-    let currentElement = await Pages[page][camelize(`${element}${type}`)]
-    await currentElement.click()
-});
-
-When(/the user sing-in with "([^"]*)" and "([^"]*)"/,
-    async function (email, password) {
-    await Pages['signIn'].singInToTheApplication(email, password);
-});
-
-
 
 Then(/the user is on the "([^"]*)" page/, async function (page) {
   let expectedUrl;
