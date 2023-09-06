@@ -27,10 +27,31 @@ Then(/the user is on the "([^"]*)" page/, async function (page) {
     actualUrl,
     `Expected url: ${actualUrl} is not found`
   );
-  })
+});
 
-Then(
-  /"([^"]*)" "([^"]*)" "([^"]*)" text is: "([^"]*)"/,
+When(/the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
+  async function (nickname, email, password, confirmPassword) {
+    await Pages["signUp"].singUpToTheApplication(
+      nickname,
+      email,
+      password,
+      confirmPassword
+    );
+  }
+);
+
+When(/the user clicks on the "([^"]*)" "([^"]*)" in the "([^"]*)" page/,
+  async function (element, type, page) {
+    let currentElement = await Pages[page][camelize(`${element}${type}`)];
+    await currentElement.click();
+  }
+);
+
+When(/^The user sing-ins with (.*) and (.*)$/, async (email, password) => {
+  await Pages.signIn.singIn(email, password);
+});
+
+Then(/"([^"]*)" "([^"]*)" "([^"]*)" text is: "([^"]*)"/,
   async function (page, element, type, expectedText) {
     let currentText;
     await browser.waitUntil(
@@ -53,16 +74,11 @@ Then(
   }
 );
 
-When(/^The user sing-ins with (.*) and (.*)$/, async (email, password) => {
-  await Pages.signIn.singIn(email, password);
-});
-
 When(/^The user logging out$/, async () => {
   await Pages.home.logout();
 });
 
-Then(
-  /^(.*) message should be displayed: (.*)$/,
+Then(/^(.*) message should be displayed: (.*)$/,
   async (elementType, errorMessage) => {
     const currentPageUrl = await browser.getUrl();
     if (currentPageUrl.includes("SignUp")) {
