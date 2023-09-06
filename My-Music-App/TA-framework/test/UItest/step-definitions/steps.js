@@ -27,19 +27,7 @@ Then(/the user is on the "([^"]*)" page/, async function (page) {
     actualUrl,
     `Expected url: ${actualUrl} is not found`
   );
-});
-
-When(
-  /the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
-  async function (nickname, email, password, confirmPassword) {
-    await Pages["signUp"].singUpToTheApplication(
-      nickname,
-      email,
-      password,
-      confirmPassword
-    );
-  }
-);
+  })
 
 Then(
   /"([^"]*)" "([^"]*)" "([^"]*)" text is: "([^"]*)"/,
