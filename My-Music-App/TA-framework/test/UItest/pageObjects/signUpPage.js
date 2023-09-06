@@ -2,46 +2,46 @@
 import { BasePage } from "./basePage";
 
 export class SignUpPage extends BasePage{
-  constructor() {
-      super();
-      this.url = `SignUp`
-      this.form = `form.signup-form`
-  }
+//   constructor() {
+//       super();
+//       this.url = `SignUp`
+//       this.form = `form.signup-form`
+//   }
 
   get inputNickname() {
-      return $(`${this.form} input[data-testid=nickname]`);
+      return $("input[data-testid='nickname']");
   }
 
     get inputEmail() {
-        return $(`${this.form} input[data-testid=email]`);
+        return $("input[data-testid='email']");
     }
 
     get inputPassword() {
-        return $(`${this.form} input[data-testid=password]`);
+        return $("input[data-testid='password']");
     }
 
     get inputPasswordConfirmation() {
-        return $(`${this.form} input[data-testid=confirmPassword]`);
+        return $("input[data-testid='confirmPassword']");
     }
 
     get btnSignUp() {
-        return $(`${this.form} button[type="submit"]`);
+        return $("button[type='submit']");
     }
 
     get nickNameError () {
-        return $(`${this.form} [data-testid=nicknameError]`);
+        return $("[data-testid=nicknameError]");
     }
 
     get emailError () {
-        return $(`${this.form} [data-testid=emailError]`);
+        return $("[data-testid=emailError]");
     }
 
     get passwordError () {
-        return $(`${this.form} [data-testid=passwordError]`);
+        return $("[data-testid=passwordError]");
     }
 
     get confirmPasswordError () {
-        return $(`${this.form} [data-testid=confirmPasswordError]`);
+        return $("[data-testid=confirmPasswordError]");
     }
 
     async singUpToTheApplication(nickname, email, password, confirmPassword) {
@@ -51,4 +51,7 @@ export class SignUpPage extends BasePage{
         await this.inputPasswordConfirmation.setValue(confirmPassword)
         await this.btnSignUp.click();
     }
+    open() {
+        return super.open("SignUp");
+      }
 }

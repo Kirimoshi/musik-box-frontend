@@ -1,14 +1,13 @@
 @002 @signIn
 
-Feature: The SingIn feature
-  Background: Opening "signIn" page
-    Given the user is open "signIn" page
+Feature: EPMRDPEMAP-201 - The SingIn feature
 
-  Scenario Outline: Verify that the user with valid data can sing in
-  When the user sing-in with <email> and <password>
-  Then the user clicks on the "Remember Me" "Checkbox" in the "signIn" page
-  Then the user is on the "base" page
-  Examples:
-      | email | password             |
-      | "Valid25@ukr.net"  | "Qwer212@#" |
+  Scenario Outline: 1. Verify that the user with valid data can sing in
+    Given the user is open "signIn" page
+    When The user sing-ins with <email> and <password>
+    Then the User should be redirected to the Home page
+
+    Examples:
+      | email                    | password  |
+      | test.user@example.com    | secreT!123 |
    
