@@ -4,197 +4,154 @@ import { BiHeart } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDislikeLine } from "react-icons/ri";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import moment from "moment";
 
 import "../Styles/maincontainer.css";
+import {
+  ProfilePlaylistName,
+  ProfileContainer,
+  ProfileCover,
+  ProfileEmail,
+  ProfileText,
+  ProfileVerticalMenu,
+  ProfileDescription,
+  ProfileRating,
+} from "./MainContainer.styles";
+import MenuDropdownProfile from "./MenuDropdownProfile";
 import SongList from "./SongList";
-import Modal from "./Modal";
 import Comment from "./Comment";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
-import { constants } from "../constansts";
-import { PlaylistTypeConfirmation } from "./PlaylistTypeConfirmation";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../../store/user/user.selector";
 import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../store/constants";
+import { currentPlaylistSelector } from "../../store/myPlaylists/myPlaylists.selector";
+import { fetchSingleMyPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
 
-const playlistStoreEmpty = {
-  data: {
-    id: null,
-    attributes: {
-      created_on: null,
-      description: null,
-      logo: null,
-      name: null,
-      number_likes_dislikes: null,
-      updated_on: null,
-      playlist_type: null,
-    },
-    type: null,
-  },
-  included: [],
-};
+function MainContainer() {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(userSelector);
 
-export default function MainContainer() {
-  const [openModel, setOpenModel] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
-  const [playlistStore, setPlaylistStore] = useState(playlistStoreEmpty);
   const [myState, setMyState] = useState(false);
-  const [playlistType, setPlaylistType] = useState("Public");
-  const [confirmationDialog, setConfirmationDialog] = useState(false);
-  const [dialogSubmit, setDialogSubmit] = useState("Public");
-  const { id } = useParams();
-
-  const { accessToken, isAuthenticated } = useSelector(userSelector);
+  const { id: navigateId } = useParams();
 
   const {
-    data: {
-      id: playlistId,
-      attributes: { description, logo, name },
+    playlistInfo: {
+      playlistId,
+      createdOn,
+      updatedOn,
+      playlistName,
+      playlistType: playlistPrivacyType,
+      logo,
+      description,
+      likes,
+      dislikes,
     },
-  } = playlistStore;
+    ownerInfo: { email, registerDate, playlistsOwned },
+  } = useSelector(currentPlaylistSelector);
+
   const shouldRenderDescription = description !== null;
   const coverUrl = logo
     ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
     : DEFAULT_PLAYLIST_COVER;
 
-  const fetchPlaylistData = async () => {
-    const data = await axios
-      .get(constants.playlistAPI_URL + id, {
-        params: { id: id },
-        // TODO: there is some delay when we write/access localstorage, so i use accessToken from redux store, it always has the latest value
-        // still we have to rewrite this to use thunk
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        return response.data;
-      });
-    return data;
-  };
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    const fetchData = async () => {
-      const data = await fetchPlaylistData();
-      setPlaylistStore(data);
-    };
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myState, isAuthenticated]);
-
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
   };
 
-  const handleConfirmationDialog = (type, value) => {
-    if (type === "submit") setPlaylistType(value);
-    setConfirmationDialog(false);
-  };
-
-  const handlePlaylistType = (value) => {
-    if (playlistType !== "Shared") {
-      setConfirmationDialog(true);
-      setDialogSubmit(value);
-    }
-  };
-
+  useEffect(() => {
+    if (!isAuthenticated || !navigateId) return;
+    dispatch(fetchSingleMyPlaylist(navigateId));
+  }, [dispatch, navigateId, isAuthenticated]);
+  // TODO: we need some kind of loader, but for now prevent render until we get the data
   return (
-    <div
-      className={`maincontainer ${addSongModal ? "maincontainer-pointer" : ""}`}
-    >
-      <div className="profiledetails">
-        <div className="email">
-          {playlistStore?.included[0]?.attributes?.email}
+    playlistId === navigateId && (
+      <main
+        className={`maincontainer ${
+          addSongModal ? "maincontainer-pointer" : ""
+        }`}
+      >
+        <ProfileContainer className="playlist__profile">
+          <ProfileEmail className="profile__email">{email}</ProfileEmail>
+          <ProfileText className="profile__text--register">
+            Here since: {registerDate}
+          </ProfileText>
+          <ProfileText className="profile__text--playlist-amount">
+            Amount of playlists: {playlistsOwned}
+          </ProfileText>
+          <ProfileCover
+            $coverUrl={coverUrl}
+            role="img"
+            aria-label={`Playlist "${
+              playlistName === null ? "" : playlistName
+            }" cover`}
+            className="profile__playlist-cover"
+          >
+            <span className="profile__playlist-type">
+              {playlistPrivacyType}
+            </span>
+            {/* Menu is not actually a child of image, but positioned relative to it */}
+            <ProfileVerticalMenu className="profile__dropdown-menu">
+              <BsThreeDotsVertical
+                className="vertical-menu"
+                onClick={() => {
+                  setIsProfileMenuOpen((prev) => !prev);
+                }}
+              />
+              {isAuthenticated && isProfileMenuOpen && (
+                <MenuDropdownProfile
+                  playlistId={playlistId}
+                  setIsProfileMenuOpen={setIsProfileMenuOpen}
+                  shoudRenderTypeChange={playlistPrivacyType !== "shared"}
+                />
+              )}
+            </ProfileVerticalMenu>
+          </ProfileCover>
+          <ProfilePlaylistName className="profile__playlist-name">
+            {playlistName}
+          </ProfilePlaylistName>
+          {shouldRenderDescription && (
+            <ProfileDescription className="profile__description">
+              {description}
+            </ProfileDescription>
+          )}
+          <ProfileText className="profile__text--created">
+            Created:&nbsp;{createdOn}
+          </ProfileText>
+          <ProfileText className="profile__text--updated">
+            Updated:&nbsp;{updatedOn === null ? "Never" : updatedOn}
+          </ProfileText>
+
+          <ProfileRating className="profile__rating--dislike">
+            {dislikes}
+            <RiDislikeLine />
+          </ProfileRating>
+          <ProfileRating className="profile__rating--like">
+            {likes}
+            <BiHeart />
+          </ProfileRating>
+        </ProfileContainer>
+
+        <div className="addsong">
+          <IoIosAdd className="circle-icon" onClick={handleAddSongModal} />
+          <p className="addsong-name">Add Song</p>
+          {addSongModal && AddSongsToPlaylists && (
+            <AddSongsToPlaylists
+              handleAddSongModal={handleAddSongModal}
+              modalPlaylistId={playlistId}
+              setMyState={setMyState}
+              myState={myState}
+            />
+          )}
         </div>
-        <div className="otherdetails">
-          <div className="otherdetails1">
-            Here since:{" "}
-            {moment(
-              playlistStore?.included[0]?.attributes?.register_date
-            ).format("DD MMM YYYY")}
-          </div>
-          <div className="otherdetails2">
-            Amount of playlists:{" "}
-            {playlistStore?.included[0]?.attributes?.playlists_number}{" "}
-          </div>
+        <div className="songsList" data-testid="song-list">
+          <SongList />
         </div>
-      </div>
-      <div className="playlistimage">
-        <img src={coverUrl} alt={`Playlist ${name} cover`} className="img2" />
-        <BsThreeDotsVertical
-          className="vertical-menu"
-          onClick={() => {
-            setOpenModel((prev) => !prev);
-          }}
-        />
-        {openModel && <Modal handlePlaylistType={handlePlaylistType} />}
-        <button className="playlist-type-btn">{playlistType}</button>
-      </div>
-      <div className="playlistdetails">
-        <p className="playlistname">{playlistStore?.data?.attributes?.name}</p>
-        <p className="playlistcontent">
-          {shouldRenderDescription && description.substring(0, 30) + "..."}
-        </p>
-        <div className="created-updated">
-          <p>
-            Created:{" "}
-            {moment(playlistStore?.data?.attributes?.created_on).format(
-              "DD MMM YYYY"
-            )}
-          </p>
-          <p>
-            Updated:{" "}
-            {moment(playlistStore?.data?.attributes?.updated_on).format(
-              "DD MMM YYYY"
-            )}
-          </p>
-        </div>
-      </div>
-      <div className="likedislike">
-        <div className="dislike">
-          {
-            playlistStore?.data?.attributes?.number_likes_dislikes?.split(
-              "/"
-            )[0]
-          }
-          <RiDislikeLine />
-        </div>
-        <div className="like">
-          {
-            playlistStore?.data?.attributes?.number_likes_dislikes?.split(
-              "/"
-            )[1]
-          }
-          <BiHeart />
-        </div>
-      </div>
-      <div className="addsong">
-        <IoIosAdd className="circle-icon" onClick={handleAddSongModal} />
-        <p className="addsong-name">Add Song</p>
-        {addSongModal && AddSongsToPlaylists && (
-          <AddSongsToPlaylists
-            handleAddSongModal={handleAddSongModal}
-            modalPlaylistId={playlistStore?.data?.id}
-            setMyState={setMyState}
-            myState={myState}
-          />
-        )}
-      </div>
-      {confirmationDialog && (
-        <PlaylistTypeConfirmation
-          dialogSubmit={dialogSubmit}
-          handleConfirmationDialog={handleConfirmationDialog}
-        />
-      )}
-      <div className="songsList" data-testid="song-list">
-        {
-          playlistId && <SongList playlistStore={playlistStore} /> // don`t render until we get the data
-        }
-      </div>
-      <Comment data-testid="comment-list" />
-    </div>
+        <Comment data-testid="comment-list" />
+      </main>
+    )
   );
 }
+
+export default MainContainer;

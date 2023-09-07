@@ -27,7 +27,7 @@ import {
 import { toast } from "react-toastify";
 import {
   baseToastConfig,
-  LogoutPendigMessage,
+  LogoutPendingMessage,
   LogoutSuccessMessage,
   LogoutErrorMessage,
 } from "../../shared/Toasts";
@@ -42,7 +42,7 @@ function Sidebar() {
   const [isLogoutClicked, setIsLogoutClicked] = useState(false);
 
   const notify = useCallback(() => {
-    toastId.current = toast(<LogoutPendigMessage />, baseToastConfig);
+    toastId.current = toast(<LogoutPendingMessage />, baseToastConfig);
   }, []);
 
   const notifyError = useCallback(() => {

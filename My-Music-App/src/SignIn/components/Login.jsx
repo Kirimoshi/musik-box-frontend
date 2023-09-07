@@ -34,6 +34,7 @@ export function Login() {
     toastId.current = toast(<LoginSuccessMessage />, {
       ...baseToastConfig,
       type: toast.TYPE.SUCCESS,
+      autoClose: 500,
     });
   }, []);
 
