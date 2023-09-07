@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export const ContentWrapper = styled.div`
-  width: 90%;
-  height: 90%;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -66,13 +64,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background-image: radial-gradient(
-      50% 50% at 50% 50%,
-      #293755 0%,
-      #0d1927 100%
-    ),
-    linear-gradient(180deg, #170d2e 0%, #1f192e 100%);
   font-family: "Roboto", sans-serif;
 `;
 

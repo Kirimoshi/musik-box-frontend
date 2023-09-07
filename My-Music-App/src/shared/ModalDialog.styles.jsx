@@ -3,6 +3,9 @@ import styled from "styled-components";
 export const ModalContainer = styled.dialog`
   &[open] {
     /* Layout */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     max-width: 312px;
     display: flex;
     padding: 16px;

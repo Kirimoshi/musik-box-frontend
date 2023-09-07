@@ -17,13 +17,15 @@ import {
 
 import constants from "../../constants/constants";
 import { default as getLikesDislikesNumber } from "../../lib/helpers/getLikesDislikesNumber";
+import paths from "../../../../router/paths";
 
 function PublicPlaylistCard({ playlist, isAuth }) {
   const navigate = useNavigate();
   const { id, name, logo, first_ten_songs, number_likes_dislikes } = playlist;
   const reactions = getLikesDislikesNumber(number_likes_dislikes);
   const handleNavigate = useCallback(() => {
-    navigate(`/public-playlists/public-playlist-details/${id}`);
+    navigate(`${paths.publicPlaylistDetails}/${id}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
@@ -81,6 +83,7 @@ function PublicPlaylistCard({ playlist, isAuth }) {
 }
 
 PublicPlaylistCard.propTypes = {
+  isAuth: PropTypes.bool,
   playlist: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

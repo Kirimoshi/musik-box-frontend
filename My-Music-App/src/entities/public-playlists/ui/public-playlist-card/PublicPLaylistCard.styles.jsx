@@ -17,6 +17,8 @@ export const PublicPlaylistCardImage = styled.img`
   height: 100%;
   width: 168px;
   object-fit: cover;
+  border-radius: 12px 0 0 12px;
+  overflow: hidden;
 `;
 
 export const PublicPlaylistCardInfo = styled.div`

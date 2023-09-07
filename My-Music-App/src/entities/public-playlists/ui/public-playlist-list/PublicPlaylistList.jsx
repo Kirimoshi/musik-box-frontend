@@ -29,6 +29,7 @@ function PublicPlaylistList() {
             data-playlist-id={id}
             playlist={{
               id,
+              // TODO: add null check for logo
               logo,
               name,
               first_ten_songs: data,

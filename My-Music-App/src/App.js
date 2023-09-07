@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Home from "./Home/Home";
-import { SignUp } from "./SignUp/components/SignUp";
-import { Login } from "./SignIn/components/Login";
-import { default as ViewMyPlayLists } from "./ViewMyPlayLists/components/MyPlayListPage";
-import { default as PublicPlaylistsPage } from "./pages/public-playlists-page/PublicPlaylistsPage";
-import { default as PublicPlaylistDetailsPage } from "./pages/public-playlist-details-page/PublicPlaylistDetailsPage";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 
 import { rehydrateTokens } from "./store/user/user.reducer";
 import { refreshUser } from "./store/user/user.thunks";
 import { userSelector } from "./store/user/user.selector";
 import { useDispatch, useSelector } from "react-redux";
+import router from "./router/router";
+
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,7 +29,7 @@ function App() {
   }, [dispatch, isRehydrated]);
 
   useEffect(() => {
-    if (!isRemembered) return; // if user is not remembered, then we dont need to check anything related to login
+    if (!isRemembered || !isRehydrated) return; // if user is not remembered, or rehydration not ready then we dont need to check anything related to login
 
     if (!refreshToken || !refreshExpiresAt) return; // if we dont have refresh token, then we can`t refresh access token and can`t login
 
@@ -52,7 +49,6 @@ function App() {
     // login if all good (both tokens are valid and user is not authenticated)
     if (!isAccessExpied && !isAuthenticated) {
       dispatch(refreshUser());
-      return;
     }
   }, [
     accessExpiresAt,
@@ -62,29 +58,14 @@ function App() {
     refreshExpiresAt,
     refreshToken,
     isRemembered,
+    isRehydrated,
   ]);
 
   return (
-    <BrowserRouter>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="/SignIn" element={<Login />} />
-          <Route
-            path="/ViewMyPlaylists/ViewThePlaylist/:id"
-            element={<ViewMyPlayLists />}
-          />
-          <Route path="/ViewMyPlaylists" element={<ViewMyPlayLists />} />
-          <Route
-            path="/public-playlists/public-playlist-details/:id"
-            element={<PublicPlaylistDetailsPage />}
-          />
-          <Route path="/public-playlists" element={<PublicPlaylistsPage />} />
-        </Routes>
-        <ToastContainer />
-      </div>
-    </BrowserRouter>
+    <div className="App">
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </div>
   );
 }
 export default App;

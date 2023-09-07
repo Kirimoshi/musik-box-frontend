@@ -12,11 +12,6 @@ export const myPlaylistErrorSelector = createSelector(
   (myPlaylistsSlice) => myPlaylistsSlice.error
 );
 
-export const currentPlaylistSelector = createSelector(
-  myPlaylistsSliceSelector,
-  (myPlaylistsSlice) => myPlaylistsSlice.currentPlaylist
-);
-
 export const myPlaylistLoadingSelector = createSelector(
   myPlaylistsSliceSelector,
   (myPlaylistsSlice) => myPlaylistsSlice.loading

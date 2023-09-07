@@ -1,7 +1,7 @@
 /**
  * Parses a string to extract the number of likes and dislikes.
  *
- * @param {string} str - The string to parse. It should contain 'Likes: {number}' and 'Dislikes: {number}'.
+ * @param {string | null} str - The string to parse. It should contain 'Likes: {number}' and 'Dislikes: {number}'.
  * @returns {Object} An object with 'likes' and 'dislikes' properties, each containing the parsed number of likes and dislikes. If no match is found, the value will be 0.
  */
 export const parseLikesDislikes = (str) => {

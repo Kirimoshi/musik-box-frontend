@@ -1,34 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as thunks from "./myPlaylists.thunks";
 
-const INITIAL_STATE = {
+const initialState = {
   loading: false,
   error: null,
   myPlaylists: [],
-  currentPlaylist: {
-    playlistInfo: {
-      playlistId: null,
-      createdOn: null,
-      updatedOn: null,
-      playlistName: null,
-      playlistType: null,
-      logo: null,
-      description: null,
-      likes: null,
-      dislikes: null,
-    },
-    ownerInfo: {
-      email: null,
-      registerdate: null,
-      playlistsOwned: null,
-    },
-    songs: [],
-  },
 };
 
 export const myPlaylistsSlice = createSlice({
   name: "myPlaylistsSlice",
-  initialState: INITIAL_STATE,
+  initialState: initialState,
   reducers: {
     setMyPlaylists: (state, action) => {
       state.myPlaylists = action.payload;
@@ -56,42 +37,6 @@ export const myPlaylistsSlice = createSlice({
       .addCase(
         thunks.deleteMyPlaylist.rejected,
         thunks.deleteMyPlaylistRejected
-      )
-      .addCase(
-        thunks.fetchSingleMyPlaylist.pending,
-        thunks.fetchSingleMyPlaylistPending
-      )
-      .addCase(
-        thunks.fetchSingleMyPlaylist.fulfilled,
-        thunks.fetchSingleMyPlaylistFulfilled
-      )
-      .addCase(
-        thunks.fetchSingleMyPlaylist.rejected,
-        thunks.fetchSingleMyPlaylistRejected
-      )
-      .addCase(
-        thunks.deleteSongFromPlaylist.pending,
-        thunks.deleteSongFromPlaylistPending
-      )
-      .addCase(
-        thunks.deleteSongFromPlaylist.fulfilled,
-        thunks.deleteSongFromPlaylistFulfilled
-      )
-      .addCase(
-        thunks.deleteSongFromPlaylist.rejected,
-        thunks.deleteSongFromPlaylistRejected
-      )
-      .addCase(
-        thunks.changePlaylistType.pending,
-        thunks.changePlaylistTypePending
-      )
-      .addCase(
-        thunks.changePlaylistType.fulfilled,
-        thunks.changePlaylistTypeFulfilled
-      )
-      .addCase(
-        thunks.changePlaylistType.rejected,
-        thunks.changePlaylistTypeRejected
       );
   },
 });

@@ -18,7 +18,7 @@ import { Tooltip } from "react-tooltip";
 import Header from "../../shared/ui/header/Header";
 import InputComponent from "../../shared/ui/input/Input";
 import PublicPlaylistList from "../../entities/public-playlists/ui/public-playlist-list/PublicPlaylistList";
-import Pagination from "../../Home/components/Pagination";
+import Pagination from "../../shared/Pagination";
 
 import {
   Container,
@@ -106,6 +106,7 @@ function PublicPlaylists() {
 
   return (
     <>
+      {/* TODO: Splice Container+ContentWrapper */}
       <Container>
         <ContentWrapper>
           <Header title={"Public Playlists"}></Header>
