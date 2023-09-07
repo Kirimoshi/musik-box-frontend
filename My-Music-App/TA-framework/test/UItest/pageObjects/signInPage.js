@@ -2,6 +2,11 @@
 import { BasePage } from "./basePage";
 
 export class SignInPage extends BasePage {
+  constructor() {
+        super();
+        this.url = `SignIn`;
+  }
+
   get inputEmail() {
     return $("[data-testid=emailtest]");
   }
@@ -23,9 +28,5 @@ export class SignInPage extends BasePage {
     await this.inputPassword.setValue(password);
     await this.checkboxRememberMe.click();
     await this.btnSignIn.click();
-  }
-
-  open() {
-    return super.open("SignIn");
   }
 }

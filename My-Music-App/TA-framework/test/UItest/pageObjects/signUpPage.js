@@ -2,6 +2,11 @@
 import { BasePage } from "./basePage";
 
 export class SignUpPage extends BasePage{
+  constructor() {
+        super();
+        this.url = `SignUp`;
+    }
+
   get inputNickname() {
       return $("input[data-testid='nickname']");
   }
@@ -52,9 +57,5 @@ export class SignUpPage extends BasePage{
     }
     await expect(this[element]).toBeExisting();
     await expect(this[element]).toHaveTextContaining(message);
-  }
-
-  open() {
-    return super.open("SignUp");
   }
 }

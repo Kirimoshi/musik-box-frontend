@@ -4,12 +4,12 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
 
   Scenario Outline: 1. Verify that the user with valid data can sing in
     Given the user is open "signIn" page
-    When The user sing-ins with <email> and <password>
+    When the user sing-ins with <email> and <password>
     Then the User should be redirected to the Home page
 
     Examples:
-      | email           | password  |
-      | Valid25@ukr.net | Qwer212@# |
+      | email             | password    |
+      | "Valid25@ukr.net" | "Qwer212@#" |
 
   Scenario Outline: Verify that the logout message is displaying if the sign-out action was successful
     When The user logging out
@@ -23,12 +23,12 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
 
   Scenario Outline: 2. Verify that the user with valid data can sing in
     Given the user is open "signIn" page
-    When The user sing-ins with <email> and <password>
+    When the user sing-ins with <email> and <password>
     Then the User should be redirected to the Home page
 
     Examples:
-      | email           | password  |
-      | Valid25@ukr.net | Qwer212@# |
+      | email             | password    |
+      | "Valid25@ukr.net" | "Qwer212@#" |
 
   Scenario Outline: Verify that the logout message is displaying if the sign-out action was NOT successful
     Given the Internet connection is interrupted
@@ -38,5 +38,5 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
     Then the User should be redirected to the Home page
 
     Examples:
-      | logout_message1      | logout_message2  |
-      | Something went wrong | Please try again |
+      | logout_message1                                       | logout_message2         |
+      | Sorry, we encountered an error while logging you out. | Please try again later. |
