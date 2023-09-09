@@ -23,20 +23,25 @@ Then(/the user is on the (\d+)? ?"([^"]*)" page/, async function (numeral, page)
     let actualUrl;
     const baseurl = browserOption.baseUrl;
     const playlistsUrl = baseurl + pagesUrl["playlists"] + "/";
+  
     if (pagesUrl[page] === "base" || pagesUrl[page] === 'home') {
-        actualUrl = baseurl;
+      await browser.pause(1000);
+      actualUrl = await baseurl;
     }
     else if (numeral) {
-        actualUrl = playlistsUrl + pagesUrl[page] + numeral;
+       await browser.pause(1000);
+       actualUrl = await playlistsUrl + pagesUrl[page] + numeral;
     }
     else {
-        actualUrl = baseurl + pagesUrl[page]
-    }
+       await browser.pause(1000);
+       actualUrl = await baseurl + pagesUrl[page];
+  }
     await browser.waitUntil(async function() {
-        expectedUrl = await browser.getUrl();
-        return expectedUrl === actualUrl
+      expectedUrl = await browser.getUrl();
+      return expectedUrl === actualUrl;
+      
     }, {
-        timeout: 10000,
+        timeout: 5000,
         timeoutMsg: 'expected link to be changed after 5s'
     });
     assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
@@ -58,17 +63,19 @@ When(/the user sing-ins with "([^"]*)" and "([^"]*)"/, async (email, password) =
 });
 
 Then(/the user clicks on the "([^"]*)" page (\d+)? ?"([^"]*)" "([^"]*)"/,
-    async function (page, numeral, element, type) {
-    let currentElement = await Pages[page][camelize(`${element}${type}`)]
-    if (numeral) {
-        const elementToClick = await currentElement[numeral - 1];
-        await elementToClick.click();
-        await browser.pause(2000);
-    }else {
-        await currentElement.click();
-        await browser.pause(2000);
+  async function (page, numeral, element, type) {
+    let currentElement = await Pages[page][camelize(`${element}${type}`)];
+      if (currentElement.length === 0) {
+      throw new Error(`Element wasn't found`);
+    } else if (numeral) {
+      const elementToClick = await currentElement[numeral - 1];
+      await elementToClick.click();
     }
-    });
+      else {
+      await currentElement.click();
+      await browser.pause(1000)
+    }
+  });
 
 Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/,async function (page, element, type, expectedText) {
     let currentText
@@ -76,7 +83,7 @@ Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/,async function (pag
         currentText = await Pages[page][camelize(`${element}${type}`)].getText()
         return currentText
     },{
-        timeout: 10000,
+        timeout: 5000,
         timeoutMsg: 'expected text to be changed after 5s'
     })
     assert.equal(currentText, expectedText, `${page} doesn't match ${expectedText} value`)
@@ -115,14 +122,19 @@ When(/^the Internet connection is interrupted$/, async () => {
   await browser.throttle("offline");
 });
 
-Then(/the "([^"]*)" song is (not )?deleted from "([^"]*)"/, async function (page, ifNot, element) {
-    let currentElement = await Pages[page][camelize(`${element}`)];
-    let initialLength = await currentElement.length;
-    if (ifNot) {
-        this.length = await currentElement.length;
-        assert.equal(await this.length, initialLength, `Expected the length to be ${initialLength}`)
-    } else {
-        let currentLength = await currentElement.length;
-        assert.equal(await currentLength, this.length - 1, `Expected the length to be one less than the ${initialLength} length`);
-    }
+Then(/the "([^"]*)" page "([^"]*)" has the initial length/, async function (page, element) {
+  let currentElement = await Pages[page][camelize(`${element}`)];
+  this.initialLength = await currentElement.length
+});
+
+Then(/the "([^"]*)" song is (not )?deleted from "([^"]*)"/, async function (page, ifNotDeleted, element) {
+  let currentElement = await Pages[page][camelize(`${element}`)];
+  if (ifNotDeleted) {
+    let ifCanceled = await currentElement.length;
+    assert.equal(await ifCanceled, this.initialLength,`Expected the length to be ${this.initialLength}`)
+  } else {
+    let ifDeleted = await currentElement.length;
+    assert.equal(await ifDeleted, this.initialLength - 1,
+    `Expected the length to be one less than the ${this.initialLength} length`)
+  }
 });

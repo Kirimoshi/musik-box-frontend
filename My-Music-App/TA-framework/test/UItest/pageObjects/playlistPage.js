@@ -26,7 +26,7 @@ export class PlaylistPage extends BasePage{
         return $(`//div[@class="songsContainer"]/dialog/button[text()="Remove Song"]`)
     }
 
-    get cancelDeleteSongButton () {
+    get cancelDeletionSongButton () {
         return $(`//div[@class="songsContainer"]/dialog/button[text()="Cancel"]`)
     }
 }
