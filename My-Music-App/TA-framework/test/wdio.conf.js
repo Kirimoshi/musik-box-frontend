@@ -79,7 +79,7 @@ exports.config = {
     // Test Configurations
     // ===================
     // Define all options that are relevant for the WebdriverIO instance here
-    //
+    waitforTimeout: 10000,
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'info',
     //

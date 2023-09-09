@@ -25,15 +25,15 @@ Then(/the user is on the (\d+)? ?"([^"]*)" page/, async function (numeral, page)
     const playlistsUrl = baseurl + pagesUrl["playlists"] + "/";
   
     if (pagesUrl[page] === "base" || pagesUrl[page] === 'home') {
-      await browser.pause(1000);
       actualUrl = await baseurl;
     }
     else if (numeral) {
-       await browser.pause(1000);
-       actualUrl = await playlistsUrl + pagesUrl[page] + numeral;
+      let url = await browser.getUrl();
+      let lastUrlChar = await url.split('').at(-1)
+      numeral = await lastUrlChar
+      actualUrl = playlistsUrl + pagesUrl[page] + numeral;
     }
     else {
-       await browser.pause(1000);
        actualUrl = await baseurl + pagesUrl[page];
   }
     await browser.waitUntil(async function() {
@@ -69,11 +69,12 @@ Then(/the user clicks on the "([^"]*)" page (\d+)? ?"([^"]*)" "([^"]*)"/,
       throw new Error(`Element wasn't found`);
     } else if (numeral) {
       const elementToClick = await currentElement[numeral - 1];
-      await elementToClick.click();
+        await elementToClick.click();
+        await browser.pause(2000)
     }
       else {
       await currentElement.click();
-      await browser.pause(1000)
+      await browser.pause(2000)
     }
   });
 
