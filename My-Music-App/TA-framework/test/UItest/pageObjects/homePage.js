@@ -4,14 +4,17 @@ import { BasePage } from "./basePage";
 
 export class HomePage extends BasePage {
   constructor() {
-        super();
-        this.url = '';
+    super();
+    this.url = '';
   }
   
-  get loginMessage() {
-    return $("p=You have been successfully logged in.")
+  get loginMessage() {;
+    return $('p=You have been successfully logged in.');
   }
-
+  get alertLoginMessage() {
+    return $('div .Toastify div.toast__login--success');
+  }
+  
   get btnHomeSignIn() {
     return $('href=Sign in]');
   }
