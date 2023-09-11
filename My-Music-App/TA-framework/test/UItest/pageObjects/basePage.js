@@ -1,5 +1,8 @@
 export class BasePage {
-  open(path) {
-    return browser.url(`http://localhost:3001/${path}`);
-  }
+    constructor() {
+        this.url = '';
+    }
+    async open() {
+        await browser.url(this.url);
+    }
 }

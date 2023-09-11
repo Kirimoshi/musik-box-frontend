@@ -5,28 +5,46 @@ const { camelize } = require("../utils/helpers");
 const { assert, expect } = require("chai");
 const browserOption = browser.options;
 
+const pagesUrl = {
+    home: Pages['home'].url,
+    signUp: Pages['signUp'].url,
+    signIn: Pages['signIn'].url,
+    base: Pages['base'].url,
+    playlists: Pages['playlists'].url,
+    playlist: Pages['playlist'].url
+};
+
 Given(/the user is open "([^"]*)" page/, async function (page) {
   await Pages[page].open();
 });
 
-Then(/the user is on the "([^"]*)" page/, async function (page) {
-  let expectedUrl;
-  const actualUrl = browserOption.baseUrl + page;
-  await browser.waitUntil(
-    async function () {
+Then(/the user is on the (\d+)? ?"([^"]*)" page/, async function (numeral, page) {
+    let expectedUrl;
+    let actualUrl;
+    const baseurl = browserOption.baseUrl;
+    const playlistsUrl = baseurl + pagesUrl["playlists"] + "/";
+  
+    if (pagesUrl[page] === "base" || pagesUrl[page] === 'home') {
+      actualUrl = await baseurl;
+    }
+    else if (numeral) {
+      let url = await browser.getUrl();
+      let lastUrlChar = await url.split('').at(-1)
+      numeral = await lastUrlChar
+      actualUrl = playlistsUrl + pagesUrl[page] + numeral;
+    }
+    else {
+       actualUrl = await baseurl + pagesUrl[page];
+  }
+    await browser.waitUntil(async function() {
       expectedUrl = await browser.getUrl();
       return expectedUrl === actualUrl;
-    },
-    {
-      timeout: 5000,
-      timeoutMsg: "expected link to be changed after 5s",
-    }
-  );
-  assert.equal(
-    expectedUrl,
-    actualUrl,
-    `Expected url: ${actualUrl} is not found`
-  );
+      
+    }, {
+        timeout: 5000,
+        timeoutMsg: 'expected link to be changed after 5s'
+    });
+    assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });
 
 When(/the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
@@ -40,39 +58,37 @@ When(/the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
   }
 );
 
-When(/the user clicks on the "([^"]*)" "([^"]*)" in the "([^"]*)" page/,
-  async function (element, type, page) {
-    let currentElement = await Pages[page][camelize(`${element}${type}`)];
-    await currentElement.click();
-  }
-);
-
-When(/^The user sing-ins with (.*) and (.*)$/, async (email, password) => {
+When(/the user sing-ins with "([^"]*)" and "([^"]*)"/, async (email, password) => {
   await Pages.signIn.singIn(email, password);
 });
 
-Then(/"([^"]*)" "([^"]*)" "([^"]*)" text is: "([^"]*)"/,
-  async function (page, element, type, expectedText) {
-    let currentText;
-    await browser.waitUntil(
-      async function () {
-        currentText = await Pages[page][
-          camelize(`${element}${type}`)
-        ].getText();
-        return currentText;
-      },
-      {
+Then(/the user clicks on the "([^"]*)" page (\d+)? ?"([^"]*)" "([^"]*)"/,
+  async function (page, numeral, element, type) {
+    let currentElement = await Pages[page][camelize(`${element}${type}`)];
+      if (currentElement.length === 0) {
+      throw new Error(`Element wasn't found`);
+    } else if (numeral) {
+      const elementToClick = await currentElement[numeral - 1];
+        await elementToClick.click();
+        await browser.pause(2000)
+    }
+      else {
+      await currentElement.click();
+      await browser.pause(2000)
+    }
+  });
+
+Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/,async function (page, element, type, expectedText) {
+    let currentText
+    await browser.waitUntil(async function () {
+        currentText = await Pages[page][camelize(`${element}${type}`)].getText()
+        return currentText
+    },{
         timeout: 5000,
-        timeoutMsg: "expected text to be changed after 5s",
-      }
-    );
-    assert.equal(
-      currentText,
-      expectedText,
-      `${page} doesn't match ${expectedText} value`
-    );
-  }
-);
+        timeoutMsg: 'expected text to be changed after 5s'
+    })
+    assert.equal(currentText, expectedText, `${page} doesn't match ${expectedText} value`)
+});
 
 When(/^The user logging out$/, async () => {
   await Pages.home.logout();
@@ -105,4 +121,21 @@ Then(/^the User should be redirected to the Home page$/, async () => {
 
 When(/^the Internet connection is interrupted$/, async () => {
   await browser.throttle("offline");
+});
+
+Then(/the "([^"]*)" page "([^"]*)" has the initial length/, async function (page, element) {
+  let currentElement = await Pages[page][camelize(`${element}`)];
+  this.initialLength = await currentElement.length
+});
+
+Then(/the "([^"]*)" song is (not )?deleted from "([^"]*)"/, async function (page, ifNotDeleted, element) {
+  let currentElement = await Pages[page][camelize(`${element}`)];
+  if (ifNotDeleted) {
+    let ifCanceled = await currentElement.length;
+    assert.equal(await ifCanceled, this.initialLength,`Expected the length to be ${this.initialLength}`)
+  } else {
+    let ifDeleted = await currentElement.length;
+    assert.equal(await ifDeleted, this.initialLength - 1,
+    `Expected the length to be one less than the ${this.initialLength} length`)
+  }
 });

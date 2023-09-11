@@ -14,7 +14,7 @@ Feature: The SingUp feature
 
   Scenario Outline: Verify nickname data validation and nickname error messages during sign-up
     When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
-    Then "signUp" "Nick Name" "Error" text is: <error_message>
+    Then "signUp" page "Nick Name" "Error" text is: <error_message>
 
     Examples:
       | nickname | email            | password    | confirm_password | error_message                                                          |
@@ -23,7 +23,7 @@ Feature: The SingUp feature
 
   Scenario Outline: Verify email data validation and email error messages during sign-up
     When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
-    Then "signUp" "Email" "Error" text is: <error_message>
+    Then "signUp" page "Email" "Error" text is: <error_message>
 
     Examples:
       | nickname | email                           | password    | confirm_password | error_message                                                                  |
@@ -33,7 +33,7 @@ Feature: The SingUp feature
 
   Scenario Outline: Verify password data validation and password error messages during sign-up
     When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
-    Then "signUp" "Password" "Error" text is: <error_message>
+    Then "signUp" page "Password" "Error" text is: <error_message>
 
     Examples:
       | nickname    | email                | password     | confirm_password | error_message                                                           |
@@ -45,7 +45,7 @@ Feature: The SingUp feature
 
   Scenario Outline: Verify confirm password data validation and confirm password error messages during sign-up
     When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
-    Then "signUp" "Confirm Password" "Error" text is: <error_message>
+    Then "signUp" page "Confirm Password" "Error" text is: <error_message>
 
     Examples:
       | nickname | email            | password    | confirm_password | error_message                                               |
