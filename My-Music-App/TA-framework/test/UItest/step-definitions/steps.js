@@ -144,9 +144,16 @@ Then(/the "([^"]*)" song is (not )?deleted from "([^"]*)"/, async function (page
   }
 });
 
-Then(/the user storage data is not empty/, async function () {
-  const localStorageData = await browser.execute(() => {
+Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
+  let localStorageData;
+  if (IfNotEmpty) {
+    localStorageData = await browser.execute(() => {
         return localStorage.isRemembered === "true" && localStorage.length > 0;
-  });
-  assert.isTrue(localStorageData, `Expected result isn't ${localStorageData}`);
+  })
+  } else {
+    localStorageData = await browser.execute(() => {
+        return localStorage.length === 0;
+  })
+}
+  assert.isTrue(await localStorageData, `Expected result isn't ${localStorageData}`);
 });

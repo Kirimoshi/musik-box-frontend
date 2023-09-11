@@ -8,7 +8,7 @@ export class HomePage extends BasePage {
     this.url = '';
   }
   
-  get loginMessage() {;
+  get loginMessage() {
     return $('p=You have been successfully logged in.');
   }
   get alertLoginMessage() {
