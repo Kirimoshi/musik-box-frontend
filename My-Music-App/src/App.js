@@ -6,6 +6,8 @@ import Home from "./Home/Home";
 import { SignUp } from "./SignUp/components/SignUp";
 import { Login } from "./SignIn/components/Login";
 import { default as ViewMyPlayLists } from "./ViewMyPlayLists/components/MyPlayListPage";
+import { default as PublicPlaylistsPage } from "./pages/public-playlists-page/PublicPlaylistsPage";
+import { default as PublicPlaylistDetailsPage } from "./pages/public-playlist-details-page/PublicPlaylistDetailsPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { rehydrateTokens } from "./store/user/user.reducer";
@@ -74,6 +76,11 @@ function App() {
             element={<ViewMyPlayLists />}
           />
           <Route path="/ViewMyPlaylists" element={<ViewMyPlayLists />} />
+          <Route
+            path="/public-playlists/public-playlist-details/:id"
+            element={<PublicPlaylistDetailsPage />}
+          />
+          <Route path="/public-playlists" element={<PublicPlaylistsPage />} />
         </Routes>
         <ToastContainer />
       </div>

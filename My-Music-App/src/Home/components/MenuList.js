@@ -18,21 +18,21 @@ const MenuList = [
     icon: <BiShareAlt />,
     name: "Shared Playlists",
     isAuthOnly: true,
-    path: "/",
+    path: "/shared-playlists",
   },
   {
     id: 3,
     icon: <RiPlayListFill />,
     name: "Public Playlists",
     isAuthOnly: false,
-    path: "/",
+    path: "/public-playlists",
   },
   {
     id: 4,
     icon: <FaUserFriends />,
     name: "Friends",
     isAuthOnly: true,
-    path: "/",
+    path: "/friends",
   },
 ];
 
