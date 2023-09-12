@@ -79,16 +79,20 @@ Then(/the user clicks on the "([^"]*)" page (\d+)? ?"([^"]*)" "([^"]*)"/,
   });
 
 Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/,async function (page, element, type, expectedText) {
-    let currentText
+  let currentElemText;
     await browser.waitUntil(async function () {
-        currentText = await Pages[page][camelize(`${element}${type}`)].getText()
-        return currentText
+        currentElemText = await Pages[page][camelize(`${element}${type}`)].getText()
+        return currentElemText
     },{
         timeout: 5000,
         timeoutMsg: 'expected text to be changed after 5s'
     })
-    assert.equal(currentText, expectedText, `${page} doesn't match ${expectedText} value`)
+  if (currentElemText.includes('\n')) {
+        currentElemText = await currentElemText.split('\n').join(' ');
+      }
+    assert.equal(await currentElemText, expectedText, `${page} doesn't match ${expectedText} value`)
 });
+
 
 When(/^The user logging out$/, async () => {
   await Pages.home.logout();
@@ -138,4 +142,18 @@ Then(/the "([^"]*)" song is (not )?deleted from "([^"]*)"/, async function (page
     assert.equal(await ifDeleted, this.initialLength - 1,
     `Expected the length to be one less than the ${this.initialLength} length`)
   }
+});
+
+Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
+  let localStorageData;
+  if (IfNotEmpty) {
+    localStorageData = await browser.execute(() => {
+        return localStorage.isRemembered === "true" && localStorage.length > 0;
+  })
+  } else {
+    localStorageData = await browser.execute(() => {
+        return localStorage.length === 0;
+  })
+}
+  assert.isTrue(await localStorageData, `Expected result isn't ${localStorageData}`);
 });

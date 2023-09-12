@@ -15,6 +15,7 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
     When The user logging out
     Then logoutSuccessMessage1 message should be displayed: <logout_message1>
     Then logoutSuccessMessage2 message should be displayed: <logout_message2>
+    And the user storage data is empty
     Then the User should be redirected to the Home page
 
     Examples:
@@ -35,6 +36,7 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
     When The user logging out
     Then logoutUnsuccessMessage1 message should be displayed: <logout_message1>
     Then logoutUnsuccessMessage2 message should be displayed: <logout_message2>
+    And the user storage data is not empty
     Then the User should be redirected to the Home page
 
     Examples:

@@ -4,12 +4,16 @@ import { BasePage } from "./basePage";
 
 export class HomePage extends BasePage {
   constructor() {
-        super();
-        this.url = '';
+    super();
+    this.url = '';
   }
   
   get loginMessage() {
-    return $("p=You have been successfully logged in.")
+    return $('p=You have been successfully logged in.');
+  }
+
+  get alertLoginMessage() {
+    return $('div .Toastify div.toast__login--success');
   }
 
   get btnHomeSignIn() {
@@ -37,8 +41,8 @@ export class HomePage extends BasePage {
   }
 
   get myPlaylistsButton () {
-        return $(`//a[@href="/ViewMyPlaylists"]//following-sibling::span[text()="My Playlists"]`)
-    }
+    return $(`//a[@href="/ViewMyPlaylists"]//following-sibling::span[text()="My Playlists"]`)
+  }
 
   async checkLogoutMessage(element, message) {
     if (!this[element]) {
