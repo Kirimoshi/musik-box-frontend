@@ -1,4 +1,4 @@
-@signOut @003
+@003 @signOut 
 
 Feature: EPMRDPEMAP-207 - The SingOut feature
 
