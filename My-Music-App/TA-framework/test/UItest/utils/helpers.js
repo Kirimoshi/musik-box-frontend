@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+const axios = require("axios");
+
 function camelize(str) {
     return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
         if (+match === 0) {
@@ -8,6 +11,34 @@ function camelize(str) {
     });
 }
 
+const sendRequest = async (url, data = null, method = "get", accessToken = null, additionalHeaders = {}) => {
+    try {
+        const headers = {
+            ...additionalHeaders
+        };
+
+        if (accessToken) {
+            headers["Authorization"] = `Bearer ${accessToken}`;
+        }
+        
+        const response = await axios({
+            method,
+            url: `http://127.0.0.1:3000/${url}`,
+            headers,
+            data
+        });
+        return {
+            status: response.status,
+            data: response.data,    
+        } 
+    } catch (error) {
+        return {
+            status: error.response.status
+        };
+    }
+};
+
 module.exports = {
-    camelize
+    camelize,
+    sendRequest,
 };
