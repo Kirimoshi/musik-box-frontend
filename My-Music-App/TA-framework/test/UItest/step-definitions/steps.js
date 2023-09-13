@@ -5,7 +5,7 @@ import Pages from "../pageObjects/pages";
 const { camelize, sendRequest } = require("../utils/helpers");
 const { assert, expect } = require("chai");
 const browserOption = browser.options;
-const {signUpData} = require("../utils/data")
+const {userData} = require("../utils/data")
 
 const pagesUrl = {
     home: Pages['home'].url,
@@ -161,7 +161,7 @@ Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
 });
 
 Then("the user tries to log in and delete account if it exists", async () => {
-  const responseLogin = await sendRequest("api/v1/login", signUpData, "post", null, {
+  const responseLogin = await sendRequest("api/v1/login", userData, "post", null, {
     "accept": "*/*",
     "Content-Type": "application/json"
   });
