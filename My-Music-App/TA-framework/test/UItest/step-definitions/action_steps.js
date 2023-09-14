@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
-const { camelize } = require("../utils/helpers");
+const { camelize, sendRequest } = require("../utils/helpers");
+const { userData } = require("../utils/data")
 
 Given(/the user is open "([^"]*)" page/, async function (page) {
   await Pages[page].open();
@@ -44,4 +45,16 @@ When(/^The user logging out$/, async () => {
 
 When(/^the Internet connection is interrupted$/, async () => {
   await browser.throttle("offline");
+});
+
+Then("the user tries to log in and delete account if it exists", async () => {
+  const responseLogin = await sendRequest("api/v1/login", userData, "post", null, {
+    "accept": "*/*",
+    "Content-Type": "application/json"
+  });
+  if (responseLogin.status === 200 && responseLogin.data.access) {
+    const accessToken = responseLogin.data.access;
+    const responseDelete = await sendRequest("/api/v1/my/account", null, "delete", accessToken);
+    expect(responseDelete.status).to.equal(200, `Account deletion failed with status: ${responseDelete.status}`);
+  } else return;
 });
