@@ -1,9 +1,11 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-undef */
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
-const { camelize } = require("../utils/helpers");
+const { camelize, sendRequest } = require("../utils/helpers");
 const { assert, expect } = require("chai");
 const browserOption = browser.options;
+const {userData} = require("../utils/data")
 
 const pagesUrl = {
     home: Pages['home'].url,
@@ -156,4 +158,16 @@ Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
   })
 }
   assert.isTrue(await localStorageData, `Expected result isn't ${localStorageData}`);
+});
+
+Then("the user tries to log in and delete account if it exists", async () => {
+  const responseLogin = await sendRequest("api/v1/login", userData, "post", null, {
+    "accept": "*/*",
+    "Content-Type": "application/json"
+  });
+    if (responseLogin.status === 200 && responseLogin.data.access) {
+      const accessToken = responseLogin.data.access;
+      const responseDelete = await sendRequest("/api/v1/my/account", null, "delete", accessToken);
+      expect(responseDelete.status).to.equal(200, `Account deletion failed with status: ${responseDelete.status}`);
+    } else return;
 });

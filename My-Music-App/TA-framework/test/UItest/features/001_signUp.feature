@@ -5,8 +5,9 @@ Feature: The SingUp feature
     Given the user is open "signUp" page
 
   Scenario Outline: Verify that the user with valid data can sing up
-    When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
-    Then the user is on the "SignIn" page
+    When the user tries to log in and delete account if it exists
+    Then the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
+    Then the user is on the "signIn" page
 
     Examples:
       | nickname | email             | password    | confirm_password |
