@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
-const { camelize } = require("../utils/helpers");
+const { camelize } = require("../../utils/helpers"); 
 const { assert, expect } = require("chai");
 const browserOption = browser.options;
 
@@ -85,7 +85,7 @@ Then(/^the User should be redirected to the Home page$/, async () => {
 
 Then(/the "([^"]*)" page "([^"]*)" has the initial length/, async function (page, element) {
   let currentElement = await Pages[page][camelize(`${element}`)];
-  this.initialLength = await currentElement.length
+  this.initialLength = await currentElement.length;
 });
 
 Then(/the "([^"]*)" song is (not )?deleted from "([^"]*)"/, async function (page, ifNotDeleted, element) {
