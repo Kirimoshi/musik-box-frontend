@@ -70,7 +70,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
 
   useEffect(() => {
     if (!navigateId || !playlistTypeToDisplay) return; // guard clause
-    if (!isRehydrated || (isRememberedSelector && !isAuthenticated)) return; // rehydrate still in progress, auth state not yet available
+    if (!isRehydrated && !isAuthenticated) return; // rehydrate still in progress, auth state not yet available
 
     dispatch(
       fetchPlaylistDetails({
