@@ -29,15 +29,25 @@ function PublicPlaylistCard({ playlist, isAuth }) {
   }, [id]);
 
   return (
-    <PublicPlaylistCardContainer onClick={handleNavigate}>
+    <PublicPlaylistCardContainer
+      onClick={handleNavigate}
+      className="public-playlist-card__wrapper"
+    >
       <PublicPlaylistCardInfo>
         <PublicPlaylistCardImage
-          src={constants.store_URL + logo.id}
+          src={
+            logo
+              ? constants.store_URL + logo.id
+              : require("../../../../shared/assets/default_playlist_cover.jpg")
+          }
           alt={`song preview for ${name}`}
+          className="public-playlist-card__image"
         />
         <PublicPlaylistCardTextWrapper>
-          <PublicPlaylistCardName>{name}</PublicPlaylistCardName>
-          <p className="public-playlist-card_created-by">
+          <PublicPlaylistCardName className="public-playlist-card__name">
+            {name}
+          </PublicPlaylistCardName>
+          <p className="public-playlist-card__created-by">
             Created by: Playlist Owner
           </p>
           <PublicPlaylistCardSongs data-songlist-id={`playlist-songs-${id}`}>

@@ -76,7 +76,6 @@ function MyPlaylistsList({ searchString }) {
     setOpenModal(null);
   };
   const handleNavigate = (id) => () => {
-    // TODO: replace this with paths from constants
     navigate(`${paths.myPlaylistDetails}/${id}`);
   };
   return (

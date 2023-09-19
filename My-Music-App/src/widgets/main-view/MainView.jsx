@@ -39,27 +39,15 @@ function Main() {
     <>
       <>
         <PlaylistsPopular playlists={playlistsPopular} />
-        <Pagination
-          onClickLeft={onClickLeft}
-          onClickRight={onClickRight}
-          isRightActive={true}
-        />
+        <Pagination onClickLeft={onClickLeft} onClickRight={onClickRight} />
       </>
       <>
         <PlaylistsSmall subtitle="Featured" playlists={playlistsFeatured} />
-        <Pagination
-          onClickLeft={onClickLeft}
-          onClickRight={onClickRight}
-          isRightActive={true}
-        />
+        <Pagination onClickLeft={onClickLeft} onClickRight={onClickRight} />
       </>
       <>
         <PlaylistsSmall subtitle="Latest" playlists={playlistsLatest} />
-        <Pagination
-          onClickLeft={onClickLeft}
-          onClickRight={onClickRight}
-          isRightActive={true}
-        />
+        <Pagination onClickLeft={onClickLeft} onClickRight={onClickRight} />
       </>
     </>
   );

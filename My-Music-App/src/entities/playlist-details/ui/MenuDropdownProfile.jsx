@@ -9,8 +9,6 @@ import {
 } from "./MenuDropdownProfile.styles";
 import ModalDialog from "../../../shared/ModalDialog";
 
-// TODO: TYPECHANGE FAILS
-
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
