@@ -24,10 +24,7 @@ import Comment from "./Comment";
 import { AddSongsToPlaylists } from "../../AddSongsToPlayLists/Components/AddSongsToPlaylists";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  isRememberedSelector,
-  userSelector,
-} from "../../store/user/user.selector";
+import { userSelector } from "../../store/user/user.selector";
 import {
   DEFAULT_PLAYLIST_COVER,
   FETCH_PLAYLISTS_TYPES,

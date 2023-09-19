@@ -44,11 +44,13 @@ function PublicPlaylists() {
 
   useEffect(() => {
     dispatch(fetchPublicPlaylists(page));
-  }, [page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]); // Dispatch is not a dependency, it remains unchanged from the initialization of store.
 
   useEffect(() => {
     dispatch(fetchSortedPlaylists(sortParams));
-  }, [sortParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortParams]); // Same as above
 
   useEffect(() => {
     if (error) console.error(error);

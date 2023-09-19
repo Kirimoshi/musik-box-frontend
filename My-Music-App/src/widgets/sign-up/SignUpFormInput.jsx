@@ -1,5 +1,7 @@
 import React from "react";
-export function SignUpFormInput({
+import PropTypes from "prop-types";
+
+function SignUpFormInput({
   label,
   type,
   name,
@@ -45,3 +47,15 @@ export function SignUpFormInput({
     </div>
   );
 }
+
+SignUpFormInput.propTypes = {
+  label: PropTypes.string,
+  type: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  resetDetails: PropTypes.func,
+  signUpErrors: PropTypes.string,
+};
+
+export default SignUpFormInput;

@@ -54,7 +54,6 @@ function SignIn() {
     errors,
     touched,
     handleBlur,
-    handleChange,
     handleSubmit,
     isValid,
     setFieldValue,
@@ -92,14 +91,15 @@ function SignIn() {
       errors.email = loginError;
       setFieldError(errors.email);
     }
-  }, [loginError, errors]);
+  }, [loginError, errors, setFieldError]);
 
   useEffect(() => {
     if (isAuthenticated) {
       notify();
       navigate("/");
     }
-  }, [isAuthenticated]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, notify]); // Navigate is not a dependency, it remains unchanged from the initialization of router.
 
   return (
     <div className="header-container">

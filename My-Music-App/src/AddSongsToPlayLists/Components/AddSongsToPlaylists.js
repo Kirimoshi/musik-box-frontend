@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { IoAddSharp } from "react-icons/io5";

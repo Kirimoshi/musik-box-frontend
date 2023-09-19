@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SignUpFormInput } from "./SignUpFormInput";
+import SignUpFormInput from "./SignUpFormInput";
 import { validate } from "./SignUpValidation";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -50,7 +50,12 @@ function SignUp() {
     )
       setDisableButton(0);
     else setDisableButton(1);
-  });
+  }, [
+    signUpValues.nickname,
+    signUpValues.email,
+    signUpValues.password,
+    signUpValues.confirmPassword,
+  ]);
   const handleSubmit = (e) => {
     e.preventDefault();
     setSignUpErrors(validate(signUpValues, backendErrors));
@@ -58,6 +63,8 @@ function SignUp() {
   };
 
   const backendErrorsValidate = (errorsArray) => {
+    // TODO: Refactor this function, forEach is preferable way here
+    // eslint-disable-next-line array-callback-return
     errorsArray.map((element) => {
       if (element === constants.emailDomainErrorElement)
         backendErrors.emailDomainError = true;

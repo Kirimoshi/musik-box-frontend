@@ -14,7 +14,7 @@ import {
   CardDescription,
   DescriptionCTA,
 } from "./PlaylistsSmall.styles";
-import { DEFAULT_PLAYLIST_COVER, UPLOADS_URL } from "../../../store/constants";
+import { UPLOADS_URL } from "../../../store/constants";
 
 const MAX_CHARS = 25;
 
