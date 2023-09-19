@@ -12,7 +12,7 @@ export const Title = styled.h2`
   font-size: 22px;
   font-style: normal;
   font-weight: 400;
-  line-height: 28px; /* 127.273% */
+  line-height: 28px;
 `;
 
 export const Subtitle = styled.h3`

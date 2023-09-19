@@ -16,7 +16,7 @@ export const STATE_STATUSES = {
   FAILED: "failed",
 };
 
-export const PLAYLIST_TYPES = {
+export const PLAYLIST_PRIVACY_TYPES = {
   PUBLIC: "public",
   PRIVATE: "private",
   SHARED: "shared",

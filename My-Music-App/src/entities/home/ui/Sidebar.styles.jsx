@@ -8,19 +8,18 @@ export const SidebarContainer = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
 `;
 
 export const Logo = styled(Link)`
   margin-bottom: 24px;
   color: white;
-  font-family: "Roboto", sans-serif;
-  font-style: normal;
   font-size: 20px;
   line-height: 28px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  /* justify-content: center; */
   gap: 8px;
 
   & svg {
@@ -42,7 +41,6 @@ const authUserInfoColumnTemplate = `${avatarWidth}px auto ${penIconWidth}px`;
 const unAuthUserInfoColumnTemplate = `${avatarWidth}px auto`;
 
 export const UserInfo = styled.div`
-  // Layout
   display: grid;
   grid-template-columns: ${(props) =>
     props.$authState
@@ -54,10 +52,10 @@ export const UserInfo = styled.div`
   padding: ${userInfoPadding}px;
   position: relative;
   margin-top: 24px;
-  // Style
   border-radius: 18px;
   background: #4f378b;
 `;
+
 export const UserAvatar = styled.div`
   height: 60px;
   & > img {
@@ -66,29 +64,27 @@ export const UserAvatar = styled.div`
     border-radius: 100px;
   }
 `;
+
 export const AccountDetails = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   & > span:first-child {
     color: #fff;
-    /* M3/title/large */
-    font-family: Roboto, sans-serif;
     font-size: 22px;
     font-weight: 400;
-    line-height: 28px; /* 127.273% */
+    line-height: 28px;
   }
   & > span:last-child {
     color: var(--m-3-ref-neutral-neutral-80, #cac5cd);
-    /* M3/body/medium */
-    font-family: Roboto, sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px; /* 142.857% */
+    line-height: 20px;
     letter-spacing: 0.25px;
   }
 `;
+
 export const AccountEdit = styled.div`
   width: ${penIconWidth}px;
   height: ${penIconWidth}px;
@@ -108,43 +104,30 @@ export const AboutApp = styled.div`
   margin-top: 24px;
   margin-bottom: 12px;
   color: var(--m-3-ref-neutral-neutral-70, #aea9b1);
-  /* M3/label/medium */
-  font-family: "Roboto", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
-  line-height: 16px; /* 133.333% */
+  line-height: 16px;
   letter-spacing: 0.5px;
 `;
 
 export const AboutUs = styled.div`
   margin-bottom: 24px;
   color: var(--m-3-sys-dark-on-surface, #e6e0e9);
-  /* M3/body/large */
-  font-family: "Roboto", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: 24px; /* 150% */
+  line-height: 24px;
   letter-spacing: 0.5px;
 `;
+
 export const Logout = styled.div`
   margin-top: 36px;
   color: var(--m-3-sys-dark-primary, #d0bcff);
   text-align: center;
   cursor: pointer;
-
-  /* M3/label/large */
-  font-family: "Roboto", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 142.857% */
+  line-height: 20px;
   letter-spacing: 0.1px;
-`;
-
-export const SignIn = styled.div`
-  //
 `;
 
 export const LoginWrapper = styled.div`
@@ -156,13 +139,10 @@ export const LoginWrapper = styled.div`
   & > p {
     grid-column: 1 / -1;
     color: var(--m-3-ref-neutral-neutral-80, #cac5cd);
-    /* M3/body/small */
     text-align: center;
-    font-family: "Roboto", sans-serif;
     font-size: 12px;
-    font-style: normal;
     font-weight: 400;
-    line-height: 16px; /* 133.333% */
+    line-height: 16px;
   }
 `;
 
@@ -174,10 +154,7 @@ export const VerticalDivider = styled.div`
 export const LoginLink = styled(Link)`
   text-align: center;
   color: #fff;
-  /* M3/title/large */
-  font-family: "Roboto", sans-serif;
   font-size: 22px;
-  font-style: normal;
   font-weight: 400;
-  line-height: 28px; /* 127.273% */
+  line-height: 28px;
 `;

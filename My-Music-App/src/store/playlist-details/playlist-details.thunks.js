@@ -86,7 +86,7 @@ export const fetchPlaylistDetailsRejected = (state, action) => {
 
 /**
  * @desc Changing playlist type alowed only for authorized users
- * @param {string} newPlaylistType - new playlist type from const PLAYLIST_TYPES
+ * @param {string} newPlaylistType - new playlist type from const PLAYLIST_PRIVACY_TYPES
  */
 export const changePlaylistType = createAsyncThunk(
   "playlistDetailsSlice/changePlaylistType",

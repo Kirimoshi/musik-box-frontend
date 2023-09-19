@@ -86,7 +86,6 @@
 }
 
 .delete-modal {
-  /* Layout */
   display: flex;
   min-width: 210px;
   max-width: 278px;
@@ -94,11 +93,11 @@
   padding: 8px 0px;
   min-height: 40px;
   align-items: center;
-  /* Positioning */
+
   position: absolute;
   right: 0;
   top: 75%;
-  /* Styling */
+
   border-radius: 4px;
   background: var(--m-3-sys-dark-surface-container, #211f26);
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),

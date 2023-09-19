@@ -20,7 +20,7 @@ import {
 } from "../../../shared/Toasts";
 import { deleteMyPlaylist } from "../../../store/myPlaylists/myPlaylists.thunks";
 import { changePlaylistType } from "../../../store/playlist-details/playlist-details.thunks";
-import { PLAYLIST_TYPES } from "../../../store/constants";
+import { PLAYLIST_PRIVACY_TYPES } from "../../../store/constants";
 import {
   playlistDetailsErrorSelector,
   playlistDetailsLoadingSelector,
@@ -147,19 +147,19 @@ function MenuDropdownProfile({
           <>
             <MenuDivider />
             <MenuItem
-              onClick={handleTypeChangeClick(PLAYLIST_TYPES.PRIVATE)}
+              onClick={handleTypeChangeClick(PLAYLIST_PRIVACY_TYPES.PRIVATE)}
               className="profile-menu__change-type--private"
             >
               Make Private
             </MenuItem>
             <MenuItem
-              onClick={handleTypeChangeClick(PLAYLIST_TYPES.SHARED)}
+              onClick={handleTypeChangeClick(PLAYLIST_PRIVACY_TYPES.SHARED)}
               className="profile-menu__change-type--shared"
             >
               Make Shared
             </MenuItem>
             <MenuItem
-              onClick={handleTypeChangeClick(PLAYLIST_TYPES.PUBLIC)}
+              onClick={handleTypeChangeClick(PLAYLIST_PRIVACY_TYPES.PUBLIC)}
               className="profile-menu__change-type--public"
             >
               Make Public
