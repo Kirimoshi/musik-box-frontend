@@ -1,4 +1,4 @@
-@003 @signOut 
+@003 @signOut
 
 Feature: EPMRDPEMAP-207 - The SingOut feature
 
@@ -8,8 +8,8 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
     Then the User should be redirected to the Home page
 
     Examples:
-      | email             | password    |
-      | "Valid25@ukr.net" | "Qwer212@#" |
+      | email                   | password     |
+      | "test.user@example.com" | "secreT!123" |
 
   Scenario Outline: Verify that the logout message is displaying if the sign-out action was successful
     When The user logging out
@@ -28,8 +28,8 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
     Then the User should be redirected to the Home page
 
     Examples:
-      | email             | password    |
-      | "Valid25@ukr.net" | "Qwer212@#" |
+      | email                   | password     |
+      | "test.user@example.com" | "secreT!123" |
 
   Scenario Outline: Verify that the logout message is displaying if the sign-out action was NOT successful
     Given the Internet connection is interrupted
