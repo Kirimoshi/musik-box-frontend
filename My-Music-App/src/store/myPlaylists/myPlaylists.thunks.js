@@ -70,3 +70,49 @@ export const deleteMyPlaylistRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };
+
+// Add My Playlist Thunk
+
+export const addMyPlaylist = createAsyncThunk(
+  "myPlaylistsSlice/addMyPlaylist",
+  async (formData, { getState }) => {
+    const accessToken = getState().user.accessToken;
+
+    try {
+      const response = await axios({
+        url: `${MY_PLAYLISTS_URL}`,
+        method: "POST",
+        data: formData,
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response.data.errors;
+    }
+  }
+);
+export const addMyPlaylistPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const addMyPlaylistFulfilled = (state, action) => {
+  state.loading = false;
+  const payload = {
+    ...action.payload.data,
+    attributes: {
+      ...action.payload.data.attributes,
+      first_ten_songs: { data: [] },
+    },
+  };
+
+  state.myPlaylists = [...state.myPlaylists, payload];
+  // state.myPlaylists = state.myPlaylists.push(action.payload);
+};
+export const addMyPlaylistRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};

@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { Link } from "react-router-dom";
 import { IoIosAddCircle } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
 
+import { addMyPlaylist } from "../../store/myPlaylists/myPlaylists.thunks";
 import uploadImage from "../uploadImage.svg";
 import closeLogo from "../closeLogo.svg";
 import "../styles.css";
@@ -17,6 +19,7 @@ export function CreateOrModifyPlaylist({
   modalPlaylistId,
   handleCreateOrModifyPlaylistModal,
 }) {
+  const dispatch = useDispatch();
   const imageInputRef = useRef(null);
   const initialValues = {
     playlistLogo: "",
@@ -39,7 +42,12 @@ export function CreateOrModifyPlaylist({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    postToAPI();
+    let formData = new FormData();
+    formData.append("name", playlistDetails.playlistName);
+    formData.append("logo", playlistDetails.playlistLogo);
+    formData.append("description", playlistDetails.description);
+    // postToAPI();
+    dispatch(addMyPlaylist(formData));
     handleCreateOrModifyPlaylistModal();
   };
 
@@ -63,18 +71,18 @@ export function CreateOrModifyPlaylist({
     setAddSongModal(!addSongModal);
   };
 
-  const postToAPI = () => {
-    let formData = new FormData();
-    formData.append("name", playlistDetails.playlistName);
-    formData.append("logo", playlistDetails.playlistLogo);
-    formData.append("description", playlistDetails.description);
-    axios.post(constants.API_URL, formData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        "Content-type": "multipart/form-data",
-      },
-    });
-  };
+  // const postToAPI = () => {
+  //   let formData = new FormData();
+  //   formData.append("name", playlistDetails.playlistName);
+  //   formData.append("logo", playlistDetails.playlistLogo);
+  //   formData.append("description", playlistDetails.description);
+  //   axios.post(constants.API_URL, formData, {
+  //     headers: {
+  //       Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`,
+  //       "Content-type": "multipart/form-data",
+  //     },
+  //   });
+  // };
 
   return (
     <div
