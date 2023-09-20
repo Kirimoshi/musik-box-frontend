@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { MY_PLAYLISTS_URL, PUBLIC_PLAYLIST_URL } from "../constants";
-import { formatDateDDmmmYYYY, parseLikesDislikes } from "../helpers";
+import { FETCH_PLAYLISTS_TYPES, MY_PLAYLISTS_URL } from "../constants";
 
 // Fetch page of ten My Playlist Data Thunk
 export const fetchPageOfMyPlaylists = createAsyncThunk(
@@ -10,7 +9,7 @@ export const fetchPageOfMyPlaylists = createAsyncThunk(
     const accessToken = getState().user.accessToken;
     try {
       const response = await axios({
-        url: `${MY_PLAYLISTS_URL}?page=${page}`,
+        url: `${MY_PLAYLISTS_URL}?playlist_type=${FETCH_PLAYLISTS_TYPES.MY}&page=${page}`,
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${accessToken}`,
@@ -68,149 +67,6 @@ export const deleteMyPlaylistFulfilled = (state, action) => {
   );
 };
 export const deleteMyPlaylistRejected = (state, action) => {
-  state.loading = false;
-  state.error = action.error.message;
-};
-
-// Fetch single instance of My Playlist Thunk
-export const fetchSingleMyPlaylist = createAsyncThunk(
-  "myPlaylistsSlice/fetchSingleMyPlaylist",
-  async (playlistId, { getState }) => {
-    const accessToken = getState().user.accessToken;
-    try {
-      const response = await axios({
-        url: `${PUBLIC_PLAYLIST_URL}/${playlistId}`,
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      throw error.response.data.errors;
-    }
-  }
-);
-export const fetchSingleMyPlaylistPending = (state) => {
-  state.loading = true;
-  state.error = null;
-};
-export const fetchSingleMyPlaylistFulfilled = (state, action) => {
-  state.loading = false;
-  const {
-    data: {
-      id: playlistId,
-      attributes: {
-        created_on: createdOnZ,
-        updated_on: updatedOnZ,
-        name: playlistName,
-        playlist_type: playlistType,
-        logo,
-        description,
-        number_likes_dislikes: numberLikesDislikes,
-      },
-    },
-    included,
-  } = action.payload;
-  const { likes, dislikes } = parseLikesDislikes(numberLikesDislikes);
-  const songs = included.filter((item) => item.type === "song");
-  const ownerInfo = included.filter((item) => item.type === "user")[0];
-  state.currentPlaylist.playlistInfo = {
-    playlistId,
-    createdOn: formatDateDDmmmYYYY(createdOnZ),
-    updatedOn: formatDateDDmmmYYYY(updatedOnZ),
-    playlistName,
-    playlistType,
-    logo,
-    description,
-    likes,
-    dislikes,
-  };
-  state.currentPlaylist.ownerInfo = {
-    email: ownerInfo.attributes.email,
-    registerDate: formatDateDDmmmYYYY(ownerInfo.attributes.register_date),
-    playlistsOwned: ownerInfo.attributes.playlists_number,
-  };
-  state.currentPlaylist.songs = songs;
-};
-export const fetchSingleMyPlaylistRejected = (state, action) => {
-  state.loading = false;
-  state.error = action.error.message;
-};
-
-export const deleteSongFromPlaylist = createAsyncThunk(
-  "myPlaylistsSlice/deleteSongFromPlaylist",
-  async (idSongToDelete, { getState }) => {
-    const accessToken = getState().user.accessToken;
-    const playlistId =
-      getState().myPlaylistsSlice.currentPlaylist.playlistInfo.playlistId;
-    try {
-      const response = await axios({
-        url: `${MY_PLAYLISTS_URL}/${playlistId}/playlist_songs/${idSongToDelete}`,
-        method: "DELETE",
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      return { data: response.data, idSongToDelete };
-    } catch (error) {
-      throw error.response.data.errors;
-    }
-  }
-);
-export const deleteSongFromPlaylistPending = (state) => {
-  state.loading = true;
-  state.error = null;
-};
-export const deleteSongFromPlaylistFulfilled = (state, action) => {
-  state.loading = false;
-  state.currentPlaylist.songs = state.currentPlaylist.songs.filter(
-    //If all OK, no need to refetch fetchSingleMyPlaylist, just delete same song from state
-    (song) => song.id !== action.payload.idSongToDelete
-  );
-};
-export const deleteSongFromPlaylistRejected = (state, action) => {
-  state.loading = false;
-  state.error = action.error.message;
-};
-
-export const changePlaylistType = createAsyncThunk(
-  "myPlaylistsSlice/changePlaylistType",
-  async (newPlaylistType, { getState }) => {
-    const accessToken = getState().user.accessToken;
-    const playlistId =
-      getState().myPlaylistsSlice.currentPlaylist.playlistInfo.playlistId;
-    try {
-      const response = await axios({
-        url: `${MY_PLAYLISTS_URL}/${playlistId}/playlist_type?playlist_type=${newPlaylistType}`,
-        method: "PUT",
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      return {
-        newPlaylistType: response.data.data.attributes.playlist_type,
-      };
-    } catch (error) {
-      if (error.response.status === 422)
-        throw new Error("422 Unprocessable Entity");
-
-      throw error.response.data.errors;
-    }
-  }
-);
-export const changePlaylistTypePending = (state) => {
-  state.loading = true;
-  state.error = null;
-};
-export const changePlaylistTypeFulfilled = (state, action) => {
-  state.loading = false;
-  state.currentPlaylist.playlistInfo.playlistType =
-    action.payload.newPlaylistType;
-};
-export const changePlaylistTypeRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

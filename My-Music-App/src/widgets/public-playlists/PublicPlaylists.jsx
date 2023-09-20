@@ -18,7 +18,7 @@ import { Tooltip } from "react-tooltip";
 import Header from "../../shared/ui/header/Header";
 import InputComponent from "../../shared/ui/input/Input";
 import PublicPlaylistList from "../../entities/public-playlists/ui/public-playlist-list/PublicPlaylistList";
-import Pagination from "../../Home/components/Pagination";
+import Pagination from "../../shared/Pagination";
 
 import {
   Container,
@@ -44,11 +44,13 @@ function PublicPlaylists() {
 
   useEffect(() => {
     dispatch(fetchPublicPlaylists(page));
-  }, [page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]); // Dispatch is not a dependency, it remains unchanged from the initialization of store.
 
   useEffect(() => {
     dispatch(fetchSortedPlaylists(sortParams));
-  }, [sortParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortParams]); // Same as above
 
   useEffect(() => {
     if (error) console.error(error);
@@ -106,6 +108,7 @@ function PublicPlaylists() {
 
   return (
     <>
+      {/* TODO: Splice Container+ContentWrapper */}
       <Container>
         <ContentWrapper>
           <Header title={"Public Playlists"}></Header>

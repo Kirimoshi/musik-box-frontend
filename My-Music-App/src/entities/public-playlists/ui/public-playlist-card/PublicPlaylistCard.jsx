@@ -17,25 +17,37 @@ import {
 
 import constants from "../../constants/constants";
 import { default as getLikesDislikesNumber } from "../../lib/helpers/getLikesDislikesNumber";
+import paths from "../../../../router/paths";
 
 function PublicPlaylistCard({ playlist, isAuth }) {
   const navigate = useNavigate();
   const { id, name, logo, first_ten_songs, number_likes_dislikes } = playlist;
   const reactions = getLikesDislikesNumber(number_likes_dislikes);
   const handleNavigate = useCallback(() => {
-    navigate(`/public-playlists/public-playlist-details/${id}`);
+    navigate(`${paths.publicPlaylistDetails}/${id}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
-    <PublicPlaylistCardContainer onClick={handleNavigate}>
+    <PublicPlaylistCardContainer
+      onClick={handleNavigate}
+      className="public-playlist-card__wrapper"
+    >
       <PublicPlaylistCardInfo>
         <PublicPlaylistCardImage
-          src={constants.store_URL + logo.id}
+          src={
+            logo
+              ? constants.store_URL + logo.id
+              : require("../../../../shared/assets/default_playlist_cover.jpg")
+          }
           alt={`song preview for ${name}`}
+          className="public-playlist-card__image"
         />
         <PublicPlaylistCardTextWrapper>
-          <PublicPlaylistCardName>{name}</PublicPlaylistCardName>
-          <p className="public-playlist-card_created-by">
+          <PublicPlaylistCardName className="public-playlist-card__name">
+            {name}
+          </PublicPlaylistCardName>
+          <p className="public-playlist-card__created-by">
             Created by: Playlist Owner
           </p>
           <PublicPlaylistCardSongs data-songlist-id={`playlist-songs-${id}`}>
@@ -81,6 +93,7 @@ function PublicPlaylistCard({ playlist, isAuth }) {
 }
 
 PublicPlaylistCard.propTypes = {
+  isAuth: PropTypes.bool,
   playlist: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
