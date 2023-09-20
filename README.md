@@ -1,6 +1,6 @@
 # How to run this project task:
 
-- Make sure you have the NodeJs library, minimum version required by React is 14, recommended 18+.
+- Make sure you have the NodeJs library, minimum version required by application is 18.
 - Dependencies are installed from the console with the `npm install` command (or `npm i`), you can see dependencies in the package.json file in the `dependencies` and `devDependencies` keys,
 - Dev version of the application is started with the command `npm run start` (can be shortened to `npm start`).
 - To run unit test cases open another terminal and enter the command "npm run test" or "npm test" and you can watch the results in terminal itself.
@@ -15,11 +15,13 @@
 
 ### Front-End Testing End Points:
 
-1. Default Page is the Home Page.
-2. /signin : to enter into sign in page.
-3. /signup : to enter into sign up page.
-4. /viewmyplaylists : to enter into view my playlists page.
-5. /ViewMyPlaylists/ViewThePlaylist/:id : to enter into a playlist page when clicked on a playlist in viewmyplaylist page for authenticated users only.
+- `/` : the Home Page.
+- `/sign-in` : Sign in page.
+- `/sign-up` : Sign up page.
+- `/my-playlists` : "My playlists" page (Note: Auth reqiured)
+- `/my-playlists/details/{playlist_id}` : Details of one selected (clicked) "My" playlist
+- `/public-playlists` : "Public playlists" page
+- `/public-playlists/details/{playlist_id}` : Details of one selected (clicked) "Public" playlist
 
 # Music Application Business Goal
 
