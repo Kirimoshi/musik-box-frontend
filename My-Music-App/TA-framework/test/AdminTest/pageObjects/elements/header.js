@@ -6,4 +6,8 @@ export class Header {
     get playlistCommentsButton() {
       return $(`${this.header} #playlist_comments`);
   }
+  
+    get adminUsersButton() {
+      return $(`${this.header} #admin_users`);
+  }
 }

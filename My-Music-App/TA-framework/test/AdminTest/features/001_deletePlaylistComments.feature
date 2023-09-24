@@ -1,6 +1,6 @@
-@001_admin @adminLogin
+@001_admin @adminPlaylistCommentsModeration
 
-Feature: Admin comments moderation
+Feature: Admin playlist comments moderation
   Scenario: Verify that the admin user log in with valid data
     Given the user "login" to the system as the admin user
     Then the user is on the "admin" page

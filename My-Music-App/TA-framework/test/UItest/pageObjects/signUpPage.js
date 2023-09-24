@@ -4,7 +4,7 @@ import { BasePage } from "./basePage";
 export class SignUpPage extends BasePage{
   constructor() {
         super();
-        this.url = `SignUp`;
+        this.url = `sign-up`;
     }
 
   get inputNickname() {

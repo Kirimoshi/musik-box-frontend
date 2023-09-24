@@ -3,8 +3,8 @@ import { BasePage } from "./basePage";
 
 export class SignInPage extends BasePage {
   constructor() {
-        super();
-        this.url = `SignIn`;
+      super();
+      this.url = `sign-in`;
   }
 
   get inputEmail() {

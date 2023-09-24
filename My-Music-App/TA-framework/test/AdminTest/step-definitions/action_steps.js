@@ -23,17 +23,28 @@ Then(/the user "([^"]*)" to the system as the admin user/, async function (page)
 
 Then(/the user clicks on the "([^"]*)" (page )?(\d+)? ?"([^"]*)" "([^"]*)"/,
   async function (page, place, numeral, element, type) {
-    let currentElement = await Pages[page][[camelize(`${element}${type}`)]];
+    let currentElement = await Pages[page][camelize(`${element}${type}`)];
     let elementToClick;
       if (currentElement.length === 0) {
       throw new Error(`Element wasn't found`);
+    } else if (place === "header") { 
+      elementToClick = await Pages[place][camelize(`${element}${type}`)];
     } else if (numeral) {
       elementToClick = await currentElement[numeral - 1];
-    } else if (place) {
-      elementToClick = await Pages[place][camelize(`${element}${type}`)];
     } else {
       elementToClick = await currentElement;
     }
     await elementToClick.click();
-    assert.isTrue(await elementToClick.isClickable(), `${elementToClick} is not clickable`)
+  });
+
+  Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" page as: "([^"]*)"/,
+    async function (type, element, page, value) {
+    let currentPage = await Pages[page][camelize(`${type}${element}`)];
+    await currentPage.setValue(value);
+  });
+  
+Then(/the user "(accepts|dismiss)" alert/, async function (action) {
+    assert.isTrue(await browser.isAlertOpen(), "No opened alert windows detected");
+    (action === 'accepts') ? await browser.acceptAlert() : await browser.dismissAlert();
 });
+

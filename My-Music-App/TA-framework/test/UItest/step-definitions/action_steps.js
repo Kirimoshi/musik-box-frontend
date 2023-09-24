@@ -33,8 +33,7 @@ Then(/the user clicks on the "([^"]*)" page (\d+)? ?"([^"]*)" "([^"]*)"/,
       throw new Error(`Element wasn't found`);
     } else if (numeral) {
       elementToClick = await currentElement[numeral - 1];
-    }
-    else {
+    } else {
       elementToClick = await currentElement;
     }
     await elementToClick.click();

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { BasePage } from "./basePage";
+import { BasePage } from "../basePage";
 
 export class LoginPage extends BasePage {
   constructor() {

@@ -1,6 +1,16 @@
 /* eslint-disable prettier/prettier */
 const axios = require("axios");
 
+async function pageNumber() {
+    const url = await browser.getUrl();
+    const match = url.match(/\/([^\/]+)\/?$/);
+    return match ? match[1] : null;
+}
+
+function withoutEndpointPage(url) {
+    return url.replace(/\/[^/]+$/, '/');
+}
+
 function camelize(str) {
     return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
         if (+match === 0) {
@@ -41,4 +51,6 @@ const sendRequest = async (url, data = null, method = "get", accessToken = null,
 module.exports = {
     camelize,
     sendRequest,
+    pageNumber,
+    withoutEndpointPage
 };

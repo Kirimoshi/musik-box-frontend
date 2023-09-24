@@ -3,10 +3,10 @@ import { BasePage } from "./basePage";
 export class PlaylistsPage extends BasePage{
     constructor() {
         super();
-        this.url = `ViewMyPlaylists`;
-        this.playlistsForm = `div.playlist-songsContainer`;
+        this.url = `my-playlists`;
+        this.playlistsSection = `section`;
     }
     get playlistsItem() {
-        return $$(`${this.playlistsForm} .playlist-song`);
+        return $$(`${this.playlistsSection} .my-playlists__card`);
     }
 }

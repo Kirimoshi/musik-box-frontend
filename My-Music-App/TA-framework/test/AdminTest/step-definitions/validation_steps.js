@@ -1,29 +1,43 @@
 /* eslint-disable no-undef */
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
-const { camelize } = require("../../utils/helpers");
+const {
+  camelize,
+  pageNumber,
+  withoutEndpointPage
+} = require("../../utils/helpers");
 const { assert } = require("chai");
-const browserOption = browser.options;
 
 const pagesUrl = {
   admin: Pages['admin'].url,
+  admin_users: Pages['admin_users'].url,
   playlist_comments: Pages['playlist_comments'].url,
-  login: Pages['login'].url
+  login: Pages['login'].url,
+  new_admin: Pages['new_admin'].url,
+  edit: Pages['edit'].url
 };
 
-Then(/the user is on the "([^"]*)" page/, async function (page) {
-  let expectedUrl = await browser.getUrl();
+Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentPageNumber, page) {
+  const currentUrl = await browser.getUrl();
+  let expectedUrl;
   let actualUrl;
-  const baseurl = browserOption.baseUrl;
-  const adminUrl = baseurl + pagesUrl["admin"] + "/";
-  if (pagesUrl[page] === "base") {
-    actualUrl = await baseurl;
-  } else if (pagesUrl[page] === "admin") {
-    actualUrl = await baseurl + pagesUrl[page];
+
+  if (currentPageNumber) {
+    currentPageNumber = await pageNumber();
+    actualUrl = await withoutEndpointPage(await currentUrl) + currentPageNumber;
   } else {
-    actualUrl = adminUrl + pagesUrl[page];
+    actualUrl = await withoutEndpointPage(await currentUrl) + pagesUrl[page];
   }
-  assert.equal(await expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
+
+  await browser.waitUntil(async function () {
+    expectedUrl = await browser.getUrl();
+    return expectedUrl === actualUrl;
+  }, {
+    timeout: 5000,
+    timeoutMsg: 'expected link to be changed after 5s'
+  });
+
+  assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });
 
 Then(/the "([^"]*)" page has "([^"]*)"/, async (page, element) => {
@@ -54,4 +68,17 @@ Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (pa
     currentElemText = await currentElemText.split('\n').join(' ');
   }
   assert.equal(await currentElemText, expectedText, `${page} doesn't match ${expectedText} value`)
+});
+
+Then(/the "([^"]*)" user "([^"]*)" "([^"]*)"/, async function (page, element, type) {
+  const currentElemen = await Pages[page][camelize(`${element}${type}`)].getText();
+  const currentElemenDate = currentElemen.replace(/\s\d{2}:\d{2}$/, '');
+  const date = new Date()
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  };
+  const currentDate = date.toLocaleDateString('en-US', options);
+  assert.equal(await currentElemenDate, currentDate, `${page} doesn't match ${currentDate} value`)
 });
