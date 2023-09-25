@@ -110,7 +110,6 @@ export const addMyPlaylistFulfilled = (state, action) => {
   };
 
   state.myPlaylists = [...state.myPlaylists, payload];
-  // state.myPlaylists = state.myPlaylists.push(action.payload);
 };
 export const addMyPlaylistRejected = (state, action) => {
   state.loading = false;

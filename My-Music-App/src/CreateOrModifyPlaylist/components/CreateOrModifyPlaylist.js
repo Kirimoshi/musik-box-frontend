@@ -46,7 +46,6 @@ export function CreateOrModifyPlaylist({
     formData.append("name", playlistDetails.playlistName);
     formData.append("logo", playlistDetails.playlistLogo);
     formData.append("description", playlistDetails.description);
-    // postToAPI();
     dispatch(addMyPlaylist(formData));
     handleCreateOrModifyPlaylistModal();
   };
@@ -70,19 +69,6 @@ export function CreateOrModifyPlaylist({
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
   };
-
-  // const postToAPI = () => {
-  //   let formData = new FormData();
-  //   formData.append("name", playlistDetails.playlistName);
-  //   formData.append("logo", playlistDetails.playlistLogo);
-  //   formData.append("description", playlistDetails.description);
-  //   axios.post(constants.API_URL, formData, {
-  //     headers: {
-  //       Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`,
-  //       "Content-type": "multipart/form-data",
-  //     },
-  //   });
-  // };
 
   return (
     <div
