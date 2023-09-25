@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import * as thunks from "./user.thunks";
-import { USER_CRED } from "../constants";
 
 const getItemFromLocalStorage = (key) => {
   const item = localStorage.getItem(key);
@@ -22,8 +21,15 @@ const INITIAL_STATE = {
   refreshToken: null,
   refreshExpiresAt: null,
   isRemembered: false,
-  displayName: null,
-  email: null,
+  credentials: {
+    exp: null,
+    ruid: null,
+    uid: null,
+    id: null,
+    email: null,
+    nickname: null,
+    picture: null,
+  },
 };
 
 export const userSlice = createSlice({
@@ -40,8 +46,6 @@ export const userSlice = createSlice({
         state.accessExpiresAt = getItemFromLocalStorage("accessExpiresAt");
         state.refreshToken = getItemFromLocalStorage("refreshToken");
         state.refreshExpiresAt = getItemFromLocalStorage("refreshExpiresAt");
-        state.displayName = USER_CRED.displayName; // TODO: ask backend to somehow provide this info
-        state.email = USER_CRED.email;
       }
     },
     // isRemembered flag in form implemented as stand alone checkbox, so we need "personal" reducer for it

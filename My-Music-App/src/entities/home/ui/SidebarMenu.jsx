@@ -14,7 +14,7 @@ function SidebarMenu({ menuObject }) {
     setHighlightedButton(index);
   };
   return (
-    <MenuContainer>
+    <MenuContainer className="sidebar__menu">
       <ul>
         {menuObject
           ?.filter(

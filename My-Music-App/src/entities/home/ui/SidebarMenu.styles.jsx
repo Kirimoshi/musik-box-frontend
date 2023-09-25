@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-export const MenuContainer = styled.div`
+export const MenuContainer = styled.nav`
   margin: 5px 0px;
   position: relative;
 

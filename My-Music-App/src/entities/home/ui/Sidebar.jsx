@@ -34,14 +34,18 @@ import {
 } from "../../../shared/Toasts";
 import { useNavigate } from "react-router-dom";
 import paths from "../../../router/paths";
+import { UPLOADS_URL } from "../../../store/constants";
 
 function Sidebar() {
   const navigate = useNavigate();
-  const userName = "Olsheer";
-  const userEmail = "email@.com";
   const dispatch = useDispatch();
   const toastId = React.useRef(null);
-  const { isAuthenticated: isAuth, loading, error } = useSelector(userSelector);
+  const {
+    isAuthenticated: isAuth,
+    loading,
+    error,
+    credentials: { email, nickname, picture },
+  } = useSelector(userSelector);
 
   const [isLogoutClicked, setIsLogoutClicked] = useState(false);
 
@@ -95,25 +99,29 @@ function Sidebar() {
 
   return (
     <SidebarContainer>
-      <Logo to="/">
+      <Logo to="/" className="sidebar__logo">
         <AiOutlineHome />
         <span>Music Box</span>
       </Logo>
       <Divider />
-      <UserInfo $authState={isAuth}>
+      <UserInfo $authState={isAuth} className="sidebar__user-info">
         {isAuth ? (
           <>
-            <UserAvatar>
+            <UserAvatar className="user-info__picure">
               <img
-                src={require("../../../shared/assets/user_avatar.jpg")} // will be replaced with current user avatar from backend
+                src={
+                  picture
+                    ? `${UPLOADS_URL}/${picture.storage}/${picture.id}`
+                    : require("../../../shared/assets/default_user_avatar.jpg")
+                }
                 alt="current user avatar"
               />
             </UserAvatar>
             <AccountDetails>
-              <span>{userName}</span>
-              <span>{userEmail}</span>
+              <p className="user-info__nickname">{nickname}</p>
+              <p className="user-info__email">{email}</p>
             </AccountDetails>
-            <AccountEdit>
+            <AccountEdit className="user-info__edit-icon">
               <RiPencilFill />
             </AccountEdit>
           </>
@@ -141,8 +149,8 @@ function Sidebar() {
       </AboutUs>
       <Divider />
       {isAuth && (
-        <Logout onClick={handleLogout}>
-          <span>Log out</span>
+        <Logout onClick={handleLogout} className="user-info__btn--logout">
+          Log out
         </Logout>
       )}
     </SidebarContainer>

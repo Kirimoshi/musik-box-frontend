@@ -1,14 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LOGIN_URL, REFRESH_URL, LOGOUT_URL } from "../constants";
+import jwt_decode from "jwt-decode";
 
-// helpers
-const setUpCookie = (cookieName, cookieValue, cookieExpiresAt) => {
-  document.cookie = `${cookieName}=${cookieValue}; max-age=${cookieExpiresAt}; path=/ SameSite=Strict; Secure`;
-};
-const deleteCookie = (cookieName) => {
-  document.cookie = `${cookieName}=; max-age=0; path=/ SameSite=Strict; Secure`;
-};
 // helper to stringify and store objects in localStorage
 const setLocalStorage = (key, value) =>
   localStorage.setItem(key, JSON.stringify(value));
@@ -43,24 +37,39 @@ export const loginUserPending = (state) => {
 
 export const loginUserFulfilled = (state, action) => {
   state.loading = false;
-  // update state from form data, note: rememberMe already in state
+  // note: rememberMe already in state
   state.isAuthenticated = true;
   state.accessToken = action.payload.access;
   state.accessExpiresAt = action.payload.access_expires_at;
   state.refreshToken = action.payload.refresh;
   state.refreshExpiresAt = action.payload.refresh_expires_at;
-  // update localStorage and cookies
+  // decode token
+  const {
+    exp,
+    ruid,
+    uid,
+    user_id: id,
+    user_email: email,
+    user_nickname: nickname,
+    user_picture: picture,
+  } = jwt_decode(action.payload.access);
+
+  state.credentials = {
+    exp,
+    ruid,
+    uid,
+    id,
+    email,
+    nickname,
+    picture: JSON.parse(picture),
+  };
+
+  // update localStorage
   setLocalStorage("accessToken", state.accessToken);
   setLocalStorage("accessExpiresAt", state.accessExpiresAt);
   setLocalStorage("refreshToken", state.refreshToken);
   setLocalStorage("refreshExpiresAt", state.refreshExpiresAt);
   setLocalStorage("isRemembered", state.isRemembered);
-
-  // TODO: cookie-remove, cookies is unnecessary, we dont use them for any info storage, only as flag to "remember me" user answer
-  // i transfered the flag to localStorage
-  // before if user selected "remember me" option, we stored access token in cookies
-  setUpCookie("accessToken", state.accessToken, state.accessExpiresAt);
-  setUpCookie("accessExpiresAt", state.accessExpiresAt, state.accessExpiresAt);
 };
 
 export const loginUserRejected = (state, action) => {
@@ -98,22 +107,36 @@ export const refreshUserFulfilled = (state, action) => {
   state.isAuthenticated = true;
   state.accessToken = action.payload.access;
   state.accessExpiresAt = action.payload.access_expires_at;
+  const {
+    exp,
+    ruid,
+    uid,
+    user_id: id,
+    user_email: email,
+    user_nickname: nickname,
+    user_picture: picture,
+  } = jwt_decode(action.payload.access);
+
+  state.credentials = {
+    exp,
+    ruid,
+    uid,
+    id,
+    email,
+    nickname,
+    picture: JSON.parse(picture),
+  };
   // update localStorage and cookies
   setLocalStorage("accessToken", state.accessToken);
   setLocalStorage("accessExpiresAt", state.accessExpiresAt);
-  // look at the comment above "TODO: cookie-remove", we dont need to store cookies
-  setUpCookie("accessToken", state.accessToken, state.accessExpiresAt);
-  setUpCookie("accessExpiresAt", state.accessExpiresAt, state.accessExpiresAt);
 };
+
 export const refreshUserRejected = (state, action) => {
   // update state
   state.loading = false;
   state.isAuthenticated = false;
   state.error = action.error;
   // if there is auth error, we need to delete all cookies and localStorage
-  deleteCookie("accessToken");
-  deleteCookie("accessExpiresAt");
-
   cleanLocalStorage();
 };
 
