@@ -27,7 +27,7 @@ Feature: Admin "CRUD" new administrators
     When the user clicks on the "admin_users" page "View Admin User" "Button"
     Then "new_admin" page "Admin User" "Nick Name" text is: "EMPTY" // Not fully implemented
     Then the "new_admin" user "Created At" "Date"
-    Then the "new_admin" user "Apdated At" "Date"
+    Then the "new_admin" user "Updated At" "Date"
     Then "new_admin" page "Admin User" "Email" text is: "admin@user.com"
     
   Scenario: Verify that the admin can update new administrator user details.
