@@ -26,3 +26,11 @@ export const formatDateDDmmmYYYY = (dateString, locale = "en-GB") =>
     month: "short",
     year: "numeric",
   });
+
+export const setUpCookie = (cookieName, cookieValue, cookieExpiresAt) => {
+  document.cookie = `${cookieName}=${cookieValue}; max-age=${cookieExpiresAt}; path=/ SameSite=Strict; Secure`;
+};
+
+export const deleteCookie = (cookieName) => {
+  document.cookie = `${cookieName}=; max-age=0; path=/ SameSite=Strict; Secure`;
+};

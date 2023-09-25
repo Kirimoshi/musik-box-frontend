@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { oneLineEllipsis } from "../../../shared/Shared.styles";
 
 export const SidebarContainer = styled.div`
   height: 100%;
@@ -34,21 +35,30 @@ export const Divider = styled.hr`
   border: none;
 `;
 
-const avatarWidth = "60";
-const penIconWidth = "24";
-const userInfoPadding = "16";
-const authUserInfoColumnTemplate = `${avatarWidth}px auto ${penIconWidth}px`;
+const userInfoWidth = 288;
+const userInfoPadding = 16;
+const userInfoGap = 12;
+const avatarWidth = 60;
+const penIconWidth = 24;
+const authUserInfoColumnTemplate = `${avatarWidth}px minmax(auto,${
+  userInfoWidth -
+  avatarWidth -
+  penIconWidth -
+  userInfoPadding * 2 -
+  userInfoGap * 2
+}px) ${penIconWidth}px`;
 const unAuthUserInfoColumnTemplate = `${avatarWidth}px auto`;
 
-export const UserInfo = styled.div`
+export const UserInfo = styled.figure`
   display: grid;
   grid-template-columns: ${(props) =>
     props.$authState
       ? authUserInfoColumnTemplate
       : unAuthUserInfoColumnTemplate};
   align-items: center;
-  gap: 12px;
+  gap: ${userInfoGap}px;
   min-height: 60px;
+  width: 288px;
   padding: ${userInfoPadding}px;
   position: relative;
   margin-top: 24px;
@@ -65,17 +75,22 @@ export const UserAvatar = styled.div`
   }
 `;
 
-export const AccountDetails = styled.div`
+export const AccountDetails = styled.figcaption`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  & > span:first-child {
+
+  & > p {
+    max-width: 100%;
+    ${oneLineEllipsis};
+  }
+  & > p.user-info__nickname {
     color: #fff;
     font-size: 22px;
     font-weight: 400;
     line-height: 28px;
   }
-  & > span:last-child {
+  & > p.user-info__email {
     color: var(--m-3-ref-neutral-neutral-80, #cac5cd);
     font-size: 14px;
     font-style: normal;
@@ -119,9 +134,15 @@ export const AboutUs = styled.div`
   letter-spacing: 0.5px;
 `;
 
-export const Logout = styled.div`
+export const Logout = styled.button`
+  max-width: max-content;
+  align-self: center;
   margin-top: 36px;
+  padding: 10px 12px;
+
   color: var(--m-3-sys-dark-primary, #d0bcff);
+  background-color: transparent;
+  border: none;
   text-align: center;
   cursor: pointer;
   font-size: 14px;
