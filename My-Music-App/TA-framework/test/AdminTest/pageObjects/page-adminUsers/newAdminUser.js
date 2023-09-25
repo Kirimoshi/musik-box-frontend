@@ -47,7 +47,7 @@ export class NewAdminUser extends BasePage {
     return $(`${this.userContent} //tr[@class="row row-created_at"]/td`);
   }
 
-  get apdatedAtDate() {
+  get updatedAtDate() {
     return $(`${this.userContent} //tr[@class="row row-updated_at"]/td`);
   }
   

@@ -42,18 +42,18 @@ Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentP
 });
 
 Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (page, element, type, expectedText) {
-  let currentElemText;
+  let currentElementText;
   await browser.waitUntil(async function () {
-    currentElemText = await Pages[page][camelize(`${element}${type}`)].getText()
-    return currentElemText
+    currentElementText = await Pages[page][camelize(`${element}${type}`)].getText()
+    return currentElementText
   }, {
     timeout: 5000,
     timeoutMsg: 'expected text to be changed after 5s'
   })
-  if (currentElemText.includes('\n')) {
-    currentElemText = await currentElemText.split('\n').join(' ');
+  if (currentElementText.includes('\n')) {
+    currentElementText = await currentElementText.split('\n').join(' ');
   }
-  assert.equal(await currentElemText, expectedText, `${page} doesn't match ${expectedText} value`)
+  assert.equal(await currentElementText, expectedText, `${page} doesn't match ${expectedText} value`)
 });
 
 Then(/^(.*) message should be displayed: (.*)$/,

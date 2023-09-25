@@ -56,23 +56,23 @@ Then(/the (\d+)? ?"([^"]*)" is deleted from "([^"]*)" page/, async function (num
 });
 
 Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (page, element, type, expectedText) {
-  let currentElemText;
+  let currentElementText;
   await browser.waitUntil(async function () {
-    currentElemText = await Pages[page][camelize(`${element}${type}`)].getText()
-    return currentElemText
+    currentElementText = await Pages[page][camelize(`${element}${type}`)].getText()
+    return currentElementText
   }, {
     timeout: 5000,
     timeoutMsg: 'expected text to be changed after 5s'
   })
-  if (currentElemText.includes('\n')) {
-    currentElemText = await currentElemText.split('\n').join(' ');
+  if (currentElementText.includes('\n')) {
+    currentElementText = await currentElementText.split('\n').join(' ');
   }
-  assert.equal(await currentElemText, expectedText, `${page} doesn't match ${expectedText} value`)
+  assert.equal(await currentElementText, expectedText, `${page} doesn't match ${expectedText} value`)
 });
 
 Then(/the "([^"]*)" user "([^"]*)" "([^"]*)"/, async function (page, element, type) {
-  const currentElemen = await Pages[page][camelize(`${element}${type}`)].getText();
-  const currentElemenDate = currentElemen.replace(/\s\d{2}:\d{2}$/, '');
+  const currentElement = await Pages[page][camelize(`${element}${type}`)].getText();
+  const currentElementDate = currentElement.replace(/\s\d{2}:\d{2}$/, '');
   const date = new Date()
   const options = {
     year: 'numeric',
@@ -80,5 +80,5 @@ Then(/the "([^"]*)" user "([^"]*)" "([^"]*)"/, async function (page, element, ty
     day: 'numeric'
   };
   const currentDate = date.toLocaleDateString('en-US', options);
-  assert.equal(await currentElemenDate, currentDate, `${page} doesn't match ${currentDate} value`)
+  assert.equal(await currentElementDate, currentDate, `${page} doesn't match ${currentDate} value`)
 });
