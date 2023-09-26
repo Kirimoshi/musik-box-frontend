@@ -1,9 +1,12 @@
 /* eslint-disable no-undef */
 import { Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
-const { camelize } = require("../../utils/helpers"); 
+const {
+  camelize,
+  pageNumber,
+  withoutEndpointPage
+} = require("../../utils/helpers");
 const { assert, expect } = require("chai");
-const browserOption = browser.options;
 
 const pagesUrl = {
   home: Pages['home'].url,
@@ -14,48 +17,43 @@ const pagesUrl = {
   playlist: Pages['playlist'].url
 };
 
-Then(/the user is on the (\d+)? ?"([^"]*)" page/, async function (numeral, page) {
+Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentPageNumber, page) {
+  const currentUrl = await browser.getUrl();
   let expectedUrl;
   let actualUrl;
-  const baseurl = browserOption.baseUrl;
-  const playlistsUrl = baseurl + pagesUrl["playlists"] + "/";
 
-  if (pagesUrl[page] === "base" || pagesUrl[page] === 'home') {
-    actualUrl = await baseurl;
-  }
-  else if (numeral) {
-    let url = await browser.getUrl();
-    let lastUrlChar = await url.split('').at(-1)
-    numeral = await lastUrlChar
-    actualUrl = playlistsUrl + pagesUrl[page] + numeral;
+  if (currentPageNumber) {
+    currentPageNumber = await pageNumber();
+    actualUrl = await withoutEndpointPage(await currentUrl) + currentPageNumber;
   }
   else {
-    actualUrl = await baseurl + pagesUrl[page];
+    actualUrl = await withoutEndpointPage(await currentUrl) + pagesUrl[page];
   }
+
   await browser.waitUntil(async function () {
     expectedUrl = await browser.getUrl();
     return expectedUrl === actualUrl;
-
   }, {
     timeout: 5000,
     timeoutMsg: 'expected link to be changed after 5s'
   });
+
   assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });
 
 Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (page, element, type, expectedText) {
-  let currentElemText;
+  let currentElementText;
   await browser.waitUntil(async function () {
-    currentElemText = await Pages[page][camelize(`${element}${type}`)].getText()
-    return currentElemText
+    currentElementText = await Pages[page][camelize(`${element}${type}`)].getText()
+    return currentElementText
   }, {
     timeout: 5000,
     timeoutMsg: 'expected text to be changed after 5s'
   })
-  if (currentElemText.includes('\n')) {
-    currentElemText = await currentElemText.split('\n').join(' ');
+  if (currentElementText.includes('\n')) {
+    currentElementText = await currentElementText.split('\n').join(' ');
   }
-  assert.equal(await currentElemText, expectedText, `${page} doesn't match ${expectedText} value`)
+  assert.equal(await currentElementText, expectedText, `${page} doesn't match ${expectedText} value`)
 });
 
 Then(/^(.*) message should be displayed: (.*)$/,

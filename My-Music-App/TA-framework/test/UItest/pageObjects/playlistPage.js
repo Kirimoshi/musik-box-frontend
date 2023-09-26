@@ -3,7 +3,7 @@ import { BasePage } from "./basePage";
 export class PlaylistPage extends BasePage{
     constructor() {
         super();
-        this.url = `ViewThePlaylist/`;
+        this.url = `details/`;
         this.songsForm = `div.songsContainer`;
     }
     get songMenu() {

@@ -41,7 +41,7 @@ export class HomePage extends BasePage {
   }
 
   get myPlaylistsButton () {
-    return $(`//a[@href="/ViewMyPlaylists"]//following-sibling::span[text()="My Playlists"]`)
+    return $(`//a[@href="/my-playlists"]//following-sibling::span[text()="My Playlists"]`)
   }
 
   async checkLogoutMessage(element, message) {
