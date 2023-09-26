@@ -27,3 +27,9 @@ export const FETCH_PLAYLISTS_TYPES = {
   PUBLIC: "public",
   SHARED: "shared",
 };
+
+export const FETCH_HOME_PLAYLISTS_TYPES = {
+  LAST: "last",
+  POPULAR: "popular",
+  FEATURED: "featured",
+};

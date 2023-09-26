@@ -9,12 +9,17 @@ export const fetchPublicPlaylists = createAsyncThunk(
       Accept: "*/*",
     };
     const reqOptions = {
-      url: `${PUBLIC_PLAYLIST_URL}?page=${page}`,
+      url: `${PUBLIC_PLAYLIST_URL}?page=${page}&include=songs`,
       method: "GET",
       headers: headersList,
     };
 
-    return await makeAxiosRequest(reqOptions);
+    const response = await makeAxiosRequest(reqOptions);
+    return {
+      playlists: response.playlists.data,
+      songs: response.playlists.included,
+      metadata: response.pagination_metadata,
+    };
   }
 );
 export const fetchPublicPlaylistsPending = (state) => {
@@ -23,9 +28,9 @@ export const fetchPublicPlaylistsPending = (state) => {
 };
 export const fetchPublicPlaylistsFulfilled = (state, action) => {
   state.loading = false;
-  state.publicPlaylists = action.payload.playlists.data;
+  state.publicPlaylists = action.payload.playlists;
   state.metadata = action.payload.metadata;
-  state.songs = action.payload.playlists.included;
+  state.songs = action.payload.songs;
 };
 export const fetchPublicPlaylistsRejected = (state, action) => {
   state.loading = false;
@@ -39,12 +44,17 @@ export const fetchFilterPlaylists = createAsyncThunk(
       Accept: "*/*",
     };
     const reqOptions = {
-      url: `${PUBLIC_PLAYLIST_URL}?page=${page}&search=${term}`,
+      url: `${PUBLIC_PLAYLIST_URL}?page=${page}&search=${term}&include=songs`,
       method: "GET",
       headers: headersList,
     };
 
-    return await makeAxiosRequest(reqOptions);
+    const response = await makeAxiosRequest(reqOptions);
+    return {
+      playlists: response.playlists.data,
+      songs: response.playlists.included,
+      metadata: response.pagination_metadata,
+    };
   }
 );
 
@@ -55,8 +65,9 @@ export const fetchFilterPlaylistsPending = (state) => {
 
 export const fetchFilterPlaylistsFulfilled = (state, action) => {
   state.loading = false;
-  state.publicPlaylists = action.payload.playlists.data;
-  state.songs = action.payload.playlists.included;
+  state.publicPlaylists = action.payload.playlists;
+  state.metadata = action.payload.metadata;
+  state.songs = action.payload.songs;
 };
 
 export const fetchFilterPlaylistsRejected = (state, action) => {
@@ -71,12 +82,17 @@ export const fetchSortedPlaylists = createAsyncThunk(
       Accept: "*/*",
     };
     const reqOptions = {
-      url: `${PUBLIC_PLAYLIST_URL}?page=${page}&sort_by=${sortBy}&sort_direction=${sortDirection}`,
+      url: `${PUBLIC_PLAYLIST_URL}?page=${page}&sort_by=${sortBy}&sort_order=${sortDirection}&include=songs`,
       method: "GET",
       headers: headersList,
     };
 
-    return await makeAxiosRequest(reqOptions);
+    const response = await makeAxiosRequest(reqOptions);
+    return {
+      playlists: response.playlists.data,
+      songs: response.playlists.included,
+      metadata: response.pagination_metadata,
+    };
   }
 );
 
@@ -87,8 +103,9 @@ export const fetchSortedPlaylistsPending = (state) => {
 
 export const fetchSortedPlaylistsFulfilled = (state, action) => {
   state.loading = false;
-  state.publicPlaylists = action.payload.playlists.data;
-  state.songs = action.payload.playlists.included;
+  state.publicPlaylists = action.payload.playlists;
+  state.metadata = action.payload.metadata;
+  state.songs = action.payload.songs;
 };
 
 export const fetchSortedPlaylistsRejected = (state, action) => {

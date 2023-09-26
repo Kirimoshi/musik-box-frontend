@@ -29,9 +29,7 @@ export const myPlaylistsSlice = createSlice({
         thunks.fetchPageOfMyPlaylists.rejected,
         thunks.fetchPageOfMyPlaylistsRejected
       )
-      .addCase(
-        thunks.deleteMyPlaylist.pending,
-        thunks.deleteMyPlaylistPending)
+      .addCase(thunks.deleteMyPlaylist.pending, thunks.deleteMyPlaylistPending)
       .addCase(
         thunks.deleteMyPlaylist.fulfilled,
         thunks.deleteMyPlaylistFulfilled
@@ -40,18 +38,9 @@ export const myPlaylistsSlice = createSlice({
         thunks.deleteMyPlaylist.rejected,
         thunks.deleteMyPlaylistRejected
       )
-      .addCase(
-        thunks.addMyPlaylist.pending,
-        thunks.addMyPlaylistPending
-      )
-      .addCase(
-        thunks.addMyPlaylist.fulfilled,
-        thunks.addMyPlaylistFulfilled
-      )
-      .addCase(
-        thunks.addMyPlaylist.rejected,
-        thunks.addMyPlaylistRejected
-      );
+      .addCase(thunks.addMyPlaylist.pending, thunks.addMyPlaylistPending)
+      .addCase(thunks.addMyPlaylist.fulfilled, thunks.addMyPlaylistFulfilled)
+      .addCase(thunks.addMyPlaylist.rejected, thunks.addMyPlaylistRejected);
   },
 });
 
