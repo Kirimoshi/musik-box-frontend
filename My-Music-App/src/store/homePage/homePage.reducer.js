@@ -5,8 +5,11 @@ const initialState = {
   loading: false,
   error: null,
   popularPlaylists: [],
+  popularPlalistsPaginationData: {},
   featuredPlaylists: [],
+  featuredPlaylistsPaginationData: {},
   latestPlaylists: [],
+  latestPlaylistsPaginationData: {},
 };
 
 export const homePageSlice = createSlice({
