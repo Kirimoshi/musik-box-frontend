@@ -11,10 +11,10 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
     When the user clicks on the "home" page "My Playlists" "Button"
     Then the user is on the "playlists" page
     When the user clicks on the "playlists" page 1 "Playlists" "Item"
-    Then the user is on the 1 "playlist" page
+    Then the user is on the "current" "playlist" page
 
   Scenario: Verifying playlist elements
-    Given the user is on the 1 "playlist" page
+    Given the user is on the "current" "playlist" page
     Then "playlist" page "Playlist" "Title" is displayed
     Then "playlist" page "Playlist" "Item" is displayed
     Then "playlist" page "Playlist" "Likes" is displayed
