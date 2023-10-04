@@ -11,11 +11,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FiEdit2 } from "react-icons/fi";
 
-import {
-  PublicPlaylistCardInfo as MyPlaylistsCardInfo,
-  PublicPlaylistCardName as MyPlaylistsCardName,
-  PublicPlaylistCardSongs as MyPlaylistsCardSongs,
-} from "../../../public-playlists/ui/public-playlist-card/PublicPLaylistCard.styles";
+import { PublicPlaylistCardName as MyPlaylistsCardName } from "../../../public-playlists/ui/public-playlist-card/PublicPLaylistCard.styles";
 
 import {
   Menu,
@@ -27,6 +23,7 @@ import {
   MyPlaylistsCardImage,
   MyPlaylistsCardTextWrapper,
   MyPlaylistsListContainer,
+  MyPlaylistsCardSongs,
 } from "./MyPlaylistsList.styles";
 
 import { CreateOrModifyPlaylist } from "../../../../CreateOrModifyPlaylist/components/CreateOrModifyPlaylist";
@@ -123,36 +120,38 @@ function MyPlaylistsList({ searchString }) {
                 data-playlist-id={id}
                 $top={openModal === id}
               >
-                <MyPlaylistsCardInfo>
-                  <MyPlaylistsCardImage
-                    className="playlist-card__image"
-                    src={
-                      logo
-                        ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-                        : require("../../../../shared/assets/default_playlist_cover.jpg")
-                    }
-                    alt={`song preview for ${name}`}
-                    onClick={handleNavigate(id)}
-                  />
-                  <MyPlaylistsCardTextWrapper
-                    as="figcaption"
-                    onClick={handleNavigate(id)}
-                  >
-                    <MyPlaylistsCardName className="playlist-card__title">
-                      {name}
-                    </MyPlaylistsCardName>
-                    <MyPlaylistsCardSongs className="playlist-card__songs">
-                      {songs.map(
-                        ({ attributes: { title, artist_name } }, index) => {
-                          let playlistSongslength = songs.length - 1;
-                          return `${title} (${artist_name.join(", ")})${
-                            index === playlistSongslength ? "" : ", "
-                          }`;
-                        }
-                      )}
-                    </MyPlaylistsCardSongs>
-                  </MyPlaylistsCardTextWrapper>
-                </MyPlaylistsCardInfo>
+                <MyPlaylistsCardImage
+                  className="playlist-card__image"
+                  src={
+                    logo
+                      ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+                      : require("../../../../shared/assets/default_playlist_cover.jpg")
+                  }
+                  alt={`song preview for ${name}`}
+                  onClick={handleNavigate(id)}
+                />
+                <MyPlaylistsCardTextWrapper
+                  as="figcaption"
+                  onClick={handleNavigate(id)}
+                >
+                  <MyPlaylistsCardName className="playlist-card__title">
+                    {name}
+                  </MyPlaylistsCardName>
+                  <MyPlaylistsCardSongs className="playlist-card__songs">
+                    {songs.map(
+                      ({ id, attributes: { title, artist_name } }, index) => {
+                        let playlistSongslength = songs.length - 1;
+                        return (
+                          <span key={id} data-song-id={id}>
+                            {`${title} (${artist_name.join(", ")})${
+                              index === playlistSongslength ? "" : ", "
+                            }`}
+                          </span>
+                        );
+                      }
+                    )}
+                  </MyPlaylistsCardSongs>
+                </MyPlaylistsCardTextWrapper>
                 <PlaylistMenuIcon className="playlist-card__menu-icon">
                   <BsThreeDotsVertical
                     onClick={() => {

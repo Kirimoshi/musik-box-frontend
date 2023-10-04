@@ -15,6 +15,7 @@ import {
   DescriptionCTA,
 } from "./PlaylistsSmall.styles";
 import { UPLOADS_URL } from "../../../store/constants";
+import { capitalizeWords } from "../../../store/helpers";
 
 const MAX_CHARS = 25;
 
@@ -40,40 +41,50 @@ function PlaylistsSmall({ playlists, subtitle }) {
     <div>
       <Subtitle>{subtitle}</Subtitle>
       <PlaylistContainer data-test-name="cards wraper">
-        {playlists?.map(({ id, attributes: { name, description, logo } }) => {
-          const isExpanded = expandedPlaylistId === id;
-          const shouldRenderDescription = description !== null;
-          const hasLongDescription =
-            description && description.length >= MAX_CHARS;
-          const coverUrl = logo
-            ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-            : require("../../../shared/assets/default_playlist_cover.jpg");
+        {playlists?.map(
+          ({
+            id,
+            attributes: {
+              name,
+              description,
+              logo,
+              playlist_owner_nickname: owner,
+            },
+          }) => {
+            const isExpanded = expandedPlaylistId === id;
+            const shouldRenderDescription = description !== null;
+            const hasLongDescription =
+              description && description.length >= MAX_CHARS;
+            const coverUrl = logo
+              ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+              : require("../../../shared/assets/default_playlist_cover.jpg");
 
-          return (
-            <PlaylistCard key={id} $isExpanded={isExpanded}>
-              <Cover
-                role="img"
-                aria-label={`playlist ${name} cover`}
-                $isExpanded={isExpanded}
-                $coverUrl={coverUrl}
-              />
-              <CardTitle>{name}</CardTitle>
-              <CardOwner>By: {`Owner`}</CardOwner>
-              {hasLongDescription && (
-                <DescriptionToggle
-                  isExpanded={isExpanded}
-                  onExpand={handleMore(id)}
-                  onCollapse={handleLess}
+            return (
+              <PlaylistCard key={id} $isExpanded={isExpanded}>
+                <Cover
+                  role="img"
+                  aria-label={`playlist ${name} cover`}
+                  $isExpanded={isExpanded}
+                  $coverUrl={coverUrl}
                 />
-              )}
-              {shouldRenderDescription && (
-                <CardDescription $isExpanded={isExpanded}>
-                  {description}
-                </CardDescription>
-              )}
-            </PlaylistCard>
-          );
-        })}
+                <CardTitle>{name}</CardTitle>
+                <CardOwner>By: {capitalizeWords(owner)}</CardOwner>
+                {hasLongDescription && (
+                  <DescriptionToggle
+                    isExpanded={isExpanded}
+                    onExpand={handleMore(id)}
+                    onCollapse={handleLess}
+                  />
+                )}
+                {shouldRenderDescription && (
+                  <CardDescription $isExpanded={isExpanded}>
+                    {description}
+                  </CardDescription>
+                )}
+              </PlaylistCard>
+            );
+          }
+        )}
       </PlaylistContainer>
     </div>
   );

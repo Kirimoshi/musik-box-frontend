@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const footerHeight = "64";
-export const sidebarWidth = "360";
+export const footerHeight = 64;
+export const sidebarWidth = 360;
 
 const mainContainerPaddingLeft = 80;
 const mainContainerPaddingRight = 112;
@@ -10,7 +10,7 @@ const mainContainerPaddingTop = 56;
 export const HomeContainer = styled.div`
   margin: 0 auto;
   display: grid;
-  grid-template-columns: ${sidebarWidth}px auto;
+  grid-template-columns: ${sidebarWidth}px calc(100vw - ${sidebarWidth}px);
   grid-template-rows: auto ${footerHeight}px;
   grid-template-areas:
     "sidebar main"
