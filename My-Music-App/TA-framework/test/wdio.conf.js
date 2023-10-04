@@ -25,7 +25,7 @@ exports.config = {
     // will be called from there.
     //
     specs: [
-        '../test/UItest/features/**/006_viewThePlaylistPage.feature'
+        '../test/UItest/features/**/004_deleteSongs.feature'
     ],
     // Patterns to exclude.
     exclude: [
