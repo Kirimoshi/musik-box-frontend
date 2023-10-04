@@ -2,7 +2,9 @@ import styled, { css } from "styled-components";
 import {
   PublicPlaylistCardContainer,
   PublicPlaylistCardImage,
+  PublicPlaylistCardSongs,
   PublicPlaylistCardTextWrapper,
+  playlistCardImageWidth,
 } from "../../../public-playlists/ui/public-playlist-card/PublicPLaylistCard.styles";
 import { PublicPlaylistListContainer } from "../../../public-playlists/ui/public-playlist-list/PublicPlaylistList.styles";
 
@@ -12,8 +14,10 @@ const flexCenter = css`
   align-items: center;
 `;
 
-// reexport
 export const MyPlaylistsCardContainer = styled(PublicPlaylistCardContainer)`
+  grid-template-columns:
+    ${playlistCardImageWidth}px calc(100% - ${playlistCardImageWidth}px - 48px)
+    48px;
   cursor: unset;
   ${(props) => (props.$top ? "z-index: 10" : "z-index: auto")}
 `;
@@ -28,6 +32,10 @@ export const MyPlaylistsCardTextWrapper = styled(PublicPlaylistCardTextWrapper)`
 
 export const MyPlaylistsListContainer = styled(PublicPlaylistListContainer)`
   margin-bottom: 5vh;
+`;
+
+export const MyPlaylistsCardSongs = styled(PublicPlaylistCardSongs)`
+  max-width: unset;
 `;
 
 export const Menu = styled.ul`

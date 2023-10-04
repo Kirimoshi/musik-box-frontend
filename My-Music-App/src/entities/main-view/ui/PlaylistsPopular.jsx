@@ -18,6 +18,7 @@ import {
   DescriptionCTA,
 } from "./PlaylistsPopular.styles";
 import { UPLOADS_URL } from "../../../store/constants";
+import { capitalizeWords } from "../../../store/helpers";
 
 const MAX_CHARS = 99;
 
@@ -43,42 +44,51 @@ function PlaylistsPopular({ playlists }) {
       <PlaylistsTitle>Playlists</PlaylistsTitle>
       <PlaylistsSubtitle>Most popular</PlaylistsSubtitle>
       <PlaylistsContainer>
-        {playlists?.map(({ id, attributes: { name, description, logo } }) => {
-          const isExpanded = expandedPlaylistId === id;
-          const shouldRenderDescription = description !== null;
-          const hasLongDescription =
-            description && description.length >= MAX_CHARS;
-          const coverUrl = logo
-            ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-            : require("../../../shared/assets/default_playlist_cover.jpg");
+        {playlists?.map(
+          ({
+            id,
+            attributes: {
+              name,
+              description,
+              logo,
+              playlist_owner_nickname: owner,
+            },
+          }) => {
+            const isExpanded = expandedPlaylistId === id;
+            const shouldRenderDescription = description !== null;
+            const hasLongDescription =
+              description && description.length >= MAX_CHARS;
+            const coverUrl = logo
+              ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+              : require("../../../shared/assets/default_playlist_cover.jpg");
 
-          return (
-            <PlaylistCard
-              $coverUrl={coverUrl}
-              key={id}
-              $isExpanded={isExpanded}
-            >
-              <CardTitle>{name}</CardTitle>
-              {/* TODO: Add owner as backend team provide it */}
-              <CardOwner>{`Created by: Playlist owner`}</CardOwner>
-              <CardLike>
-                <AiOutlineHeart />
-              </CardLike>
-              {hasLongDescription && (
-                <DescriptionToggle
-                  isExpanded={isExpanded}
-                  onExpand={handleMore(id)}
-                  onCollapse={handleLess}
-                />
-              )}
-              {shouldRenderDescription && (
-                <CardDescription $isExpanded={isExpanded}>
-                  <p>{description}</p>
-                </CardDescription>
-              )}
-            </PlaylistCard>
-          );
-        })}
+            return (
+              <PlaylistCard
+                $coverUrl={coverUrl}
+                key={id}
+                $isExpanded={isExpanded}
+              >
+                <CardTitle>{name}</CardTitle>
+                <CardOwner>{`Created by: ${capitalizeWords(owner)}`}</CardOwner>
+                <CardLike>
+                  <AiOutlineHeart />
+                </CardLike>
+                {hasLongDescription && (
+                  <DescriptionToggle
+                    isExpanded={isExpanded}
+                    onExpand={handleMore(id)}
+                    onCollapse={handleLess}
+                  />
+                )}
+                {shouldRenderDescription && (
+                  <CardDescription $isExpanded={isExpanded}>
+                    <p>{description}</p>
+                  </CardDescription>
+                )}
+              </PlaylistCard>
+            );
+          }
+        )}
       </PlaylistsContainer>
     </div>
   );

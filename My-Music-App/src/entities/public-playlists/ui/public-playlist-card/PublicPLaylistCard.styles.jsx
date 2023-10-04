@@ -1,21 +1,27 @@
 import styled from "styled-components";
+import { oneLineEllipsis } from "../../../../shared/Shared.styles";
 
-export const PublicPlaylistCardContainer = styled.section`
+export const playlistCardImageWidth = 168;
+
+export const PublicPlaylistCardContainer = styled.figure`
   position: relative;
   height: 100px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  width: 100%;
+  display: grid;
+  grid-template-columns: ${playlistCardImageWidth}px calc(
+      100% - ${playlistCardImageWidth}px
+    );
   box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
   border-radius: 12px;
   background-color: rgb(23, 23, 23);
   cursor: pointer;
+  font-family: "Roboto", sans-serif;
 `;
 
 export const PublicPlaylistCardImage = styled.img`
   height: 100%;
-  width: 168px;
+  width: ${playlistCardImageWidth}px;
   object-fit: cover;
   border-radius: 12px 0 0 12px;
   overflow: hidden;
@@ -28,19 +34,16 @@ export const PublicPlaylistCardInfo = styled.div`
   gap: 5px;
 `;
 
-export const PublicPlaylistCardTextWrapper = styled.div`
+export const PublicPlaylistCardTextWrapper = styled.figcaption`
   color: #e6e0e9;
-  font-family: "Roboto", sans-serif;
   font-size: 14px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 4px;
-  width: 1128px;
-  height: 100%;
+
   & > .public-playlist-card_created-by {
-    font-family: "Roboto", sans-serif;
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
@@ -52,7 +55,6 @@ export const PublicPlaylistCardTextWrapper = styled.div`
 `;
 
 export const PublicPlaylistCardName = styled.p`
-  font-family: "Roboto", sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
@@ -63,17 +65,14 @@ export const PublicPlaylistCardName = styled.p`
 
 export const PublicPlaylistCardSongs = styled.p`
   height: 20px;
-  max-width: 1100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: "Roboto", sans-serif;
+  max-width: 95%; // figma: slightly less than 100%, at the middle of the crossed heart icon?
+  ${oneLineEllipsis}
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
   letter-spacing: 0.1px;
   text-align: left;
-  color: white;
+  color: #fff;
 `;
 
 export const PublicPlaylistCardLikes = styled.div`
@@ -95,7 +94,6 @@ export const PublicPlaylistCardLikes = styled.div`
     height: 24px;
   }
   & .count {
-    font-family: "Roboto", sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;

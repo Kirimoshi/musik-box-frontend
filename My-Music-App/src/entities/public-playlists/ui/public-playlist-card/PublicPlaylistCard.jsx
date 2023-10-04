@@ -8,7 +8,6 @@ import { AiOutlineHeart } from "react-icons/ai";
 import {
   PublicPlaylistCardContainer,
   PublicPlaylistCardImage,
-  PublicPlaylistCardInfo,
   PublicPlaylistCardName,
   PublicPlaylistCardSongs,
   PublicPlaylistCardTextWrapper,
@@ -33,35 +32,37 @@ function PublicPlaylistCard({ playlist, isAuth }) {
       onClick={handleNavigate}
       className="public-playlist-card__wrapper"
     >
-      <PublicPlaylistCardInfo>
-        <PublicPlaylistCardImage
-          src={
-            logo
-              ? constants.store_URL + logo.id
-              : require("../../../../shared/assets/default_playlist_cover.jpg")
-          }
-          alt={`song preview for ${name}`}
-          className="public-playlist-card__image"
-        />
-        <PublicPlaylistCardTextWrapper>
-          <PublicPlaylistCardName className="public-playlist-card__name">
-            {name}
-          </PublicPlaylistCardName>
-          <p className="public-playlist-card__created-by">
-            Created by: Playlist Owner
-          </p>
-          <PublicPlaylistCardSongs data-songlist-id={`playlist-songs-${id}`}>
-            {first_ten_songs.map(
-              ({ attributes: { title, artist_name } }, index) => {
-                let playlistSongslength = first_ten_songs.length - 1;
-                return `${title} (${artist_name.join(", ")})${
-                  index === playlistSongslength ? "" : ", "
-                }`;
-              }
-            )}
-          </PublicPlaylistCardSongs>
-        </PublicPlaylistCardTextWrapper>
-      </PublicPlaylistCardInfo>
+      <PublicPlaylistCardImage
+        src={
+          logo
+            ? constants.store_URL + logo.id
+            : require("../../../../shared/assets/default_playlist_cover.jpg")
+        }
+        alt={`song preview for ${name}`}
+        className="public-playlist-card__image"
+      />
+      <PublicPlaylistCardTextWrapper>
+        <PublicPlaylistCardName className="public-playlist-card__name">
+          {name}
+        </PublicPlaylistCardName>
+        <p className="public-playlist-card__created-by">
+          Created by: Playlist Owner
+        </p>
+        <PublicPlaylistCardSongs data-songlist-id={`playlist-${id}-songs`}>
+          {first_ten_songs.map(
+            ({ id, attributes: { title, artist_name } }, index) => {
+              let playlistSongslength = first_ten_songs.length - 1;
+              return (
+                <span key={id} data-song-id={id}>
+                  {`${title} (${artist_name.join(", ")})${
+                    index === playlistSongslength ? "" : ", "
+                  }`}
+                </span>
+              );
+            }
+          )}
+        </PublicPlaylistCardSongs>
+      </PublicPlaylistCardTextWrapper>
       {isAuth && reactions && (
         <PublicPlaylistCardLikes>
           <div className="count-wrapper">

@@ -107,7 +107,7 @@ function Sidebar() {
       <UserInfo $authState={isAuth} className="sidebar__user-info">
         {isAuth ? (
           <>
-            <UserAvatar className="user-info__picure">
+            <UserAvatar className="user-info__picture">
               <img
                 src={
                   picture

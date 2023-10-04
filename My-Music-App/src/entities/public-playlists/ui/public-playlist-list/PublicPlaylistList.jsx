@@ -13,7 +13,7 @@ function PublicPlaylistList() {
   const isAuth = useSelector(isAuthenticatedSelector);
 
   return (
-    <PublicPlaylistListContainer>
+    <PublicPlaylistListContainer className="public-playlists__list">
       {publicPlaylists?.map(
         ({
           id,

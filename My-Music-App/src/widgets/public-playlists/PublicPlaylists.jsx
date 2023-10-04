@@ -216,7 +216,7 @@ function PublicPlaylists() {
               )}
             ></Tooltip>
           </InputWrapper>
-          <PublicPlaylistList className="public-playlists" />
+          <PublicPlaylistList />
           <Pagination
             handleClick={onPageChange}
             isLeftActive={page !== 1}
