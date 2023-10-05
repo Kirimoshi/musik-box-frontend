@@ -21,7 +21,7 @@ export class HomePage extends BasePage {
   }
 
   get btnLogout() {
-    return $('button.user-info__btn--logout');
+    return $('span=Log out');
   }
 
   get logoutSuccessMessage1() {

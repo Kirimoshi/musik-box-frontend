@@ -25,7 +25,7 @@ exports.config = {
     // will be called from there.
     //
     specs: [
-        '../test/UItest/features/**/004_deleteSongs.feature'
+        '../test/UItest/features/**/*.feature'
     ],
     // Patterns to exclude.
     exclude: [

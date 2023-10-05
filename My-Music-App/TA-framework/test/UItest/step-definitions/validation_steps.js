@@ -111,12 +111,3 @@ Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
   }
   assert.isTrue(await localStorageData, `Expected result isn't ${localStorageData}`);
 });
-Then(/"([^"]*)" page "([^"]*)" "([^"]*)" is displayed/,  async function(page, element, type){
-  let currentElement = await Pages[page][camelize(`${element}${type}`)]
-  assert.isTrue(await currentElement.isDisplayed())
-})
-
-Then(/"([^"]*)" "([^"]*)" has "([^"]*)" "([^"]*)"/,  async function(page, element, el, type,){
-  let elementImg = await Pages[page][camelize(`${element}${type}`)][0].getAttribute('alt')
-  assert.equal(await elementImg, el)
-})
