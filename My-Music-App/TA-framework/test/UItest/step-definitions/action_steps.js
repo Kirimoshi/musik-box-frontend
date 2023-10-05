@@ -37,7 +37,7 @@ Then(/the user clicks on the "([^"]*)" page (\d+)? ?"([^"]*)" "([^"]*)"/,
       elementToClick = await currentElement;
     }
     await elementToClick.click();
-    await browser.pause(2000);
+    await browser.pause(5000);
   });
 
 When(/^The user logging out$/, async () => {

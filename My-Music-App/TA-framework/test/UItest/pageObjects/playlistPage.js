@@ -29,4 +29,47 @@ export class PlaylistPage extends BasePage{
     get cancelDeletionSongButton () {
         return $(`//div[@class="songsContainer"]/dialog/button[text()="Cancel"]`)
     }
+    get playlistTitle(){
+        return $(`section span.profile__playlist-name`)
+    }
+   
+    get playlistItem () {
+        return $(`section div[role="img"]`)
+    }
+    get playlistDescription(){
+        return $(`section span.profile__description`)
+    }
+    get playlistLikes(){
+        return $(`section span.profile__rating--like`)
+    }
+     get playlistDislikes(){
+        return $(`section span.profile__rating--dislike`)
+    }
+    get createdDate(){
+        return $(`section span.profile__text--created`)
+    }
+    get updatedDate(){
+        return $(`section span.profile__text--updated`)
+    }
+    get profileEmail(){
+        return $(`section h3.profile__email`)
+    }
+    get registrationDate(){
+        return $(`section span.profile__text--register`)
+    }
+    get amountNumber(){
+        return $(`section span.profile__text--playlist-amount`)
+    }
+    get availabilityName(){
+        return $(`.song .artistInfo p`)
+        }
+    get songImage(){
+        return $$(`div.imageBox-artistinfo img`)     
+           }
+    get commentorName(){
+        return $(`div.commentor-info .commentor-name`)     
+               }
+    get commentorComment(){
+        return $(`div.commentor-comment p`)     
+           }
 }
