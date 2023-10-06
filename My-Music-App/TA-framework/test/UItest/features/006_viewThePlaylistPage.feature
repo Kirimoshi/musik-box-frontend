@@ -28,6 +28,6 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
     Then "playlist" "Song" has "song cover" "Image"
     # Then "playlist"  has "Artist"    Not implement
     # Then "playlist" "song" has "sorting"  Not implement
-     Then "playlist" page "Commentor" "Name" text is: "bhaskara"
-     Then "playlist" page "Commentor" "Comment" text is: "song is awesomen bla bla bla"
-     # Then "playlist" "comment" has "sorting"  Not implement
+    Then "playlist" page "Commentor" "Name" text is: "bhaskara"
+    Then "playlist" page "Commentor" "Comment" text is: "song is awesomen bla bla bla"
+    # Then "playlist" "comment" has "sorting"  Not implement

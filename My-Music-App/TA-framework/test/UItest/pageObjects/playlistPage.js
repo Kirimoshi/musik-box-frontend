@@ -1,6 +1,6 @@
 import { BasePage } from "./basePage";
 
-export class PlaylistPage extends BasePage{
+export class PlaylistPage extends BasePage {
     constructor() {
         super();
         this.url = `details/`;
@@ -18,58 +18,71 @@ export class PlaylistPage extends BasePage{
         return $$(`${this.songsForm} .delete-modal`);
     }
 
-    get dialogWindowTitle () {
+    get dialogWindowTitle() {
         return $(`${this.songsForm} dialog h3`)
     }
 
-    get removeSongButton () {
+    get removeSongButton() {
         return $(`//div[@class="songsContainer"]/dialog/button[text()="Remove Song"]`)
     }
 
-    get cancelDeletionSongButton () {
+    get cancelDeletionSongButton() {
         return $(`//div[@class="songsContainer"]/dialog/button[text()="Cancel"]`)
     }
-    get playlistTitle(){
+
+    get playlistTitle() {
         return $(`section span.profile__playlist-name`)
     }
-   
-    get playlistItem () {
+
+    get playlistItem() {
         return $(`section div[role="img"]`)
     }
-    get playlistDescription(){
+
+    get playlistDescription() {
         return $(`section span.profile__description`)
     }
-    get playlistLikes(){
+
+    get playlistLikes() {
         return $(`section span.profile__rating--like`)
     }
-     get playlistDislikes(){
+
+    get playlistDislikes() {
         return $(`section span.profile__rating--dislike`)
     }
-    get createdDate(){
+
+    get createdDate() {
         return $(`section span.profile__text--created`)
     }
-    get updatedDate(){
+
+    get updatedDate() {
         return $(`section span.profile__text--updated`)
     }
-    get profileEmail(){
+
+    get profileEmail() {
         return $(`section h3.profile__email`)
     }
-    get registrationDate(){
+
+    get registrationDate() {
         return $(`section span.profile__text--register`)
     }
-    get amountNumber(){
+
+    get amountNumber() {
         return $(`section span.profile__text--playlist-amount`)
     }
-    get availabilityName(){
+
+    get availabilityName() {
         return $(`.song .artistInfo p`)
-        }
-    get songImage(){
-        return $$(`div.imageBox-artistinfo img`)     
-           }
-    get commentorName(){
-        return $(`div.commentor-info .commentor-name`)     
-               }
-    get commentorComment(){
-        return $(`div.commentor-comment p`)     
-           }
+    }
+
+    get songImage() {
+        return $$(`div.imageBox-artistinfo img`)
+    }
+
+    get commentorName() {
+        return $(`div.commentor-info .commentor-name`)
+    }
+    
+    get commentorComment() {
+        return $(`div.commentor-comment p`)
+    }
 }
