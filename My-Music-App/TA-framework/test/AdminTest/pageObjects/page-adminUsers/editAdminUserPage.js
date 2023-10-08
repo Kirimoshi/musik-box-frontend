@@ -7,7 +7,6 @@ export class EditAdminUser extends BasePage {
    super();
    this.url = 'edit';
    this.inputsForm = `form#edit_admin_user .inputs`
-    
   }
 
   get inputEditedEmail() {

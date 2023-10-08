@@ -5,17 +5,10 @@ const {
   camelize,
   pageNumber,
   withoutEndpointPage
-} = require("../../utils/helpers");
+} = require("../../utils-user/helpers");
+const { userPagesUrl } = require("../../utils-user/data");
 const { assert, expect } = require("chai");
 
-const pagesUrl = {
-  home: Pages['home'].url,
-  signUp: Pages['signUp'].url,
-  signIn: Pages['signIn'].url,
-  base: Pages['base'].url,
-  playlists: Pages['playlists'].url,
-  playlist: Pages['playlist'].url
-};
 
 Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentPageNumber, page) {
   const currentUrl = await browser.getUrl();
@@ -27,7 +20,7 @@ Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentP
     actualUrl = await withoutEndpointPage(await currentUrl) + currentPageNumber;
   }
   else {
-    actualUrl = await withoutEndpointPage(await currentUrl) + pagesUrl[page];
+    actualUrl = await withoutEndpointPage(await currentUrl) + userPagesUrl[page];
   }
 
   await browser.waitUntil(async function () {
@@ -53,6 +46,7 @@ Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (pa
   if (currentElementText.includes('\n')) {
     currentElementText = await currentElementText.split('\n').join(' ');
   }
+  await browser.pause(500);
   assert.equal(await currentElementText, expectedText, `${page} doesn't match ${expectedText} value`)
 });
 

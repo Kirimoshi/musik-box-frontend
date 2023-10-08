@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
-const { camelize, sendRequest } = require("../../utils/helpers");
-const { userData } = require("../../utils/data")
+const { camelize, sendRequest } = require("../../utils-user/helpers");
+const { userData } = require("../../utils-user/data");
 const { assert, expect } = require("chai");
 
 
@@ -37,7 +37,7 @@ Then(/the user clicks on the "([^"]*)" page (\d+)? ?"([^"]*)" "([^"]*)"/,
       elementToClick = await currentElement;
     }
     await elementToClick.click();
-    await browser.pause(2000);
+    await browser.pause(3000);
   });
 
 When(/^The user logging out$/, async () => {
