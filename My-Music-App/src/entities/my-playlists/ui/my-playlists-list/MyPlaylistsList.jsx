@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { pageOfMyPlaylistsSelector } from "../../../../store/myPlaylists/myPlaylists.selector";
-import { deleteMyPlaylist } from "../../../../store/myPlaylists/myPlaylists.thunks";
+import { toast } from "react-toastify";
+
+import { baseToastConfig, OneLineMessage } from "../../../../shared/Toasts";
+import {
+  pageOfMyPlaylistsSelector,
+  myPlaylistErrorSelector,
+  myPlaylistLoadingSelector,
+} from "../../../../store/myPlaylists/myPlaylists.selector";
+import { deleteMyPlaylist, editMyPlaylist } from "../../../../store/myPlaylists/myPlaylists.thunks";
 
 import ModalDialog from "../../../../shared/ModalDialog";
+import ModalForm from "../../../../features/my-playlists/ModalForm";
 
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -26,28 +34,83 @@ import {
   MyPlaylistsCardSongs,
 } from "./MyPlaylistsList.styles";
 
-import { CreateOrModifyPlaylist } from "../../../../CreateOrModifyPlaylist/components/CreateOrModifyPlaylist";
 import { UPLOADS_URL } from "../../../../store/constants";
 import paths from "../../../../router/paths";
 
 function MyPlaylistsList({ searchString }) {
   const dispatch = useDispatch();
   const myPlaylists = useSelector(pageOfMyPlaylistsSelector);
+  const toastId = React.useRef(null);
+  const playlistErr = useSelector(myPlaylistErrorSelector);
+  const loading = useSelector(myPlaylistLoadingSelector);
+
+  const [isEditPlaylistCliked, setIsEditPlaylistCliked] = useState(false);
 
   const [modifyId, setModifyId] = useState(null);
   const [openModal, setOpenModal] = useState(null);
-  const [modifyPlaylistModal, setModifyPlaylistModal] = useState(false);
-
-  const [isModalOpen, setIsModalOpen] = useState(false); // Current state of delete modal
+  
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalFormOpen, setIsModalFormOpen] = useState(false); 
   const [idPlaylistsItemToDelete, setIdPlaylistsItemToDelete] = useState(null); // Store id seperate for readablity and transfer to modal delete
 
   const navigate = useNavigate();
 
+   const notify = useCallback(() => {
+     toastId.current = toast(
+       <OneLineMessage message="Creating playlist..." />,
+       baseToastConfig
+     );
+   }, []);
+
+   const notifyError = useCallback(() => {
+     toast.update(toastId.current, {
+       type: toast.TYPE.ERROR,
+       autoClose: 2000,
+       render: (
+         <OneLineMessage message="Oops, looks like something went wrong." />
+       ),
+     });
+   }, []);
+
+   const notifySuccess = useCallback(() => {
+     toast.update(toastId.current, {
+       type: toast.TYPE.SUCCESS,
+       autoClose: 2000,
+       render: <OneLineMessage message="Successfully added to playlist :)" />,
+     });
+   }, []);
+
+   useEffect(() => {
+     if (isEditPlaylistCliked && loading) {
+       notify();
+     }
+     if (isEditPlaylistCliked && !loading && playlistErr) {
+       notifyError();
+       setIsEditPlaylistCliked(false);
+     }
+     if (isEditPlaylistCliked && !loading && !playlistErr) {
+       notifySuccess();
+       setIsEditPlaylistCliked(false);
+     }
+   }, [
+     isEditPlaylistCliked,
+     loading,
+     playlistErr,
+     notify,
+     notifyError,
+     notifySuccess,
+   ]);
+
   // Add song behavior, will be refactored in corresponding task
-  const handleModifyPlaylistModal = () => {
-    handleMenuClick(openModal);
-    setModifyPlaylistModal(!modifyPlaylistModal);
+  const handleModifyPlaylistModal = (playlistsItemId) => () => {
+    setModifyId(playlistsItemId);
+    handleOpenForm();
+    setOpenModal(null);
   };
+
+  const handleOpenForm = () => setIsModalFormOpen(true);
+
+  const handleCloseForm = () => setIsModalFormOpen(false);
 
   const handleMenuClick = (playlistId) => {
     if (playlistId === openModal) {
@@ -61,6 +124,7 @@ function MyPlaylistsList({ searchString }) {
   const handleDeletePlaylistsItem = (playlistsItemId) => () => {
     setIdPlaylistsItemToDelete(playlistsItemId);
     handleOpenModal();
+    setOpenModal(null);
   };
 
   const handleOpenModal = () => setIsModalOpen(true);
@@ -72,6 +136,11 @@ function MyPlaylistsList({ searchString }) {
     dispatch(deleteMyPlaylist(idPlaylistsItemToDelete));
     setOpenModal(null);
   };
+  const handlerEditPlaylist = (data) => {
+    setIsEditPlaylistCliked(true);
+   dispatch(editMyPlaylist(data))
+  };
+
   const handleNavigate = (id) => () => {
     navigate(`${paths.myPlaylistDetails}/${id}`);
   };
@@ -90,16 +159,21 @@ function MyPlaylistsList({ searchString }) {
           onClose: handleCloseModal,
         }}
       />
-      {/* TODO: Refactoring 'Edit playlist' will be done in task EPMRDPEMAP-750 */}
+      {isModalFormOpen && (
+        <ModalForm
+          className="modal__edit-playlist"
+          options={{
+            isModalFormOpen,
+            onAction: handlerEditPlaylist,
+            onClose: handleCloseForm,
+            modalPlaylistId: modifyId,
+            playlist: myPlaylists.find(({ id }) => id === modifyId),
+            modalTitle: "Edit playlist",
+            actionButtonText: "Edit"
+          }}
+        />
+      )}
       <MyPlaylistsListContainer as="section" className="my-playlists__list">
-        {modifyPlaylistModal && (
-          <CreateOrModifyPlaylist
-            modalValue="Edit Playlist"
-            modalPlaylistId={modifyId}
-            handleCreateOrModifyPlaylistModal={handleModifyPlaylistModal}
-          />
-        )}
-
         {myPlaylists
           .filter(({ attributes: { name } }) =>
             name.toLowerCase().includes(searchString)
@@ -166,7 +240,7 @@ function MyPlaylistsList({ searchString }) {
                       <p>Delete Playlist</p>
                     </MenuItemDelete>
                     <MenuItemDivider />
-                    <MenuItemEdit onClick={handleModifyPlaylistModal}>
+                    <MenuItemEdit onClick={handleModifyPlaylistModal(id)}>
                       <FiEdit2 />
                       <p>Edit</p>
                     </MenuItemEdit>
