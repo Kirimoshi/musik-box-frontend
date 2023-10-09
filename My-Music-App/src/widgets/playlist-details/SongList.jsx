@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
-import "./songlist.css";
+import './songlist.css';
 
-import { useDispatch, useSelector } from "react-redux";
-import { userSelector } from "../../store/user/user.selector";
-import { UPLOADS_URL } from "../../store/constants";
+import { useDispatch, useSelector } from 'react-redux';
+import { userSelector } from '../../store/user/user.selector';
+import { UPLOADS_URL } from '../../store/constants';
 
-import ModalDialog from "../../shared/ModalDialog";
-import { playlistDetailsSelector } from "../../store/playlist-details/playlist-details.selector";
-import { deleteSongFromPlaylist } from "../../store/playlist-details/playlist-details.thunks";
+import ModalDialog from '../../shared/ModalDialog';
+import { playlistDetailsSelector } from '../../store/playlist-details/playlist-details.selector';
+import { deleteSongFromPlaylist } from '../../store/playlist-details/playlist-details.thunks';
 
 function SongList({ shoudRenderKebabMenu }) {
   // state
@@ -57,15 +57,15 @@ function SongList({ shoudRenderKebabMenu }) {
   };
 
   return (
-    <div className="SongList">
-      <div className="songsContainer">
+    <div className='SongList'>
+      <div className='songsContainer'>
         <ModalDialog
           options={{
             isModalOpen,
-            actionButtonText: "Remove Song",
-            closeButtonText: "Cancel",
+            actionButtonText: 'Remove Song',
+            closeButtonText: 'Cancel',
             title:
-              "Are you sure you want to remove this song from playlist? You will not be able to restore it.",
+              'Are you sure you want to remove this song from playlist? You will not be able to restore it.',
             onAction: handlerRemove,
             onClose: handleCloseModal,
           }}
@@ -74,27 +74,27 @@ function SongList({ shoudRenderKebabMenu }) {
           ({ id, attributes: { title, artist_name: artistName, cover } }) => {
             return (
               <div
-                className={`songs ${openModel === id ? "top" : ""}`}
+                className={`songs ${openModel === id ? 'top' : ''}`}
                 key={id}
                 data-song-id={id}
               >
                 <div className={`song`}>
-                  <div className="imageBox-artistinfo">
+                  <div className='imageBox-artistinfo'>
                     <img
                       src={
                         cover
                           ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
-                          : require("../../shared/assets/default_song_cover.png")
+                          : require('../../shared/assets/default_song_cover.png')
                       }
-                      alt="song cover"
-                      className="image1"
+                      alt='song cover'
+                      className='image1'
                     />
-                    <div className="artistInfo">
+                    <div className='artistInfo'>
                       <p>{title}</p>
-                      <p>{artistName?.join(", ")}</p>
+                      <p>{artistName?.join(', ')}</p>
                     </div>
                   </div>
-                  <div className="songlist-vertical-menu">
+                  <div className='songlist-vertical-menu'>
                     {shoudRenderKebabMenu && (
                       <BsThreeDotsVertical
                         onClick={() => {
@@ -104,13 +104,13 @@ function SongList({ shoudRenderKebabMenu }) {
                     )}
 
                     {openModel === id && (
-                      <div className="delete-modal">
+                      <div className='delete-modal'>
                         {
                           <div
                             onClick={() => handleDeleteSong(id)}
-                            className="delete-tag"
+                            className='delete-tag'
                           >
-                            <RiDeleteBin6Line className="delete-button" />
+                            <RiDeleteBin6Line className='delete-button' />
                             <span>Remove song from playlist</span>
                           </div>
                         }

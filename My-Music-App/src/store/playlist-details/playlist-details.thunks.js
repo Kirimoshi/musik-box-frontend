@@ -1,14 +1,14 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 import {
   FETCH_PLAYLISTS_TYPES,
   MY_PLAYLISTS_URL,
   PUBLIC_PLAYLIST_URL,
-} from "../constants";
-import { formatDateDDmmmYYYY, parseLikesDislikes } from "../helpers";
+} from '../constants';
+import { formatDateDDmmmYYYY, parseLikesDislikes } from '../helpers';
 
 export const fetchPlaylistDetails = createAsyncThunk(
-  "playlistDetailsSlice/fetchPlaylistDetails",
+  'playlistDetailsSlice/fetchPlaylistDetails',
   async ({ playlistId, playlistTypeToDisplay }, { getState }) => {
     const accessToken = getState().user.accessToken;
     try {
@@ -16,7 +16,7 @@ export const fetchPlaylistDetails = createAsyncThunk(
         const response = await axios({
           url: `${PUBLIC_PLAYLIST_URL}/${playlistId}`,
           headers: {
-            Accept: "*/*",
+            Accept: '*/*',
             Authorization: `Bearer ${accessToken}`,
           },
         });
@@ -26,12 +26,12 @@ export const fetchPlaylistDetails = createAsyncThunk(
         const response = await axios({
           url: `${PUBLIC_PLAYLIST_URL}/${playlistId}`,
           headers: {
-            Accept: "*/*",
+            Accept: '*/*',
           },
         });
         return response.data;
       }
-      throw new Error("Unknown playlist type");
+      throw new Error('Unknown playlist type');
     } catch (error) {
       throw error.response.data.errors;
     }
@@ -59,8 +59,8 @@ export const fetchPlaylistDetailsFulfilled = (state, action) => {
     included,
   } = action.payload;
   const { likes, dislikes } = parseLikesDislikes(numberLikesDislikes);
-  const songs = included.filter((item) => item.type === "song");
-  const ownerInfo = included.filter((item) => item.type === "user")[0];
+  const songs = included.filter((item) => item.type === 'song');
+  const ownerInfo = included.filter((item) => item.type === 'user')[0];
   state.playlistDetails.playlistInfo = {
     playlistId,
     createdOn: formatDateDDmmmYYYY(createdOnZ),
@@ -89,7 +89,7 @@ export const fetchPlaylistDetailsRejected = (state, action) => {
  * @param {string} newPlaylistType - new playlist type from const PLAYLIST_PRIVACY_TYPES
  */
 export const changePlaylistType = createAsyncThunk(
-  "playlistDetailsSlice/changePlaylistType",
+  'playlistDetailsSlice/changePlaylistType',
   async (newPlaylistType, { getState }) => {
     const accessToken = getState().user.accessToken;
     const playlistId =
@@ -97,9 +97,9 @@ export const changePlaylistType = createAsyncThunk(
     try {
       const response = await axios({
         url: `${MY_PLAYLISTS_URL}/${playlistId}/playlist_type?playlist_type=${newPlaylistType}`,
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          Accept: "*/*",
+          Accept: '*/*',
           Authorization: `Bearer ${accessToken}`,
         },
       });
@@ -108,7 +108,7 @@ export const changePlaylistType = createAsyncThunk(
       };
     } catch (error) {
       if (error.response.status === 422)
-        throw new Error("422 Unprocessable Entity");
+        throw new Error('422 Unprocessable Entity');
 
       throw error.response.data.errors;
     }
@@ -129,7 +129,7 @@ export const changePlaylistTypeRejected = (state, action) => {
 };
 
 export const deleteSongFromPlaylist = createAsyncThunk(
-  "playlistDetailsSlice/deleteSongFromPlaylist",
+  'playlistDetailsSlice/deleteSongFromPlaylist',
   async (idSongToDelete, { getState }) => {
     const accessToken = getState().user.accessToken;
     const playlistId =
@@ -137,9 +137,9 @@ export const deleteSongFromPlaylist = createAsyncThunk(
     try {
       const response = await axios({
         url: `${MY_PLAYLISTS_URL}/${playlistId}/playlist_songs/${idSongToDelete}`,
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          Accept: "*/*",
+          Accept: '*/*',
           Authorization: `Bearer ${accessToken}`,
         },
       });

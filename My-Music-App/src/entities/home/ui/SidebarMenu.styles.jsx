@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 export const MenuContainer = styled.nav`
   margin: 5px 0px;
@@ -48,7 +48,7 @@ export const MenuItem = styled.li`
     color: #e6e0e9;
     position: relative;
     left: 20px;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 13px;
   }
 `;

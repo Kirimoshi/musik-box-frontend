@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   BasePlaylistsContainer,
   oneLineEllipsis,
-} from "../../../shared/Shared.styles";
+} from '../../../shared/Shared.styles';
 
 const cardWidth = 168;
 const cardHeight = 270;
@@ -11,7 +11,7 @@ const descrLineHeight = 20;
 const moreLessiconSize = 24;
 const descrMinLines = 1;
 const descrMaxLines = 3;
-const transitionType = "0.2s ease-in-out";
+const transitionType = '0.2s ease-in-out';
 
 export const PlaylistContainer = styled(BasePlaylistsContainer)`
   grid-template-columns: repeat(6, ${cardWidth}px);
@@ -22,7 +22,7 @@ export const PlaylistContainer = styled(BasePlaylistsContainer)`
 export const PlaylistCard = styled.figure`
   width: ${cardWidth}px;
   height: ${cardHeight}px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   display: grid;
   grid-template-rows: ${({ $isExpanded }) =>
     $isExpanded
@@ -33,10 +33,10 @@ export const PlaylistCard = styled.figure`
   grid-template-columns: auto ${moreLessiconSize}px;
   align-content: space-between;
   grid-template-areas:
-    "cover cover"
-    "title title"
-    "owner moreLessIcon"
-    "description description";
+    'cover cover'
+    'title title'
+    'owner moreLessIcon'
+    'description description';
   overflow: hidden;
   transition: grid-template-rows ${transitionType};
 `;

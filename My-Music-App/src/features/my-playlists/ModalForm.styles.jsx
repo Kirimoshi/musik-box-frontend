@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ModalContainer = styled.dialog`
   &[open] {
@@ -85,11 +85,11 @@ export const CoverImage = styled.img`
 `;
 
 export const FileInput = styled.input`
-  display: "none";
+  display: 'none';
 `;
 
 export const ValidationLabel = styled.p`
-  color: #CAC4D0;
+  color: #cac4d0;
   margin: 0;
   font-size: 14px;
 `;

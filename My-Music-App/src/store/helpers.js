@@ -20,14 +20,14 @@ export const parseLikesDislikes = (str) => {
  * @param {string} [locale="en-GB"] - The locale to use for formatting the date. Defaults to "en-GB".
  * @returns {string} The formatted date string.
  */
-export const formatDateDDmmmYYYY = (dateString, locale = "en-GB") => {
+export const formatDateDDmmmYYYY = (dateString, locale = 'en-GB') => {
   const date = new Date(dateString);
-  if (isNaN(date.getTime())) throw new Error("Invalid date");
+  if (isNaN(date.getTime())) throw new Error('Invalid date');
 
   const dateFormatter = new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
   });
   return dateFormatter.format(date);
 };
@@ -48,8 +48,8 @@ export const deleteCookie = (cookieName) => {
  * @returns {string} The capitalized string.
  */
 export const capitalize = (word) => {
-  if (typeof word !== "string")
-    throw new Error("Invalid input: Argument must be a string");
+  if (typeof word !== 'string')
+    throw new Error('Invalid input: Argument must be a string');
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 };
 
@@ -63,16 +63,16 @@ export const nicknameDividers = [`,`, `.`, `_`, `|`, `/`];
  * @returns {string} The processed string with words capitalized and dividers replaced with spaces.
  */
 export const capitalizeWords = (input) => {
-  if (typeof input !== "string")
-    throw new Error("Invalid input: Argument must be a string");
+  if (typeof input !== 'string')
+    throw new Error('Invalid input: Argument must be a string');
 
-  const dividersRegex = new RegExp(`[${nicknameDividers.join("")}]{1,}`, "g");
+  const dividersRegex = new RegExp(`[${nicknameDividers.join('')}]{1,}`, 'g');
   const hasDivider = nicknameDividers.some((divider) =>
     input.includes(divider)
   );
   if (!hasDivider) return capitalize(input);
 
-  const words = input.replace(dividersRegex, " ").split(" ");
+  const words = input.replace(dividersRegex, ' ').split(' ');
   const capitalizedWords = words.map((word) => capitalize(word));
-  return capitalizedWords.join(" ").trim();
+  return capitalizedWords.join(' ').trim();
 };

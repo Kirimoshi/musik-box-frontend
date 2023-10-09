@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import * as thunks from "./user.thunks";
+import * as thunks from './user.thunks';
 
 const getItemFromLocalStorage = (key) => {
   const item = localStorage.getItem(key);
@@ -33,19 +33,19 @@ const INITIAL_STATE = {
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: INITIAL_STATE,
   // synchronous reducers
   reducers: {
     // I thick adding redux-persist is overkill right now, so rehydration was implemented manually
     rehydrateTokens: (state) => {
       state.isRehydrated = true;
-      state.isRemembered = getItemFromLocalStorage("isRemembered");
+      state.isRemembered = getItemFromLocalStorage('isRemembered');
       if (state.isRemembered) {
-        state.accessToken = getItemFromLocalStorage("accessToken");
-        state.accessExpiresAt = getItemFromLocalStorage("accessExpiresAt");
-        state.refreshToken = getItemFromLocalStorage("refreshToken");
-        state.refreshExpiresAt = getItemFromLocalStorage("refreshExpiresAt");
+        state.accessToken = getItemFromLocalStorage('accessToken');
+        state.accessExpiresAt = getItemFromLocalStorage('accessExpiresAt');
+        state.refreshToken = getItemFromLocalStorage('refreshToken');
+        state.refreshExpiresAt = getItemFromLocalStorage('refreshExpiresAt');
       }
     },
     // isRemembered flag in form implemented as stand alone checkbox, so we need "personal" reducer for it

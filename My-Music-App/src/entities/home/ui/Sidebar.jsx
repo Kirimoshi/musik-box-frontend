@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
-import SidebarMenu from "./SidebarMenu";
-import MenuList from "./MenuList";
+import SidebarMenu from './SidebarMenu';
+import MenuList from './MenuList';
 
-import { ReactComponent as UnAuthIcon } from "../../../shared/assets/unAuthIcon.svg";
-import { AiOutlineHome } from "react-icons/ai";
-import { RiPencilFill } from "react-icons/ri";
-import { userSelector } from "../../../store/user/user.selector";
-import { logoutUser } from "../../../store/user/user.thunks";
+import { ReactComponent as UnAuthIcon } from '../../../shared/assets/unAuthIcon.svg';
+import { AiOutlineHome } from 'react-icons/ai';
+import { RiPencilFill } from 'react-icons/ri';
+import { userSelector } from '../../../store/user/user.selector';
+import { logoutUser } from '../../../store/user/user.thunks';
 import {
   SidebarContainer,
   Logo,
@@ -24,17 +24,17 @@ import {
   LoginWrapper,
   LoginLink,
   VerticalDivider,
-} from "./Sidebar.styles";
+} from './Sidebar.styles';
 
 import {
   baseToastConfig,
   LogoutPendingMessage,
   LogoutSuccessMessage,
   LogoutErrorMessage,
-} from "../../../shared/Toasts";
-import { useNavigate } from "react-router-dom";
-import paths from "../../../router/paths";
-import { UPLOADS_URL } from "../../../store/constants";
+} from '../../../shared/Toasts';
+import { useNavigate } from 'react-router-dom';
+import paths from '../../../router/paths';
+import { UPLOADS_URL } from '../../../store/constants';
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ function Sidebar() {
     if (isLogoutClicked && !loading && !error) {
       notifySuccess();
       setIsLogoutClicked(false);
-      navigate("/");
+      navigate('/');
     }
   }, [
     isLogoutClicked,
@@ -99,29 +99,29 @@ function Sidebar() {
 
   return (
     <SidebarContainer>
-      <Logo to="/" className="sidebar__logo">
+      <Logo to='/' className='sidebar__logo'>
         <AiOutlineHome />
         <span>Music Box</span>
       </Logo>
       <Divider />
-      <UserInfo $authState={isAuth} className="sidebar__user-info">
+      <UserInfo $authState={isAuth} className='sidebar__user-info'>
         {isAuth ? (
           <>
-            <UserAvatar className="user-info__picture">
+            <UserAvatar className='user-info__picture'>
               <img
                 src={
                   picture
                     ? `${UPLOADS_URL}/${picture.storage}/${picture.id}`
-                    : require("../../../shared/assets/default_user_avatar.jpg")
+                    : require('../../../shared/assets/default_user_avatar.jpg')
                 }
-                alt="current user avatar"
+                alt='current user avatar'
               />
             </UserAvatar>
             <AccountDetails>
-              <p className="user-info__nickname">{nickname}</p>
-              <p className="user-info__email">{email}</p>
+              <p className='user-info__nickname'>{nickname}</p>
+              <p className='user-info__email'>{email}</p>
             </AccountDetails>
-            <AccountEdit className="user-info__edit-icon">
+            <AccountEdit className='user-info__edit-icon'>
               <RiPencilFill />
             </AccountEdit>
           </>
@@ -130,7 +130,7 @@ function Sidebar() {
             <UserAvatar>
               <UnAuthIcon />
             </UserAvatar>
-            <LoginWrapper className="logWrap">
+            <LoginWrapper className='logWrap'>
               <LoginLink to={paths.signIn}>Sign in</LoginLink>
               <VerticalDivider />
               <LoginLink to={paths.signUp}>Sign up</LoginLink>
@@ -149,7 +149,7 @@ function Sidebar() {
       </AboutUs>
       <Divider />
       {isAuth && (
-        <Logout onClick={handleLogout} className="user-info__btn--logout">
+        <Logout onClick={handleLogout} className='user-info__btn--logout'>
           Log out
         </Logout>
       )}

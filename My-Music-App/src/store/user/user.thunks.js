@@ -1,7 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { LOGIN_URL, REFRESH_URL, LOGOUT_URL } from "../constants";
-import jwt_decode from "jwt-decode";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { LOGIN_URL, REFRESH_URL, LOGOUT_URL } from '../constants';
+import jwt_decode from 'jwt-decode';
 
 // helper to stringify and store objects in localStorage
 const setLocalStorage = (key, value) =>
@@ -9,18 +9,18 @@ const setLocalStorage = (key, value) =>
 
 const cleanLocalStorage = () => {
   [
-    "accessToken",
-    "accessExpiresAt",
-    "refreshToken",
-    "refreshExpiresAt",
-    "isRemembered",
+    'accessToken',
+    'accessExpiresAt',
+    'refreshToken',
+    'refreshExpiresAt',
+    'isRemembered',
   ].forEach((key) => localStorage.removeItem(key)); // i prefer do not use .clear() method, because it will delete all
 };
 
 /** Login Thunk. Accepts user login data and returns a promise with user data.
  * @param {Object} userData - user login data as object {email, password}
  */
-export const loginUser = createAsyncThunk("user/login", async (userData) => {
+export const loginUser = createAsyncThunk('user/login', async (userData) => {
   try {
     const response = await axios.post(LOGIN_URL, userData);
     return response.data; // transferred to loginUserFulfilled action.payload
@@ -65,11 +65,11 @@ export const loginUserFulfilled = (state, action) => {
   };
 
   // update localStorage
-  setLocalStorage("accessToken", state.accessToken);
-  setLocalStorage("accessExpiresAt", state.accessExpiresAt);
-  setLocalStorage("refreshToken", state.refreshToken);
-  setLocalStorage("refreshExpiresAt", state.refreshExpiresAt);
-  setLocalStorage("isRemembered", state.isRemembered);
+  setLocalStorage('accessToken', state.accessToken);
+  setLocalStorage('accessExpiresAt', state.accessExpiresAt);
+  setLocalStorage('refreshToken', state.refreshToken);
+  setLocalStorage('refreshExpiresAt', state.refreshExpiresAt);
+  setLocalStorage('isRemembered', state.isRemembered);
 };
 
 export const loginUserRejected = (state, action) => {
@@ -80,13 +80,13 @@ export const loginUserRejected = (state, action) => {
 
 // Refrehs User auth token Thunk
 export const refreshUser = createAsyncThunk(
-  "user/refreshAuth",
+  'user/refreshAuth',
   async (_, { getState }) => {
     const refreshToken = getState().user.refreshToken;
     try {
       const response = await axios.post(REFRESH_URL, null, {
         headers: {
-          "X-Refresh-Token": `${refreshToken}`,
+          'X-Refresh-Token': `${refreshToken}`,
         },
       });
       return response.data; // transferred to refreshTokenFulfilled action.payload
@@ -127,8 +127,8 @@ export const refreshUserFulfilled = (state, action) => {
     picture: JSON.parse(picture),
   };
   // update localStorage and cookies
-  setLocalStorage("accessToken", state.accessToken);
-  setLocalStorage("accessExpiresAt", state.accessExpiresAt);
+  setLocalStorage('accessToken', state.accessToken);
+  setLocalStorage('accessExpiresAt', state.accessExpiresAt);
 };
 
 export const refreshUserRejected = (state, action) => {
@@ -141,17 +141,17 @@ export const refreshUserRejected = (state, action) => {
 };
 
 export const logoutUser = createAsyncThunk(
-  "user/logout",
+  'user/logout',
   async (messageObj, { getState }) => {
     const accessToken = getState().user.accessToken;
     const headersList = {
-      Accept: "*/*",
+      Accept: '*/*',
       Authorization: `Bearer ${accessToken}`,
     };
 
     const reqOptions = {
       url: `${LOGOUT_URL}`,
-      method: "DELETE",
+      method: 'DELETE',
       headers: headersList,
     };
     try {

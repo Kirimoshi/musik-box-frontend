@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { oneLineEllipsis } from "../../../shared/Shared.styles";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { oneLineEllipsis } from '../../../shared/Shared.styles';
 
 export const SidebarContainer = styled.div`
   height: 100%;
@@ -9,7 +9,7 @@ export const SidebarContainer = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-style: normal;
 `;
 

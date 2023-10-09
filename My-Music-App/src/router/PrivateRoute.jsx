@@ -1,17 +1,17 @@
-import React, { useRef } from "react";
-import PropTypes from "prop-types";
-import { userSelector } from "../store/user/user.selector";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { OneLineMessage, baseToastConfig } from "../shared/Toasts";
-import paths from "./paths";
+import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
+import { userSelector } from '../store/user/user.selector';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { OneLineMessage, baseToastConfig } from '../shared/Toasts';
+import paths from './paths';
 
 function PrivateRoute({ isAuthRequired, errorMessage, children }) {
   const { isAuthenticated, isRehydrated, isRemembered } =
     useSelector(userSelector);
   const toastId = useRef(null);
-  const customId = "custom-id-signin-requir"; //prevent double toast
+  const customId = 'custom-id-signin-requir'; //prevent double toast
   const notify = () => {
     toastId.current = toast(<OneLineMessage message={errorMessage} />, {
       toastId: customId,

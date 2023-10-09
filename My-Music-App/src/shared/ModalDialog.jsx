@@ -1,5 +1,5 @@
-import { React, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
+import { React, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   ModalContainer,
@@ -7,7 +7,7 @@ import {
   Divider,
   ActionButton,
   CancelButton,
-} from "./ModalDialog.styles";
+} from './ModalDialog.styles';
 
 /** Modal dialog component to confirm the song removal
  *

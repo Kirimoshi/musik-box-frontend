@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { oneLineEllipsis } from "../../../../shared/Shared.styles";
+import styled from 'styled-components';
+import { oneLineEllipsis } from '../../../../shared/Shared.styles';
 
 export const playlistCardImageWidth = 168;
 
@@ -11,12 +11,12 @@ export const PublicPlaylistCardContainer = styled.figure`
   grid-template-columns: ${playlistCardImageWidth}px calc(
       100% - ${playlistCardImageWidth}px
     );
-  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15);
   filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
   border-radius: 12px;
   background-color: rgb(23, 23, 23);
   cursor: pointer;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 `;
 
 export const PublicPlaylistCardImage = styled.img`
@@ -25,13 +25,6 @@ export const PublicPlaylistCardImage = styled.img`
   object-fit: cover;
   border-radius: 12px 0 0 12px;
   overflow: hidden;
-`;
-
-export const PublicPlaylistCardInfo = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  gap: 5px;
 `;
 
 export const PublicPlaylistCardTextWrapper = styled.figcaption`
@@ -81,10 +74,12 @@ export const PublicPlaylistCardLikes = styled.div`
   right: 1em;
   display: flex;
   gap: 4px;
+
   & > .count-wrapper {
     display: flex;
     gap: 4px;
   }
+
   & .btn {
     cursor: pointer;
     background-color: inherit;
@@ -93,6 +88,7 @@ export const PublicPlaylistCardLikes = styled.div`
     width: 24px;
     height: 24px;
   }
+
   & .count {
     font-size: 12px;
     font-weight: 400;

@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 const oneLineEllipsis = css`
   overflow: hidden;
@@ -13,20 +13,20 @@ const flexCenter = css`
 
 export const ProfileContainer = styled.section`
   width: 360px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-style: normal;
   color: var(--m-3-white, #fff);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, auto) 360px repeat(4, auto);
   grid-template-areas:
-    "header header"
-    "hereSince playlistsOwned"
-    "cover cover"
-    "name name"
-    "description description"
-    "created updated"
-    "dislike like";
+    'header header'
+    'hereSince playlistsOwned'
+    'cover cover'
+    'name name'
+    'description description'
+    'created updated'
+    'dislike like';
   justify-items: center;
   column-gap: 12px;
 `;

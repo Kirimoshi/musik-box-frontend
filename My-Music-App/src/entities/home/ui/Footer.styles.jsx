@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const FooterContainer = styled.div`
   height: 100%;
@@ -10,7 +10,7 @@ export const FooterContainer = styled.div`
   align-items: center;
 `;
 export const FooterDetails = styled.div`
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 10px;
   color: #aea9b4;
 `;

@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as thunks from "./homePage.thunks";
+import { createSlice } from '@reduxjs/toolkit';
+import * as thunks from './homePage.thunks';
 
 const initialState = {
   loading: false,
@@ -13,7 +13,7 @@ const initialState = {
 };
 
 export const homePageSlice = createSlice({
-  name: "homePageSlice",
+  name: 'homePageSlice',
   initialState: initialState,
   reducers: {
     setPopularPlaylists: (state, action) => {

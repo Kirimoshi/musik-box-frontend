@@ -1,10 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react';
 
-import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-import { RiDislikeLine } from "react-icons/ri";
-import { AiOutlineHeart } from "react-icons/ai";
+import { RiDislikeLine } from 'react-icons/ri';
+import { AiOutlineHeart } from 'react-icons/ai';
 import {
   PublicPlaylistCardContainer,
   PublicPlaylistCardImage,
@@ -12,16 +12,18 @@ import {
   PublicPlaylistCardSongs,
   PublicPlaylistCardTextWrapper,
   PublicPlaylistCardLikes,
-} from "./PublicPLaylistCard.styles";
+} from './PublicPLaylistCard.styles';
 
-import constants from "../../constants/constants";
-import { default as getLikesDislikesNumber } from "../../lib/helpers/getLikesDislikesNumber";
-import paths from "../../../../router/paths";
+import { capitalizeWords } from '../../../../store/helpers';
+import { parseLikesDislikes } from '../../../../store/helpers';
+import constants from '../../constants/constants';
+import paths from '../../../../router/paths';
 
-function PublicPlaylistCard({ playlist, isAuth }) {
+function PublicPlaylistCard({ playlist }) {
   const navigate = useNavigate();
-  const { id, name, logo, first_ten_songs, number_likes_dislikes } = playlist;
-  const reactions = getLikesDislikesNumber(number_likes_dislikes);
+  const { id, name, logo, first_ten_songs, number_likes_dislikes, owner } =
+    playlist;
+  const reactions = parseLikesDislikes(number_likes_dislikes);
   const handleNavigate = useCallback(() => {
     navigate(`${paths.publicPlaylistDetails}/${id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,32 +32,32 @@ function PublicPlaylistCard({ playlist, isAuth }) {
   return (
     <PublicPlaylistCardContainer
       onClick={handleNavigate}
-      className="public-playlist-card__wrapper"
+      className='public-playlist-card__wrapper'
     >
       <PublicPlaylistCardImage
         src={
           logo
             ? constants.store_URL + logo.id
-            : require("../../../../shared/assets/default_playlist_cover.jpg")
+            : require('../../../../shared/assets/default_playlist_cover.jpg')
         }
         alt={`song preview for ${name}`}
-        className="public-playlist-card__image"
+        className='public-playlist-card__image'
       />
       <PublicPlaylistCardTextWrapper>
-        <PublicPlaylistCardName className="public-playlist-card__name">
+        <PublicPlaylistCardName className='public-playlist-card__name'>
           {name}
         </PublicPlaylistCardName>
-        <p className="public-playlist-card__created-by">
-          Created by: Playlist Owner
+        <p className='public-playlist-card__created-by'>
+          Created by: {capitalizeWords(owner)}
         </p>
         <PublicPlaylistCardSongs data-songlist-id={`playlist-${id}-songs`}>
           {first_ten_songs.map(
             ({ id, attributes: { title, artist_name } }, index) => {
-              let playlistSongslength = first_ten_songs.length - 1;
+              let playlistSongsLength = first_ten_songs.length - 1;
               return (
                 <span key={id} data-song-id={id}>
-                  {`${title} (${artist_name.join(", ")})${
-                    index === playlistSongslength ? "" : ", "
+                  {`${title} (${artist_name.join(', ')})${
+                    index === playlistSongsLength ? '' : ', '
                   }`}
                 </span>
               );
@@ -63,27 +65,27 @@ function PublicPlaylistCard({ playlist, isAuth }) {
           )}
         </PublicPlaylistCardSongs>
       </PublicPlaylistCardTextWrapper>
-      {isAuth && reactions && (
+      {reactions && (
         <PublicPlaylistCardLikes>
-          <div className="count-wrapper">
+          <div className='count-wrapper'>
             <span
-              className="count"
+              className='count'
               data-dislikes-id={`public-playlist-dislikes-${id}`}
             >
               {reactions.dislikes}
             </span>
-            <span className="btn btn-dislike">
+            <span className='btn btn-dislike'>
               <RiDislikeLine />
             </span>
           </div>
-          <div className="count-wrapper">
+          <div className='count-wrapper'>
             <span
-              className="count"
+              className='count'
               data-likes-id={`public-playlist-likes-${id}`}
             >
               {reactions.likes}
             </span>
-            <span className="btn btn-like">
+            <span className='btn btn-like'>
               <AiOutlineHeart />
             </span>
           </div>
@@ -94,7 +96,6 @@ function PublicPlaylistCard({ playlist, isAuth }) {
 }
 
 PublicPlaylistCard.propTypes = {
-  isAuth: PropTypes.bool,
   playlist: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -110,6 +111,7 @@ PublicPlaylistCard.propTypes = {
       })
     ).isRequired,
     number_likes_dislikes: PropTypes.string.isRequired,
+    owner: PropTypes.string.isRequired,
   }).isRequired,
 };
 

@@ -1,16 +1,16 @@
-import React from "react";
-import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
-import { Title, Subtitle, BaseCarouselControls } from "../Shared.styles";
+import React from 'react';
+import { BsArrowRightShort, BsArrowLeftShort } from 'react-icons/bs';
+import { Title, Subtitle, BaseCarouselControls } from '../Shared.styles';
 import {
   SongsContainer,
   SongsCarouselContainer,
   SongsCarousel,
   SongsCarouselItem,
-} from "./Songs.styles";
+} from './Songs.styles';
 
 function Songs() {
   return (
-    <SongsContainer data-section-name="Songs">
+    <SongsContainer data-section-name='Songs'>
       <Title>Songs</Title>
       <SongsCarouselContainer>
         <Subtitle>Most popular</Subtitle>

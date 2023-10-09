@@ -1,9 +1,9 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { FETCH_HOME_PLAYLISTS_TYPES, PUBLIC_PLAYLIST_URL } from "../constants";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { FETCH_HOME_PLAYLISTS_TYPES, PUBLIC_PLAYLIST_URL } from '../constants';
 
 export const fetchPopularPlaylists = createAsyncThunk(
-  "homePageSlice/fetchPopularPlaylists",
+  'homePageSlice/fetchPopularPlaylists',
   async () => {
     try {
       const response = await axios({
@@ -34,7 +34,7 @@ export const fetchPopularPlaylistsRejected = (state, action) => {
 };
 
 export const fetchFeaturedPlaylists = createAsyncThunk(
-  "homePageSlice/fetchFeaturedPlaylists",
+  'homePageSlice/fetchFeaturedPlaylists',
   async () => {
     try {
       const response = await axios({
@@ -66,7 +66,7 @@ export const fetchFeaturedPlaylistsRejected = (state, action) => {
 };
 
 export const fetchLatestPlaylists = createAsyncThunk(
-  "homePageSlice/fetchLatestPlaylists",
+  'homePageSlice/fetchLatestPlaylists',
   async () => {
     try {
       const response = await axios({

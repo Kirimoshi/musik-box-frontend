@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import {
   BasePlaylistsContainer,
   Subtitle,
   Title,
   oneLineEllipsis,
-} from "../../../shared/Shared.styles";
+} from '../../../shared/Shared.styles';
 
 const likeSize = 52;
 const cardWidth = 264;
@@ -15,7 +15,7 @@ const descrLineHeight = 20;
 const descrMinLines = 3;
 const descrMaxLines = 6;
 const descrFontSize = 14;
-const descrBgColor = "rgba(191, 129, 173, 0.5)";
+const descrBgColor = 'rgba(191, 129, 173, 0.5)';
 const cardPadd = {
   top: 22,
   right: 13,
@@ -59,13 +59,13 @@ export const PlaylistCard = styled.figure`
         : descrLineHeight * descrMinLines + descrVertPaddSum}px;
   grid-template-columns: auto ${likeSize}px;
   grid-template-areas:
-    "name like"
-    "owner owner"
-    "more none"
-    "description description";
+    'name like'
+    'owner owner'
+    'more none'
+    'description description';
   align-items: center;
   transition: grid-template-rows 0.2s ease-in-out;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   overflow: hidden;
 `;
 

@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as thunks from "./public-playlists.thunks";
+import { createSlice } from '@reduxjs/toolkit';
+import * as thunks from './public-playlists.thunks';
 
 const INITIAL_STATE = {
   loading: false,
@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 };
 
 export const publicPlaylistsSlice = createSlice({
-  name: "publicPlaylistsSlice",
+  name: 'publicPlaylistsSlice',
   initialState: INITIAL_STATE,
   reducers: {
     setPublicPlaylists: (state, action) => {

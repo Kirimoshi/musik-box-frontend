@@ -1,5 +1,5 @@
-import React from "react";
-import { FooterContainer, FooterDetails } from "./Footer.styles";
+import React from 'react';
+import { FooterContainer, FooterDetails } from './Footer.styles';
 
 function Footer() {
   const date = new Date();

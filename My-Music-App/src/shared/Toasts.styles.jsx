@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ToatsMsg = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ export const ToatsMsg = styled.div`
   & > p {
     color: var(--m-3-white, #fff);
     text-align: center;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;

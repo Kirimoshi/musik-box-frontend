@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import {
   BaseCarouselContainer,
   BaseCarousel,
   BaseCarouselItem,
-} from "../Shared.styles";
+} from '../Shared.styles';
 
 export const SongsContainer = styled.section``;
 

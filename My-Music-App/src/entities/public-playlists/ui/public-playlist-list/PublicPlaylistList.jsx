@@ -1,19 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import { useSelector } from "react-redux";
-import { isAuthenticatedSelector } from "../../../../store/user/user.selector";
-import { publicPlaylistsSelector } from "../../../../store/public-playlists/public-playlists.selector";
+import { useSelector } from 'react-redux';
+import { publicPlaylistsSelector } from '../../../../store/public-playlists/public-playlists.selector';
 
-import PublicPlaylistCard from "../public-playlist-card/PublicPlaylistCard";
+import PublicPlaylistCard from '../public-playlist-card/PublicPlaylistCard';
 
-import { PublicPlaylistListContainer } from "./PublicPlaylistList.styles";
+import { PublicPlaylistListContainer } from './PublicPlaylistList.styles';
 
 function PublicPlaylistList() {
   const publicPlaylists = useSelector(publicPlaylistsSelector);
-  const isAuth = useSelector(isAuthenticatedSelector);
 
   return (
-    <PublicPlaylistListContainer className="public-playlists__list">
+    <PublicPlaylistListContainer className='public-playlists__list'>
       {publicPlaylists?.map(
         ({
           id,
@@ -22,6 +20,7 @@ function PublicPlaylistList() {
             name,
             first_ten_songs: { data },
             number_likes_dislikes,
+            playlist_owner_nickname: owner,
           },
         }) => (
           <PublicPlaylistCard
@@ -33,8 +32,8 @@ function PublicPlaylistList() {
               name,
               first_ten_songs: data,
               number_likes_dislikes,
+              owner,
             }}
-            isAuth={isAuth}
           />
         )
       )}
