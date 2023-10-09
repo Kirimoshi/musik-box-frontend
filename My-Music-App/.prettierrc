@@ -1,6 +1,7 @@
 {
-  "jsxSingleQuote": false,
-  "singleQuote": false,
+  "jsxSingleQuote": true,
+  "singleQuote": true,
+  "bracketSpacing": true,
   "tabWidth": 2,
   "trailingComma": "es5",
   "useTabs": false

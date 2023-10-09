@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import SignUpFormInput from "./SignUpFormInput";
-import { validate } from "./SignUpValidation";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "./sign-up-styles.css";
-import { constants } from "./constants";
-import { isLoggedIn } from "../../RedirectAuthenticatedUsers/AuthenticatedUsers";
-import paths from "../../router/paths";
+import React, { useState, useEffect } from 'react';
+import SignUpFormInput from './SignUpFormInput';
+import { validate } from './SignUpValidation';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './sign-up-styles.css';
+import { constants } from './constants';
+import { isLoggedIn } from '../../RedirectAuthenticatedUsers/AuthenticatedUsers';
+import paths from '../../router/paths';
 
 function SignUp() {
   const navigate = useNavigate();
@@ -17,10 +17,10 @@ function SignUp() {
     emailInvalidError: false,
   };
   const initialValues = {
-    nickname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    nickname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
   const [signUpValues, setSignUpValues] = useState(initialValues);
   const [signUpErrors, setSignUpErrors] = useState({});
@@ -33,8 +33,8 @@ function SignUp() {
   };
 
   const resetDetails = (name) => {
-    setSignUpValues({ ...signUpValues, [name]: "" });
-    setSignUpErrors({ ...signUpErrors, [name]: "" });
+    setSignUpValues({ ...signUpValues, [name]: '' });
+    setSignUpErrors({ ...signUpErrors, [name]: '' });
   };
 
   useEffect(() => {
@@ -99,63 +99,63 @@ function SignUp() {
   };
 
   return (
-    <div className="signup-page">
-      <div className="signup-header">
+    <div className='signup-page'>
+      <div className='signup-header'>
         <header>
           <p>Sign Up</p>
         </header>
       </div>
-      <div className="signup-details">
-        <form className="signup-form" onSubmit={handleSubmit}>
+      <div className='signup-details'>
+        <form className='signup-form' onSubmit={handleSubmit}>
           <SignUpFormInput
-            label="Nickname"
-            type="text"
-            name="nickname"
+            label='Nickname'
+            type='text'
+            name='nickname'
             value={signUpValues.nickname}
             onChange={handleChange}
             resetDetails={resetDetails}
             signUpErrors={signUpErrors.nickname}
           />
           <SignUpFormInput
-            label="Email"
-            type="text"
-            name="email"
+            label='Email'
+            type='text'
+            name='email'
             value={signUpValues.email}
             onChange={handleChange}
             resetDetails={resetDetails}
             signUpErrors={signUpErrors.email}
           />
           <SignUpFormInput
-            label="Password"
-            type="password"
-            name="password"
+            label='Password'
+            type='password'
+            name='password'
             value={signUpValues.password}
             onChange={handleChange}
             resetDetails={resetDetails}
             signUpErrors={signUpErrors.password}
           />
           <SignUpFormInput
-            label="Password Confirmation"
-            type="password"
-            name="confirmPassword"
+            label='Password Confirmation'
+            type='password'
+            name='confirmPassword'
             value={signUpValues.confirmPassword}
             onChange={handleChange}
             resetDetails={resetDetails}
             signUpErrors={signUpErrors.confirmPassword}
           />
-          <div className="form-submit">
+          <div className='form-submit'>
             <button
-              id="submit-confirm"
-              type="submit"
+              id='submit-confirm'
+              type='submit'
               disabled={disableButton}
               className={
-                disableButton ? "submit-disable-button" : "submit-button"
+                disableButton ? 'submit-disable-button' : 'submit-button'
               }
             >
-              {" "}
+              {' '}
               Sign Up
             </button>
-            <p className="signin-query">Already have an account?</p>
+            <p className='signin-query'>Already have an account?</p>
             <nav>
               <Link to={paths.signIn}>Sign in</Link>
             </nav>

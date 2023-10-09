@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { PaginationControls } from "./Pagination.styles";
-import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { PaginationControls } from './Pagination.styles';
+import { BsArrowRightShort, BsArrowLeftShort } from 'react-icons/bs';
 
 function Pagination({
   handleClick,
@@ -12,15 +12,15 @@ function Pagination({
     <PaginationControls>
       <button
         disabled={!isLeftActive}
-        onClick={() => handleClick("left")}
-        data-left-arrow-id="pagination-left-arrow"
+        onClick={() => handleClick('left')}
+        data-left-arrow-id='pagination-left-arrow'
       >
         <BsArrowLeftShort />
       </button>
       <button
         disabled={!isRightActive}
-        onClick={() => handleClick("right")}
-        data-right-arrow-id="pagination-right-arrow"
+        onClick={() => handleClick('right')}
+        data-right-arrow-id='pagination-right-arrow'
       >
         <BsArrowRightShort />
       </button>

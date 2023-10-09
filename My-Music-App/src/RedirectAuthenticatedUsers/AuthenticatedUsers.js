@@ -1,4 +1,4 @@
-import { store } from "../store/store";
+import { store } from '../store/store';
 
 /**
  * @deprecated Use redux store instead, redux thunk check and refresh tokens and cookies at app loading, see My-Music-App/src/App.js
@@ -10,7 +10,7 @@ export const isLoggedIn = async (loggedStatus, setLoggedStatus, navigate) => {
   // There is result from checking else, because if thunk cannot refresh tokens, it will throw an error at initial app loading
   if (storeState.user.isAuthenticated) {
     setLoggedStatus(true);
-    navigate("/");
+    navigate('/');
   } else {
     setLoggedStatus(false);
   }

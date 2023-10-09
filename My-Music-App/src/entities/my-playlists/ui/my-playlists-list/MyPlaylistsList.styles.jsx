@@ -1,12 +1,12 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 import {
   PublicPlaylistCardContainer,
   PublicPlaylistCardImage,
   PublicPlaylistCardSongs,
   PublicPlaylistCardTextWrapper,
   playlistCardImageWidth,
-} from "../../../public-playlists/ui/public-playlist-card/PublicPLaylistCard.styles";
-import { PublicPlaylistListContainer } from "../../../public-playlists/ui/public-playlist-list/PublicPlaylistList.styles";
+} from '../../../public-playlists/ui/public-playlist-card/PublicPLaylistCard.styles';
+import { PublicPlaylistListContainer } from '../../../public-playlists/ui/public-playlist-list/PublicPlaylistList.styles';
 
 const flexCenter = css`
   display: flex;
@@ -19,7 +19,7 @@ export const MyPlaylistsCardContainer = styled(PublicPlaylistCardContainer)`
     ${playlistCardImageWidth}px calc(100% - ${playlistCardImageWidth}px - 48px)
     48px;
   cursor: unset;
-  ${(props) => (props.$top ? "z-index: 10" : "z-index: auto")}
+  ${(props) => (props.$top ? 'z-index: 10' : 'z-index: auto')}
 `;
 
 export const MyPlaylistsCardImage = styled(PublicPlaylistCardImage)`

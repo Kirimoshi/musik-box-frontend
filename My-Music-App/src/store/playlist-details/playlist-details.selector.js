@@ -1,4 +1,4 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from '@reduxjs/toolkit';
 
 const playlistDetailsSliceSelector = (state) => state.playlistDetailsSlice;
 

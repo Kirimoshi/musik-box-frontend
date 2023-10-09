@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart } from 'react-icons/ai';
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
-} from "react-icons/md";
+} from 'react-icons/md';
 import {
   PlaylistsTitle,
   PlaylistsSubtitle,
@@ -16,9 +16,9 @@ import {
   CardOwner,
   CardDescription,
   DescriptionCTA,
-} from "./PlaylistsPopular.styles";
-import { UPLOADS_URL } from "../../../store/constants";
-import { capitalizeWords } from "../../../store/helpers";
+} from './PlaylistsPopular.styles';
+import { UPLOADS_URL } from '../../../store/constants';
+import { capitalizeWords } from '../../../store/helpers';
 
 const MAX_CHARS = 99;
 
@@ -60,7 +60,7 @@ function PlaylistsPopular({ playlists }) {
               description && description.length >= MAX_CHARS;
             const coverUrl = logo
               ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-              : require("../../../shared/assets/default_playlist_cover.jpg");
+              : require('../../../shared/assets/default_playlist_cover.jpg');
 
             return (
               <PlaylistCard

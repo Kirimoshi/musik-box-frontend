@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as thunks from "./myPlaylists.thunks";
+import { createSlice } from '@reduxjs/toolkit';
+import * as thunks from './myPlaylists.thunks';
 
 const initialState = {
   loading: false,
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const myPlaylistsSlice = createSlice({
-  name: "myPlaylistsSlice",
+  name: 'myPlaylistsSlice',
   initialState: initialState,
   reducers: {
     setMyPlaylists: (state, action) => {
@@ -29,10 +29,7 @@ export const myPlaylistsSlice = createSlice({
         thunks.fetchPageOfMyPlaylists.rejected,
         thunks.fetchPageOfMyPlaylistsRejected
       )
-      .addCase(
-        thunks.deleteMyPlaylist.pending,
-        thunks.deleteMyPlaylistPending
-      )
+      .addCase(thunks.deleteMyPlaylist.pending, thunks.deleteMyPlaylistPending)
       .addCase(
         thunks.deleteMyPlaylist.fulfilled,
         thunks.deleteMyPlaylistFulfilled
@@ -41,30 +38,12 @@ export const myPlaylistsSlice = createSlice({
         thunks.deleteMyPlaylist.rejected,
         thunks.deleteMyPlaylistRejected
       )
-      .addCase(
-        thunks.addMyPlaylist.pending,
-        thunks.addMyPlaylistPending
-      )
-      .addCase(
-        thunks.addMyPlaylist.fulfilled,
-        thunks.addMyPlaylistFulfilled
-      )
-      .addCase(
-        thunks.addMyPlaylist.rejected,
-        thunks.addMyPlaylistRejected
-      )
-      .addCase(
-        thunks.editMyPlaylist.pending,
-        thunks.editMyPlaylistPending
-      )
-      .addCase(
-        thunks.editMyPlaylist.fulfilled,
-        thunks.editMyPlaylistFulfilled
-      )
-      .addCase(
-        thunks.editMyPlaylist.rejected,
-        thunks.editMyPlaylistRejected
-      );
+      .addCase(thunks.addMyPlaylist.pending, thunks.addMyPlaylistPending)
+      .addCase(thunks.addMyPlaylist.fulfilled, thunks.addMyPlaylistFulfilled)
+      .addCase(thunks.addMyPlaylist.rejected, thunks.addMyPlaylistRejected)
+      .addCase(thunks.editMyPlaylist.pending, thunks.editMyPlaylistPending)
+      .addCase(thunks.editMyPlaylist.fulfilled, thunks.editMyPlaylistFulfilled)
+      .addCase(thunks.editMyPlaylist.rejected, thunks.editMyPlaylistRejected);
   },
 });
 

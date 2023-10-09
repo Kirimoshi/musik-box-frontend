@@ -2,17 +2,17 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
-} from "react-router-dom";
-import Home from "../pages/home/Home";
-import SignUp from "../widgets/sign-up/SignUp";
-import SignIn from "../widgets/sign-In/SignIn";
-import Main from "../widgets/main-view/MainView";
-import PrivateRoute from "./PrivateRoute";
-import paths from "./paths";
-import MyPlaylists from "../widgets/my-playlists/MyPlaylists";
-import PlaylistDetails from "../widgets/playlist-details/PlaylistDetails";
-import { FETCH_PLAYLISTS_TYPES } from "../store/constants";
-import PublicPlaylists from "../widgets/public-playlists/PublicPlaylists";
+} from 'react-router-dom';
+import Home from '../pages/home/Home';
+import SignUp from '../widgets/sign-up/SignUp';
+import SignIn from '../widgets/sign-In/SignIn';
+import Main from '../widgets/main-view/MainView';
+import PrivateRoute from './PrivateRoute';
+import paths from './paths';
+import MyPlaylists from '../widgets/my-playlists/MyPlaylists';
+import PlaylistDetails from '../widgets/playlist-details/PlaylistDetails';
+import { FETCH_PLAYLISTS_TYPES } from '../store/constants';
+import PublicPlaylists from '../widgets/public-playlists/PublicPlaylists';
 
 const {
   home,
@@ -28,7 +28,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path={home} element={<Home />}>
-        <Route path="" element={<Main />} />
+        <Route path='' element={<Main />} />
         <Route path={signIn} element={<SignIn />} />
         <Route path={signUp} element={<SignUp />} />
         <Route
@@ -64,7 +64,7 @@ const router = createBrowserRouter(
           }
         />
         <Route path={publicPlaylists} element={<PublicPlaylists />} />
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path='*' element={<h1>Not Found</h1>} />
       </Route>
     </>
   )

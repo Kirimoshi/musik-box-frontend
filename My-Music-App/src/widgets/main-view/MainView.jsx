@@ -1,21 +1,21 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import PlaylistsPopular from "../../entities/main-view/ui/PlaylistsPopular";
-import PlaylistsSmall from "../../entities/main-view/ui/PlaylistsSmall";
-import Pagination from "../../shared/Pagination";
+import PlaylistsPopular from '../../entities/main-view/ui/PlaylistsPopular';
+import PlaylistsSmall from '../../entities/main-view/ui/PlaylistsSmall';
+import Pagination from '../../shared/Pagination';
 
 import {
   popularPlaylistsSelector,
   featuredPlaylistsSelector,
   latestPlaylistsSelector,
-} from "../../store/homePage/homePage.selector";
+} from '../../store/homePage/homePage.selector';
 
 import {
   fetchPopularPlaylists,
   fetchFeaturedPlaylists,
   fetchLatestPlaylists,
-} from "../../store/homePage/homePage.thunks";
+} from '../../store/homePage/homePage.thunks';
 
 function Main() {
   const dispatch = useDispatch();
@@ -42,11 +42,11 @@ function Main() {
         <Pagination onClickLeft={onClickLeft} onClickRight={onClickRight} />
       </>
       <>
-        <PlaylistsSmall subtitle="Featured" playlists={playlistsFeatured} />
+        <PlaylistsSmall subtitle='Featured' playlists={playlistsFeatured} />
         <Pagination onClickLeft={onClickLeft} onClickRight={onClickRight} />
       </>
       <>
-        <PlaylistsSmall subtitle="Latest" playlists={playlistsLatest} />
+        <PlaylistsSmall subtitle='Latest' playlists={playlistsLatest} />
         <Pagination onClickLeft={onClickLeft} onClickRight={onClickRight} />
       </>
     </>

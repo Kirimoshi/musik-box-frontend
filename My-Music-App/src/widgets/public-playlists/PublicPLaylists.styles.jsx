@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ContentWrapper = styled.div`
   display: flex;
@@ -64,7 +64,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 `;
 
 export const SortPlaylistsMenu = styled.div`
@@ -75,7 +75,7 @@ export const SortPlaylistsMenu = styled.div`
   justify-content: space-evenly;
   column-gap: 10px;
   & > p.sort-group-name {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 12px;
     font-weight: 500;
     line-height: 16px;
@@ -96,7 +96,7 @@ export const SortPlaylistsMenuOption = styled.p`
   position: relative;
   padding: 0 24px 0 16px;
   height: 40px;
-  & > input[type="radio"] {
+  & > input[type='radio'] {
     display: none;
   }
   & > label.checkbox-label {
@@ -106,7 +106,7 @@ export const SortPlaylistsMenuOption = styled.p`
   }
 
   & > label.checkbox-label::after {
-    content: "";
+    content: '';
     display: inline;
     position: absolute;
     right: 5%;
@@ -116,7 +116,7 @@ export const SortPlaylistsMenuOption = styled.p`
     color: inherit;
   }
   & > input:checked + label.checkbox-label::after {
-    content: "✔";
+    content: '✔';
     display: inline;
     color: white;
     width: 24px;

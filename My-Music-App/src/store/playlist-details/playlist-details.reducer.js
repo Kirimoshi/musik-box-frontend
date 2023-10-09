@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import * as thunks from "./playlist-details.thunks";
+import { createSlice } from '@reduxjs/toolkit';
+import * as thunks from './playlist-details.thunks';
 
 const initialState = {
   loading: false,
@@ -26,7 +26,7 @@ const initialState = {
 };
 
 export const playlistDetailsSlice = createSlice({
-  name: "playlistDetailsSlice",
+  name: 'playlistDetailsSlice',
   initialState: initialState,
   reducers: {
     setCurrentPlaylist: (state, action) => {

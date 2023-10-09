@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { userSelector } from "../../../store/user/user.selector";
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../../store/user/user.selector';
 
-import { MenuContainer, MenuItem, MenuLink } from "./SidebarMenu.styles";
+import { MenuContainer, MenuItem, MenuLink } from './SidebarMenu.styles';
 
 function SidebarMenu({ menuObject }) {
   const { isAuthenticated: isAuth } = useSelector(userSelector);
@@ -14,7 +14,7 @@ function SidebarMenu({ menuObject }) {
     setHighlightedButton(index);
   };
   return (
-    <MenuContainer className="sidebar__menu">
+    <MenuContainer className='sidebar__menu'>
       <ul>
         {menuObject
           ?.filter(

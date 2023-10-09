@@ -1,17 +1,17 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { FETCH_PLAYLISTS_TYPES, MY_PLAYLISTS_URL } from "../constants";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { FETCH_PLAYLISTS_TYPES, MY_PLAYLISTS_URL } from '../constants';
 
 // Fetch page of ten My Playlist Data Thunk
 export const fetchPageOfMyPlaylists = createAsyncThunk(
-  "myPlaylistsSlice/fetchPageOfMyPlaylists",
+  'myPlaylistsSlice/fetchPageOfMyPlaylists',
   async (page, { getState }) => {
     const accessToken = getState().user.accessToken;
     try {
       const response = await axios({
         url: `${MY_PLAYLISTS_URL}?playlist_type=${FETCH_PLAYLISTS_TYPES.MY}&page=${page}`,
         headers: {
-          Accept: "*/*",
+          Accept: '*/*',
           Authorization: `Bearer ${accessToken}`,
         },
       });
@@ -36,16 +36,16 @@ export const fetchPageOfMyPlaylistsRejected = (state, action) => {
 
 // Delete My Playlist Thunk
 export const deleteMyPlaylist = createAsyncThunk(
-  "myPlaylistsSlice/deleteMyPlaylist",
+  'myPlaylistsSlice/deleteMyPlaylist',
   async (playlistId, { getState }) => {
     const accessToken = getState().user.accessToken;
 
     try {
       const response = await axios({
         url: `${MY_PLAYLISTS_URL}/${playlistId}`,
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          Accept: "*/*",
+          Accept: '*/*',
           Authorization: `Bearer ${accessToken}`,
         },
       });
@@ -73,18 +73,18 @@ export const deleteMyPlaylistRejected = (state, action) => {
 
 // Add My Playlist Thunk
 export const addMyPlaylist = createAsyncThunk(
-  "myPlaylistsSlice/addMyPlaylist",
+  'myPlaylistsSlice/addMyPlaylist',
   async (formData, { getState }) => {
     const accessToken = getState().user.accessToken;
 
     try {
       const response = await axios({
         url: `${MY_PLAYLISTS_URL}`,
-        method: "POST",
+        method: 'POST',
         data: formData,
         headers: {
-          Accept: "*/*",
-          "Content-Type": "multipart/form-data",
+          Accept: '*/*',
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${accessToken}`,
         },
       });
@@ -116,18 +116,18 @@ export const addMyPlaylistRejected = (state, action) => {
 
 // Edit My Playlist Thunk
 export const editMyPlaylist = createAsyncThunk(
-  "myPlaylistsSlice/editMyPlaylist",
+  'myPlaylistsSlice/editMyPlaylist',
   async (data, { getState }) => {
     const accessToken = getState().user.accessToken;
     let { playlistId, formData } = data;
     try {
       const response = await axios({
         url: `${MY_PLAYLISTS_URL}/${playlistId}`,
-        method: "PUT",
+        method: 'PUT',
         data: formData,
         headers: {
-          Accept: "*/*",
-          "Content-Type": "multipart/form-data",
+          Accept: '*/*',
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${accessToken}`,
         },
       });

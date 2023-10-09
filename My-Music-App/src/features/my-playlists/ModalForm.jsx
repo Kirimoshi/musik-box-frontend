@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-import uploadImage from "../../shared/assets/uploadImage.svg";
-import closeLogo from "../../shared/assets/closeLogo.svg";
+import uploadImage from '../../shared/assets/uploadImage.svg';
+import closeLogo from '../../shared/assets/closeLogo.svg';
 
-import { validate } from "../shared/CreateNewPlaylistValidation";
-import ModalDialog from "../../shared/ModalDialog";
-import { UPLOADS_URL } from "../../store/constants";
+import { validate } from '../shared/CreateNewPlaylistValidation';
+import ModalDialog from '../../shared/ModalDialog';
+import { UPLOADS_URL } from '../../store/constants';
 
 import {
   ModalContainer,
@@ -29,7 +29,7 @@ import {
   PlaylistDescriptionWrap,
   DescriptionInput,
   SubmitButton,
-} from "./ModalForm.styles";
+} from './ModalForm.styles';
 
 function ModalForm({ options }) {
   const {
@@ -55,9 +55,9 @@ function ModalForm({ options }) {
   }, [isModalFormOpen]);
 
   const initialValues = {
-    playlistLogo: "",
-    playlistName: playlist?.attributes?.name ?? "",
-    description: playlist?.attributes?.description ?? "",
+    playlistLogo: '',
+    playlistName: playlist?.attributes?.name ?? '',
+    description: playlist?.attributes?.description ?? '',
   };
   const [playlistDetails, setPlaylistDetails] = useState(initialValues);
   const [createPlaylistErrors, setCreatePlaylistErrors] = useState({});
@@ -70,7 +70,7 @@ function ModalForm({ options }) {
   const logo = playlist?.attributes?.logo || null;
   const coverURL = playlist?.attributes?.logo
     ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-    : "";
+    : '';
 
   useEffect(() => {
     if (!coverURL) {
@@ -111,9 +111,9 @@ function ModalForm({ options }) {
     e.preventDefault();
     let formData = new FormData();
     let playlistId = modalPlaylistId;
-    formData.append("name", playlistDetails.playlistName);
-    formData.append("logo", playlistDetails.playlistLogo);
-    formData.append("description", playlistDetails.description);
+    formData.append('name', playlistDetails.playlistName);
+    formData.append('logo', playlistDetails.playlistLogo);
+    formData.append('description', playlistDetails.description);
     const data = { formData, playlistId };
     onAction(data);
     onClose();
@@ -121,7 +121,7 @@ function ModalForm({ options }) {
 
   const handleImageClick = () => {
     imageInputRef.current.click();
-    setCreatePlaylistErrors({ ...createPlaylistErrors, playlistLogo: "" });
+    setCreatePlaylistErrors({ ...createPlaylistErrors, playlistLogo: '' });
   };
 
   const handleImageChange = (e) => {
@@ -132,45 +132,45 @@ function ModalForm({ options }) {
   };
 
   return (
-    <ModalContainer ref={formRef} className="ModalForm__container">
+    <ModalContainer ref={formRef} className='ModalForm__container'>
       <ModalDialog
-        className="modal__delete-playlist"
+        className='modal__delete-playlist'
         options={{
           isModalOpen,
-          actionButtonText: "Discard",
-          closeButtonText: "Cancel",
-          title: "Are you sure you want to discard these changes?",
+          actionButtonText: 'Discard',
+          closeButtonText: 'Cancel',
+          title: 'Are you sure you want to discard these changes?',
           onAction: handleConfirmationDialog,
           onClose: handleCloseModal,
         }}
       />
       <Header>
-        <Title className="ModalForm__title">{modalTitle}</Title>
+        <Title className='ModalForm__title'>{modalTitle}</Title>
         <CloseButton
-          className="ModalForm__closeButton"
+          className='ModalForm__closeButton'
           onClick={handleOpenModal}
         >
-          <img src={closeLogo} alt="button to close modal" />
+          <img src={closeLogo} alt='button to close modal' />
         </CloseButton>
       </Header>
       <Details>
         <Form onSubmit={handleSubmit}>
-          <LogoItem className="ModalForm__logoItem">
+          <LogoItem className='ModalForm__logoItem'>
             <LogoWrap onClick={handleImageClick}>
               {playlistDetails.playlistLogo &&
               !createPlaylistErrors.playlistLogo ? (
                 <CoverImage
                   src={URL.createObjectURL(playlistDetails.playlistLogo)}
-                  alt="Playlist Logo"
+                  alt='Playlist Logo'
                 />
               ) : (
-                <CoverImage src={uploadImage} alt="Playlist Logo" />
+                <CoverImage src={uploadImage} alt='Playlist Logo' />
               )}
               <FileInput
-                type="file"
+                type='file'
                 ref={imageInputRef}
                 onChange={handleImageChange}
-                accept="image/jpeg, image/png, image/jpg, image/svg"
+                accept='image/jpeg, image/png, image/jpg, image/svg'
               />
             </LogoWrap>
             <ValidationLabel>
@@ -181,9 +181,9 @@ function ModalForm({ options }) {
             <FormLabel>Playlist name</FormLabel>
             <PlaylistNameWrap>
               <NameInput
-                className="ModalForm__inputName"
-                type="text"
-                name="playlistName"
+                className='ModalForm__inputName'
+                type='text'
+                name='playlistName'
                 value={playlistDetails.playlistName}
                 onChange={handleChange}
               />
@@ -196,12 +196,12 @@ function ModalForm({ options }) {
             <FormLabel>Description</FormLabel>
             <PlaylistDescriptionWrap>
               <DescriptionInput
-                className="ModalForm__inputDescription"
-                type="text"
-                name="description"
-                rows="4"
-                cols="50"
-                value={playlistDetails.description || ""}
+                className='ModalForm__inputDescription'
+                type='text'
+                name='description'
+                rows='4'
+                cols='50'
+                value={playlistDetails.description || ''}
                 onChange={handleChange}
               />
               <ValidationLabel>
@@ -210,8 +210,8 @@ function ModalForm({ options }) {
             </PlaylistDescriptionWrap>
           </DescriptionContainer>
           <SubmitButton
-            className="ModalForm__submitButton"
-            type="submit"
+            className='ModalForm__submitButton'
+            type='submit'
             onSubmit={handleSubmit}
           >
             {actionButtonText}

@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from 'react-router-dom';
 
-import { rehydrateTokens } from "./store/user/user.reducer";
-import { refreshUser } from "./store/user/user.thunks";
-import { userSelector } from "./store/user/user.selector";
-import { useDispatch, useSelector } from "react-redux";
-import router from "./router/router";
+import { rehydrateTokens } from './store/user/user.reducer';
+import { refreshUser } from './store/user/user.thunks';
+import { userSelector } from './store/user/user.selector';
+import { useDispatch, useSelector } from 'react-redux';
+import router from './router/router';
 
-import "./App.css";
+import './App.css';
 
 function App() {
   const dispatch = useDispatch();
@@ -62,7 +62,7 @@ function App() {
   ]);
 
   return (
-    <div className="App">
+    <div className='App'>
       <RouterProvider router={router} />
       <ToastContainer />
     </div>

@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
-import { IoSearchSharp } from "react-icons/io5";
-import { IoAddSharp } from "react-icons/io5";
-import { PiDotBold } from "react-icons/pi";
-import axios from "axios";
+import React, { useState } from 'react';
+import { IoSearchSharp } from 'react-icons/io5';
+import { IoAddSharp } from 'react-icons/io5';
+import { PiDotBold } from 'react-icons/pi';
+import axios from 'axios';
 
-import closeLogo from "../closeLogo.svg";
-import media from "../media.jpg";
-import "../styles.css";
-import { constants } from "../Constants";
+import closeLogo from '../closeLogo.svg';
+import media from '../media.jpg';
+import '../styles.css';
+import { constants } from '../Constants';
 export function AddSongsToPlaylists({
   handleAddSongModal,
   modalPlaylistId,
@@ -24,9 +24,9 @@ export function AddSongsToPlaylists({
   const fetchSongsData = async () => {
     await axios
       .get(constants.Songs_API_URL, {
-        params: { page: 1, search: searchSong, include: "album" },
+        params: { page: 1, search: searchSong, include: 'album' },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       })
       .then((response) => {
@@ -39,12 +39,12 @@ export function AddSongsToPlaylists({
       .post(
         constants.CreateNewPlaylistSong_API_URL +
           modalPlaylistId +
-          "/playlist_songs/?song_id=" +
+          '/playlist_songs/?song_id=' +
           id,
         null,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         }
       )
@@ -54,46 +54,46 @@ export function AddSongsToPlaylists({
   };
 
   return (
-    <div className="addsongsToPlaylist-main">
-      <div className="addsongs-header">
+    <div className='addsongsToPlaylist-main'>
+      <div className='addsongs-header'>
         <p>Songs</p>
-        <p className="addsong-close-btn" onClick={handleAddSongModal}>
-          <img src={closeLogo} alt="button to close modal" />
+        <p className='addsong-close-btn' onClick={handleAddSongModal}>
+          <img src={closeLogo} alt='button to close modal' />
         </p>
       </div>
-      <div className="addsongs-searchbar">
-        <div className="searchbar-input-box">
+      <div className='addsongs-searchbar'>
+        <div className='searchbar-input-box'>
           <input
-            type="text"
-            placeholder="Type something"
+            type='text'
+            placeholder='Type something'
             value={searchSong}
             onChange={handleSearch}
           />
         </div>
-        <div className="searchbar-searchIcon">
-          <IoSearchSharp className="searchIcon" onClick={fetchSongsData} />
+        <div className='searchbar-searchIcon'>
+          <IoSearchSharp className='searchIcon' onClick={fetchSongsData} />
         </div>
       </div>
-      <div className="addsongs-main">
-        <div className="addsongs-title-type">
+      <div className='addsongs-main'>
+        <div className='addsongs-title-type'>
           <p>Most Popular</p>
         </div>
-        <div className="addsongs-songlist">
+        <div className='addsongs-songlist'>
           {songs &&
             songs.map((song) => (
-              <div className="addsong-item" key={song.id}>
-                <div className="addsong-song-item-img">
+              <div className='addsong-item' key={song.id}>
+                <div className='addsong-song-item-img'>
                   <img
                     src={media}
-                    alt="song preview"
-                    className="addsong-song-img"
+                    alt='song preview'
+                    className='addsong-song-img'
                   />
                 </div>
-                <div className="addsong-artistInfo">
-                  <div className="addsong-song-title">
+                <div className='addsong-artistInfo'>
+                  <div className='addsong-song-title'>
                     <p>{song.attributes.title}</p>
                   </div>
-                  <div className="addsong-song-info">
+                  <div className='addsong-song-info'>
                     <p>{song.attributes.artist}</p>
                     <PiDotBold />
                     <p>album</p>
@@ -101,7 +101,7 @@ export function AddSongsToPlaylists({
                 </div>
                 <div>
                   <IoAddSharp
-                    className="addsong-item-icon"
+                    className='addsong-item-icon'
                     onClick={() => postSongsData(song.id)}
                   />
                 </div>

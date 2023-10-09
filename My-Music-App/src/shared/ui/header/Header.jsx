@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { HeaderStyled } from "./Header.styles";
+import { HeaderStyled } from './Header.styles';
 
 function Header({ title }) {
   return <HeaderStyled> {title} </HeaderStyled>;

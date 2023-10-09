@@ -1,16 +1,16 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { PUBLIC_PLAYLIST_URL } from "../constants";
-import { default as makeAxiosRequest } from "../lib/helpers/makeAxiosRequest";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { PUBLIC_PLAYLIST_URL } from '../constants';
+import { default as makeAxiosRequest } from '../lib/helpers/makeAxiosRequest';
 
 export const fetchPublicPlaylists = createAsyncThunk(
-  "publicPlaylistsSlice/fetchPublicPlaylists",
+  'publicPlaylistsSlice/fetchPublicPlaylists',
   async (page) => {
     const headersList = {
-      Accept: "*/*",
+      Accept: '*/*',
     };
     const reqOptions = {
       url: `${PUBLIC_PLAYLIST_URL}?page=${page}&include=songs`,
-      method: "GET",
+      method: 'GET',
       headers: headersList,
     };
 
@@ -38,14 +38,14 @@ export const fetchPublicPlaylistsRejected = (state, action) => {
 };
 
 export const fetchFilterPlaylists = createAsyncThunk(
-  "publicPlaylistsSlice/fetchFilterPlaylists",
+  'publicPlaylistsSlice/fetchFilterPlaylists',
   async ({ page, term }) => {
     const headersList = {
-      Accept: "*/*",
+      Accept: '*/*',
     };
     const reqOptions = {
       url: `${PUBLIC_PLAYLIST_URL}?page=${page}&search=${term}&include=songs`,
-      method: "GET",
+      method: 'GET',
       headers: headersList,
     };
 
@@ -76,14 +76,14 @@ export const fetchFilterPlaylistsRejected = (state, action) => {
 };
 
 export const fetchSortedPlaylists = createAsyncThunk(
-  "publicPlaylistsSlice/fetchSortedPlaylists",
+  'publicPlaylistsSlice/fetchSortedPlaylists',
   async ({ page, sortBy, sortDirection }) => {
     const headersList = {
-      Accept: "*/*",
+      Accept: '*/*',
     };
     const reqOptions = {
       url: `${PUBLIC_PLAYLIST_URL}?page=${page}&sort_by=${sortBy}&sort_order=${sortDirection}&include=songs`,
-      method: "GET",
+      method: 'GET',
       headers: headersList,
     };
 

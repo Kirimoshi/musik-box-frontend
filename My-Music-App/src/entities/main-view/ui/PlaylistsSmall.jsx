@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
-} from "react-icons/md";
-import { Subtitle } from "../../../shared/Shared.styles";
+} from 'react-icons/md';
+import { Subtitle } from '../../../shared/Shared.styles';
 import {
   PlaylistContainer,
   PlaylistCard,
@@ -13,9 +13,9 @@ import {
   CardOwner,
   CardDescription,
   DescriptionCTA,
-} from "./PlaylistsSmall.styles";
-import { UPLOADS_URL } from "../../../store/constants";
-import { capitalizeWords } from "../../../store/helpers";
+} from './PlaylistsSmall.styles';
+import { UPLOADS_URL } from '../../../store/constants';
+import { capitalizeWords } from '../../../store/helpers';
 
 const MAX_CHARS = 25;
 
@@ -40,7 +40,7 @@ function PlaylistsSmall({ playlists, subtitle }) {
   return (
     <div>
       <Subtitle>{subtitle}</Subtitle>
-      <PlaylistContainer data-test-name="cards wraper">
+      <PlaylistContainer data-test-name='cards wraper'>
         {playlists?.map(
           ({
             id,
@@ -57,12 +57,12 @@ function PlaylistsSmall({ playlists, subtitle }) {
               description && description.length >= MAX_CHARS;
             const coverUrl = logo
               ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-              : require("../../../shared/assets/default_playlist_cover.jpg");
+              : require('../../../shared/assets/default_playlist_cover.jpg');
 
             return (
               <PlaylistCard key={id} $isExpanded={isExpanded}>
                 <Cover
-                  role="img"
+                  role='img'
                   aria-label={`playlist ${name} cover`}
                   $isExpanded={isExpanded}
                   $coverUrl={coverUrl}
