@@ -16,7 +16,7 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
     Then logoutSuccessMessage1 message should be displayed: <logout_message1>
     Then logoutSuccessMessage2 message should be displayed: <logout_message2>
     And the user storage data is empty
-    Then the User should be redirected to the Home page
+    Then the user is on the "home" page
 
     Examples:
       | logout_message1                       | logout_message2    |
@@ -25,7 +25,7 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
   Scenario Outline: 2. Verify that the user with valid data can sing in
     Given the user is open "signIn" page
     When the user sing-ins with <email> and <password>
-    Then the User should be redirected to the Home page
+    Then the user is on the "home" page
 
     Examples:
       | email                   | password     |
@@ -37,7 +37,7 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
     Then logoutUnsuccessMessage1 message should be displayed: <logout_message1>
     Then logoutUnsuccessMessage2 message should be displayed: <logout_message2>
     And the user storage data is not empty
-    Then the User should be redirected to the Home page
+    Then the user is on the "home" page
 
     Examples:
       | logout_message1                                       | logout_message2         |

@@ -5,7 +5,7 @@ export class LoginPage extends BasePage {
   constructor() {
     super();
     this.url = 'admin/login';
-    this.fieldset = 'fieldset'
+    this.fieldset = `fieldset`
   }
 
   get inputEmail() {

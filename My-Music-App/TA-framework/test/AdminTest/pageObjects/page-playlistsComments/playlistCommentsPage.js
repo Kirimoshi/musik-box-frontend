@@ -4,38 +4,39 @@ export class PlaylistComments extends BasePage {
   constructor() {
     super();
     this.url = 'playlist_comments';
-    this.playlistComments = '//table[@id="index_table_playlist_comments"]'
+    this.playlistComments = `tr.odd`
   }
 
   get commentId() {
-    return $(`${this.playlistComments}//a[text()="Id"]`);
+    return $$(`${this.playlistComments} .col.col-id`);
   }
 
-  get userEmail() {
-    return $(`${this.playlistComments}//th[text()="User Email"]`);
+  get commentUserEmail() {
+    return $$(`${this.playlistComments} .col.col-user_email`);
   }
 
-  get commentsContent() {
-    return $(`${this.playlistComments}//a[text()="Content"]`);
+  get commentContent() {
+    return $$(`${this.playlistComments} .col.col-content`);
   }
 
-  get playlistName() {
-    return $(`${this.playlistComments}//th[text()="Playlist Name"]`);
+  get commentPlaylistName() {
+    return $$(`${this.playlistComments} .col.col-playlist_name`);
   }
 
-  get createdCommentDate() {
-    return $(`${this.playlistComments}//a[text()="Created At"]`);
+  get commentCreatedDate() {
+    return $$(`${this.playlistComments} .col.col-created_at`);
+  }
+
+  get commentDeleteButton() {
+    return $$(`${this.playlistComments} a.delete_link.member_link`);
+  }
+
+  get commentViewButton() {
+    return $$(`${this.playlistComments} a.view_link.member_link`);
   }
 
   get playlistComment() {
-    return $$(`${this.playlistComments}//tbody//tr//td`);
+    return $$(`table#index_table_playlist_comments td.col.col-id`);
   }
 
-  get deleteButton() {
-    return $$(`${this.playlistComments}//a[@data-method="delete"]`);
-  }
-
-  get successDeleteMessage() {
-    return $(`.flashes .flash.flash_notice`);
-  }
 }

@@ -1,34 +1,26 @@
 /* eslint-disable no-undef */
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
+import BaseElements from "../pageObjects/elements/baseElements";
 const {
   camelize,
   pageNumber,
   withoutEndpointPage
-} = require("../../utils/helpers");
+} = require("../../utils-admin/helpers");
+const { adminPagesUrl } = require("../../utils-admin/data");
 const { assert } = require("chai");
 
-const pagesUrl = {
-  admin: Pages['admin'].url,
-  admin_users: Pages['admin_users'].url,
-  playlist_comments: Pages['playlist_comments'].url,
-  login: Pages['login'].url,
-  new_admin: Pages['new_admin'].url,
-  edit: Pages['edit'].url
-};
 
-Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentPageNumber, page) {
+Then(/the admin is on the "([^"]*)" ("([^"]*)"\s)?page/, async function (page, currentPageNumber) {
   const currentUrl = await browser.getUrl();
   let expectedUrl;
   let actualUrl;
-
   if (currentPageNumber) {
     currentPageNumber = await pageNumber();
     actualUrl = await withoutEndpointPage(await currentUrl) + currentPageNumber;
   } else {
-    actualUrl = await withoutEndpointPage(await currentUrl) + pagesUrl[page];
+    actualUrl = await withoutEndpointPage(await currentUrl) + adminPagesUrl[page];
   }
-
   await browser.waitUntil(async function () {
     expectedUrl = await browser.getUrl();
     return expectedUrl === actualUrl;
@@ -36,13 +28,22 @@ Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentP
     timeout: 5000,
     timeoutMsg: 'expected link to be changed after 5s'
   });
-
   assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });
 
-Then(/the "([^"]*)" page has "([^"]*)"/, async (page, element) => {
-  let currentElement = await Pages[page][camelize(`${element}`)].isDisplayed();
-  assert.isTrue(await currentElement, `${currentElement} is not displayed`)
+Then(/the "([^"]*)" page (\d+)? ?"([^"]*)" has "([^"]*)"/, async (page, numeral, type, element) => {
+  let currentElement = await Pages[page][camelize(`${type}${element}`)][numeral - 1];
+  let expectedResult;
+  if (page === "playlists" && element === "Edit Button") {
+    if (element === "undefined") {
+      assert.isFalse(await currentElement, `${currentElement} is displayed`)
+    } else {
+      expectedResult = await currentElement;
+    }
+  } else {
+    expectedResult = await currentElement;
+  }
+  assert.isTrue(await expectedResult.isDisplayed(), `${numeral} ${currentElement} is not displayed`)
 });
 
 Then(/the "([^"]*)" page (\d+)? ?"([^"]*)" has the initial value/, async function (page, numeral, element) {
@@ -55,30 +56,39 @@ Then(/the (\d+)? ?"([^"]*)" is deleted from "([^"]*)" page/, async function (num
     `Expected the current value to be one less than the ${this.initialValue}`)
 });
 
-Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (page, element, type, expectedText) {
+Then(/the "([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/, async function (place, page, element, type, expectedText) {
   let currentElementText;
-  await browser.waitUntil(async function () {
-    currentElementText = await Pages[page][camelize(`${element}${type}`)].getText()
-    return currentElementText
-  }, {
-    timeout: 5000,
-    timeoutMsg: 'expected text to be changed after 5s'
-  })
-  if (currentElementText.includes('\n')) {
-    currentElementText = await currentElementText.split('\n').join(' ');
+  if (place === "header") {
+    currentElementText = await BaseElements[place][camelize(`${element}${type}`)];
+  } else if (!page || page) {
+     currentElementText = await Pages[place][camelize(`${element}${type}`)];
+  } else {
+    throw new Error(`${expectedText} wasn't found`)
   }
-  assert.equal(await currentElementText, expectedText, `${page} doesn't match ${expectedText} value`)
+  assert.equal(await currentElementText.getText(), expectedText, `${place} doesn't match ${expectedText} value`)
 });
 
-Then(/the "([^"]*)" user "([^"]*)" "([^"]*)"/, async function (page, element, type) {
-  const currentElement = await Pages[page][camelize(`${element}${type}`)].getText();
-  const currentElementDate = currentElement.replace(/\s\d{2}:\d{2}$/, '');
+Then(/the "([^"]*)" is "([^"]*)" "([^"]*)"/, async function (page, element, type) {
+  const currentElementDate = await Pages[page][camelize(`${element}${type}`)].getText();
+  const formattedCurrentElementDate = await currentElementDate.replace(/\d(?=\D*$)/, '');
   const date = new Date()
   const options = {
+    timeZone: 'UTC',
+    timeZoneName: 'short',
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+     day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
   };
   const currentDate = date.toLocaleDateString('en-US', options);
-  assert.equal(await currentElementDate, currentDate, `${page} doesn't match ${currentDate} value`)
+  const formattedCurrentDate = currentDate.replace(/ at|\sUTC|\d(?=\D*$)/g, '').trim();
+  assert.equal(await formattedCurrentElementDate, formattedCurrentDate, `${page} doesn't match ${currentDate} value`)
+});
+
+Then(/the length of "([^"]*)" in the "([^"]*)" page is (\d+)? ?"([^"]*)"/,
+  async function (type, page, expectedLength, element) {
+    let elementsLength = await Pages[page][camelize(`${type}${element}`)];
+    assert.equal(elementsLength.length, expectedLength, `${page} doesn't match ${expectedLength} value`);
 });
