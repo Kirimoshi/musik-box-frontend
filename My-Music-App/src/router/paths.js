@@ -7,6 +7,7 @@ const paths = {
   publicPlaylists: '/public-playlists',
   publicPlaylistDetails: '/public-playlists/details',
   sharedPlaylists: '/shared-playlists',
+  sharedPlaylistDetails: '/shared-playlists/details',
   friends: '/friends',
 };
 

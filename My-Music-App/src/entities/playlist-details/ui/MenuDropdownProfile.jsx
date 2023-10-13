@@ -29,7 +29,7 @@ import {
 function MenuDropdownProfile({
   playlistId,
   setIsProfileMenuOpen,
-  shoudRenderTypeChange,
+  shouldRenderTypeChange,
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -143,7 +143,7 @@ function MenuDropdownProfile({
         <MenuItem className='profile-menu__edit'>
           <RiPencilFill /> Edit
         </MenuItem>
-        {shoudRenderTypeChange && (
+        {shouldRenderTypeChange && (
           <>
             <MenuDivider />
             <MenuItem
@@ -174,7 +174,7 @@ function MenuDropdownProfile({
 MenuDropdownProfile.propTypes = {
   playlistId: PropTypes.string.isRequired,
   setIsProfileMenuOpen: PropTypes.func.isRequired,
-  shoudRenderTypeChange: PropTypes.bool.isRequired,
+  shouldRenderTypeChange: PropTypes.bool.isRequired,
 };
 
 export default MenuDropdownProfile;

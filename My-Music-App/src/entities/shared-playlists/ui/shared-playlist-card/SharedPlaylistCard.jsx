@@ -6,51 +6,50 @@ import PropTypes from 'prop-types';
 import { RiDislikeLine } from 'react-icons/ri';
 import { AiOutlineHeart } from 'react-icons/ai';
 import {
-  PublicPlaylistCardContainer,
-  PublicPlaylistCardImage,
-  PublicPlaylistCardName,
-  PublicPlaylistCardSongs,
-  PublicPlaylistCardTextWrapper,
-  PublicPlaylistCardLikes,
-} from './PublicPLaylistCard.styles';
+  PublicPlaylistCardContainer as SharedPlaylistCardContainer,
+  PublicPlaylistCardImage as SharedPlaylistCardImage,
+  PublicPlaylistCardLikes as SharedPlaylistCardLikes,
+  PublicPlaylistCardName as SharedPlaylistCardName,
+  PublicPlaylistCardSongs as SharedPlaylistCardSongs,
+  PublicPlaylistCardTextWrapper as SharedPlaylistCardTextWrapper,
+} from '../../../public-playlists/ui/public-playlist-card/PublicPLaylistCard.styles';
 
-import { capitalizeWords } from '../../../../store/helpers';
-import { parseLikesDislikes } from '../../../../store/helpers';
-import constants from '../../constants/constants';
+import { capitalizeWords, parseLikesDislikes } from '../../../../store/helpers';
+import constants from '../../../public-playlists/constants/constants';
 import paths from '../../../../router/paths';
 
-function PublicPlaylistCard({ playlist }) {
+export function SharedPlaylistCard({ playlist }) {
   const navigate = useNavigate();
   const { id, name, logo, first_ten_songs, number_likes_dislikes, owner } =
     playlist;
   const reactions = parseLikesDislikes(number_likes_dislikes);
   const handleNavigate = useCallback(() => {
-    navigate(`${paths.publicPlaylistDetails}/${id}`);
+    navigate(`${paths.sharedPlaylistDetails}/${id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
-    <PublicPlaylistCardContainer
+    <SharedPlaylistCardContainer
       onClick={handleNavigate}
-      className='public-playlist-card__wrapper'
+      className='shared-playlist-card__wrapper'
     >
-      <PublicPlaylistCardImage
+      <SharedPlaylistCardImage
         src={
           logo
             ? constants.store_URL + logo.id
             : require('../../../../shared/assets/default_playlist_cover.jpg')
         }
         alt={`song preview for ${name}`}
-        className='public-playlist-card__image'
+        className='shared-playlist-card__image'
       />
-      <PublicPlaylistCardTextWrapper>
-        <PublicPlaylistCardName className='public-playlist-card__name'>
+      <SharedPlaylistCardTextWrapper>
+        <SharedPlaylistCardName className='shared-playlist-card__name'>
           {name}
-        </PublicPlaylistCardName>
-        <p className='public-playlist-card__created-by'>
+        </SharedPlaylistCardName>
+        <p className='shared-playlist-card__created-by'>
           Created by: {capitalizeWords(owner)}
         </p>
-        <PublicPlaylistCardSongs data-songlist-id={`playlist-${id}-songs`}>
+        <SharedPlaylistCardSongs data-songlist-id={`playlist-${id}-songs`}>
           {first_ten_songs.map(
             ({ id, attributes: { title, artist_name } }, index) => {
               let playlistSongsLength = first_ten_songs.length - 1;
@@ -63,13 +62,13 @@ function PublicPlaylistCard({ playlist }) {
               );
             }
           )}
-        </PublicPlaylistCardSongs>
-      </PublicPlaylistCardTextWrapper>
-      <PublicPlaylistCardLikes>
+        </SharedPlaylistCardSongs>
+      </SharedPlaylistCardTextWrapper>
+      <SharedPlaylistCardLikes>
         <div className='count-wrapper'>
           <span
             className='count'
-            data-dislikes-id={`public-playlist-dislikes-${id}`}
+            data-dislikes-id={`shared-playlist-dislikes-${id}`}
           >
             {reactions.dislikes}
           </span>
@@ -78,19 +77,19 @@ function PublicPlaylistCard({ playlist }) {
           </span>
         </div>
         <div className='count-wrapper'>
-          <span className='count' data-likes-id={`public-playlist-likes-${id}`}>
+          <span className='count' data-likes-id={`shared-playlist-likes-${id}`}>
             {reactions.likes}
           </span>
           <span className='btn btn-like'>
             <AiOutlineHeart />
           </span>
         </div>
-      </PublicPlaylistCardLikes>
-    </PublicPlaylistCardContainer>
+      </SharedPlaylistCardLikes>
+    </SharedPlaylistCardContainer>
   );
 }
 
-PublicPlaylistCard.propTypes = {
+SharedPlaylistCard.propTypes = {
   playlist: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -109,5 +108,3 @@ PublicPlaylistCard.propTypes = {
     owner: PropTypes.string.isRequired,
   }).isRequired,
 };
-
-export default PublicPlaylistCard;

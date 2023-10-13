@@ -13,7 +13,7 @@ import ModalDialog from '../../shared/ModalDialog';
 import { playlistDetailsSelector } from '../../store/playlist-details/playlist-details.selector';
 import { deleteSongFromPlaylist } from '../../store/playlist-details/playlist-details.thunks';
 
-function SongList({ shoudRenderKebabMenu }) {
+function SongList({ shouldRenderKebabMenu }) {
   // state
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(userSelector);
@@ -95,7 +95,7 @@ function SongList({ shoudRenderKebabMenu }) {
                     </div>
                   </div>
                   <div className='songlist-vertical-menu'>
-                    {shoudRenderKebabMenu && (
+                    {shouldRenderKebabMenu && (
                       <BsThreeDotsVertical
                         onClick={() => {
                           verticalMenuToggle(id);
@@ -128,7 +128,7 @@ function SongList({ shoudRenderKebabMenu }) {
 }
 
 SongList.propTypes = {
-  shoudRenderKebabMenu: PropTypes.bool.isRequired,
+  shouldRenderKebabMenu: PropTypes.bool.isRequired,
 };
 
 export default SongList;
