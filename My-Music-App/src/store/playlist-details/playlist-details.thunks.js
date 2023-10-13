@@ -31,6 +31,16 @@ export const fetchPlaylistDetails = createAsyncThunk(
         });
         return response.data;
       }
+      if (playlistTypeToDisplay === FETCH_PLAYLISTS_TYPES.SHARED) {
+        const response = await axios({
+          url: `${PUBLIC_PLAYLIST_URL}/${playlistId}`,
+          headers: {
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        return response.data;
+      }
       throw new Error('Unknown playlist type');
     } catch (error) {
       throw error.response.data.errors;

@@ -1,13 +1,14 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  fetchPublicPlaylists,
   fetchFilterPlaylists,
+  fetchPublicPlaylists,
   fetchSortedPlaylists,
 } from '../../store/public-playlists/public-playlists.thunks';
 import {
   publicPlaylistsErrorSelector,
+  publicPlaylistsLoadingSelector,
   publicPlaylistsMetadataSelector,
 } from '../../store/public-playlists/public-playlists.selector';
 
@@ -31,6 +32,7 @@ import {
 function PublicPlaylists() {
   const dispatch = useDispatch();
   const error = useSelector(publicPlaylistsErrorSelector);
+  const loading = useSelector(publicPlaylistsLoadingSelector);
   const { last } = useSelector(publicPlaylistsMetadataSelector);
 
   const [page, setPage] = useState(1);
@@ -226,8 +228,8 @@ function PublicPlaylists() {
           <PublicPlaylistList />
           <Pagination
             handleClick={onPageChange}
-            isLeftActive={page !== 1}
-            isRightActive={page < last}
+            isLeftActive={!loading && page !== 1}
+            isRightActive={!loading && page < last}
           />
         </ContentWrapper>
       </Container>

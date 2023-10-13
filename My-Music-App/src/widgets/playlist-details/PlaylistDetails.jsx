@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { IoIosAdd } from 'react-icons/io';
 import { BiHeart } from 'react-icons/bi';
@@ -8,15 +8,15 @@ import { useParams } from 'react-router-dom';
 
 import './maincontainer.css';
 import {
-  ProfilePlaylistName,
+  Container,
   ProfileContainer,
   ProfileCover,
+  ProfileDescription,
   ProfileEmail,
+  ProfilePlaylistName,
+  ProfileRating,
   ProfileText,
   ProfileVerticalMenu,
-  ProfileDescription,
-  ProfileRating,
-  Container,
 } from './PlaylistDetails.styles';
 import MenuDropdownProfile from '../../entities/playlist-details/ui/MenuDropdownProfile';
 import SongList from './SongList';
@@ -28,6 +28,7 @@ import { userSelector } from '../../store/user/user.selector';
 import {
   DEFAULT_PLAYLIST_COVER,
   FETCH_PLAYLISTS_TYPES,
+  PLAYLIST_PRIVACY_TYPES,
   UPLOADS_URL,
 } from '../../store/constants';
 import { playlistDetailsSelector } from '../../store/playlist-details/playlist-details.selector';
@@ -54,9 +55,12 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
     },
     ownerInfo: { email, registerDate, playlistsOwned },
   } = useSelector(playlistDetailsSelector);
-  const shoudRenderKebabMenu =
+  const shouldRenderKebabMenu =
     isAuthenticated && playlistTypeToDisplay === FETCH_PLAYLISTS_TYPES.MY;
   const shouldRenderDescription = description !== null;
+  const shouldRenderAddSongButton =
+    playlistTypeToDisplay !== FETCH_PLAYLISTS_TYPES.PUBLIC;
+  const sharedPlaylistClass = playlistPrivacyType === PLAYLIST_PRIVACY_TYPES.SHARED ? 'profile__playlist-type--shared' : '';
   const coverUrl = logo
     ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
     : DEFAULT_PLAYLIST_COVER;
@@ -73,7 +77,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
       fetchPlaylistDetails({
         playlistId: navigateId,
         playlistTypeToDisplay,
-      })
+      }),
     );
   }, [
     dispatch,
@@ -102,11 +106,11 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
             }" cover`}
             className='profile__playlist-cover'
           >
-            <span className='profile__playlist-type'>
+            <span className={`profile__playlist-type ${sharedPlaylistClass}`}>
               {playlistPrivacyType}
             </span>
             {/* Menu is not actually a child of image, but positioned relative to it */}
-            {shoudRenderKebabMenu && (
+            {shouldRenderKebabMenu && (
               <ProfileVerticalMenu className='profile__dropdown-menu'>
                 <BsThreeDotsVertical
                   className='vertical-menu'
@@ -118,7 +122,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
                   <MenuDropdownProfile
                     playlistId={playlistId}
                     setIsProfileMenuOpen={setIsProfileMenuOpen}
-                    shoudRenderTypeChange={playlistPrivacyType !== 'shared'}
+                    shouldRenderTypeChange={playlistPrivacyType !== 'shared'}
                   />
                 )}
               </ProfileVerticalMenu>
@@ -135,10 +139,11 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
           <ProfileText className='profile__text--created'>
             Created:&nbsp;{createdOn}
           </ProfileText>
-          <ProfileText className='profile__text--updated'>
-            Updated:&nbsp;{updatedOn === null ? 'Never' : updatedOn}
-          </ProfileText>
-
+          {updatedOn !== null &&
+            <ProfileText className='profile__text--updated'>
+              Updated:&nbsp;{updatedOn}
+            </ProfileText>
+          }
           <ProfileRating className='profile__rating--dislike'>
             {dislikes}
             <RiDislikeLine />
@@ -150,20 +155,22 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
         </ProfileContainer>
 
         {/* After song refactoring in task EPMRDPEMAP-335 we need to move songs to corresponding entities folder */}
-        <div className='addsong'>
-          <IoIosAdd className='circle-icon' onClick={handleAddSongModal} />
-          <p className='addsong-name'>Add Song</p>
-          {addSongModal && AddSongsToPlaylists && (
-            <AddSongsToPlaylists
-              handleAddSongModal={handleAddSongModal}
-              modalPlaylistId={playlistId}
-              setMyState={setMyState}
-              myState={myState}
-            />
-          )}
-        </div>
+        {shouldRenderAddSongButton && (
+          <div className='addsong'>
+            <IoIosAdd className='circle-icon' onClick={handleAddSongModal} />
+            <p className='addsong-name'>Add Song</p>
+            {addSongModal && AddSongsToPlaylists && (
+              <AddSongsToPlaylists
+                handleAddSongModal={handleAddSongModal}
+                modalPlaylistId={playlistId}
+                setMyState={setMyState}
+                myState={myState}
+              />
+            )}
+          </div>
+        )}
         <div className='songsList' data-testid='song-list'>
-          <SongList shoudRenderKebabMenu={shoudRenderKebabMenu} />
+          <SongList shouldRenderKebabMenu={shouldRenderKebabMenu} />
         </div>
         <Comment data-testid='comment-list' />
       </Container>

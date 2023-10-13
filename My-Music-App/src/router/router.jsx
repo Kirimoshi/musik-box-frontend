@@ -1,8 +1,4 @@
-import {
-  Route,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import Home from '../pages/home/Home';
 import SignUp from '../widgets/sign-up/SignUp';
 import SignIn from '../widgets/sign-In/SignIn';
@@ -10,6 +6,7 @@ import Main from '../widgets/main-view/MainView';
 import PrivateRoute from './PrivateRoute';
 import paths from './paths';
 import MyPlaylists from '../widgets/my-playlists/MyPlaylists';
+import SharedPlaylists from '../widgets/shared-playlists/SharedPlaylists';
 import PlaylistDetails from '../widgets/playlist-details/PlaylistDetails';
 import { FETCH_PLAYLISTS_TYPES } from '../store/constants';
 import PublicPlaylists from '../widgets/public-playlists/PublicPlaylists';
@@ -22,6 +19,8 @@ const {
   myPlaylistDetails,
   publicPlaylists,
   publicPlaylistDetails,
+  sharedPlaylists,
+  sharedPlaylistDetails,
 } = paths;
 
 const router = createBrowserRouter(
@@ -56,6 +55,30 @@ const router = createBrowserRouter(
           }
         />
         <Route
+          path={`${sharedPlaylistDetails}/:id`}
+          element={
+            <PrivateRoute
+              isAuthRequired
+              errorMessage={`This playlist is available for authenticated users only. Please sign in to continue.`}
+            >
+              <PlaylistDetails
+                playlistTypeToDisplay={FETCH_PLAYLISTS_TYPES.SHARED}
+              />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={sharedPlaylists}
+          element={
+            <PrivateRoute
+              isAuthRequired
+              errorMessage={`It looks like you don't have permission to view this page. Please sign in to continue.`}
+            >
+              <SharedPlaylists />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path={`${publicPlaylistDetails}/:id`}
           element={
             <PlaylistDetails
@@ -66,8 +89,8 @@ const router = createBrowserRouter(
         <Route path={publicPlaylists} element={<PublicPlaylists />} />
         <Route path='*' element={<h1>Not Found</h1>} />
       </Route>
-    </>
-  )
+    </>,
+  ),
 );
 
 export default router;

@@ -6,7 +6,7 @@ export const MenuContainer = styled.ul`
   border-radius: 4px;
   background: var(--m-3-sys-dark-surface-container, #211f26);
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
-    0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  0px 2px 6px 2px rgba(0, 0, 0, 0.15);
   list-style-type: none;
   position: absolute;
   top: 48px;
