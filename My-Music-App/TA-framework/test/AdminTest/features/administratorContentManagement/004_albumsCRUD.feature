@@ -54,5 +54,6 @@ Feature: Admin "CRUD" Albums
         And the admin "accepts" alert
         Then the admin is on the "albums" page
         Then the "header" "Current" "Title" is: "Albums"
+        Then the "header" "Successfully" "Message" is: "Album was successfully destroyed."
 
         

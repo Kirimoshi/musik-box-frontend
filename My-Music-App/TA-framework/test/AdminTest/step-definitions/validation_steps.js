@@ -7,7 +7,7 @@ const {
   pageNumber,
   withoutEndpointPage
 } = require("../../utils-admin/helpers");
-const { adminPagesUrl } = require("../../utils-admin/data");
+const { PagesUrl } = require("../../utils-admin/data");
 const { assert } = require("chai");
 
 
@@ -19,7 +19,7 @@ Then(/the admin is on the "([^"]*)" ("([^"]*)"\s)?page/, async function (page, c
     currentPageNumber = await pageNumber();
     actualUrl = await withoutEndpointPage(await currentUrl) + currentPageNumber;
   } else {
-    actualUrl = await withoutEndpointPage(await currentUrl) + adminPagesUrl[page];
+    actualUrl = await withoutEndpointPage(await currentUrl) + PagesUrl[page];
   }
   await browser.waitUntil(async function () {
     expectedUrl = await browser.getUrl();
@@ -35,8 +35,8 @@ Then(/the "([^"]*)" page (\d+)? ?"([^"]*)" has "([^"]*)"/, async (page, numeral,
   let currentElement = await Pages[page][camelize(`${type}${element}`)][numeral - 1];
   let expectedResult;
   if (page === "playlists" && element === "Edit Button") {
-    if (element === "undefined") {
-      assert.isFalse(await currentElement, `${currentElement} is displayed`)
+    if (typeof currentElement === "undefined") {
+      assert.isFalse(currentElement, `${currentElement} is displayed`)
     } else {
       expectedResult = await currentElement;
     }
