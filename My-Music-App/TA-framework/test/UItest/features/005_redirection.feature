@@ -5,7 +5,7 @@ Feature: EPMRDPEMAP-638 - Redirect Authenticated Users from the Sign In and Sign
     Given the user is open "signIn" page
     When the user sing-ins with "test.user@example.com" and "secreT!123"
     Then the user is on the "home" page
-    Then "home" page "Alert Login" "Message" text is: "You have been successfully logged in. Welcome back!"
+    Then "home" page "Alert Login" "Message" is: "You have been successfully logged in. Welcome back!"
     And the user storage data is not empty
 
   Scenario: Verify that the authenticated user redirects to the "signIn" page from "home" page
@@ -14,7 +14,7 @@ Feature: EPMRDPEMAP-638 - Redirect Authenticated Users from the Sign In and Sign
     Then the user is on the "signIn" page
     And the user storage data is not empty
     Then the user is on the "home" page
-    Then "home" page "Alert Login" "Message" text is: "You have been successfully logged in. Welcome back!"
+    Then "home" page "Alert Login" "Message" is: "You have been successfully logged in. Welcome back!"
     And the user storage data is not empty
 
   Scenario: Verify that the authenticated user redirects to the "home" page from "signUp" page

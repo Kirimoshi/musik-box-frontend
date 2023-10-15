@@ -25,7 +25,7 @@ Then(/the admin "([^"]*)" to the system as the admin user/, async function (page
 
 Then(/the admin clicks on the "([^"]*)" (page )?(\d+)? ?"([^"]*)" "([^"]*)"/,
   async function (place, page, numeral, element, type) {
-  let elementToClick
+    let elementToClick;
   if (place==="header") {
     elementToClick = await BaseElements[place][camelize(`${element}${type}`)];
   } else if (numeral) {

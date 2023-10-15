@@ -27,19 +27,19 @@ export class SignUpPage extends BasePage{
         return $("button[type='submit']");
     }
 
-    get nickNameError () {
+    get nickNameErrorMessage () {
         return $("[data-testid=nicknameError]");
     }
 
-    get emailError () {
+    get emailErrorMessage() {
         return $("[data-testid=emailError]");
     }
 
-    get passwordError () {
+    get passwordErrorMessage() {
         return $("[data-testid=passwordError]");
     }
 
-    get confirmPasswordError () {
+    get confirmPasswordErrorMessage() {
         return $("[data-testid=confirmPasswordError]");
     }
 

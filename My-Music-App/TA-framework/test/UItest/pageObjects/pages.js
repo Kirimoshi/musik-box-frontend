@@ -12,7 +12,7 @@ class Pages {
         this.home = new HomePage();
         this.playlists = new PlaylistsPage();
         this.playlist = new PlaylistPage();
-        this.base = new BasePage()
+        this.base = new BasePage();
         // Add more instances as needed
     }
 }

@@ -6,7 +6,8 @@ const {
   pageNumber,
   withoutEndpointPage
 } = require("../../utils-user/helpers");
-const { userPagesUrl } = require("../../utils-user/data");
+const { PagesUrl } = require("../../utils-user/data");
+import BaseElements from "../pageObjects/elements/baseElements";
 const { assert, expect } = require("chai");
 
 
@@ -14,15 +15,13 @@ Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentP
   const currentUrl = await browser.getUrl();
   let expectedUrl;
   let actualUrl;
-
   if (currentPageNumber) {
     currentPageNumber = await pageNumber();
     actualUrl = await withoutEndpointPage(await currentUrl) + currentPageNumber;
   }
   else {
-    actualUrl = await withoutEndpointPage(await currentUrl) + userPagesUrl[page];
+    actualUrl = await withoutEndpointPage(await currentUrl) + PagesUrl[page];
   }
-
   await browser.waitUntil(async function () {
     expectedUrl = await browser.getUrl();
     return expectedUrl === actualUrl;
@@ -30,14 +29,18 @@ Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentP
     timeout: 5000,
     timeoutMsg: 'expected link to be changed after 5s'
   });
-
+  await browser.pause(500);
   assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });
 
-Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (page, element, type, expectedText) {
+Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/, async function (place, page, element, type, expectedText) {
   let currentElementText;
   await browser.waitUntil(async function () {
-    currentElementText = await Pages[page][camelize(`${element}${type}`)].getText()
+  if (place === "alert" || place === "sidebar") {
+    currentElementText = await BaseElements[place][camelize(`${element}${type}`)].getText();
+  } else if (page) {
+    currentElementText = await Pages[place][camelize(`${element}${type}`)].getText();
+  }
     return currentElementText
   }, {
     timeout: 5000,
@@ -47,40 +50,26 @@ Then(/"([^"]*)" page "([^"]*)" "([^"]*)" text is: "([^"]*)"/, async function (pa
     currentElementText = await currentElementText.split('\n').join(' ');
   }
   await browser.pause(500);
-  assert.equal(await currentElementText, expectedText, `${page} doesn't match ${expectedText} value`)
+  assert.equal(currentElementText, expectedText, `${place} doesn't match ${expectedText} value`)
 });
 
 Then(/^(.*) message should be displayed: (.*)$/,
   async (elementType, errorMessage) => {
-    const currentPageUrl = await browser.getUrl();
-    if (currentPageUrl.includes("SignUp")) {
-      await Pages.signUp.checkErrorMessage(elementType, errorMessage);
-    } else {
-      await Pages.home.checkLogoutMessage(elementType, errorMessage);
+  const currentPageUrl = await browser.getUrl();
+  if (currentPageUrl.includes("sign-up")) {
+    await Pages.signUp.checkErrorMessage(elementType, errorMessage);
+  } else {
+  await Pages.home.checkLogoutMessage(elementType, errorMessage);
     }
   }
 );
 
-Then(/^the User should be redirected to the Home page$/, async () => {
-  await browser.waitUntil(
-    async () => {
-      return await Pages.home.loginMessage.isDisplayed();
-    },
-    {
-      timeout: 5000,
-      timeoutMsg: `Error: expected page was redirected to the ${await browser.getUrl()} page`,
-    }
-  );
-  const homePageUrl = await browser.getUrl();
-  return expect(homePageUrl).to.equal("http://localhost:3001/");
-});
-
-Then(/the "([^"]*)" page "([^"]*)" has the initial length/, async function (page, element) {
+Then(/the "([^"]*)" page "([^"]*)" elements have the initial length/, async function (page, element) {
   let currentElement = await Pages[page][camelize(`${element}`)];
   this.initialLength = await currentElement.length;
 });
 
-Then(/the "([^"]*)" song is (not )?deleted from "([^"]*)"/, async function (page, ifNotDeleted, element) {
+Then(/the "([^"]*)" page "([^"]*)" elements length are (not )?less than the initial length for one item/, async function (page, element, ifNotDeleted) {
   let currentElement = await Pages[page][camelize(`${element}`)];
   if (ifNotDeleted) {
     let ifCanceled = await currentElement.length;

@@ -15,7 +15,7 @@ export class SignInPage extends BasePage {
     return $("[data-testid=passwordtest]");
   }
 
-  get btnSignIn() {
+  get signInButton() {
     return $("button[class='signin-button ']");
   }
 
@@ -27,6 +27,6 @@ export class SignInPage extends BasePage {
     await this.inputEmail.setValue(email);
     await this.inputPassword.setValue(password);
     await this.checkboxRememberMe.click();
-    await this.btnSignIn.click();
+    await this.signInButton.click();
   }
 }

@@ -4,6 +4,7 @@ export class PlaylistPage extends BasePage {
     constructor() {
         super();
         this.url = `details/`;
+        this.playlistForm = `section.playlist__profile`;
         this.songsForm = `div.songsContainer`;
     }
     get songMenu() {
@@ -18,7 +19,7 @@ export class PlaylistPage extends BasePage {
         return $$(`${this.songsForm} .delete-modal`);
     }
 
-    get dialogWindowTitle() {
+    get dialogWindowSongTitle() {
         return $(`${this.songsForm} dialog h3`)
     }
 
@@ -31,43 +32,63 @@ export class PlaylistPage extends BasePage {
     }
 
     get playlistTitle() {
-        return $(`section span.profile__playlist-name`)
+        return $(`${this.playlistForm} span.profile__playlist-name`)
     }
 
     get playlistItem() {
-        return $(`section div[role="img"]`)
+        return $(`${this.playlistForm} .profile__playlist-cover`)
+    }
+
+    get playlistMenu() {
+        return $(`${this.playlistForm} div.profile__dropdown-menu`);
+    }
+
+    get deletePlaylistButton() {
+         return $(`${this.playlistForm} .profile-menu__delete`);
+    }
+
+    get dialogDeletePlaylistButton() {
+        return $(`//dialog/button[text()="Delete playlist"]`)
+    }
+
+    get cancelDeletionPlaylistButton() {
+        return $(`//dialog/button[text()="Cancel"]`)
+    }
+    
+    get dialogWindowPlaylistTitle() {
+        return $(`${this.playlistForm} dialog h3`)
     }
 
     get playlistDescription() {
-        return $(`section span.profile__description`)
+        return $(`${this.playlistForm} span.profile__description`)
     }
 
     get playlistLikes() {
-        return $(`section span.profile__rating--like`)
+        return $(`${this.playlistForm} span.profile__rating--like`)
     }
 
     get playlistDislikes() {
-        return $(`section span.profile__rating--dislike`)
+        return $(`${this.playlistForm} span.profile__rating--dislike`)
     }
 
     get createdDate() {
-        return $(`section span.profile__text--created`)
+        return $(`${this.playlistForm} span.profile__text--created`)
     }
 
     get updatedDate() {
-        return $(`section span.profile__text--updated`)
+        return $(`${this.playlistForm} span.profile__text--updated`)
     }
 
     get profileEmail() {
-        return $(`section h3.profile__email`)
+        return $(`${this.playlistForm} h3.profile__email`)
     }
 
     get registrationDate() {
-        return $(`section span.profile__text--register`)
+        return $(`${this.playlistForm} span.profile__text--register`)
     }
 
     get amountNumber() {
-        return $(`section span.profile__text--playlist-amount`)
+        return $(`${this.playlistForm} span.profile__text--playlist-amount`)
     }
 
     get availabilityName() {

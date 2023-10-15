@@ -1,11 +1,16 @@
 import Pages from "../UItest/pageObjects/pages";
 
-const userData = {
+const newUserData = {
     "email": "Valid25@ukr.net",
     "password": "Qwer212@#"
 }
 
-const userPagesUrl = {
+const userData = {
+    "email": "test.user@example.com",
+    "password": "secreT!123"
+}
+
+const PagesUrl = {
     home: Pages['home'].url,
     signUp: Pages['signUp'].url,
     signIn: Pages['signIn'].url,
@@ -15,6 +20,7 @@ const userPagesUrl = {
 };
 
 module.exports = {
-    userData,
-    userPagesUrl
+    newUserData,
+    PagesUrl,
+    userData
 }

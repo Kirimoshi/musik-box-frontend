@@ -8,7 +8,7 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
 
   Scenario: Verify that the user is able to redirect to the "playlist" page
     Given the user is on the "home" page
-    When the user clicks on the "home" page "My Playlists" "Button"
+    When the user clicks on the "sidebar" "My Playlists" "Button"
     Then the user is on the "playlists" page
     When the user clicks on the "playlists" page 1 "Playlists" "Item"
     Then the user is on the "current" "playlist" page
@@ -28,6 +28,6 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
     Then "playlist" "Song" has "song cover" "Image"
     # Then "playlist"  has "Artist"    Not implement
     # Then "playlist" "song" has "sorting"  Not implement
-    Then "playlist" page "Commentor" "Name" text is: "bhaskara"
-    Then "playlist" page "Commentor" "Comment" text is: "song is awesomen bla bla bla"
+    Then "playlist" page "Commentor" "Name" is: "bhaskara"
+    Then "playlist" page "Commentor" "Comment" is: "song is awesomen bla bla bla"
     # Then "playlist" "comment" has "sorting"  Not implement
