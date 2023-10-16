@@ -1,4 +1,4 @@
-@007 @deletePlaylists
+@008 @deletePlaylists
 
 Feature: EPMRDPEMAP-642 - The delete playlist from playlists feature
   Scenario: Verify that the authenticated user has access to the "playlist" page by clicking an individual playlist from the "playlists" page.
