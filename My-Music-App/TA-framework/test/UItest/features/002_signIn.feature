@@ -6,7 +6,7 @@ Feature: EPMRDPEMAP-201 - The SingIn feature
     When the user is open "signIn" page
     Then the user is on the "signIn" page
     When the user sing-ins with <email> and <password>
-    Then the User should be redirected to the Home page
+    Then the user is on the "home" page
 
     Examples:
       | email                   | password     |

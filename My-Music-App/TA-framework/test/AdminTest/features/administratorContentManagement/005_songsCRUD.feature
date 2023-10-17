@@ -38,7 +38,7 @@ Feature: Admin "CRUD" Songs
         Given the admin is on the "songs" "current_song" page
         Then the "header" "Current" "Title" is: "Dancing City"
         Then the "current_song" page "Song" "Title" is: "Dancing City"
-        Then the "current_song" page "Album" "Name" is: "Heart Blanche"
+        Then the "current_song" page "Album" "Name" is: "Bent"
         Then the "current_song" is "Created At" "Date"
         Then the "current_song" is "Updated At" "Date"
 

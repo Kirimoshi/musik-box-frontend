@@ -40,10 +40,6 @@ export class HomePage extends BasePage {
     return $('p=Please try again later.');
   }
 
-  get myPlaylistsButton () {
-    return $(`//a[@href="/my-playlists"]//following-sibling::span[text()="My Playlists"]`)
-  }
-
   async checkLogoutMessage(element, message) {
     if (!this[element]) {
       throw new Error(`Element type "${this[element]}" not found.`);

@@ -38,5 +38,4 @@ export class PlaylistComments extends BasePage {
   get playlistComment() {
     return $$(`table#index_table_playlist_comments td.col.col-id`);
   }
-
 }

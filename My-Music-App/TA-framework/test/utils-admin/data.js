@@ -5,7 +5,7 @@ const adminUserData = {
     "password": "secreT!123"
 }
 
-const adminPagesUrl = {
+const PagesUrl = {
     admin: Pages['admin'].url,
     admin_users: Pages['admin_users'].url,
     playlist_comments: Pages['playlist_comments'].url,
@@ -34,5 +34,5 @@ const adminPagesUrl = {
 
 module.exports = {
     adminUserData,
-    adminPagesUrl
+    PagesUrl
 }

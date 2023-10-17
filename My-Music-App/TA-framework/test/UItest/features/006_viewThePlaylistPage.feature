@@ -8,26 +8,29 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
 
   Scenario: Verify that the user is able to redirect to the "playlist" page
     Given the user is on the "home" page
-    When the user clicks on the "home" page "My Playlists" "Button"
+    When the user clicks on the "sidebar" "My Playlists" "Button"
     Then the user is on the "playlists" page
     When the user clicks on the "playlists" page 1 "Playlists" "Item"
     Then the user is on the "current" "playlist" page
 
   Scenario: Verifying playlist elements
     Given the user is on the "current" "playlist" page
-    Then "playlist" page "Playlist" "Title" is displayed
-    Then "playlist" page "Playlist" "Item" is displayed
-    Then "playlist" page "Playlist" "Likes" is displayed
-    Then "playlist" page "Playlist" "Dislikes" is displayed
-    Then "playlist" page "Created" "Date" is displayed
-    Then "playlist" page "Updated" "Date" is displayed
-    Then "playlist" page "Profile" "Email" is displayed
-    Then "playlist" page "Registration" "Date" is displayed
-    Then "playlist" page "Amount" "Number" is displayed
-    Then "playlist" page "Availability" "Name" is displayed
-    Then "playlist" "Song" has "song cover" "Image"
+    Then "playlistTitle" element is displayed on "playlist" page
+    Then "playlistItem" element is displayed on "playlist" page
+    Then "playlistLikes" element is displayed on "playlist" page
+    Then "playlistDislikes" element is displayed on "playlist" page
+    Then "createdDate" element is displayed on "playlist" page
+    Then "updatedDate" element is displayed on "playlist" page
+    Then "profileEmail" element is displayed on "playlist" page
+    Then "createdDate" element is displayed on "playlist" page
+    Then "updatedDate" element is displayed on "playlist" page
+    Then "profileEmail" element is displayed on "playlist" page
+    Then "registrationDate" element is displayed on "playlist" page
+    Then "amountNumber" element is displayed on "playlist" page
+    Then "availabilityName" element is displayed on "playlist" page
+    # Then "playlist" "Song" has "song cover" "Image"
     # Then "playlist"  has "Artist"    Not implement
     # Then "playlist" "song" has "sorting"  Not implement
-    Then "playlist" page "Commentor" "Name" text is: "bhaskara"
-    Then "playlist" page "Commentor" "Comment" text is: "song is awesomen bla bla bla"
+    Then "playlist" page "Commentor" "Name" is: "bhaskara"
+    Then "playlist" page "Commentor" "Comment" is: "song is awesomen bla bla bla"
     # Then "playlist" "comment" has "sorting"  Not implement
