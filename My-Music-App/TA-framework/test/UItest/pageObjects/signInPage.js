@@ -23,16 +23,16 @@ export class SignInPage extends BasePage {
     return $("#checkbox");
   }
 
-  async singIn(email, password) {
+  async signIn(email, password) {
     await this.inputEmail.setValue(email);
     await this.inputPassword.setValue(password);
     await this.checkboxRememberMe.click();
     await this.signInButton.click();
   }
 
-  async singInWithoutRemembering(email, password) {
+  async signInWithoutRemembering(email, password) {
     await this.inputEmail.setValue(email);
     await this.inputPassword.setValue(password);
-    await this.btnSignIn.click();
+    await this.signInButton.click();
   }
 }

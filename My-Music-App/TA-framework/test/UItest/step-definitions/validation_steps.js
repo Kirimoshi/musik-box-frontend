@@ -8,7 +8,7 @@ const {
 } = require("../../utils-user/helpers");
 const { PagesUrl } = require("../../utils-user/data");
 import BaseElements from "../pageObjects/elements/baseElements";
-const { assert, expect } = require("chai");
+const { assert } = require("chai");
 
 
 Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentPageNumber, page) {
@@ -29,7 +29,6 @@ Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentP
     timeout: 5000,
     timeoutMsg: 'expected link to be changed after 5s'
   });
-  await browser.pause(500);
   assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });
 
