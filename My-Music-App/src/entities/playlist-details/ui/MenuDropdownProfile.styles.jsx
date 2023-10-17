@@ -38,7 +38,7 @@ export const MenuItem = styled.li`
   }
 
   &.profile-menu__edit {
-    cursor: not-allowed;
+    cursor: pointer;
   }
 `;
 

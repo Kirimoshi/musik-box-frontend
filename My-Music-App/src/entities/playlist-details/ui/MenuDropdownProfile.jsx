@@ -27,12 +27,14 @@ import {
 } from '../../../store/playlist-details/playlist-details.selector';
 
 function MenuDropdownProfile({
+  handleOpenForm,
   playlistId,
   setIsProfileMenuOpen,
   shouldRenderTypeChange,
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const loading = useSelector(playlistDetailsLoadingSelector);
   const error = useSelector(playlistDetailsErrorSelector);
   const [isMenuItemClicked, setIsMenuItemClicked] = useState(false);
@@ -135,12 +137,13 @@ function MenuDropdownProfile({
         className='profile-menu__modal--delete'
         options={modalOptions}
       />
+
       <MenuContainer className='profile-menu'>
         <MenuItem onClick={handleDeleteClick} className='profile-menu__delete'>
           <RiDeleteBin6Line /> Delete playlist
         </MenuItem>
         <MenuDivider />
-        <MenuItem className='profile-menu__edit'>
+        <MenuItem className='profile-menu__edit' onClick={handleOpenForm}>
           <RiPencilFill /> Edit
         </MenuItem>
         {shouldRenderTypeChange && (
@@ -172,6 +175,7 @@ function MenuDropdownProfile({
 }
 
 MenuDropdownProfile.propTypes = {
+  handleOpenForm: PropTypes.func.isRequired,
   playlistId: PropTypes.string.isRequired,
   setIsProfileMenuOpen: PropTypes.func.isRequired,
   shouldRenderTypeChange: PropTypes.bool.isRequired,

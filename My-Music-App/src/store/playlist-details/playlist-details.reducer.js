@@ -70,6 +70,18 @@ export const playlistDetailsSlice = createSlice({
       .addCase(
         thunks.deleteSongFromPlaylist.rejected,
         thunks.deleteSongFromPlaylistRejected
+      )
+      .addCase(
+        thunks.editPlaylistDetails.pending,
+        thunks.editPlaylistDetailsPending
+      )
+      .addCase(
+        thunks.editPlaylistDetails.fulfilled,
+        thunks.editPlaylistDetailsFulfilled
+      )
+      .addCase(
+        thunks.editPlaylistDetails.rejected,
+        thunks.editPlaylistDetailsRejected
       );
   },
 });

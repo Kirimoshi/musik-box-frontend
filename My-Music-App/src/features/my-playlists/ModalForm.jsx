@@ -77,6 +77,7 @@ function ModalForm({ options }) {
       return;
     }
     addFileToState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchImage(url) {
