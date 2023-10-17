@@ -23,6 +23,8 @@ TAF is stored in TA_framework folder in frontend-music-app repository. There are
 We use GitLab Flow.
 There are main branch, develop branch and feature branches for every test case or technical task. Branch name is equal to your short feature name. All feature branches are merge in to develop branch. Every merge request should be approved by the major of teammates (they should leave their comments or thumb ups in your merge request). After fixing all comments your MR will be merged in to develop branch.
 
+This is good practice, when one merge request = one feature. Try to avoid situations, when you refactor code and fix bugs and create a new test case in one merge request. Firstly, fix bugs and refactor code, make sure, that after this changes all test cases are run without issues. Than create merge request, wait for it approving and merge it to the repository. And only after that you can start working with new features and test cases and their infrastructure.
+
 ### Notes
 1.	Currently all tests are running locally, we don't have any space for running them and storing reports.
 2.	Every time, when backend or frontend team will add their features or fixes, you should re-run your Ubuntu servers and re-build frontend part as well. After this checkout to frontend develop branch, pull changes, open My-Music-App folder in integrated terminal and run `npm install`, then `npm run build` and `npm run start`. You should run `npm install` every time when you pull changes from your teammates to install all new packages and libraries that they may add.
