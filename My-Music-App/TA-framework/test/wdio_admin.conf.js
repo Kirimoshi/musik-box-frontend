@@ -60,7 +60,7 @@ exports.config = {
             // For a browser
             browser: {
                 name: 'chrome',
-                version: '116',
+                version: '117',
             },
             // for an app
             app: {

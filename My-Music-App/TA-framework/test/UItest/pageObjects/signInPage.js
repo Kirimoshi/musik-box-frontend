@@ -29,4 +29,10 @@ export class SignInPage extends BasePage {
     await this.checkboxRememberMe.click();
     await this.btnSignIn.click();
   }
+
+  async singInWithoutRemembering(email, password) {
+    await this.inputEmail.setValue(email);
+    await this.inputPassword.setValue(password);
+    await this.btnSignIn.click();
+  }
 }

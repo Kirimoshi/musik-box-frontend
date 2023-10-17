@@ -7,8 +7,7 @@ const {
   withoutEndpointPage
 } = require("../../utils-user/helpers");
 const { userPagesUrl } = require("../../utils-user/data");
-const { assert, expect } = require("chai");
-
+const { assert } = require("chai");
 
 Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentPageNumber, page) {
   const currentUrl = await browser.getUrl();
@@ -61,20 +60,6 @@ Then(/^(.*) message should be displayed: (.*)$/,
   }
 );
 
-Then(/^the User should be redirected to the Home page$/, async () => {
-  await browser.waitUntil(
-    async () => {
-      return await Pages.home.loginMessage.isDisplayed();
-    },
-    {
-      timeout: 5000,
-      timeoutMsg: `Error: expected page was redirected to the ${await browser.getUrl()} page`,
-    }
-  );
-  const homePageUrl = await browser.getUrl();
-  return expect(homePageUrl).to.equal("http://localhost:3001/");
-});
-
 Then(/the "([^"]*)" page "([^"]*)" has the initial length/, async function (page, element) {
   let currentElement = await Pages[page][camelize(`${element}`)];
   this.initialLength = await currentElement.length;
@@ -106,12 +91,112 @@ Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
   assert.isTrue(await localStorageData, `Expected result isn't ${localStorageData}`);
 });
 
-Then(/"([^"]*)" page "([^"]*)" "([^"]*)" is displayed/, async function (page, element, type) {
-  let currentElement = await Pages[page][camelize(`${element}${type}`)]
-  assert.isTrue(await currentElement.isDisplayed())
-})
+// Then(/"([^"]*)" page "([^"]*)" "([^"]*)" is displayed/, async function (page, element, type) {
+//   let currentElement = await Pages[page][camelize(`${element}${type}`)]
+//   assert.isTrue(await currentElement.isDisplayed())
+// })
 
-Then(/"([^"]*)" "([^"]*)" has "([^"]*)" "([^"]*)"/, async function (page, element, el, type,) {
-  let elementImg = await Pages[page][camelize(`${element}${type}`)][0].getAttribute('alt')
-  assert.equal(await elementImg, el)
-})
+// Then(/"([^"]*)" "([^"]*)" has "([^"]*)" "([^"]*)"/, async function (page, element, el, type,) {
+//   let elementImg = await Pages[page][camelize(`${element}${type}`)][0].getAttribute('alt')
+//   assert.equal(await elementImg, el)
+// })
+
+Then(/"([^"]*)" element is (not )?displayed on "([^"]*)" page/, async function (element, notDisplayed, page) {
+  let currentElement = await Pages[page][(`${element}`)];
+  await expect(currentElement).toBeDisplayed();
+  if (notDisplayed) {
+    let ifNotDisplayed = await currentElement.isDisplayed();
+    assert.isFalse(await ifNotDisplayed, `Expected the element to be not displayed`)
+  }
+});
+
+Then(/"([^"]*)" elements of "([^"]*)" are (not )?displayed on "([^"]*)" page/, async function (element, elementsArray, notDisplayed, page) {
+  let currentElement = await Pages[page][(`${element}`)];
+  let currentElementsArray = await Pages[page][(`${elementsArray}`)];
+
+  for (let i = 0; i < currentElementsArray.length; i++) {
+    await expect(currentElement[i]).toBeDisplayed();
+    if (notDisplayed) {
+      let ifNotDisplayed = await currentElement[i].isDisplayed();
+      assert.isFalse(await ifNotDisplayed, `Expected ${currentElement[i]} element to be not displayed`)
+    }
+  }
+});
+
+Then(/every playlist in "([^"]*)" on the "([^"]*)" page has ([^"]*) songs/, async function (playlistList, page, number) {
+  const playlistItems = await Pages[page][playlistList];
+  const expectedNumberOfSongs = Number(number);
+
+  for (const playlist of playlistItems) {
+    const currentPlaylistSongs = await playlist.$$('span[data-song-id]');
+    expect(currentPlaylistSongs.length).toEqual(expectedNumberOfSongs);
+  }
+});
+
+Then(/"([^"]*)" page has no more than ([^"]*) playlists in "([^"]*)"/, async function (page, number, playlistList) {
+  let playlistItems = await Pages[page][(`${playlistList}`)];
+  let playlistItemsLength = Number(await playlistItems.length);
+  let expectedNumberOfPlaylists = Number(number);
+  await expect(playlistItemsLength).toBeLessThanOrEqual(expectedNumberOfPlaylists)
+});
+
+Then(/every element of "([^"]*)" on the "([^"]*)" page is clickable/, async function (elementsArray, page) {
+  let currentElementsArray = await Pages[page][(`${elementsArray}`)];
+  for (let i = 0; i < currentElementsArray.length; i++) {
+    await expect(currentElementsArray[i]).toBeClickable();
+  }
+});
+
+Then(/playlists in "([^"]*)" on the "([^"]*)" page are ordered by (the number of likes|playlist name) ?in (ascending|descending) ?order/,
+  async function (playlistList, page, elementType, order) {
+    if (elementType === "the number of likes" && order === "descending") {
+      let listItems = await Pages[page][(`${playlistList}`)];
+      for (let i = 0; i < listItems.length - 1; i++) {
+        let playlistItem = await listItems[i];
+        let currentPlaylistLikesCounter = Number(await playlistItem.$('span[data-likes-id]').getText());
+        let nextPlaylistLikesCounter = Number(await listItems[i + 1].$('span[data-likes-id]').getText());
+        await expect(currentPlaylistLikesCounter).toBeGreaterThanOrEqual(nextPlaylistLikesCounter)
+      }
+    } else if (elementType === "playlist name" && order === "ascending") {
+      let playlistItems = await Pages[page][(`${playlistList}`)];
+      let playlistNames = [];
+      for (let i = 0; i < playlistItems.length - 1; i++) {
+        let playlistItem = await playlistItems[i];
+        let currentPlaylistName = await playlistItem.$('.public-playlist-card__name').getText();
+        playlistNames.push(currentPlaylistName);
+      }
+      let sortedPlaylistItems = playlistNames.sort();
+      await expect(playlistNames).toEqual(sortedPlaylistItems);
+    } else if (elementType === "playlist name" && order === "descending") {
+      let unsortedPlaylistItems = await Pages[page][(`${playlistList}`)];
+      let playlistNames = [];
+      for (let i = 0; i < unsortedPlaylistItems.length - 1; i++) {
+        let playlistItem = await unsortedPlaylistItems[i];
+        let currentPlaylistName = await playlistItem.$('.public-playlist-card__name').getText();
+        playlistNames.push(currentPlaylistName);
+      }
+      let sortedPlaylistItems = playlistNames.sort().reverse();
+      await expect(playlistNames).toEqual(sortedPlaylistItems);
+    } else {
+      throw new Error("The elements are sorted wrong");
+    }
+  });
+
+Then(/"([^"]*)" page "([^"]*)" "([^"]*)" contains next text: "([^"]*)"/, async function (page, element, type, expectedText) {
+  const currentElement = await Pages[page][camelize(`${element}${type}`)];
+  const expectedTextLower = expectedText.toLowerCase();
+
+  if (element === 'publicPlaylistSong') {
+    const playlistSongItems = await Pages[page][camelize(`${element}${type}`)];
+    for (const playlist of playlistSongItems) {
+      const currentPlaylistSongs = await playlist.$$('span[data-song-id]');
+      const songTexts = await Promise.all(currentPlaylistSongs.map(song => song.getText()));
+      expect(songTexts.some(text => text.toLowerCase().includes(expectedTextLower))).toBe(true);
+    }
+  } else {
+    for (const element of currentElement) {
+      const currentElementText = await element.getText();
+      expect(currentElementText.toLowerCase()).toContain(expectedTextLower);
+    }
+  }
+});
