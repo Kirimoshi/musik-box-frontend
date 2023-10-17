@@ -96,7 +96,7 @@ export const CardLike = styled.div`
   }
 `;
 
-export const CardOwner = styled.div`
+export const CardOwner = styled.p`
   grid-area: owner;
   align-self: start;
   padding-top: 6.64px;

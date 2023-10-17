@@ -7,9 +7,10 @@ function Pagination({
   handleClick,
   isLeftActive = false,
   isRightActive = false,
+  className,
 }) {
   return (
-    <PaginationControls>
+    <PaginationControls className={className}>
       <button
         disabled={!isLeftActive}
         onClick={() => handleClick('left')}
@@ -32,6 +33,7 @@ Pagination.propTypes = {
   handleClick: PropTypes.func,
   isLeftActive: PropTypes.bool,
   isRightActive: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 export default Pagination;

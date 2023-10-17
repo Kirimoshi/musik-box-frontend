@@ -4,18 +4,17 @@ import { FETCH_HOME_PLAYLISTS_TYPES, PUBLIC_PLAYLIST_URL } from '../constants';
 
 export const fetchPopularPlaylists = createAsyncThunk(
   'homePageSlice/fetchPopularPlaylists',
-  async () => {
+  async (page = 1) => {
     try {
       const response = await axios({
-        url: `${PUBLIC_PLAYLIST_URL}?type=${FETCH_HOME_PLAYLISTS_TYPES.POPULAR}&page=1&per_page=4`,
+        url: `${PUBLIC_PLAYLIST_URL}?type=${FETCH_HOME_PLAYLISTS_TYPES.POPULAR}&page=${page}&per_page=4`,
       });
       return {
         playlists: response.data.playlists.data,
         paginationData: response.data.pagination_metadata,
       };
     } catch ({ response: { data } }) {
-      if (data.error) throw data.error;
-      throw data.errors; //TODO: Ask backend team to be consistent in error object naming
+      throw data.error ?? data.errors;
     }
   }
 );
@@ -26,7 +25,7 @@ export const fetchPopularPlaylistsPending = (state) => {
 export const fetchPopularPlaylistsFulfilled = (state, action) => {
   state.loading = false;
   state.popularPlaylists = action.payload.playlists;
-  state.popularPlalistsPaginationData = action.payload.paginationData;
+  state.popularPlaylistsPaginationData = action.payload.paginationData;
 };
 export const fetchPopularPlaylistsRejected = (state, action) => {
   state.loading = false;
@@ -35,10 +34,10 @@ export const fetchPopularPlaylistsRejected = (state, action) => {
 
 export const fetchFeaturedPlaylists = createAsyncThunk(
   'homePageSlice/fetchFeaturedPlaylists',
-  async () => {
+  async (page = 1) => {
     try {
       const response = await axios({
-        url: `${PUBLIC_PLAYLIST_URL}?type=${FETCH_HOME_PLAYLISTS_TYPES.FEATURED}&page=1&per_page=6`,
+        url: `${PUBLIC_PLAYLIST_URL}?type=${FETCH_HOME_PLAYLISTS_TYPES.FEATURED}&page=${page}&per_page=6`,
       });
 
       return {
@@ -46,8 +45,7 @@ export const fetchFeaturedPlaylists = createAsyncThunk(
         paginationData: response.data.pagination_metadata,
       };
     } catch ({ response: { data } }) {
-      if (data.error) throw data.error;
-      throw data.errors;
+      throw data.error ?? data.errors;
     }
   }
 );
@@ -67,18 +65,17 @@ export const fetchFeaturedPlaylistsRejected = (state, action) => {
 
 export const fetchLatestPlaylists = createAsyncThunk(
   'homePageSlice/fetchLatestPlaylists',
-  async () => {
+  async (page = 1) => {
     try {
       const response = await axios({
-        url: `${PUBLIC_PLAYLIST_URL}?type=${FETCH_HOME_PLAYLISTS_TYPES.LAST}&page=1&per_page=6`,
+        url: `${PUBLIC_PLAYLIST_URL}?type=${FETCH_HOME_PLAYLISTS_TYPES.LAST}&page=${page}&per_page=6`,
       });
       return {
         playlists: response.data.playlists.data,
         paginationData: response.data.pagination_metadata,
       };
     } catch ({ response: { data } }) {
-      if (data.error) throw data.error;
-      throw data.errors;
+      throw data.error ?? data.errors;
     }
   }
 );

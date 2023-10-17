@@ -26,7 +26,6 @@ import { AddSongsToPlaylists } from '../../AddSongsToPlayLists/Components/AddSon
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/user.selector';
 import {
-  DEFAULT_PLAYLIST_COVER,
   FETCH_PLAYLISTS_TYPES,
   PLAYLIST_PRIVACY_TYPES,
   UPLOADS_URL,
@@ -60,10 +59,13 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
   const shouldRenderDescription = description !== null;
   const shouldRenderAddSongButton =
     playlistTypeToDisplay !== FETCH_PLAYLISTS_TYPES.PUBLIC;
-  const sharedPlaylistClass = playlistPrivacyType === PLAYLIST_PRIVACY_TYPES.SHARED ? 'profile__playlist-type--shared' : '';
+  const sharedPlaylistClass =
+    playlistPrivacyType === PLAYLIST_PRIVACY_TYPES.SHARED
+      ? 'profile__playlist-type--shared'
+      : '';
   const coverUrl = logo
     ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-    : DEFAULT_PLAYLIST_COVER;
+    : require('../../shared/assets/default_playlist_cover.jpg');
 
   const handleAddSongModal = () => {
     setAddSongModal(!addSongModal);
@@ -77,7 +79,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
       fetchPlaylistDetails({
         playlistId: navigateId,
         playlistTypeToDisplay,
-      }),
+      })
     );
   }, [
     dispatch,
@@ -139,11 +141,11 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
           <ProfileText className='profile__text--created'>
             Created:&nbsp;{createdOn}
           </ProfileText>
-          {updatedOn !== null &&
+          {updatedOn !== null && (
             <ProfileText className='profile__text--updated'>
               Updated:&nbsp;{updatedOn}
             </ProfileText>
-          }
+          )}
           <ProfileRating className='profile__rating--dislike'>
             {dislikes}
             <RiDislikeLine />

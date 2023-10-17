@@ -1,3 +1,5 @@
+const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
+
 export const constants = {
   imageFileMaxSize: 10240,
   fileSizeConversion: 1024,
@@ -5,7 +7,7 @@ export const constants = {
   playlistNameMaxLength: 50,
   playlistDescriptionMinLength: 3,
   playlistDescriptionMaxLength: 1000,
-  API_URL: 'http://127.0.0.1:3000/api/v1/my/playlists',
-  get_API_URL: 'http://127.0.0.1:3000/api/v1/playlists',
-  store_URL: 'http://127.0.0.1:3000/uploads/store/',
+  API_URL: BASE_API_URL + '/api/v1/my/playlists',
+  get_API_URL: BASE_API_URL + '/api/v1/playlists',
+  store_URL: BASE_API_URL + '/uploads/store/',
 };

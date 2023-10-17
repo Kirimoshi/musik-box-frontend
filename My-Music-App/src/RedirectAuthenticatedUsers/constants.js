@@ -1,3 +1,4 @@
+const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 export const constants = {
-  refreshURL: 'http://127.0.0.1:3000/api/v1/refresh',
+  refreshURL: BASE_API_URL + '/api/v1/refresh',
 };
