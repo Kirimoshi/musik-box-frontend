@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { IoIosAdd } from 'react-icons/io';
 import { BiHeart } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { RiDislikeLine } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
+import { baseToastConfig, OneLineMessage } from '../../shared/Toasts';
 import './maincontainer.css';
 import {
   Container,
@@ -30,13 +32,26 @@ import {
   PLAYLIST_PRIVACY_TYPES,
   UPLOADS_URL,
 } from '../../store/constants';
-import { playlistDetailsSelector } from '../../store/playlist-details/playlist-details.selector';
-import { fetchPlaylistDetails } from '../../store/playlist-details/playlist-details.thunks';
+import {
+  playlistDetailsSelector,
+  playlistDetailsLoadingSelector,
+  playlistDetailsErrorSelector,
+} from '../../store/playlist-details/playlist-details.selector';
+import {
+  fetchPlaylistDetails,
+  editPlaylistDetails,
+} from '../../store/playlist-details/playlist-details.thunks';
+import ModalForm from '../../features/my-playlists/ModalForm';
 
 function PlaylistDetails({ playlistTypeToDisplay }) {
   const dispatch = useDispatch();
   const { isAuthenticated, isRehydrated } = useSelector(userSelector);
+  const toastId = React.useRef(null);
+  const playlistErr = useSelector(playlistDetailsErrorSelector);
+  const loading = useSelector(playlistDetailsLoadingSelector);
+  const [isEditPlaylistCliked, setIsEditPlaylistCliked] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isModalFormOpen, setIsModalFormOpen] = useState(false);
   const [addSongModal, setAddSongModal] = useState(false);
   const [myState, setMyState] = useState(false);
   const { id: navigateId } = useParams();
@@ -74,7 +89,6 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
   useEffect(() => {
     if (!navigateId || !playlistTypeToDisplay) return; // guard clause
     if (!isRehydrated && !isAuthenticated) return; // rehydrate still in progress, auth state not yet available
-
     dispatch(
       fetchPlaylistDetails({
         playlistId: navigateId,
@@ -88,10 +102,87 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
     playlistTypeToDisplay,
     isRehydrated,
   ]);
+
+  const notify = useCallback(() => {
+    toastId.current = toast(
+      <OneLineMessage message='Editing playlist...' />,
+      baseToastConfig
+    );
+  }, []);
+
+  const notifyError = useCallback(() => {
+    toast.update(toastId.current, {
+      type: toast.TYPE.ERROR,
+      autoClose: 2000,
+      render: (
+        <OneLineMessage message='Oops, looks like something went wrong.' />
+      ),
+    });
+  }, []);
+
+  const notifySuccess = useCallback(() => {
+    toast.update(toastId.current, {
+      type: toast.TYPE.SUCCESS,
+      autoClose: 2000,
+      render: <OneLineMessage message='Successfully added to playlist :)' />,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isEditPlaylistCliked && loading) {
+      notify();
+    }
+    if (isEditPlaylistCliked && !loading && playlistErr) {
+      notifyError();
+      setIsEditPlaylistCliked(false);
+    }
+    if (isEditPlaylistCliked && !loading && !playlistErr) {
+      notifySuccess();
+      setIsEditPlaylistCliked(false);
+    }
+  }, [
+    isEditPlaylistCliked,
+    loading,
+    playlistErr,
+    notify,
+    notifyError,
+    notifySuccess,
+  ]);
+
+  function handleOpenForm() {
+    setIsModalFormOpen(true);
+  }
+  const handleCloseForm = () => setIsModalFormOpen(false);
+  const handlerEditPlaylist = (data) => {
+    setIsEditPlaylistCliked(true);
+    dispatch(editPlaylistDetails(data));
+    setIsProfileMenuOpen(false);
+  };
+
   // TODO: we need some kind of loader, but for now prevent render until we get the data
   return (
     playlistId === navigateId && (
       <Container className={`${addSongModal ? 'maincontainer-pointer' : ''}`}>
+        {isModalFormOpen && (
+          <ModalForm
+            className='modal__edit-playlist'
+            options={{
+              isModalFormOpen,
+              onAction: handlerEditPlaylist,
+              onClose: handleCloseForm,
+              modalPlaylistId: playlistId,
+              playlist: {
+                attributes: {
+                  logo,
+                  name: playlistName,
+                  description,
+                },
+              },
+              modalTitle: 'Edit playlist',
+              actionButtonText: 'Edit',
+            }}
+          />
+        )}
         <ProfileContainer className='playlist__profile'>
           <ProfileEmail className='profile__email'>{email}</ProfileEmail>
           <ProfileText className='profile__text--register'>
@@ -122,6 +213,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
                 />
                 {isAuthenticated && isProfileMenuOpen && (
                   <MenuDropdownProfile
+                    handleOpenForm={handleOpenForm}
                     playlistId={playlistId}
                     setIsProfileMenuOpen={setIsProfileMenuOpen}
                     shouldRenderTypeChange={playlistPrivacyType !== 'shared'}

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { sharedPlaylistsSelector } from '../../../../store/shared-playlists/shared-playlists.selector';
 
@@ -44,5 +44,9 @@ function SharedPlaylistList({ searchString }) {
     </SharedPlaylistListContainer>
   );
 }
+
+SharedPlaylistList.propTypes = {
+  searchString: PropTypes.string,
+};
 
 export default SharedPlaylistList;
