@@ -59,9 +59,14 @@ Then(/^(.*) message should be displayed: (.*)$/,
     await Pages.signUp.checkErrorMessage(elementType, errorMessage);
   } else {
   await Pages.home.checkLogoutMessage(elementType, errorMessage);
+  const currentPageUrl = await browser.getUrl();
+  if (currentPageUrl.includes("sign-up")) {
+    await Pages.signUp.checkErrorMessage(elementType, errorMessage);
+  } else {
+  await Pages.home.checkLogoutMessage(elementType, errorMessage);
     }
   }
-);
+});
 
 Then(/the "([^"]*)" page "([^"]*)" elements have the initial length/, async function (page, element) {
   let currentElement = await Pages[page][camelize(`${element}`)];

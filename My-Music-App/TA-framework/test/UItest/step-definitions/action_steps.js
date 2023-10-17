@@ -57,10 +57,10 @@ Then(/the user clicks on the "([^"]*)" (page )?(\d+)? ?"([^"]*)" "([^"]*)"/,
   } else {
     elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
     }
-  } else if (place === "sidebar") {
-    elementToClick = await BaseElements[place][camelize(`${element}${type}`)];
   } else if (ifPage) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)];
+  } else if (place === "sidebar") {
+    elementToClick = await BaseElements[place][camelize(`${element}${type}`)];
   } else {
     throw new Error("Element is not found")
   }
@@ -68,6 +68,7 @@ Then(/the user clicks on the "([^"]*)" (page )?(\d+)? ?"([^"]*)" "([^"]*)"/,
     await elementToClick.click();
     await browser.pause(1000);
 });
+
 
 
 When(/^The user logging out$/, async () => {
