@@ -178,8 +178,9 @@ function MyPlaylistsList({ searchString }) {
       )}
       <MyPlaylistsListContainer as='section' className='my-playlists__list'>
         {myPlaylists
-          .filter(({ attributes: { name } }) =>
-            name.toLowerCase().includes(searchString)
+          .filter(
+            ({ attributes: { name } }, index) =>
+              name.toLowerCase().includes(searchString) && index < 10
           )
           .map(
             ({

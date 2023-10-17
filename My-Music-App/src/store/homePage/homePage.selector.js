@@ -12,12 +12,27 @@ export const popularPlaylistsSelector = createSelector(
   (homePageSlice) => homePageSlice.popularPlaylists
 );
 
+export const popularPlaylistsPaginationSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.popularPlaylistsPaginationData
+);
+
 export const featuredPlaylistsSelector = createSelector(
   homePageSelector,
   (homePageSlice) => homePageSlice.featuredPlaylists
 );
 
+export const featuredPlaylistsPaginationSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.featuredPlaylistsPaginationData
+);
+
 export const latestPlaylistsSelector = createSelector(
   homePageSelector,
   (homePageSlice) => homePageSlice.latestPlaylists
+);
+
+export const latestPlaylistsPaginationSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.latestPlaylistsPaginationData
 );

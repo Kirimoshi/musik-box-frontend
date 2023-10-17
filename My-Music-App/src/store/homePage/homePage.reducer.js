@@ -5,7 +5,7 @@ const initialState = {
   loading: false,
   error: null,
   popularPlaylists: [],
-  popularPlalistsPaginationData: {},
+  popularPlaylistsPaginationData: {},
   featuredPlaylists: [],
   featuredPlaylistsPaginationData: {},
   latestPlaylists: [],

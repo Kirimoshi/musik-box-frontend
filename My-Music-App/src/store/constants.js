@@ -1,13 +1,12 @@
-export const API_URL = 'http://127.0.0.1:3000/api/v1';
-export const LOGIN_URL = 'http://127.0.0.1:3000/api/v1/login';
-export const REFRESH_URL = 'http://127.0.0.1:3000/api/v1/refresh';
-export const LOGOUT_URL = 'http://127.0.0.1:3000/api/v1/logout';
-export const MY_PLAYLISTS_URL = 'http://127.0.0.1:3000/api/v1/my/playlists';
-export const PUBLIC_PLAYLIST_URL = 'http://127.0.0.1:3000/api/v1/playlists';
-export const UPLOADS_URL = 'http://127.0.0.1:3000/uploads';
-export const DEFAULT_PLAYLIST_COVER =
-  'http://127.0.0.1:3000/uploads/store/dfafa56c933ede4657132b7d9ee42df8.jpg';
-export const USER_CRED = { displayName: 'Olsheer', email: 'email@.com' };
+const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
+
+export const API_URL = BASE_API_URL + '/api/v1';
+export const LOGIN_URL = BASE_API_URL + '/api/v1/login';
+export const REFRESH_URL = BASE_API_URL + '/api/v1/refresh';
+export const LOGOUT_URL = BASE_API_URL + '/api/v1/logout';
+export const MY_PLAYLISTS_URL = BASE_API_URL + '/api/v1/my/playlists';
+export const PUBLIC_PLAYLIST_URL = BASE_API_URL + '/api/v1/playlists';
+export const UPLOADS_URL = BASE_API_URL + '/uploads';
 
 export const STATE_STATUSES = {
   IDLE: 'idle',

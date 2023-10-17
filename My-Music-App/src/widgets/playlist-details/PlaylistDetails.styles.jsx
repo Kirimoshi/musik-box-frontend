@@ -82,12 +82,12 @@ export const ProfileCover = styled.div`
   aspect-ratio: 1/1;
   border-radius: 18px;
   background-image: url(${(props) => props.$coverUrl}),
-  linear-gradient(lightgray, lightgray);
+    linear-gradient(lightgray, lightgray);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.3),
-  0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+    0px 8px 12px 6px rgba(0, 0, 0, 0.15);
   position: relative;
 
   & > .profile__playlist-type {
@@ -105,7 +105,7 @@ export const ProfileCover = styled.div`
   }
 
   & > .profile__playlist-type--shared {
-    background: #6750A4;
+    background: #6750a4;
   }
 `;
 

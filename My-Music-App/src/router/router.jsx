@@ -1,4 +1,8 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from 'react-router-dom';
 import Home from '../pages/home/Home';
 import SignUp from '../widgets/sign-up/SignUp';
 import SignIn from '../widgets/sign-In/SignIn';
@@ -89,8 +93,8 @@ const router = createBrowserRouter(
         <Route path={publicPlaylists} element={<PublicPlaylists />} />
         <Route path='*' element={<h1>Not Found</h1>} />
       </Route>
-    </>,
-  ),
+    </>
+  )
 );
 
 export default router;

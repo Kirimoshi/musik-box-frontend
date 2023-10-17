@@ -21,13 +21,18 @@ const MAX_CHARS = 25;
 
 function DescriptionToggle({ isExpanded, onExpand, onCollapse }) {
   return (
-    <DescriptionCTA onClick={isExpanded ? onCollapse : onExpand}>
+    <DescriptionCTA
+      onClick={isExpanded ? onCollapse : onExpand}
+      className={`playlist-card__CTA${
+        isExpanded ? '--expanded' : '--collapsed'
+      }`}
+    >
       {isExpanded ? <MdKeyboardDoubleArrowDown /> : <MdKeyboardDoubleArrowUp />}
     </DescriptionCTA>
   );
 }
 
-function PlaylistsSmall({ playlists, subtitle }) {
+function PlaylistsSmall({ playlists, subtitle, className }) {
   const [expandedPlaylistId, setExpandedPlaylistId] = useState(null);
 
   const handleMore = (playlistId) => () => {
@@ -38,9 +43,9 @@ function PlaylistsSmall({ playlists, subtitle }) {
   };
 
   return (
-    <div>
+    <section className={className}>
       <Subtitle>{subtitle}</Subtitle>
-      <PlaylistContainer data-test-name='cards wraper'>
+      <PlaylistContainer className={`${subtitle?.toLowerCase()}-playlists`}>
         {playlists?.map(
           ({
             id,
@@ -60,15 +65,22 @@ function PlaylistsSmall({ playlists, subtitle }) {
               : require('../../../shared/assets/default_playlist_cover.jpg');
 
             return (
-              <PlaylistCard key={id} $isExpanded={isExpanded}>
+              <PlaylistCard
+                key={id}
+                $isExpanded={isExpanded}
+                className={`${subtitle?.toLowerCase()}-playlists__card playlist-card`}
+              >
                 <Cover
                   role='img'
                   aria-label={`playlist ${name} cover`}
                   $isExpanded={isExpanded}
                   $coverUrl={coverUrl}
+                  className='playlist-card__cover'
                 />
-                <CardTitle>{name}</CardTitle>
-                <CardOwner>By: {capitalizeWords(owner)}</CardOwner>
+                <CardTitle className='playlist-card__title'>{name}</CardTitle>
+                <CardOwner className='playlist-card__owner'>
+                  By: {capitalizeWords(owner)}
+                </CardOwner>
                 {hasLongDescription && (
                   <DescriptionToggle
                     isExpanded={isExpanded}
@@ -77,7 +89,12 @@ function PlaylistsSmall({ playlists, subtitle }) {
                   />
                 )}
                 {shouldRenderDescription && (
-                  <CardDescription $isExpanded={isExpanded}>
+                  <CardDescription
+                    $isExpanded={isExpanded}
+                    className={`playlist-card__description${
+                      isExpanded ? '--expanded' : '--collapsed'
+                    }`}
+                  >
                     {description}
                   </CardDescription>
                 )}
@@ -86,7 +103,7 @@ function PlaylistsSmall({ playlists, subtitle }) {
           }
         )}
       </PlaylistContainer>
-    </div>
+    </section>
   );
 }
 
@@ -105,6 +122,7 @@ PlaylistsSmall.propTypes = {
     })
   ),
   subtitle: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 DescriptionToggle.propTypes = {
   isExpanded: PropTypes.bool.isRequired,

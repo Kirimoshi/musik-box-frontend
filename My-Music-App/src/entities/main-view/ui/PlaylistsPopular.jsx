@@ -24,12 +24,17 @@ const MAX_CHARS = 99;
 
 function DescriptionToggle({ isExpanded, onExpand, onCollapse }) {
   return (
-    <DescriptionCTA onClick={isExpanded ? onCollapse : onExpand}>
+    <DescriptionCTA
+      onClick={isExpanded ? onCollapse : onExpand}
+      className={`playlist-card__CTA${
+        isExpanded ? '--expanded' : '--collapsed'
+      }`}
+    >
       {isExpanded ? <MdKeyboardDoubleArrowDown /> : <MdKeyboardDoubleArrowUp />}
     </DescriptionCTA>
   );
 }
-function PlaylistsPopular({ playlists }) {
+function PlaylistsPopular({ playlists, className }) {
   const [expandedPlaylistId, setExpandedPlaylistId] = useState(null);
 
   const handleMore = (playlistId) => () => {
@@ -40,10 +45,10 @@ function PlaylistsPopular({ playlists }) {
   };
 
   return (
-    <div>
+    <section className={className}>
       <PlaylistsTitle>Playlists</PlaylistsTitle>
       <PlaylistsSubtitle>Most popular</PlaylistsSubtitle>
-      <PlaylistsContainer>
+      <PlaylistsContainer className='popular-playlists__section'>
         {playlists?.map(
           ({
             id,
@@ -67,9 +72,13 @@ function PlaylistsPopular({ playlists }) {
                 $coverUrl={coverUrl}
                 key={id}
                 $isExpanded={isExpanded}
+                className='popular-playlists__card playlist-card playlist-card__cover'
+                data-playlist-id={id}
               >
-                <CardTitle>{name}</CardTitle>
-                <CardOwner>{`Created by: ${capitalizeWords(owner)}`}</CardOwner>
+                <CardTitle className='playlist-card__title'>{name}</CardTitle>
+                <CardOwner className='playlist-card__owner'>{`Created by: ${capitalizeWords(
+                  owner
+                )}`}</CardOwner>
                 <CardLike>
                   <AiOutlineHeart />
                 </CardLike>
@@ -81,7 +90,12 @@ function PlaylistsPopular({ playlists }) {
                   />
                 )}
                 {shouldRenderDescription && (
-                  <CardDescription $isExpanded={isExpanded}>
+                  <CardDescription
+                    $isExpanded={isExpanded}
+                    className={`playlist-card__description${
+                      isExpanded ? '--expanded' : '--collapsed'
+                    }`}
+                  >
                     <p>{description}</p>
                   </CardDescription>
                 )}
@@ -90,11 +104,12 @@ function PlaylistsPopular({ playlists }) {
           }
         )}
       </PlaylistsContainer>
-    </div>
+    </section>
   );
 }
 
 PlaylistsPopular.propTypes = {
+  className: PropTypes.string,
   playlists: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
