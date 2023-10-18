@@ -8,9 +8,10 @@ function Pagination({
   isLeftActive = false,
   isRightActive = false,
   className,
+  magrinBottom = '36px',
 }) {
   return (
-    <PaginationControls className={className}>
+    <PaginationControls $marginBottom={magrinBottom} className={className}>
       <button
         disabled={!isLeftActive}
         onClick={() => handleClick('left')}
@@ -34,6 +35,7 @@ Pagination.propTypes = {
   isLeftActive: PropTypes.bool,
   isRightActive: PropTypes.bool,
   className: PropTypes.string,
+  magrinBottom: PropTypes.string,
 };
 
 export default Pagination;
