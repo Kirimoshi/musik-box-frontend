@@ -28,7 +28,7 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
     Then "registrationDate" element is displayed on "playlist" page
     Then "amountNumber" element is displayed on "playlist" page
     Then "availabilityName" element is displayed on "playlist" page
-    # Then "playlist" "Song" has "song cover" "Image"
+    Then "songImage" element is displayed on "playlist" page
     # Then "playlist"  has "Artist"    Not implement
     # Then "playlist" "song" has "sorting"  Not implement
     Then "playlist" page "Commentor" "Name" is: "bhaskara"

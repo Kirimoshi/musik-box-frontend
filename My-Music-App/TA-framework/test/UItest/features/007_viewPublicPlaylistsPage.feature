@@ -5,7 +5,7 @@ Feature: View the Public Playlists page
     Scenario: 1.1 The Public Playlists page should be accessible to guest
         Given the user is open "signIn" page
         Then the user is on the "signIn" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
 
@@ -14,7 +14,7 @@ Feature: View the Public Playlists page
         Then the user is on the "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         Then The user logging out
@@ -28,7 +28,7 @@ Feature: View the Public Playlists page
     Scenario Outline: 3.1 Unauthorized users must be able to navigate to the Public Playlists page by clicking the Public Playlists button on the following pages: '<page>'
         When the user is open "<page>" page
         Then the user is on the "<page>" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         Examples:
@@ -42,9 +42,9 @@ Feature: View the Public Playlists page
         Then the user is on the "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" page "<button>" "Button"
+        When the user clicks on the "sidebar" "<button>" "Button"
         Then the user is on the "<page>" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         Then The user logging out
@@ -62,7 +62,7 @@ Feature: View the Public Playlists page
         Then the user is on the "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by the number of likes in descending order
@@ -72,7 +72,7 @@ Feature: View the Public Playlists page
         # and then by the date they were created in descending order - the date is currently mocked and the same for all playlists
         Given the user is open "signIn" page
         Then the user is on the "signIn" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by the number of likes in descending order
@@ -82,7 +82,7 @@ Feature: View the Public Playlists page
         Then the user is on the "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         And "publicPlaylistLikeBtn" elements of "publicPlaylistsList" are displayed on "publicPlaylists" page
@@ -94,7 +94,7 @@ Feature: View the Public Playlists page
     Scenario: 5.2 Unauthorized users must see the number of likes and dislikes the playlist has
         Given the user is open "signIn" page
         Then the user is on the "signIn" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         And "publicPlaylistLikeBtn" elements of "publicPlaylistsList" are displayed on "publicPlaylists" page
@@ -151,7 +151,7 @@ Feature: View the Public Playlists page
         Then the user is on the "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         And "searchBoxInput" element is displayed on "publicPlaylists" page
@@ -170,7 +170,7 @@ Feature: View the Public Playlists page
     Scenario Outline: 8.1.1 The Public Playlists page should have a sorting feature that allows Guests to sort playlists by playlist name in <Order>
         Given the user is open "signIn" page
         Then the user is on the "signIn" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         When the user clicks on the "publicPlaylists" page "Sort" "Icon"
@@ -190,7 +190,7 @@ Feature: View the Public Playlists page
         Then the user is on the "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         When the user clicks on the "publicPlaylists" page "Sort" "Icon"
@@ -228,7 +228,7 @@ Feature: View the Public Playlists page
         Given the user is open "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" page "Public Playlists" "Button"
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "publicPlaylistsList" element is displayed on "publicPlaylists" page
         When the user clicks on the "publicPlaylists" page "Sort" "Icon"

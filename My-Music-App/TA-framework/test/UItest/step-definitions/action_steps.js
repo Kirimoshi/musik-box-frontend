@@ -69,8 +69,6 @@ Then(/the user clicks on the "([^"]*)" (page )?(\d+)? ?"([^"]*)" "([^"]*)"/,
     await browser.pause(1000);
 });
 
-
-
 When(/^The user logging out$/, async () => {
   await Pages.home.logout();
 });
