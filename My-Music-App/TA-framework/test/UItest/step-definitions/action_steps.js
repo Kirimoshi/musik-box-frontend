@@ -46,8 +46,8 @@ When(/the user sing-ins without remembering with "([^"]*)" and "([^"]*)"/, async
   await Pages.signIn.signInWithoutRemembering(email, password);
 });
 
-Then(/the user clicks on the "([^"]*)" (page )?(\d+)? ?"([^"]*)" "([^"]*)"/,
-  async function (place, ifPage, numeral, element, type) {
+Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" "([^"]*)" (\d+)? ?element/,
+  async function (place, ifPage, element, type, numeral) {
   let elementToClick;
   if (numeral) {
   let numeralElement = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
@@ -59,7 +59,7 @@ Then(/the user clicks on the "([^"]*)" (page )?(\d+)? ?"([^"]*)" "([^"]*)"/,
     }
   } else if (ifPage) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)];
-  } else if (place === "sidebar") {
+  } else if (place === "sidebar" || place === "pagination") {
     elementToClick = await BaseElements[place][camelize(`${element}${type}`)];
   } else {
     throw new Error("Element is not found")
