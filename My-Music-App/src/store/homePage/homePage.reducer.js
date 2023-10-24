@@ -17,6 +17,10 @@ const initialState = {
   genres: [],
   topGenresSongs: [],
   topGenresSongsPaginationData: {},
+  topUsers: {
+    popular: [],
+    contributor: [],
+  },
 };
 
 export const homePageSlice = createSlice({
@@ -112,6 +116,18 @@ export const homePageSlice = createSlice({
       .addCase(
         thunks.fetchHomePageTopGenresSongs.rejected,
         thunks.fetchHomePageTopGenresSongsRejected
+      )
+      .addCase(
+        thunks.fetchHomePageTopUsers.pending,
+        thunks.fetchHomePageTopUsersPending
+      )
+      .addCase(
+        thunks.fetchHomePageTopUsers.fulfilled,
+        thunks.fetchHomePageTopUsersFulfilled
+      )
+      .addCase(
+        thunks.fetchHomePageTopUsers.rejected,
+        thunks.fetchHomePageTopUsersRejected
       );
   },
 });

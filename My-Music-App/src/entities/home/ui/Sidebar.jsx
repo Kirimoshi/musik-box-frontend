@@ -117,7 +117,7 @@ function Sidebar() {
                 src={
                   picture
                     ? `${UPLOADS_URL}/${picture.storage}/${picture.id}`
-                    : require('../../../shared/assets/default_user_avatar.jpg')
+                    : require('../../../shared/assets/default_user_avatar_small.png')
                 }
                 alt='current user avatar'
               />

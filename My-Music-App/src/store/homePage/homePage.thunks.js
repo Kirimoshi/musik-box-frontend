@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
   API_URL,
   FETCH_HOME_PLAYLISTS_TYPES,
+  FETCH_USER_TYPES,
   PUBLIC_PLAYLIST_URL,
   SONGS_URL,
 } from '../constants';
@@ -213,6 +214,40 @@ export const fetchHomePageTopGenresSongsFulfilled = (state, action) => {
   state.topGenresSongsPaginationData = action.payload.paginationData;
 };
 export const fetchHomePageTopGenresSongsRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const fetchHomePageTopUsers = createAsyncThunk(
+  'homePageSlice/fetchTopUsers',
+  async () => {
+    try {
+      const responces = await axios.all([
+        axios({
+          url: `${API_URL}/users?user_type=${FETCH_USER_TYPES.POPULAR}&per_page=5&page=1`,
+        }),
+        axios({
+          url: `${API_URL}/users?user_type=${FETCH_USER_TYPES.CONTRIBUTOR}&per_page=5&page=1`,
+        }),
+      ]);
+      return {
+        popular: responces[0].data.users.data,
+        contributor: responces[1].data.users.data,
+      };
+    } catch ({ response: { data } }) {
+      throw data.error ?? data.errors;
+    }
+  }
+);
+export const fetchHomePageTopUsersPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const fetchHomePageTopUsersFulfilled = (state, action) => {
+  state.loading = false;
+  state.topUsers = action.payload;
+};
+export const fetchHomePageTopUsersRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };
