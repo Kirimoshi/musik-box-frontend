@@ -1,6 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { FETCH_HOME_PLAYLISTS_TYPES, PUBLIC_PLAYLIST_URL } from '../constants';
+import {
+  API_URL,
+  FETCH_HOME_PLAYLISTS_TYPES,
+  PUBLIC_PLAYLIST_URL,
+  SONGS_URL,
+} from '../constants';
 
 export const fetchPopularPlaylists = createAsyncThunk(
   'homePageSlice/fetchPopularPlaylists',
@@ -89,6 +94,125 @@ export const fetchLatestPlaylistsFulfilled = (state, action) => {
   state.latestPlaylistsPaginationData = action.payload.paginationData;
 };
 export const fetchLatestPlaylistsRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const fetchHomepagePopularSongs = createAsyncThunk(
+  'homePageSlice/fetchHomepageSongs',
+  async (page = 1) => {
+    try {
+      const response = await axios({
+        url: `${SONGS_URL}?popular=true&page=${page}&per_page=6&sort_order=desc`,
+      });
+      return {
+        songs: response.data.songs.data,
+        paginationData: response.data.pagination_metadata,
+      };
+    } catch ({ response: { data } }) {
+      throw data.error ?? data.errors;
+    }
+  }
+);
+export const fetchHomepagePopularSongsPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const fetchHomepagePopularSongsFulfilled = (state, action) => {
+  state.loading = false;
+  state.popularSongs = action.payload.songs;
+  state.popularSongsPaginationData = action.payload.paginationData;
+};
+export const fetchHomepagePopularSongsRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const fetchHomePageLastSongs = createAsyncThunk(
+  'homePageSlice/fetchHomePageLastSongs',
+  async (page = 1) => {
+    try {
+      const response = await axios({
+        url: `${SONGS_URL}?sort_by=created_at&sort_order=desc&per_page=6&page=${page}`,
+      });
+      return {
+        songs: response.data.songs.data,
+        paginationData: response.data.pagination_metadata,
+      };
+    } catch ({ response: { data } }) {
+      throw data.error ?? data.errors;
+    }
+  }
+);
+export const fetchHomePageLastSongsPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const fetchHomePageLastSongsFulfilled = (state, action) => {
+  state.loading = false;
+  state.latestSongs = action.payload.songs;
+  state.latestSongsPaginationData = action.payload.paginationData;
+};
+export const fetchHomePageLastSongsRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const fetchHomePageGenres = createAsyncThunk(
+  'homePageSlice/fetchHomePageGenres',
+  async () => {
+    try {
+      const response = await axios({
+        url: `${API_URL}/genres?top=true&limit=5`,
+      });
+      return response.data.genres.data;
+    } catch ({ response: { data } }) {
+      throw data.error ?? data.errors;
+    }
+  }
+);
+export const fetchHomePageGenresPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const fetchHomePageGenresFulfilled = (state, action) => {
+  state.loading = false;
+  state.genres = action.payload;
+};
+export const fetchHomePageGenresRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const fetchHomePageTopGenresSongs = createAsyncThunk(
+  'homePageSlice/fetchHomePageTopGenresSongs',
+  async (page = 1) => {
+    const perPage = 6;
+    const genresCount = 5;
+    const limitPerGenre = 2;
+    try {
+      const response = await axios({
+        url: `${API_URL}/songs?genres_count=${genresCount}&limit_per_genre=${limitPerGenre}&sort_order=desc&per_page=${perPage}&page=${page}`,
+      });
+      return {
+        songs: response.data.songs.data,
+        paginationData: response.data.pagination_metadata,
+      };
+    } catch ({ response: { data } }) {
+      throw data.error ?? data.errors;
+    }
+  }
+);
+export const fetchHomePageTopGenresSongsPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const fetchHomePageTopGenresSongsFulfilled = (state, action) => {
+  state.loading = false;
+  state.topGenresSongs = action.payload.songs;
+  state.topGenresSongsPaginationData = action.payload.paginationData;
+};
+export const fetchHomePageTopGenresSongsRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

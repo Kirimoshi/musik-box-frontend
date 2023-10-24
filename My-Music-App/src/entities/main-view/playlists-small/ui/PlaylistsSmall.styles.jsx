@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {
   BasePlaylistsContainer,
   oneLineEllipsis,
-} from '../../../shared/Shared.styles';
+} from '../../../../shared/Shared.styles';
 
 const cardWidth = 168;
 const cardHeight = 270;
