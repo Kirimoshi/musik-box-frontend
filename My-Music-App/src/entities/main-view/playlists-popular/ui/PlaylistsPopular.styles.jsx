@@ -5,7 +5,7 @@ import {
   Subtitle,
   Title,
   oneLineEllipsis,
-} from '../../../shared/Shared.styles';
+} from '../../../../shared/Shared.styles';
 
 const likeSize = 52;
 const cardWidth = 264;
@@ -15,7 +15,7 @@ const descrLineHeight = 20;
 const descrMinLines = 3;
 const descrMaxLines = 6;
 const descrFontSize = 14;
-const descrBgColor = 'rgba(191, 129, 173, 0.5)';
+const descrBgColor = 'rgb(79, 55, 139, 0.7)'; // Design color is rgba(191, 129, 173, 0.5) but it too pink for our violet theme
 const cardPadd = {
   top: 22,
   right: 13,

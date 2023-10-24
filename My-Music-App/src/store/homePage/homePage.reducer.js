@@ -10,6 +10,13 @@ const initialState = {
   featuredPlaylistsPaginationData: {},
   latestPlaylists: [],
   latestPlaylistsPaginationData: {},
+  popularSongs: [],
+  popularSongsPaginationData: {},
+  latestSongs: [],
+  latestSongsPaginationData: {},
+  genres: [],
+  topGenresSongs: [],
+  topGenresSongsPaginationData: {},
 };
 
 export const homePageSlice = createSlice({
@@ -57,6 +64,54 @@ export const homePageSlice = createSlice({
       .addCase(
         thunks.fetchLatestPlaylists.rejected,
         thunks.fetchLatestPlaylistsRejected
+      )
+      .addCase(
+        thunks.fetchHomepagePopularSongs.pending,
+        thunks.fetchHomepagePopularSongsPending
+      )
+      .addCase(
+        thunks.fetchHomepagePopularSongs.fulfilled,
+        thunks.fetchHomepagePopularSongsFulfilled
+      )
+      .addCase(
+        thunks.fetchHomepagePopularSongs.rejected,
+        thunks.fetchHomepagePopularSongsRejected
+      )
+      .addCase(
+        thunks.fetchHomePageLastSongs.pending,
+        thunks.fetchHomePageLastSongsPending
+      )
+      .addCase(
+        thunks.fetchHomePageLastSongs.fulfilled,
+        thunks.fetchHomePageLastSongsFulfilled
+      )
+      .addCase(
+        thunks.fetchHomePageLastSongs.rejected,
+        thunks.fetchHomePageLastSongsRejected
+      )
+      .addCase(
+        thunks.fetchHomePageGenres.pending,
+        thunks.fetchHomePageGenresPending
+      )
+      .addCase(
+        thunks.fetchHomePageGenres.fulfilled,
+        thunks.fetchHomePageGenresFulfilled
+      )
+      .addCase(
+        thunks.fetchHomePageGenres.rejected,
+        thunks.fetchHomePageGenresRejected
+      )
+      .addCase(
+        thunks.fetchHomePageTopGenresSongs.pending,
+        thunks.fetchHomePageTopGenresSongsPending
+      )
+      .addCase(
+        thunks.fetchHomePageTopGenresSongs.fulfilled,
+        thunks.fetchHomePageTopGenresSongsFulfilled
+      )
+      .addCase(
+        thunks.fetchHomePageTopGenresSongs.rejected,
+        thunks.fetchHomePageTopGenresSongsRejected
       );
   },
 });

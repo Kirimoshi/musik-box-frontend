@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
-import { AiOutlineHeart } from 'react-icons/ai';
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
 } from 'react-icons/md';
+import { Subtitle } from '../../../../shared/Shared.styles';
 import {
-  PlaylistsTitle,
-  PlaylistsSubtitle,
-  PlaylistsContainer,
+  PlaylistContainer,
   PlaylistCard,
+  Cover,
   CardTitle,
-  CardLike,
   CardOwner,
   CardDescription,
   DescriptionCTA,
-} from './PlaylistsPopular.styles';
-import { UPLOADS_URL } from '../../../store/constants';
-import { capitalizeWords } from '../../../store/helpers';
+} from './PlaylistsSmall.styles';
+import { UPLOADS_URL } from '../../../../store/constants';
+import { capitalizeWords } from '../../../../store/helpers';
 
-const MAX_CHARS = 99;
+const MAX_CHARS = 25;
 
 function DescriptionToggle({ isExpanded, onExpand, onCollapse }) {
   return (
@@ -34,7 +31,8 @@ function DescriptionToggle({ isExpanded, onExpand, onCollapse }) {
     </DescriptionCTA>
   );
 }
-function PlaylistsPopular({ playlists, className }) {
+
+function PlaylistsSmall({ playlists, subtitle, className }) {
   const [expandedPlaylistId, setExpandedPlaylistId] = useState(null);
 
   const handleMore = (playlistId) => () => {
@@ -46,9 +44,8 @@ function PlaylistsPopular({ playlists, className }) {
 
   return (
     <section className={className}>
-      <PlaylistsTitle>Playlists</PlaylistsTitle>
-      <PlaylistsSubtitle>Most popular</PlaylistsSubtitle>
-      <PlaylistsContainer className='popular-playlists__section'>
+      <Subtitle>{subtitle}</Subtitle>
+      <PlaylistContainer className={`${subtitle?.toLowerCase()}-playlists`}>
         {playlists?.map(
           ({
             id,
@@ -65,23 +62,25 @@ function PlaylistsPopular({ playlists, className }) {
               description && description.length >= MAX_CHARS;
             const coverUrl = logo
               ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-              : require('../../../shared/assets/default_playlist_cover.jpg');
+              : require('../../../../shared/assets/default_playlist_cover.jpg');
 
             return (
               <PlaylistCard
-                $coverUrl={coverUrl}
                 key={id}
                 $isExpanded={isExpanded}
-                className='popular-playlists__card playlist-card playlist-card__cover'
-                data-playlist-id={id}
+                className={`${subtitle?.toLowerCase()}-playlists__card playlist-card`}
               >
+                <Cover
+                  role='img'
+                  aria-label={`playlist ${name} cover`}
+                  $isExpanded={isExpanded}
+                  $coverUrl={coverUrl}
+                  className='playlist-card__cover'
+                />
                 <CardTitle className='playlist-card__title'>{name}</CardTitle>
-                <CardOwner className='playlist-card__owner'>{`Created by: ${capitalizeWords(
-                  owner
-                )}`}</CardOwner>
-                <CardLike>
-                  <AiOutlineHeart />
-                </CardLike>
+                <CardOwner className='playlist-card__owner'>
+                  By: {capitalizeWords(owner)}
+                </CardOwner>
                 {hasLongDescription && (
                   <DescriptionToggle
                     isExpanded={isExpanded}
@@ -96,20 +95,19 @@ function PlaylistsPopular({ playlists, className }) {
                       isExpanded ? '--expanded' : '--collapsed'
                     }`}
                   >
-                    <p>{description}</p>
+                    {description}
                   </CardDescription>
                 )}
               </PlaylistCard>
             );
           }
         )}
-      </PlaylistsContainer>
+      </PlaylistContainer>
     </section>
   );
 }
 
-PlaylistsPopular.propTypes = {
-  className: PropTypes.string,
+PlaylistsSmall.propTypes = {
   playlists: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -123,12 +121,13 @@ PlaylistsPopular.propTypes = {
       }),
     })
   ),
+  subtitle: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
-
 DescriptionToggle.propTypes = {
   isExpanded: PropTypes.bool.isRequired,
   onExpand: PropTypes.func.isRequired,
   onCollapse: PropTypes.func.isRequired,
 };
 
-export default PlaylistsPopular;
+export default PlaylistsSmall;

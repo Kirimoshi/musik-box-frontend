@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { sharedPlaylistsSelector } from '../../../../store/shared-playlists/shared-playlists.selector';
-
 import { SharedPlaylistCard } from '../shared-playlist-card/SharedPlaylistCard';
-
 import { PublicPlaylistListContainer as SharedPlaylistListContainer } from '../../../public-playlists/ui/public-playlist-list/PublicPlaylistList.styles';
 
 function SharedPlaylistList({ searchString }) {

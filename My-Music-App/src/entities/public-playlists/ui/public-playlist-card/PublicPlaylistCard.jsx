@@ -94,9 +94,12 @@ PublicPlaylistCard.propTypes = {
   playlist: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    logo: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }).isRequired,
+    logo: PropTypes.oneOfType([
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+      }),
+      PropTypes.oneOf([null]),
+    ]),
     first_ten_songs: PropTypes.arrayOf(
       PropTypes.shape({
         attributes: PropTypes.shape({

@@ -36,3 +36,38 @@ export const latestPlaylistsPaginationSelector = createSelector(
   homePageSelector,
   (homePageSlice) => homePageSlice.latestPlaylistsPaginationData
 );
+
+export const popularSongsSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.popularSongs
+);
+
+export const popularSongsPaginationSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.popularSongsPaginationData
+);
+
+export const latestSongsSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.latestSongs
+);
+
+export const latestSongsPaginationSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.latestSongsPaginationData
+);
+
+export const genresSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.genres
+);
+
+export const topGenresSongsSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.topGenresSongs
+);
+
+export const topGenresSongsPaginationSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.topGenresSongsPaginationData
+);
