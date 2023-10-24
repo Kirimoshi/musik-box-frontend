@@ -1,4 +1,5 @@
-import { constants } from './constansts';
+import { constants } from '../../constants/constansts';
+
 export const Validate = (value) => {
   const error = {};
   if (value && value.length < constants.commentMinLength) {

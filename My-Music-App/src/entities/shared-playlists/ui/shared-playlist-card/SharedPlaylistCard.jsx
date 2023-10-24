@@ -95,7 +95,7 @@ SharedPlaylistCard.propTypes = {
     name: PropTypes.string.isRequired,
     logo: PropTypes.shape({
       id: PropTypes.string.isRequired,
-    }).isRequired,
+    }),
     first_ten_songs: PropTypes.arrayOf(
       PropTypes.shape({
         attributes: PropTypes.shape({

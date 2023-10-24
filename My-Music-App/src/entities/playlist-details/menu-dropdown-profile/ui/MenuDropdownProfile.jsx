@@ -1,30 +1,30 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { RiPencilFill, RiDeleteBin6Line } from 'react-icons/ri';
+import { RiDeleteBin6Line, RiPencilFill } from 'react-icons/ri';
 
 import {
   MenuContainer,
   MenuDivider,
   MenuItem,
 } from './MenuDropdownProfile.styles';
-import ModalDialog from '../../../shared/ModalDialog';
+import ModalDialog from '../../../../shared/ModalDialog';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
+  baseToastConfig,
   PlaylistTypeChangeErrorMessage,
   PlaylistTypeChangePendingMessage,
   PlaylistTypeChangeSuccessMessage,
-  baseToastConfig,
-} from '../../../shared/Toasts';
-import { deleteMyPlaylist } from '../../../store/myPlaylists/myPlaylists.thunks';
-import { changePlaylistType } from '../../../store/playlist-details/playlist-details.thunks';
-import { PLAYLIST_PRIVACY_TYPES } from '../../../store/constants';
+} from '../../../../shared/Toasts';
+import { deleteMyPlaylist } from '../../../../store/myPlaylists/myPlaylists.thunks';
+import { changePlaylistType } from '../../../../store/playlist-details/playlist-details.thunks';
+import { PLAYLIST_PRIVACY_TYPES } from '../../../../store/constants';
 import {
   playlistDetailsErrorSelector,
   playlistDetailsLoadingSelector,
-} from '../../../store/playlist-details/playlist-details.selector';
+} from '../../../../store/playlist-details/playlist-details.selector';
 
 function MenuDropdownProfile({
   handleOpenForm,

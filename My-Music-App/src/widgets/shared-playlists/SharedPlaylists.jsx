@@ -76,10 +76,7 @@ function SharedPlaylists() {
                 data-search-id='search-bar-icon'
               />
             </InputWrapper>
-            <SharedPlaylistList
-              className='shared-playlists'
-              searchString={term}
-            />
+            <SharedPlaylistList className='shared-playlists' term={term} />
             <Pagination
               handleClick={onPageChange}
               isLeftActive={!loading && page !== 1}

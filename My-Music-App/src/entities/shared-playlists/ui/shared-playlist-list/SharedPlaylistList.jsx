@@ -5,14 +5,14 @@ import { sharedPlaylistsSelector } from '../../../../store/shared-playlists/shar
 import { SharedPlaylistCard } from '../shared-playlist-card/SharedPlaylistCard';
 import { PublicPlaylistListContainer as SharedPlaylistListContainer } from '../../../public-playlists/ui/public-playlist-list/PublicPlaylistList.styles';
 
-function SharedPlaylistList({ searchString }) {
+function SharedPlaylistList({ term }) {
   const sharedPlaylists = useSelector(sharedPlaylistsSelector);
 
   return (
     <SharedPlaylistListContainer className='shared-playlists__list'>
       {sharedPlaylists
         ?.filter(({ attributes: { name } }) =>
-          name.toLowerCase().includes(searchString)
+          name.toLowerCase().includes(term)
         )
         ?.map(
           ({
@@ -44,7 +44,7 @@ function SharedPlaylistList({ searchString }) {
 }
 
 SharedPlaylistList.propTypes = {
-  searchString: PropTypes.string,
+  term: PropTypes.string.isRequired,
 };
 
 export default SharedPlaylistList;
