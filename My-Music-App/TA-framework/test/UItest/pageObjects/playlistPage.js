@@ -87,11 +87,11 @@ export class PlaylistPage extends BasePage {
         return $(`${this.playlistForm} span.profile__text--register`)
     }
 
-    get amountNumber() {
+    get playlistsCounter() {
         return $(`${this.playlistForm} span.profile__text--playlist-amount`)
     }
 
-    get availabilityName() {
+    get songName() {
         return $(`.song .artistInfo p`)
     }
 

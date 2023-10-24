@@ -7,6 +7,7 @@ import { BasePage } from "./basePage";
 import { PublicPlaylistsPage } from "./publicPlaylistsPage";
 import { SharedPlaylistsPage } from "./sharedPlaylistsPage";
 import { FriendsPage } from "./friendsPage";
+import { SharedPlaylistPage } from "./sharedPlaylistPage";
 
 class Pages {
     constructor() {
@@ -18,6 +19,7 @@ class Pages {
         this.base = new BasePage();
         this.publicPlaylists = new PublicPlaylistsPage();
         this.sharedPlaylists = new SharedPlaylistsPage();
+        this.sharedPlaylist = new SharedPlaylistPage();
         this.friends = new FriendsPage();
         // Add more instances as needed
     }

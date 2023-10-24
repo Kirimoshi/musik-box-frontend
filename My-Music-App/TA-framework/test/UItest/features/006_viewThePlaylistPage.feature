@@ -8,27 +8,27 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
 
   Scenario: Verify that the user is able to redirect to the "playlist" page
     Given the user is on the "home" page
-    When the user clicks on the "sidebar" "My Playlists" "Button"
+    When the user clicks on the "sidebar" "My Playlists" "Button" element
     Then the user is on the "playlists" page
-    When the user clicks on the "playlists" page 1 "Playlists" "Item"
+    When the user clicks on the "playlists" page "Playlists" "Item" 1 element
     Then the user is on the "current" "playlist" page
 
   Scenario: Verifying playlist elements
     Given the user is on the "current" "playlist" page
-    Then "playlistTitle" element is displayed on "playlist" page
-    Then "playlistItem" element is displayed on "playlist" page
-    Then "playlistLikes" element is displayed on "playlist" page
-    Then "playlistDislikes" element is displayed on "playlist" page
-    Then "createdDate" element is displayed on "playlist" page
-    Then "updatedDate" element is displayed on "playlist" page
-    Then "profileEmail" element is displayed on "playlist" page
-    Then "createdDate" element is displayed on "playlist" page
-    Then "updatedDate" element is displayed on "playlist" page
-    Then "profileEmail" element is displayed on "playlist" page
-    Then "registrationDate" element is displayed on "playlist" page
-    Then "amountNumber" element is displayed on "playlist" page
-    Then "availabilityName" element is displayed on "playlist" page
-    Then "songImage" element is displayed on "playlist" page
+    Then "Playlist Title" element is displayed on "playlist" page
+    Then "Playlist Item" element is displayed on "playlist" page
+    Then "Playlist Likes" element is displayed on "playlist" page
+    Then "Playlist Dislikes" element is displayed on "playlist" page
+    Then "Created Date" element is displayed on "playlist" page
+    Then "Updated Date" element is displayed on "playlist" page
+    Then "Profile Email" element is displayed on "playlist" page
+    Then "Created Date" element is displayed on "playlist" page
+    Then "Updated Date" element is displayed on "playlist" page
+    Then "Profile Email" element is displayed on "playlist" page
+    Then "Registration Date" element is displayed on "playlist" page
+    Then "Playlists Counter" element is displayed on "playlist" page
+    Then "Song Name" element is displayed on "playlist" page
+    Then "Song Image" element is displayed on "playlist" page
     # Then "playlist"  has "Artist"    Not implement
     # Then "playlist" "song" has "sorting"  Not implement
     Then "playlist" page "Commentor" "Name" is: "bhaskara"

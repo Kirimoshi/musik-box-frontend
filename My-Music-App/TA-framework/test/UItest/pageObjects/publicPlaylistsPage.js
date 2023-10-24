@@ -37,7 +37,7 @@ export class PublicPlaylistsPage extends BasePage {
         return $(`${this.playlistsContainer}`).$('p[data-songlist-id]').$$('span');
     }
 
-    get publicPlaylistLikeBtn() {
+    get publicPlaylistLikeButton() {
         return $(`${this.playlistsContainer}`).$$('.btn-like');
     }
 
@@ -45,16 +45,12 @@ export class PublicPlaylistsPage extends BasePage {
         return $(`${this.playlistsContainer}`).$$('span[data-likes-id]');
     }
 
-    get publicPlaylistDislikeBtn() {
+    get publicPlaylistDislikeButton() {
         return $(`${this.playlistsContainer}`).$$('.btn-dislike');
     }
 
     get publicPlaylistDislikeCounter() {
         return $(`${this.playlistsContainer}`).$$('span[data-dislikes-id]');
-    }
-
-    get publicPlaylistRightArrowPagination() {
-        return $('button[data-right-arrow-id]');
     }
 
     get searchBoxInput() {

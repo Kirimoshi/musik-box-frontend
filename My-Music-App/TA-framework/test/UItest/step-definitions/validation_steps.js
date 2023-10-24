@@ -110,7 +110,7 @@ Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
 // })
 
 Then(/"([^"]*)" element is (not )?displayed on "([^"]*)" page/, async function (element, notDisplayed, page) {
-  let currentElement = await Pages[page][(`${element}`)];
+  let currentElement = await Pages[page][camelize(`${element}`)];
   await expect(currentElement).toBeDisplayed();
   if (notDisplayed) {
     let ifNotDisplayed = await currentElement.isDisplayed();
@@ -119,8 +119,8 @@ Then(/"([^"]*)" element is (not )?displayed on "([^"]*)" page/, async function (
 });
 
 Then(/"([^"]*)" elements of "([^"]*)" are (not )?displayed on "([^"]*)" page/, async function (element, elementsArray, notDisplayed, page) {
-  let currentElement = await Pages[page][(`${element}`)];
-  let currentElementsArray = await Pages[page][(`${elementsArray}`)];
+  let currentElement = await Pages[page][camelize(`${element}`)];
+  let currentElementsArray = await Pages[page][camelize(`${elementsArray}`)];
 
   for (let i = 0; i < currentElementsArray.length; i++) {
     await expect(currentElement[i]).toBeDisplayed();
@@ -141,8 +141,8 @@ Then(/every playlist in "([^"]*)" on the "([^"]*)" page has ([^"]*) songs/, asyn
   }
 });
 
-Then(/"([^"]*)" page has no more than ([^"]*) playlists in "([^"]*)"/, async function (page, number, playlistList) {
-  let playlistItems = await Pages[page][(`${playlistList}`)];
+Then(/"([^"]*)" page has no more than ([^"]*) elements in "([^"]*)"/, async function (page, number, element) {
+  let playlistItems = await Pages[page][camelize(`${element}`)];
   let playlistItemsLength = Number(await playlistItems.length);
   let expectedNumberOfPlaylists = Number(number);
   await expect(playlistItemsLength).toBeLessThanOrEqual(expectedNumberOfPlaylists)
