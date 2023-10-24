@@ -22,6 +22,10 @@ const initialState = {
       playlistsOwned: null,
     },
     songs: [],
+    commentsInfo: {
+      comments: [],
+      metadata: {},
+    },
   },
 };
 
@@ -82,6 +86,30 @@ export const playlistDetailsSlice = createSlice({
       .addCase(
         thunks.editPlaylistDetails.rejected,
         thunks.editPlaylistDetailsRejected
+      )
+      .addCase(
+        thunks.fetchPlaylistComments.pending,
+        thunks.fetchPlaylistCommentsPending
+      )
+      .addCase(
+        thunks.fetchPlaylistComments.fulfilled,
+        thunks.fetchPlaylistCommentsFulfilled
+      )
+      .addCase(
+        thunks.fetchPlaylistComments.rejected,
+        thunks.fetchPlaylistCommentsRejected
+      )
+      .addCase(
+        thunks.addCommentToPlaylist.pending,
+        thunks.addCommentToPlaylistPending
+      )
+      .addCase(
+        thunks.addCommentToPlaylist.fulfilled,
+        thunks.addCommentToPlaylistFulfilled
+      )
+      .addCase(
+        thunks.addCommentToPlaylist.rejected,
+        thunks.addCommentToPlaylistRejected
       );
   },
 });

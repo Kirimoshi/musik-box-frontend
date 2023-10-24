@@ -1,11 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {
+  ERROR_RESPONSE_CODES,
   FETCH_PLAYLISTS_TYPES,
   MY_PLAYLISTS_URL,
   PUBLIC_PLAYLIST_URL,
 } from '../constants';
-import { formatDateDDmmmYYYY, parseLikesDislikes } from '../helpers';
+import {
+  capitalizeWords,
+  formatDateDDmmmYYYY,
+  parseLikesDislikes,
+} from '../helpers';
 
 export const fetchPlaylistDetails = createAsyncThunk(
   'playlistDetailsSlice/fetchPlaylistDetails',
@@ -117,7 +122,7 @@ export const changePlaylistType = createAsyncThunk(
         newPlaylistType: response.data.data.attributes.playlist_type,
       };
     } catch (error) {
-      if (error.response.status === 422)
+      if (error.response.status === ERROR_RESPONSE_CODES.UNPROCESSABLE_ENTITY)
         throw new Error('422 Unprocessable Entity');
 
       throw error.response.data.errors;
@@ -214,6 +219,120 @@ export const editPlaylistDetailsFulfilled = (state, action) => {
   };
 };
 export const editPlaylistDetailsRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const fetchPlaylistComments = createAsyncThunk(
+  'playlistDetailsSlice/fetchPlaylistComments',
+  async ({ playlistId, page = 1 }) => {
+    try {
+      const response = await axios({
+        url: `${PUBLIC_PLAYLIST_URL}/${playlistId}/comments?page=${page}`,
+        headers: {
+          Accept: '*/*',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response.data.errors;
+    }
+  }
+);
+export const fetchPlaylistCommentsPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const fetchPlaylistCommentsFulfilled = (state, action) => {
+  state.loading = false;
+  const {
+    comments: { data },
+    metadata,
+  } = action.payload;
+
+  state.playlistDetails.commentsInfo.comments = data.map(
+    ({
+      id,
+      attributes: { user_name, user_email, user_picture, created_at, content },
+    }) => ({
+      id: id,
+      userName: capitalizeWords(user_name),
+      userEmail: user_email,
+      userPicture: user_picture,
+      createdAtZ: created_at,
+      content: content,
+    })
+  );
+  state.playlistDetails.commentsInfo.metadata = {
+    commentsCount: metadata.count,
+    lastPage: metadata.last,
+  };
+};
+export const fetchPlaylistCommentsRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const addCommentToPlaylist = createAsyncThunk(
+  'playlistDetailsSlice/addCommentToPlaylist',
+  async (commentContent, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    const playlistId =
+      getState().playlistDetailsSlice.playlistDetails.playlistInfo.playlistId;
+    try {
+      const response = await axios({
+        url: `${PUBLIC_PLAYLIST_URL}/${playlistId}/comments`,
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
+          content: commentContent,
+        },
+        transformResponse: [
+          (responseData) => {
+            const { data } = JSON.parse(responseData);
+            return {
+              id: data.id,
+              userName: capitalizeWords(data.attributes.user_name),
+              userEmail: data.attributes.user_email,
+              userPicture: data.attributes.user_picture,
+              createdAtZ: formatDateDDmmmYYYY(data.attributes.created_at),
+              content: data.attributes.content,
+            };
+          },
+        ],
+      });
+      return {
+        newComment: response.data,
+      };
+    } catch (error) {
+      if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
+        throw new Error('401 Unauthorized');
+      if (error.response.status === ERROR_RESPONSE_CODES.UNPROCESSABLE_ENTITY)
+        throw new Error('422 Unprocessable Entity');
+
+      throw error.response.data.errors;
+    }
+  }
+);
+
+export const addCommentToPlaylistPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+
+export const addCommentToPlaylistFulfilled = (state, action) => {
+  state.loading = false;
+  state.playlistDetails.commentsInfo.comments.unshift(
+    action.payload.newComment
+  );
+  state.playlistDetails.commentsInfo.metadata.commentsCount++;
+};
+
+export const addCommentToPlaylistRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

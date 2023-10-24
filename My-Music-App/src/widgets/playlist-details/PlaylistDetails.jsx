@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { IoIosAdd } from 'react-icons/io';
 import { BiHeart } from 'react-icons/bi';
@@ -20,9 +20,9 @@ import {
   ProfileText,
   ProfileVerticalMenu,
 } from './PlaylistDetails.styles';
-import MenuDropdownProfile from '../../entities/playlist-details/ui/MenuDropdownProfile';
+import MenuDropdownProfile from '../../entities/playlist-details/menu-dropdown-profile/ui/MenuDropdownProfile';
 import SongList from './SongList';
-import Comment from './Comment';
+import CommentList from '../../entities/playlist-details/comment-list/ui/CommentList';
 import { AddSongsToPlaylists } from '../../AddSongsToPlayLists/Components/AddSongsToPlaylists';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,13 +33,13 @@ import {
   UPLOADS_URL,
 } from '../../store/constants';
 import {
-  playlistDetailsSelector,
-  playlistDetailsLoadingSelector,
   playlistDetailsErrorSelector,
+  playlistDetailsLoadingSelector,
+  playlistDetailsSelector,
 } from '../../store/playlist-details/playlist-details.selector';
 import {
-  fetchPlaylistDetails,
   editPlaylistDetails,
+  fetchPlaylistDetails,
 } from '../../store/playlist-details/playlist-details.thunks';
 import ModalForm from '../../features/my-playlists/ModalForm';
 
@@ -152,6 +152,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
   function handleOpenForm() {
     setIsModalFormOpen(true);
   }
+
   const handleCloseForm = () => setIsModalFormOpen(false);
   const handlerEditPlaylist = (data) => {
     setIsEditPlaylistCliked(true);
@@ -266,7 +267,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
         <div className='songsList' data-testid='song-list'>
           <SongList shouldRenderKebabMenu={shouldRenderKebabMenu} />
         </div>
-        <Comment data-testid='comment-list' />
+        <CommentList data-testid='comment-list' />
       </Container>
     )
   );

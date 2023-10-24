@@ -9,6 +9,9 @@ export const PUBLIC_PLAYLIST_URL = BASE_API_URL + '/api/v1/playlists';
 export const UPLOADS_URL = BASE_API_URL + '/uploads';
 export const SONGS_URL = BASE_API_URL + '/api/v1/songs';
 
+export const DEFAULT_USER_PICTURE =
+  UPLOADS_URL + '/store/default_user_avatar_small.png';
+
 export const STATE_STATUSES = {
   IDLE: 'idle',
   PROGRESS: 'progress',
@@ -32,4 +35,9 @@ export const FETCH_HOME_PLAYLISTS_TYPES = {
   LAST: 'last',
   POPULAR: 'popular',
   FEATURED: 'featured',
+};
+
+export const ERROR_RESPONSE_CODES = {
+  UNAUTHORIZED: 401,
+  UNPROCESSABLE_ENTITY: 422,
 };

@@ -8,14 +8,13 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import {
   PublicPlaylistCardContainer,
   PublicPlaylistCardImage,
+  PublicPlaylistCardLikes,
   PublicPlaylistCardName,
   PublicPlaylistCardSongs,
   PublicPlaylistCardTextWrapper,
-  PublicPlaylistCardLikes,
 } from './PublicPLaylistCard.styles';
 
-import { capitalizeWords } from '../../../../store/helpers';
-import { parseLikesDislikes } from '../../../../store/helpers';
+import { capitalizeWords, parseLikesDislikes } from '../../../../store/helpers';
 import constants from '../../constants/constants';
 import paths from '../../../../router/paths';
 

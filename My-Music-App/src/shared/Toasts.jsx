@@ -22,6 +22,7 @@ export function OneLineMessage({ message }) {
     </ToatsMsg>
   );
 }
+
 OneLineMessage.propTypes = {
   message: PropTypes.string.isRequired,
 };

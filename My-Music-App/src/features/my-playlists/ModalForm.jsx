@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import uploadImage from '../../shared/assets/uploadImage.svg';
@@ -10,25 +10,25 @@ import ModalDialog from '../../shared/ModalDialog';
 import { UPLOADS_URL } from '../../store/constants';
 
 import {
-  ModalContainer,
-  Header,
-  Title,
   CloseButton,
+  CoverImage,
+  DescriptionContainer,
+  DescriptionInput,
   Details,
+  FileInput,
   Form,
+  FormLabel,
+  Header,
   LogoItem,
   LogoWrap,
-  CoverImage,
-  FileInput,
-  ValidationLabel,
-  FormLabel,
-  PlaylistNameWrap,
+  ModalContainer,
   NameContainer,
   NameInput,
-  DescriptionContainer,
   PlaylistDescriptionWrap,
-  DescriptionInput,
+  PlaylistNameWrap,
   SubmitButton,
+  Title,
+  ValidationLabel,
 } from './ModalForm.styles';
 
 function ModalForm({ options }) {
