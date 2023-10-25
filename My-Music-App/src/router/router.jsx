@@ -14,6 +14,7 @@ import SharedPlaylists from '../widgets/shared-playlists/SharedPlaylists';
 import PlaylistDetails from '../widgets/playlist-details/PlaylistDetails';
 import { FETCH_PLAYLISTS_TYPES } from '../store/constants';
 import PublicPlaylists from '../widgets/public-playlists/PublicPlaylists';
+import NonAuthOnlyRoute from './NonAuthOnlyRoute';
 
 const {
   home,
@@ -32,8 +33,22 @@ const router = createBrowserRouter(
     <>
       <Route path={home} element={<Home />}>
         <Route path='' element={<Main />} />
-        <Route path={signIn} element={<SignIn />} />
-        <Route path={signUp} element={<SignUp />} />
+        <Route
+          path={signIn}
+          element={
+            <NonAuthOnlyRoute>
+              <SignIn />
+            </NonAuthOnlyRoute>
+          }
+        />
+        <Route
+          path={signUp}
+          element={
+            <NonAuthOnlyRoute>
+              <SignUp />
+            </NonAuthOnlyRoute>
+          }
+        />
         <Route
           path={myPlaylists}
           element={
