@@ -99,11 +99,19 @@ export class PlaylistPage extends BasePage {
         return $$(`div.imageBox-artistinfo img`)
     }
 
+    get commentInput() {
+        return $(`textarea#new-comment`)
+    }
+
+    get leaveCommentButton() {
+        return $(`button.comment-form__submit-btn`)
+    }
+
     get commentorName() {
-        return $(`div.commentor-info .commentor-name`)
+        return $$(`span.comment__author-name`)
     }
     
-    get commentorComment() {
-        return $(`div.commentor-comment p`)
+    get commentContent() {
+        return $(`p.comment__content`)
     }
 }

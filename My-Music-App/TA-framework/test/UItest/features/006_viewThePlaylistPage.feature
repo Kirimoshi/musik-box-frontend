@@ -29,8 +29,10 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
     Then "Playlists Counter" element is displayed on "playlist" page
     Then "Song Name" element is displayed on "playlist" page
     Then "Song Image" element is displayed on "playlist" page
+    When the user fills in the "playlist" page "Comment" "Input" with "My new Comment"
+    And the user clicks on the "playlist" page "Leave Comment" "Button" element
+    Then "Commentor Name" element is displayed on "playlist" page
+    Then "Comment Content" element is displayed on "playlist" page
     # Then "playlist"  has "Artist"    Not implement
     # Then "playlist" "song" has "sorting"  Not implement
-    Then "playlist" page "Commentor" "Name" is: "bhaskara"
-    Then "playlist" page "Commentor" "Comment" is: "song is awesomen bla bla bla"
     # Then "playlist" "comment" has "sorting"  Not implement

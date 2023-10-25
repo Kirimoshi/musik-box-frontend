@@ -35,7 +35,8 @@ Feature: View the Shared Playlists page
         Then "Shared Playlists List" element is displayed on "sharedPlaylists" page
         When the user clicks on the "sharedPlaylists" page "Shared Playlists" "List" 1 element
         Then the user is on the "current" "sharedPlaylist" page
-
+        Then the user logging out
+        
     Scenario Outline: Verify that Authorized users is able to navigate to the Shared Playlists page by clicking the Shared Playlists button on the following pages: '<page>'
         Given the user "signIn" to the application
         Then the user is on the "home" page
@@ -44,7 +45,7 @@ Feature: View the Shared Playlists page
         When the user clicks on the "sidebar" "Shared Playlists" "Button" element
         Then the user is on the "sharedPlaylists" page
         And "Shared Playlists List" element is displayed on "sharedPlaylists" page
-        Then The user logging out
+        Then the user logging out
         Then "alert" "Logout Success" "Message" is: "You have been successfully logged out."
         Examples:
             | name             | page            |

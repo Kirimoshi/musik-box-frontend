@@ -52,7 +52,7 @@ Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" "([^"]*)" (\d+)? ?eleme
   if (numeral) {
   let numeralElement = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
     if (!numeralElement) {
-    await browser.pause(2000);
+    await browser.pause(3000);
     elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
   } else {
     elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
@@ -69,7 +69,7 @@ Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" "([^"]*)" (\d+)? ?eleme
     await browser.pause(1000);
 });
 
-When(/^The user logging out$/, async () => {
+When(/^the user logging out$/, async () => {
   await Pages.home.logout();
 });
 

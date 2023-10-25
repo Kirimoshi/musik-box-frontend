@@ -17,7 +17,7 @@ Feature: View the Public Playlists page
         When the user clicks on the "sidebar" "Public Playlists" "Button" element
         Then the user is on the "publicPlaylists" page
         And "Public Playlists List" element is displayed on "publicPlaylists" page
-        Then The user logging out
+        Then the user logging out
 
     Scenario: 2. The Public Playlists page should display Public playlists created by other app users
         Given the user is open "publicPlaylists" page
@@ -47,7 +47,7 @@ Feature: View the Public Playlists page
         When the user clicks on the "sidebar" "Public Playlists" "Button" element
         Then the user is on the "publicPlaylists" page
         And "Public Playlists List" element is displayed on "publicPlaylists" page
-        Then The user logging out
+        Then the user logging out
         Examples:
             | button           | page            |
             | Shared Playlists | sharedPlaylists |
@@ -66,7 +66,7 @@ Feature: View the Public Playlists page
         Then the user is on the "publicPlaylists" page
         And "Public Playlists List" element is displayed on "publicPlaylists" page
         Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by the number of likes in descending order
-        Then The user logging out
+        Then the user logging out
 
     Scenario: 4.2 The playlists should be ordered by the number of likes in descending order for unauthorized users
         # and then by the date they were created in descending order - the date is currently mocked and the same for all playlists
@@ -89,7 +89,7 @@ Feature: View the Public Playlists page
         And "Public Playlist Like Counter" elements of "Public Playlists List" are displayed on "publicPlaylists" page
         And "Public Playlist Dislike Button" elements of "Public Playlists List" are displayed on "publicPlaylists" page
         And "Public Playlist Dislike Counter" elements of "Public Playlists List" are displayed on "publicPlaylists" page
-        Then The user logging out
+        Then the user logging out
 
     Scenario: 5.2 Unauthorized users must see the number of likes and dislikes the playlist has
         Given the user is open "signIn" page
@@ -158,7 +158,7 @@ Feature: View the Public Playlists page
         When the user fills in the "publicPlaylists" page "Search Box" "Input" with "<property>"
         When the user clicks on the "publicPlaylists" page "Search" "Icon" element
         Then "publicPlaylists" page "<elementName>" "<elementType>" contains next text: "<property>"
-        Then The user logging out
+        Then the user logging out
         Examples:
             | propertyName              | property       | elementName             | elementType |
             | Playlist name             | blow           | publicPlaylistName      | List        |
@@ -200,7 +200,7 @@ Feature: View the Public Playlists page
         And "Sort By Name Of Playlist Descending Order Button" element is displayed on "publicPlaylists" page
         When the user clicks on the "publicPlaylists" page "Sort By Name Of Playlist <Order>" "Button" element
         Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by playlist name in <order> order
-        Then The user logging out
+        Then the user logging out
         Examples:
             | Order            | order      |
             | Ascending Order  | ascending  |
@@ -242,7 +242,7 @@ Feature: View the Public Playlists page
         # Then "sortMenu" element is displayed on "publicPlaylists" page
         # When the user clicks on the "publicPlaylists" page "Sort By Comments Descending Order" "Button" element
         # Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by number of comments in descending order - this validation step doesn't exist yet
-        Then The user logging out
+        Then the user logging out
 
     Scenario: 9. Each playlist on the Public Playlists page should be clickable
         Given the user is open "publicPlaylists" page
