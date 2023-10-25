@@ -3,21 +3,26 @@ import { IoSearchSharp } from 'react-icons/io5';
 import { IoAddSharp } from 'react-icons/io5';
 import { PiDotBold } from 'react-icons/pi';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { baseToastConfig, OneLineMessage } from '../../shared/Toasts';
 import closeLogo from '../../shared/assets/closeLogo.svg';
 import defaultAlbumCover from '../../shared/assets/default_album_cover.jpg';
-import { songsURLs } from '../shared/Constants';
 import { UPLOADS_URL } from '../../store/constants';
-import { userSelector } from '../../store/user/user.selector';
 import { addSongToPlaylist } from '../../store/playlist-details/playlist-details.thunks';
 import {
   playlistDetailsLoadingSelector,
   playlistDetailsErrorSelector,
 } from '../../store/playlist-details/playlist-details.selector';
+import {
+  findSongs,
+  removeSongFromList,
+} from '../../store/addSongsModal/addSongsModal.thunks';
+import {
+  listOfSongsSelector,
+  lastPageSelector,
+} from '../../store/addSongsModal/addSongsModal.selector';
 
 import {
   ModalContainer,
@@ -45,7 +50,6 @@ import Pagination from '../../shared/Pagination';
 function AddSongsToPlaylists({ options }) {
   const dispatch = useDispatch();
   const { isAddSongModalOpen, onClose, modalPlaylistId } = options;
-  const { accessToken } = useSelector(userSelector);
   const toastId = React.useRef(null);
   const playlistErr = useSelector(playlistDetailsErrorSelector);
   const loading = useSelector(playlistDetailsLoadingSelector);
@@ -60,38 +64,19 @@ function AddSongsToPlaylists({ options }) {
     }
   }, [isAddSongModalOpen]);
 
-  const [songs, setSongs] = useState([]);
+  const songs = useSelector(listOfSongsSelector);
   const [searchSong, setSearchSong] = useState('');
   const [isAddSongCliked, setIsAddSongCliked] = useState(false);
   const [page, setPage] = useState(1);
   const perPage = 5;
-  const [last, setLast] = useState(1);
+  const last = useSelector(lastPageSelector);
 
   const handleSearch = (e) => {
     setSearchSong(e.target.value);
   };
 
-  const fetchSongsData = async () => {
-    try {
-      const response = await axios({
-        url: songsURLs.Songs_API_URL,
-        method: 'GET',
-        params: {
-          page,
-          per_page: perPage,
-          search: searchSong,
-          include: 'album',
-        },
-        headers: {
-          Accept: '*/*',
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setSongs(response.data.songs.data);
-      setLast(response.data.pagination_metadata.last);
-    } catch (error) {
-      throw error.response.data.errors;
-    }
+  const handleFindSongs = async () => {
+    dispatch(findSongs({ page, perPage, searchSong }));
   };
 
   const postSongsData = (id) => {
@@ -99,11 +84,11 @@ function AddSongsToPlaylists({ options }) {
     dispatch(
       addSongToPlaylist({ song_id: id, playlist_id: modalPlaylistId, song })
     );
-    setSongs(songs.filter((song) => song.id !== id));
+    dispatch(removeSongFromList(id));
   };
 
   useEffect(() => {
-    fetchSongsData();
+    handleFindSongs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
@@ -167,7 +152,7 @@ function AddSongsToPlaylists({ options }) {
   const handleSearchSongs = (e) => {
     e.preventDefault();
     setPage(1);
-    fetchSongsData();
+    handleFindSongs();
   };
 
   const onPageChange = useCallback(
