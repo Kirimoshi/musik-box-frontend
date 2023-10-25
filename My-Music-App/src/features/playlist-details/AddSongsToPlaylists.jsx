@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 import { baseToastConfig, OneLineMessage } from '../../shared/Toasts';
 import closeLogo from '../../shared/assets/closeLogo.svg';
-import media from '../../shared/assets/media.jpg';
+import defaultAlbumCover from '../../shared/assets/default_album_cover.jpg';
 import { songsURLs } from '../shared/Constants';
 import { UPLOADS_URL } from '../../store/constants';
 import { userSelector } from '../../store/user/user.selector';
@@ -26,7 +26,6 @@ import {
   CloseButton,
   CrossSvg,
   SearchBarWrapper,
-  SearchBarContainer,
   SearchBarInput,
   SearchBarIcon,
   AddSongsMain,
@@ -95,7 +94,7 @@ function AddSongsToPlaylists({ options }) {
     }
   };
 
-  const postSongsData = async (id) => {
+  const postSongsData = (id) => {
     const song = songs.find((song) => song.id === id);
     dispatch(
       addSongToPlaylist({ song_id: id, playlist_id: modalPlaylistId, song })
@@ -110,7 +109,7 @@ function AddSongsToPlaylists({ options }) {
 
   const notify = useCallback(() => {
     toastId.current = toast(
-      <OneLineMessage message='Editing playlist...' />,
+      <OneLineMessage message='Adding song...' />,
       baseToastConfig
     );
   }, []);
@@ -122,7 +121,7 @@ function AddSongsToPlaylists({ options }) {
       render: (
         <OneLineMessage
           message={
-            error.message === 'Request failed with status code 422'
+            error.message.includes('422')
               ? 'This song is already in the playlist.'
               : 'Oops, looks like something went wrong.'
           }
@@ -175,7 +174,8 @@ function AddSongsToPlaylists({ options }) {
     (changeDirection) => {
       if (changeDirection === 'left' && page !== 1) {
         setPage(page - 1);
-      } else if (changeDirection === 'right' && page < last) {
+      }
+      if (changeDirection === 'right' && page < last) {
         setPage(page + 1);
       }
     },
@@ -194,14 +194,12 @@ function AddSongsToPlaylists({ options }) {
         </CloseButton>
       </Header>
       <SearchBarWrapper>
-        <SearchBarContainer>
-          <SearchBarInput
-            type='text'
-            placeholder='Type something'
-            value={searchSong}
-            onChange={handleSearch}
-          />
-        </SearchBarContainer>
+        <SearchBarInput
+          type='text'
+          placeholder='Type something'
+          value={searchSong}
+          onChange={handleSearch}
+        />
         <SearchBarIcon type='submit' onClick={handleSearchSongs}>
           <IoSearchSharp size='24' />
         </SearchBarIcon>
@@ -214,14 +212,14 @@ function AddSongsToPlaylists({ options }) {
         </AddSongsTitle>
         <SongList className='addsongs-songlist'>
           {songs &&
-            songs.map((song) => (
-              <SongItem className='addsong-item' key={song.id}>
+            songs.map(({ id, attributes: { cover, title, artist } }) => (
+              <SongItem className='addsong-item' key={id}>
                 <SongImgWrapper className='addsong-song-item-img'>
                   <SongImg
                     src={
-                      song?.attributes?.cover
-                        ? `${UPLOADS_URL}/${song.attributes.cover.storage}/${song.attributes.cover.id}`
-                        : media
+                      cover
+                        ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
+                        : defaultAlbumCover
                     }
                     alt='song preview'
                     className='addsong-song-img'
@@ -229,10 +227,10 @@ function AddSongsToPlaylists({ options }) {
                 </SongImgWrapper>
                 <SongArtistInfo>
                   <SongTitle>
-                    <p>{song.attributes.title}</p>
+                    <p>{title}</p>
                   </SongTitle>
                   <SongInfo>
-                    <p>artist {song.attributes.artist}</p>
+                    <p>artist {artist}</p>
                     <PiDotBold />
                     <p>album</p>
                   </SongInfo>
@@ -241,7 +239,7 @@ function AddSongsToPlaylists({ options }) {
                   <IoAddSharp
                     size='24'
                     className='addsong-item-icon'
-                    onClick={() => handleAddSong(song.id)}
+                    onClick={() => handleAddSong(id)}
                   />
                 </AddSongIcon>
               </SongItem>

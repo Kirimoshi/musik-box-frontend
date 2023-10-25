@@ -4,7 +4,6 @@ export const ModalContainer = styled.dialog`
   &[open] {
     top: 50%;
     left: 50%;
-    // height: 50vh;
     transform: translate(-50%, -50%);
     display: flex;
     padding: 24px;
@@ -19,7 +18,6 @@ export const ModalContainer = styled.dialog`
   }
   &[open]::backdrop {
     background: rgba(0, 0, 0, 0.01);
-    // backdrop-filter: blur(3px);
   }
 `;
 
@@ -56,7 +54,6 @@ export const SearchBarWrapper = styled.form`
   color: rgba(202, 196, 208, 1);
   font-size: 16px;
   width: 100%;
-  height: 5vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -65,13 +62,11 @@ export const SearchBarWrapper = styled.form`
   border-radius: 25px;
 `;
 
-export const SearchBarContainer = styled.div`
-  border: none;
-`;
-
 export const SearchBarInput = styled.input`
   font-size: 16px;
   padding-left: 15px;
+  height: 5vh;
+  width: 100%;
 `;
 export const SearchBarIcon = styled.button`
   border: none;

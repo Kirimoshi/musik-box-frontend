@@ -1,4 +1,4 @@
-const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
+export const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
 export const API_URL = BASE_API_URL + '/api/v1';
 export const LOGIN_URL = BASE_API_URL + '/api/v1/login';
