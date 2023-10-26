@@ -55,7 +55,6 @@ function AddSongsToPlaylists({ options }) {
   const loading = useSelector(playlistDetailsLoadingSelector);
   const AddSongModalRef = useRef(null);
 
-  // monitoring isOpen prop to open/close the modal
   useEffect(() => {
     if (isAddSongModalOpen) {
       AddSongModalRef.current.showModal();

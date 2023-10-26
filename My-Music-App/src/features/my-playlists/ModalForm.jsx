@@ -44,7 +44,6 @@ function ModalForm({ options }) {
   const imageInputRef = useRef(null); // dialog reference
   const formRef = useRef(null); // form reference
 
-  // monitoring isOpen prop to open/close the modal dialog
   useEffect(() => {
     if (isModalFormOpen) {
       formRef.current.showModal();

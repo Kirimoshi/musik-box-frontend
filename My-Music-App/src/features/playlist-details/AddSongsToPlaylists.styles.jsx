@@ -78,7 +78,6 @@ export const SearchBarIcon = styled.button`
 `;
 
 export const AddSongsMain = styled.div`
-  // height: 35vh;
   width: 100%;
 `;
 
@@ -92,7 +91,6 @@ export const SongList = styled.div`
   height: 43vh;
   display: flex;
   flex-direction: column;
-  // justify-content: space-between;
   overflow: scroll;
   gap: 16px;
 `;
