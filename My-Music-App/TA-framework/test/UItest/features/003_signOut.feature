@@ -12,7 +12,7 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
       | "test.user@example.com" | "secreT!123" |
 
   Scenario Outline: Verify that the logout message is displaying if the sign-out action was successful
-    When The user logging out
+    When the user logging out
     Then logoutSuccessMessage1 message should be displayed: <logout_message1>
     Then logoutSuccessMessage2 message should be displayed: <logout_message2>
     And the user storage data is empty
@@ -33,7 +33,7 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
 
   Scenario Outline: Verify that the logout message is displaying if the sign-out action was NOT successful
     Given the Internet connection is interrupted
-    When The user logging out
+    When the user logging out
     Then logoutUnsuccessMessage1 message should be displayed: <logout_message1>
     Then logoutUnsuccessMessage2 message should be displayed: <logout_message2>
     And the user storage data is not empty
