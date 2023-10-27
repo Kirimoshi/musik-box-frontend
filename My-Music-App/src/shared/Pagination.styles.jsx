@@ -6,7 +6,7 @@ export const PaginationControls = styled.div`
   align-items: center;
   justify-content: center;
 
-  margin-bottom: 36px;
+  margin-bottom: ${({ $marginBottom }) => $marginBottom};
 
   & > button {
     cursor: pointer;

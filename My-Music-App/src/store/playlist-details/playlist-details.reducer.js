@@ -76,6 +76,18 @@ export const playlistDetailsSlice = createSlice({
         thunks.deleteSongFromPlaylistRejected
       )
       .addCase(
+        thunks.addSongToPlaylist.pending,
+        thunks.addSongToPlaylistPending
+      )
+      .addCase(
+        thunks.addSongToPlaylist.fulfilled,
+        thunks.addSongToPlaylistFulfilled
+      )
+      .addCase(
+        thunks.addSongToPlaylist.rejected,
+        thunks.addSongToPlaylistRejected
+      )
+      .addCase(
         thunks.editPlaylistDetails.pending,
         thunks.editPlaylistDetailsPending
       )

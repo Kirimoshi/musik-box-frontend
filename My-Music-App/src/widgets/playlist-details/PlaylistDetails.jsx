@@ -23,7 +23,7 @@ import {
 import MenuDropdownProfile from '../../entities/playlist-details/menu-dropdown-profile/ui/MenuDropdownProfile';
 import SongList from './SongList';
 import CommentList from '../../entities/playlist-details/comment-list/ui/CommentList';
-import { AddSongsToPlaylists } from '../../AddSongsToPlayLists/Components/AddSongsToPlaylists';
+import AddSongsToPlaylists from '../../features/playlist-details/AddSongsToPlaylists';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/user.selector';
@@ -52,8 +52,8 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
   const [isEditPlaylistCliked, setIsEditPlaylistCliked] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isModalFormOpen, setIsModalFormOpen] = useState(false);
-  const [addSongModal, setAddSongModal] = useState(false);
-  const [myState, setMyState] = useState(false);
+  const [isAddSongModalOpen, setIsAddSongModalOpen] = useState(false);
+
   const { id: navigateId } = useParams();
   const {
     playlistInfo: {
@@ -83,8 +83,9 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
     : require('../../shared/assets/default_playlist_cover.jpg');
 
   const handleAddSongModal = () => {
-    setAddSongModal(!addSongModal);
+    setIsAddSongModalOpen(true);
   };
+  const handleCloseAddSongModal = () => setIsAddSongModalOpen(false);
 
   useEffect(() => {
     if (!navigateId || !playlistTypeToDisplay) return; // guard clause
@@ -163,7 +164,9 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
   // TODO: we need some kind of loader, but for now prevent render until we get the data
   return (
     playlistId === navigateId && (
-      <Container className={`${addSongModal ? 'maincontainer-pointer' : ''}`}>
+      <Container
+        className={`${isAddSongModalOpen ? 'maincontainer-pointer' : ''}`}
+      >
         {isModalFormOpen && (
           <ModalForm
             className='modal__edit-playlist'
@@ -254,12 +257,13 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
           <div className='addsong'>
             <IoIosAdd className='circle-icon' onClick={handleAddSongModal} />
             <p className='addsong-name'>Add Song</p>
-            {addSongModal && AddSongsToPlaylists && (
+            {isAddSongModalOpen && AddSongsToPlaylists && (
               <AddSongsToPlaylists
-                handleAddSongModal={handleAddSongModal}
-                modalPlaylistId={playlistId}
-                setMyState={setMyState}
-                myState={myState}
+                options={{
+                  isAddSongModalOpen,
+                  onClose: handleCloseAddSongModal,
+                  modalPlaylistId: playlistId,
+                }}
               />
             )}
           </div>

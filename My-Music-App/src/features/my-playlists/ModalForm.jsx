@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -45,7 +44,6 @@ function ModalForm({ options }) {
   const imageInputRef = useRef(null); // dialog reference
   const formRef = useRef(null); // form reference
 
-  // monitoring isOpen prop to open/close the modal dialog
   useEffect(() => {
     if (isModalFormOpen) {
       formRef.current.showModal();

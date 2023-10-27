@@ -143,6 +143,7 @@ export const changePlaylistTypeRejected = (state, action) => {
   state.error = action.error.message;
 };
 
+// Delete Song From Playlist Thunk
 export const deleteSongFromPlaylist = createAsyncThunk(
   'playlistDetailsSlice/deleteSongFromPlaylist',
   async (idSongToDelete, { getState }) => {
@@ -178,6 +179,44 @@ export const deleteSongFromPlaylistFulfilled = (state, action) => {
 export const deleteSongFromPlaylistRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
+};
+
+// Add Song To Playlist Thunk
+export const addSongToPlaylist = createAsyncThunk(
+  'playlistDetailsSlice/addSongToPlaylist',
+  async (params, { getState }) => {
+    const { playlist_id, song_id, song } = params;
+    const accessToken = getState().user.accessToken;
+    try {
+      await axios({
+        url: `${MY_PLAYLISTS_URL}/${playlist_id}/playlist_songs`,
+        params: { playlist_id, song_id },
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return song;
+    } catch (error) {
+      throw error.message;
+    }
+  }
+);
+export const addSongToPlaylistPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const addSongToPlaylistFulfilled = (state, action) => {
+  state.loading = false;
+  state.playlistDetails.songs = [
+    ...state.playlistDetails.songs,
+    action.payload,
+  ];
+};
+export const addSongToPlaylistRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error;
 };
 
 // Edit PlaylistDetail Thunk
