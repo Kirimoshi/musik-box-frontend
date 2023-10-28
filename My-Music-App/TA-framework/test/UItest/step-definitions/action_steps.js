@@ -50,24 +50,25 @@ Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" "([^"]*)" (\d+)? ?eleme
   async function (place, ifPage, element, type, numeral) {
   let elementToClick;
   if (numeral) {
-  let numeralElement = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
-    if (!numeralElement) {
-    await browser.pause(3000);
+  await browser.waitUntil(async function () {
     elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
-  } else {
-    elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
-    }
+    return elementToClick;
+    }, {
+    timeout: 5000,
+    timeoutMsg: 'expected element to be defined after 5s'
+    });
   } else if (ifPage) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)];
   } else if (place === "sidebar" || place === "pagination") {
+    await browser.pause(500);
     elementToClick = await BaseElements[place][camelize(`${element}${type}`)];
   } else {
     throw new Error("Element is not found")
   }
-    expect(elementToClick).toBeDisplayed();
-    await elementToClick.click();
-    await browser.pause(1000);
-});
+  expect(elementToClick).toBeDisplayed();
+  await elementToClick.click();
+  await browser.pause(500);
+  });
 
 When(/^the user logging out$/, async () => {
   await Pages.home.logout();

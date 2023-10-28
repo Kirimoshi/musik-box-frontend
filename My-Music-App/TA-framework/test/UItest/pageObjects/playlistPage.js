@@ -92,11 +92,15 @@ export class PlaylistPage extends BasePage {
     }
 
     get songName() {
-        return $(`.song .artistInfo p`)
+        return $$(`${this.songsForm} .song .artistInfo`)
     }
 
     get songImage() {
-        return $$(`div.imageBox-artistinfo img`)
+        return $$(`${this.songsForm} div.imageBox-artistinfo img`)
+    }
+
+    get commentList() {
+        return $$(`section .comments__list`)
     }
 
     get commentInput() {
@@ -112,6 +116,10 @@ export class PlaylistPage extends BasePage {
     }
     
     get commentContent() {
-        return $(`p.comment__content`)
+        return $$(`p.comment__content`)
+    }
+
+    get commentAge() {
+        return $$(`span.comment__age`)
     }
 }

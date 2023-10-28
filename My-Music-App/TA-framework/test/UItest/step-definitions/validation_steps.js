@@ -39,15 +39,15 @@ Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/, async function (plac
     currentElementText = await BaseElements[place][camelize(`${element}${type}`)].getText();
   } else if (page) {
     currentElementText = await Pages[place][camelize(`${element}${type}`)].getText();
+  } else if (currentElementText.includes('\n')) {
+    currentElementText = await currentElementText.split('\n').join(' ');
   }
     return currentElementText
   }, {
     timeout: 5000,
     timeoutMsg: 'expected text to be changed after 5s'
   })
-  if (currentElementText.includes('\n')) {
-    currentElementText = await currentElementText.split('\n').join(' ');
-  }
+  
   await browser.pause(500);
   assert.equal(currentElementText, expectedText, `${place} doesn't match ${expectedText} value`)
 });

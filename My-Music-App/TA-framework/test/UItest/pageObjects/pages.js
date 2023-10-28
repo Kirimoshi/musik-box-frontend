@@ -2,7 +2,7 @@ import { SignUpPage } from "./signUpPage";
 import { SignInPage } from "./signInPage"
 import { HomePage } from "./homePage";
 import { PlaylistPage } from "./playlistPage";
-import { PlaylistsPage } from "./playlistsPage";
+import { MyPlaylistsPage } from "./myPlaylistsPage";
 import { BasePage } from "./basePage";
 import { PublicPlaylistsPage } from "./publicPlaylistsPage";
 import { SharedPlaylistsPage } from "./sharedPlaylistsPage";
@@ -14,7 +14,7 @@ class Pages {
         this.signUp = new SignUpPage();
         this.signIn = new SignInPage();
         this.home = new HomePage();
-        this.playlists = new PlaylistsPage();
+        this.myPlaylists = new MyPlaylistsPage();
         this.playlist = new PlaylistPage();
         this.base = new BasePage();
         this.publicPlaylists = new PublicPlaylistsPage();

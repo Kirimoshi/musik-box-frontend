@@ -7,7 +7,7 @@ Feature: View the Shared Playlists page
         Then the user is on the "home" page
         When the user clicks on the "sidebar" "Shared Playlists" "Button" element
         Then the user is on the "sharedPlaylists" page
-        And "sharedPlaylistsList" element is displayed on "sharedPlaylists" page
+        And "Shared Playlists List" element is displayed on "sharedPlaylists" page
 
     Scenario: Verifiyng information about Shared Playlists
         Given the user is on the "sharedPlaylists" page
@@ -40,7 +40,7 @@ Feature: View the Shared Playlists page
     Scenario Outline: Verify that Authorized users is able to navigate to the Shared Playlists page by clicking the Shared Playlists button on the following pages: '<page>'
         Given the user "signIn" to the application
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" "<name>" "Button" element
+        Then the user is open "<page>" page
         Then the user is on the "<page>" page
         When the user clicks on the "sidebar" "Shared Playlists" "Button" element
         Then the user is on the "sharedPlaylists" page
@@ -48,10 +48,10 @@ Feature: View the Shared Playlists page
         Then the user logging out
         Then "alert" "Logout Success" "Message" is: "You have been successfully logged out."
         Examples:
-            | name             | page            |
-            | Public Playlists | publicPlaylists |
-            | My Playlists     | playlists       |
-            | Friends          | friends         |
+            | page            |
+            | publicPlaylists |
+            | myPlaylists     |
+            | friends         |
 
     Scenario: Verify that a guest user redirects to the Sign In page when trying to navigate to the Shared Playlists page
         When the user is open "signIn" page
