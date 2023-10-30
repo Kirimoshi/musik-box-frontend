@@ -9,30 +9,32 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
   Scenario: Verify that the user is able to redirect to the "playlist" page
     Given the user is on the "home" page
     When the user clicks on the "sidebar" "My Playlists" "Button" element
-    Then the user is on the "playlists" page
-    When the user clicks on the "playlists" page "Playlists" "Item" 1 element
+    Then the user is on the "myPlaylists" page
+    When the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
     Then the user is on the "current" "playlist" page
 
   Scenario: Verifying playlist elements
     Given the user is on the "current" "playlist" page
     Then "Playlist Title" element is displayed on "playlist" page
-    Then "Playlist Item" element is displayed on "playlist" page
-    Then "Playlist Likes" element is displayed on "playlist" page
-    Then "Playlist Dislikes" element is displayed on "playlist" page
-    Then "Created Date" element is displayed on "playlist" page
-    Then "Updated Date" element is displayed on "playlist" page
-    Then "Profile Email" element is displayed on "playlist" page
-    Then "Created Date" element is displayed on "playlist" page
-    Then "Updated Date" element is displayed on "playlist" page
-    Then "Profile Email" element is displayed on "playlist" page
-    Then "Registration Date" element is displayed on "playlist" page
-    Then "Playlists Counter" element is displayed on "playlist" page
-    Then "Song Name" element is displayed on "playlist" page
-    Then "Song Image" element is displayed on "playlist" page
-    When the user fills in the "playlist" page "Comment" "Input" with "My new Comment"
-    And the user clicks on the "playlist" page "Leave Comment" "Button" element
-    Then "Commentor Name" element is displayed on "playlist" page
-    Then "Comment Content" element is displayed on "playlist" page
+    And "Playlist Item" element is displayed on "playlist" page
+    And "Playlist Likes" element is displayed on "playlist" page
+    And "Playlist Dislikes" element is displayed on "playlist" page
+    And "Created Date" element is displayed on "playlist" page
+    And "Updated Date" element is displayed on "playlist" page
+    And "Profile Email" element is displayed on "playlist" page
+    And "Created Date" element is displayed on "playlist" page
+    And "Updated Date" element is displayed on "playlist" page
+    And "Profile Email" element is displayed on "playlist" page
+    And "Registration Date" element is displayed on "playlist" page
+    And "Playlists Counter" element is displayed on "playlist" page
+    And "Leave Comment Button" element is displayed on "playlist" page
+    And "Comment Input" element is displayed on "playlist" page
+    And "Songs List" element is displayed on "playlist" page
+    And "Song Name" elements of "Songs List" are displayed on "playlist" page
+    And "Song Image" elements of "Songs List" are displayed on "playlist" page
+    And "Commentor Name" elements of "Comment List" are displayed on "playlist" page
+    And "Comment Content" elements of "Comment List" are displayed on "playlist" page
+    And "Comment Age" elements of "Comment List" are displayed on "playlist" page
     # Then "playlist"  has "Artist"    Not implement
     # Then "playlist" "song" has "sorting"  Not implement
     # Then "playlist" "comment" has "sorting"  Not implement

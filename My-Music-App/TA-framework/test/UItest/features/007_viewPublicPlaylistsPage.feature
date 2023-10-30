@@ -51,7 +51,7 @@ Feature: View the Public Playlists page
         Examples:
             | button           | page            |
             | Shared Playlists | sharedPlaylists |
-            | My Playlists     | playlists       |
+            | My Playlists     | myPlaylists     |
             | Friends          | friends         |
     # ## This page is not implemented yet
     # ## | My Account page |
