@@ -197,7 +197,12 @@ export const addSongToPlaylist = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      return song;
+      const nickname = getState().user.credentials.nickname;
+      const updatedSong = {
+        ...song,
+        attributes: { ...song.attributes, added_by: nickname },
+      };
+      return updatedSong;
     } catch (error) {
       throw error.message;
     }

@@ -196,38 +196,40 @@ function AddSongsToPlaylists({ options }) {
         </AddSongsTitle>
         <SongList className='addsongs-songlist'>
           {songs &&
-            songs.map(({ id, attributes: { cover, title, artist } }) => (
-              <SongItem className='addsong-item' key={id}>
-                <SongImgWrapper className='addsong-song-item-img'>
-                  <SongImg
-                    src={
-                      cover
-                        ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
-                        : defaultAlbumCover
-                    }
-                    alt='song preview'
-                    className='addsong-song-img'
-                  />
-                </SongImgWrapper>
-                <SongArtistInfo>
-                  <SongTitle>
-                    <p>{title}</p>
-                  </SongTitle>
-                  <SongInfo>
-                    <p>artist {artist}</p>
-                    <PiDotBold />
-                    <p>album</p>
-                  </SongInfo>
-                </SongArtistInfo>
-                <AddSongIcon>
-                  <IoAddSharp
-                    size='24'
-                    className='addsong-item-icon'
-                    onClick={() => handleAddSong(id)}
-                  />
-                </AddSongIcon>
-              </SongItem>
-            ))}
+            songs.map(
+              ({ id, attributes: { cover, title, artists, album } }) => (
+                <SongItem className='addsong-item' key={id}>
+                  <SongImgWrapper className='addsong-song-item-img'>
+                    <SongImg
+                      src={
+                        cover
+                          ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
+                          : defaultAlbumCover
+                      }
+                      alt='song preview'
+                      className='addsong-song-img'
+                    />
+                  </SongImgWrapper>
+                  <SongArtistInfo>
+                    <SongTitle>
+                      <p>{title}</p>
+                    </SongTitle>
+                    <SongInfo>
+                      <p>{album}</p>
+                      <PiDotBold />
+                      <p>{artists.join(', ')}</p>
+                    </SongInfo>
+                  </SongArtistInfo>
+                  <AddSongIcon>
+                    <IoAddSharp
+                      size='24'
+                      className='addsong-item-icon'
+                      onClick={() => handleAddSong(id)}
+                    />
+                  </AddSongIcon>
+                </SongItem>
+              )
+            )}
           {songs.length === 0 && (
             <WarningMessage>There is nothing left...</WarningMessage>
           )}

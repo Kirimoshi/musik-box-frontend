@@ -71,6 +71,8 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
   } = useSelector(playlistDetailsSelector);
   const shouldRenderKebabMenu =
     isAuthenticated && playlistTypeToDisplay === FETCH_PLAYLISTS_TYPES.MY;
+  const shouldRenderAddedBy =
+    isAuthenticated && playlistTypeToDisplay === FETCH_PLAYLISTS_TYPES.SHARED;
   const shouldRenderDescription = description !== null;
   const shouldRenderAddSongButton =
     playlistTypeToDisplay !== FETCH_PLAYLISTS_TYPES.PUBLIC;
@@ -269,7 +271,10 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
           </div>
         )}
         <div className='songsList' data-testid='song-list'>
-          <SongList shouldRenderKebabMenu={shouldRenderKebabMenu} />
+          <SongList
+            shouldRenderKebabMenu={shouldRenderKebabMenu}
+            shouldRenderAddedBy={shouldRenderAddedBy}
+          />
         </div>
         <CommentList data-testid='comment-list' />
       </Container>
