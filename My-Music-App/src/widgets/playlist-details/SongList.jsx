@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-
-import './songlist.css';
+import { PiDotBold } from 'react-icons/pi';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/user.selector';
@@ -12,11 +11,29 @@ import { UPLOADS_URL } from '../../store/constants';
 import ModalDialog from '../../shared/ModalDialog';
 import { playlistDetailsSelector } from '../../store/playlist-details/playlist-details.selector';
 import { deleteSongFromPlaylist } from '../../store/playlist-details/playlist-details.thunks';
+import {
+  SongsContainer,
+  SongItem,
+  Song,
+  SongCard,
+  SongCover,
+  SongArtistInfo,
+  SongTitle,
+  SongInfo,
+  VerticalMenu,
+  DeleteModal,
+  DeleteTag,
+  SongImgWrapper,
+} from './SongList.styles';
+import { capitalizeWords } from '../../store/helpers';
 
-function SongList({ shouldRenderKebabMenu }) {
+function SongList({ shouldRenderKebabMenu, shouldRenderAddedBy }) {
   // state
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector(userSelector);
+  const {
+    isAuthenticated,
+    credentials: { nickname },
+  } = useSelector(userSelector);
   const { songs } = useSelector(playlistDetailsSelector);
 
   const [openModel, setOpenModel] = useState(null);
@@ -58,77 +75,83 @@ function SongList({ shouldRenderKebabMenu }) {
 
   return (
     <div className='SongList'>
-      <div className='songsContainer'>
-        <ModalDialog
-          options={{
-            isModalOpen,
-            actionButtonText: 'Remove Song',
-            closeButtonText: 'Cancel',
-            title:
-              'Are you sure you want to remove this song from playlist? You will not be able to restore it.',
-            onAction: handlerRemove,
-            onClose: handleCloseModal,
-          }}
-        />
+      <ModalDialog
+        options={{
+          isModalOpen,
+          actionButtonText: 'Remove Song',
+          closeButtonText: 'Cancel',
+          title:
+            'Are you sure you want to remove this song from playlist? You will not be able to restore it.',
+          onAction: handlerRemove,
+          onClose: handleCloseModal,
+        }}
+      />
+      <SongsContainer>
         {songs.map(
-          ({ id, attributes: { title, artist_name: artistName, cover } }) => {
+          ({ id, attributes: { title, artists, cover, added_by, album } }) => {
             return (
-              <div
-                className={`songs ${openModel === id ? 'top' : ''}`}
-                key={id}
-                data-song-id={id}
-              >
-                <div className={`song`}>
-                  <div className='imageBox-artistinfo'>
-                    <img
-                      src={
-                        cover
-                          ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
-                          : require('../../shared/assets/default_song_cover.png')
-                      }
-                      alt='song cover'
-                      className='image1'
-                    />
-                    <div className='artistInfo'>
-                      <p>{title}</p>
-                      <p>{artistName?.join(', ')}</p>
-                    </div>
-                  </div>
-                  <div className='songlist-vertical-menu'>
-                    {shouldRenderKebabMenu && (
+              <SongItem key={id} data-song-id={id}>
+                <Song>
+                  <SongCard>
+                    <SongImgWrapper>
+                      <SongCover
+                        src={
+                          cover
+                            ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
+                            : require('../../shared/assets/default_song_cover.png')
+                        }
+                        alt='song cover'
+                      />
+                    </SongImgWrapper>
+                    <SongArtistInfo className='SongList__artistInfo'>
+                      <SongTitle>
+                        <p>{title}</p>
+                      </SongTitle>
+                      <SongInfo>
+                        <p>{album}</p>
+                        <PiDotBold />
+                        <p>{artists.join(', ')}</p>
+                      </SongInfo>
+                      {shouldRenderAddedBy && (
+                        <SongInfo>
+                          <p>Added by {capitalizeWords(added_by)}</p>
+                        </SongInfo>
+                      )}
+                    </SongArtistInfo>
+                  </SongCard>
+                  <VerticalMenu>
+                    {(shouldRenderKebabMenu ||
+                      (shouldRenderAddedBy && nickname === added_by)) && (
                       <BsThreeDotsVertical
                         onClick={() => {
                           verticalMenuToggle(id);
                         }}
                       />
                     )}
-
                     {openModel === id && (
-                      <div className='delete-modal'>
+                      <DeleteModal>
                         {
-                          <div
-                            onClick={() => handleDeleteSong(id)}
-                            className='delete-tag'
-                          >
-                            <RiDeleteBin6Line className='delete-button' />
+                          <DeleteTag onClick={() => handleDeleteSong(id)}>
+                            <RiDeleteBin6Line />
                             <span>Remove song from playlist</span>
-                          </div>
+                          </DeleteTag>
                         }
-                      </div>
+                      </DeleteModal>
                     )}
-                  </div>
-                </div>
-              </div>
+                  </VerticalMenu>
+                </Song>
+              </SongItem>
             );
           }
         )}
-      </div>
+      </SongsContainer>
     </div>
   );
 }
 
 SongList.propTypes = {
   shouldRenderKebabMenu: PropTypes.bool.isRequired,
+  shouldRenderAddedBy: PropTypes.bool.isRequired,
 };
 
 export default SongList;

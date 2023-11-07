@@ -136,7 +136,6 @@ export const editMyPlaylist = createAsyncThunk(
         (playlist) => playlist.id === playlistId
       );
       let playlist = getState().myPlaylistsSlice.myPlaylists[index];
-      // console.log("state-playlist - ", playlist);
       const { name, description, logo } = response.data.data.attributes;
       playlist = {
         ...playlist,
@@ -147,7 +146,6 @@ export const editMyPlaylist = createAsyncThunk(
           logo,
         },
       };
-      // console.log("response-playlist - ", playlist);
       return { data: playlist, playlistId };
     } catch (error) {
       throw error.response.data.errors;
