@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { LOGIN_URL, LOGOUT_URL, REFRESH_URL } from '../constants';
 import jwt_decode from 'jwt-decode';
+import { capitalizeWords } from '../helpers';
 
 const setLocalStorage = (key, value) =>
   localStorage.setItem(key, JSON.stringify(value));
@@ -57,7 +58,7 @@ export const loginUserFulfilled = (state, action) => {
     uid,
     id,
     email,
-    nickname,
+    nickname: capitalizeWords(nickname),
     picture: JSON.parse(picture),
   };
 
@@ -117,7 +118,7 @@ export const refreshUserFulfilled = (state, action) => {
     uid,
     id,
     email,
-    nickname,
+    nickname: capitalizeWords(nickname),
     picture: JSON.parse(picture),
   };
   setLocalStorage('accessToken', state.accessToken);
