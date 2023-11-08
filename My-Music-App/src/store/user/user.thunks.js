@@ -1,9 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { LOGIN_URL, REFRESH_URL, LOGOUT_URL } from '../constants';
+import { LOGIN_URL, LOGOUT_URL, REFRESH_URL } from '../constants';
 import jwt_decode from 'jwt-decode';
 
-// helper to stringify and store objects in localStorage
 const setLocalStorage = (key, value) =>
   localStorage.setItem(key, JSON.stringify(value));
 
@@ -14,7 +13,7 @@ const cleanLocalStorage = () => {
     'refreshToken',
     'refreshExpiresAt',
     'isRemembered',
-  ].forEach((key) => localStorage.removeItem(key)); // i prefer do not use .clear() method, because it will delete all
+  ].forEach((key) => localStorage.removeItem(key));
 };
 
 /** Login Thunk. Accepts user login data and returns a promise with user data.
@@ -23,9 +22,9 @@ const cleanLocalStorage = () => {
 export const loginUser = createAsyncThunk('user/login', async (userData) => {
   try {
     const response = await axios.post(LOGIN_URL, userData);
-    return response.data; // transferred to loginUserFulfilled action.payload
+    return response.data;
   } catch (error) {
-    throw error.response.data.errors; // transferred to loginUserRejected action.error
+    throw error.response.data.errors;
   }
 });
 
@@ -37,13 +36,11 @@ export const loginUserPending = (state) => {
 
 export const loginUserFulfilled = (state, action) => {
   state.loading = false;
-  // note: rememberMe already in state
   state.isAuthenticated = true;
   state.accessToken = action.payload.access;
   state.accessExpiresAt = action.payload.access_expires_at;
   state.refreshToken = action.payload.refresh;
   state.refreshExpiresAt = action.payload.refresh_expires_at;
-  // decode token
   const {
     exp,
     ruid,
@@ -64,7 +61,6 @@ export const loginUserFulfilled = (state, action) => {
     picture: JSON.parse(picture),
   };
 
-  // update localStorage
   setLocalStorage('accessToken', state.accessToken);
   setLocalStorage('accessExpiresAt', state.accessExpiresAt);
   setLocalStorage('refreshToken', state.refreshToken);
@@ -78,7 +74,6 @@ export const loginUserRejected = (state, action) => {
   state.loginError = action.error.message;
 };
 
-// Refrehs User auth token Thunk
 export const refreshUser = createAsyncThunk(
   'user/refreshAuth',
   async (_, { getState }) => {
@@ -89,9 +84,9 @@ export const refreshUser = createAsyncThunk(
           'X-Refresh-Token': `${refreshToken}`,
         },
       });
-      return response.data; // transferred to refreshTokenFulfilled action.payload
+      return response.data;
     } catch (error) {
-      throw error.response.data.errors; // transferred to refreshTokenRejected action.error
+      throw error.response.data.errors;
     }
   }
 );
@@ -103,7 +98,6 @@ export const refreshUserPending = (state) => {
 };
 export const refreshUserFulfilled = (state, action) => {
   state.loading = false;
-  // update state
   state.isAuthenticated = true;
   state.accessToken = action.payload.access;
   state.accessExpiresAt = action.payload.access_expires_at;
@@ -126,17 +120,14 @@ export const refreshUserFulfilled = (state, action) => {
     nickname,
     picture: JSON.parse(picture),
   };
-  // update localStorage and cookies
   setLocalStorage('accessToken', state.accessToken);
   setLocalStorage('accessExpiresAt', state.accessExpiresAt);
 };
 
 export const refreshUserRejected = (state, action) => {
-  // update state
   state.loading = false;
   state.isAuthenticated = false;
   state.error = action.error;
-  // if there is auth error, we need to delete all cookies and localStorage
   cleanLocalStorage();
 };
 

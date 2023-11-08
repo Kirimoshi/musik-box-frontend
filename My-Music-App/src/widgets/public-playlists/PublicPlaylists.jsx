@@ -25,15 +25,27 @@ import {
   Container,
   ContentWrapper,
   InputWrapper,
+  NoPlaylistsMessage,
   SortPlaylistsMenu,
   SortPlaylistsMenuOption,
 } from './PublicPLaylists.styles';
+import { userSelector } from '../../store/user/user.selector';
+import { fetchPlaylistsReactions } from '../../store/user-playlists-reactions/user-playlists-reactions.thunks';
+import { userPlaylistsReactionsSelector } from '../../store/user-playlists-reactions/user-playlists-reactions.selector';
 
 function PublicPlaylists() {
   const dispatch = useDispatch();
   const error = useSelector(publicPlaylistsErrorSelector);
   const loading = useSelector(publicPlaylistsLoadingSelector);
-  const { last } = useSelector(publicPlaylistsMetadataSelector);
+  const { last, count: playlistsCount } = useSelector(
+    publicPlaylistsMetadataSelector
+  );
+  const {
+    isAuthenticated: userIsAuth,
+    loading: userIsLoading,
+    isRehydrated: userIsRehydrated,
+  } = useSelector(userSelector);
+  const userPlaylistsReactions = useSelector(userPlaylistsReactionsSelector);
 
   const [page, setPage] = useState(1);
   const [term, setTerm] = useState('');
@@ -58,6 +70,22 @@ function PublicPlaylists() {
     if (error) console.error(error);
   }, [error]);
 
+  useEffect(() => {
+    if (
+      !userIsAuth ||
+      !userIsRehydrated ||
+      userIsLoading ||
+      userPlaylistsReactions.length !== 0
+    )
+      return;
+    dispatch(fetchPlaylistsReactions());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    userIsAuth,
+    userIsRehydrated,
+    userIsLoading,
+    userPlaylistsReactions.length,
+  ]);
   const onSearch = () => {
     dispatch(fetchFilterPlaylists({ page, term }));
   };
@@ -226,11 +254,16 @@ function PublicPlaylists() {
             ></Tooltip>
           </InputWrapper>
           <PublicPlaylistList />
-          <Pagination
-            handleClick={onPageChange}
-            isLeftActive={!loading && page !== 1}
-            isRightActive={!loading && page < last}
-          />
+          {playlistsCount === 0 ? (
+            <NoPlaylistsMessage>There are no playlists yet</NoPlaylistsMessage>
+          ) : (
+            <Pagination
+              handleClick={onPageChange}
+              isLeftActive={!loading && page !== 1}
+              isRightActive={!loading && page < last}
+              marginBottom={'12px'}
+            />
+          )}
         </ContentWrapper>
       </Container>
     </>

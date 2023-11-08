@@ -16,17 +16,28 @@ import {
   Container,
   ContentWrapper,
   InputWrapper,
+  NoPlaylistsMessage,
 } from '../public-playlists/PublicPLaylists.styles';
-import { isAuthenticatedSelector } from '../../store/user/user.selector';
+import {
+  isAuthenticatedSelector,
+  userSelector,
+} from '../../store/user/user.selector';
 import InputComponent from '../../shared/ui/input/Input';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { fetchPlaylistsReactions } from '../../store/user-playlists-reactions/user-playlists-reactions.thunks';
+import { userPlaylistsReactionsSelector } from '../../store/user-playlists-reactions/user-playlists-reactions.selector';
 
 function SharedPlaylists() {
   const dispatch = useDispatch();
   const error = useSelector(sharedPlaylistsErrorSelector);
   const loading = useSelector(sharedPlaylistsLoadingSelector);
-  const { last } = useSelector(sharedPlaylistsMetadataSelector);
+  const { last, count: playlistsCount } = useSelector(
+    sharedPlaylistsMetadataSelector
+  );
   const isAuth = useSelector(isAuthenticatedSelector);
+  const { loading: userIsLoading, isRehydrated: userIsRehydrated } =
+    useSelector(userSelector);
+  const userPlaylistsReactions = useSelector(userPlaylistsReactionsSelector);
 
   const [page, setPage] = useState(1);
   const [term, setTerm] = useState('');
@@ -44,6 +55,18 @@ function SharedPlaylists() {
   useEffect(() => {
     if (error) console.error(error);
   }, [error]);
+
+  useEffect(() => {
+    if (
+      !isAuth ||
+      !userIsRehydrated ||
+      userIsLoading ||
+      userPlaylistsReactions.length !== 0
+    )
+      return;
+    dispatch(fetchPlaylistsReactions());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuth, userIsRehydrated, userIsLoading, userPlaylistsReactions.length]);
 
   const onPageChange = useCallback(
     (changeDirection) => {
@@ -77,11 +100,18 @@ function SharedPlaylists() {
               />
             </InputWrapper>
             <SharedPlaylistList className='shared-playlists' term={term} />
-            <Pagination
-              handleClick={onPageChange}
-              isLeftActive={!loading && page !== 1}
-              isRightActive={!loading && page < last}
-            />
+            {playlistsCount === 0 ? (
+              <NoPlaylistsMessage>
+                There are no playlists yet
+              </NoPlaylistsMessage>
+            ) : (
+              <Pagination
+                handleClick={onPageChange}
+                isLeftActive={!loading && page !== 1}
+                isRightActive={!loading && page < last}
+                marginBottom={'12px'}
+              />
+            )}
           </ContentWrapper>
         </Container>
       )}

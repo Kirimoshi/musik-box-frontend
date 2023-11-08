@@ -7,7 +7,11 @@ import { RiDislikeLine } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { baseToastConfig, OneLineMessage } from '../../shared/Toasts';
+import {
+  baseToastConfig,
+  OneLineMessage,
+  playlistReactionErrorToastConfig,
+} from '../../shared/Toasts';
 import './maincontainer.css';
 import {
   Container,
@@ -38,14 +42,22 @@ import {
   playlistDetailsSelector,
 } from '../../store/playlist-details/playlist-details.selector';
 import {
+  deletePlaylistReaction,
   editPlaylistDetails,
   fetchPlaylistDetails,
+  fetchPlaylistReaction,
+  postPlaylistDislike,
+  postPlaylistLike,
 } from '../../store/playlist-details/playlist-details.thunks';
 import ModalForm from '../../features/my-playlists/ModalForm';
 
 function PlaylistDetails({ playlistTypeToDisplay }) {
   const dispatch = useDispatch();
-  const { isAuthenticated, isRehydrated } = useSelector(userSelector);
+  const {
+    isAuthenticated,
+    isRehydrated,
+    credentials: { email: userEmail },
+  } = useSelector(userSelector);
   const toastId = React.useRef(null);
   const playlistErr = useSelector(playlistDetailsErrorSelector);
   const loading = useSelector(playlistDetailsLoadingSelector);
@@ -53,6 +65,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isModalFormOpen, setIsModalFormOpen] = useState(false);
   const [isAddSongModalOpen, setIsAddSongModalOpen] = useState(false);
+  const [isReactionClicked, setIsReactionClicked] = useState(false);
 
   const { id: navigateId } = useParams();
   const {
@@ -68,11 +81,16 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
       dislikes,
     },
     ownerInfo: { email, registerDate, playlistsOwned },
+    playlistReaction: { isLiked, isDisliked },
   } = useSelector(playlistDetailsSelector);
   const shouldRenderKebabMenu =
     isAuthenticated && playlistTypeToDisplay === FETCH_PLAYLISTS_TYPES.MY;
   const shouldRenderAddedBy =
     isAuthenticated && playlistTypeToDisplay === FETCH_PLAYLISTS_TYPES.SHARED;
+  const shouldAllowReactions =
+    isAuthenticated &&
+    playlistPrivacyType === PLAYLIST_PRIVACY_TYPES.PUBLIC &&
+    email !== userEmail;
   const shouldRenderDescription = description !== null;
   const shouldRenderAddSongButton =
     playlistTypeToDisplay !== FETCH_PLAYLISTS_TYPES.PUBLIC;
@@ -97,14 +115,39 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
         playlistId: navigateId,
         playlistTypeToDisplay,
       })
-    );
+    ).then(() => {
+      dispatch(fetchPlaylistReaction(navigateId));
+    });
   }, [
     dispatch,
     navigateId,
     isAuthenticated,
     playlistTypeToDisplay,
     isRehydrated,
+    isLiked,
+    isDisliked,
   ]);
+
+  const onLike = () => {
+    if (!isAuthenticated) return; // guard clause
+    if (!isLiked) {
+      dispatch(postPlaylistLike(navigateId));
+    }
+    if (isLiked) {
+      dispatch(deletePlaylistReaction(navigateId));
+    }
+    setIsReactionClicked(true);
+  };
+  const onDislike = () => {
+    if (!isAuthenticated) return; // guard clause
+    if (!isDisliked) {
+      dispatch(postPlaylistDislike(navigateId));
+    }
+    if (isDisliked) {
+      dispatch(deletePlaylistReaction(navigateId));
+    }
+    setIsReactionClicked(true);
+  };
 
   const notify = useCallback(() => {
     toastId.current = toast(
@@ -162,6 +205,20 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
     dispatch(editPlaylistDetails(data));
     setIsProfileMenuOpen(false);
   };
+
+  const notifyReactionError = useCallback(() => {
+    toastId.current = toast(
+      <OneLineMessage message='Oops, looks like something went wrong. Please try again later.' />,
+      playlistReactionErrorToastConfig
+    );
+  }, []);
+
+  useEffect(() => {
+    if (isReactionClicked && !loading && playlistErr) {
+      notifyReactionError();
+      setIsReactionClicked(false);
+    }
+  }, [isReactionClicked, loading, playlistErr, notifyReactionError]);
 
   // TODO: we need some kind of loader, but for now prevent render until we get the data
   return (
@@ -246,11 +303,35 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
           )}
           <ProfileRating className='profile__rating--dislike'>
             {dislikes}
-            <RiDislikeLine />
+            <button
+              className={
+                isDisliked
+                  ? 'reaction-btn reaction-btn__active'
+                  : 'reaction-btn'
+              }
+              type='button'
+              disabled={loading || !isAuthenticated || !shouldAllowReactions}
+              onClick={onDislike}
+            >
+              <RiDislikeLine
+                className={shouldAllowReactions ? 'reactions-allowed' : ''}
+              />
+            </button>
           </ProfileRating>
           <ProfileRating className='profile__rating--like'>
             {likes}
-            <BiHeart />
+            <button
+              className={
+                isLiked ? 'reaction-btn reaction-btn__active' : 'reaction-btn'
+              }
+              type='button'
+              disabled={loading || !isAuthenticated || !shouldAllowReactions}
+              onClick={onLike}
+            >
+              <BiHeart
+                className={shouldAllowReactions ? 'reactions-allowed' : ''}
+              />
+            </button>
           </ProfileRating>
         </ProfileContainer>
 

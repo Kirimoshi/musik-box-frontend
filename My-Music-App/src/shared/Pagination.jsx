@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PaginationControls } from './Pagination.styles';
-import { BsArrowRightShort, BsArrowLeftShort } from 'react-icons/bs';
+import { BsArrowLeftShort, BsArrowRightShort } from 'react-icons/bs';
 
 function Pagination({
   handleClick,
   isLeftActive = false,
   isRightActive = false,
   className,
-  magrinBottom = '36px',
+  marginBottom = '36px',
 }) {
   return (
-    <PaginationControls $marginBottom={magrinBottom} className={className}>
+    <PaginationControls $marginBottom={marginBottom} className={className}>
       <button
         disabled={!isLeftActive}
         onClick={() => handleClick('left')}
@@ -35,7 +35,7 @@ Pagination.propTypes = {
   isLeftActive: PropTypes.bool,
   isRightActive: PropTypes.bool,
   className: PropTypes.string,
-  magrinBottom: PropTypes.string,
+  marginBottom: PropTypes.string,
 };
 
 export default Pagination;

@@ -4,29 +4,36 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { RiDislikeLine } from 'react-icons/ri';
-import { AiOutlineHeart } from 'react-icons/ai';
 import {
   PublicPlaylistCardContainer,
   PublicPlaylistCardImage,
-  PublicPlaylistCardLikes,
   PublicPlaylistCardName,
+  PublicPlaylistCardRating,
   PublicPlaylistCardSongs,
   PublicPlaylistCardTextWrapper,
+  RatingContainer,
 } from './PublicPLaylistCard.styles';
 
 import { capitalizeWords, parseLikesDislikes } from '../../../../store/helpers';
 import constants from '../../constants/constants';
 import paths from '../../../../router/paths';
+import { BiHeart } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
+import { userPlaylistsReactionsSelector } from '../../../../store/user-playlists-reactions/user-playlists-reactions.selector';
 
 function PublicPlaylistCard({ playlist }) {
   const navigate = useNavigate();
   const { id, name, logo, first_ten_songs, number_likes_dislikes, owner } =
     playlist;
-  const reactions = parseLikesDislikes(number_likes_dislikes);
+  const { likes, dislikes } = parseLikesDislikes(number_likes_dislikes);
   const handleNavigate = useCallback(() => {
     navigate(`${paths.publicPlaylistDetails}/${id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+  const userPlaylistsReactions = useSelector(userPlaylistsReactionsSelector);
+  const { isLiked, isDisliked } = userPlaylistsReactions.find(
+    ({ playlistId }) => playlistId === id
+  ) ?? { isLiked: false, isDisliked: false };
 
   return (
     <PublicPlaylistCardContainer
@@ -64,27 +71,36 @@ function PublicPlaylistCard({ playlist }) {
           )}
         </PublicPlaylistCardSongs>
       </PublicPlaylistCardTextWrapper>
-      <PublicPlaylistCardLikes>
-        <div className='count-wrapper'>
-          <span
-            className='count'
-            data-dislikes-id={`public-playlist-dislikes-${id}`}
-          >
-            {reactions.dislikes}
-          </span>
-          <span className='btn btn-dislike'>
-            <RiDislikeLine />
-          </span>
-        </div>
-        <div className='count-wrapper'>
-          <span className='count' data-likes-id={`public-playlist-likes-${id}`}>
-            {reactions.likes}
-          </span>
-          <span className='btn btn-like'>
-            <AiOutlineHeart />
-          </span>
-        </div>
-      </PublicPlaylistCardLikes>
+      <PublicPlaylistCardRating className='public-playlist-card__rating'>
+        <RatingContainer className='public-playlist-card__rating-container'>
+          <div className='public-playlist-card__rating--dislike'>
+            <span
+              className='count'
+              data-dislikes-id={`public-playlist-dislikes-${id}`}
+            >
+              {dislikes}
+            </span>
+            <div
+              className={isDisliked ? 'reaction reaction__active' : 'reaction'}
+            >
+              <RiDislikeLine />
+            </div>
+          </div>
+        </RatingContainer>
+        <RatingContainer className='public-playlist-card__rating-container'>
+          <div className='public-playlist-card__rating--like'>
+            <span
+              className='count'
+              data-likes-id={`public-playlist-likes-${id}`}
+            >
+              {likes}
+            </span>
+            <div className={isLiked ? 'reaction reaction__active' : 'reaction'}>
+              <BiHeart />
+            </div>
+          </div>
+        </RatingContainer>
+      </PublicPlaylistCardRating>
     </PublicPlaylistCardContainer>
   );
 }

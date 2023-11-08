@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ToatsMsg } from './Toasts.styles';
+import { toast } from 'react-toastify';
 
 export const baseToastConfig = {
   position: 'top-center',
@@ -11,6 +12,19 @@ export const baseToastConfig = {
   draggable: true,
   progress: undefined,
   theme: 'dark',
+};
+
+export const playlistReactionErrorToastConfig = {
+  ...baseToastConfig,
+  autoClose: 2000,
+  type: toast.TYPE.ERROR,
+};
+
+export const commentErrorToastConfig = {
+  ...baseToastConfig,
+  position: 'bottom-right',
+  autoClose: 2000,
+  type: toast.TYPE.ERROR,
 };
 
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

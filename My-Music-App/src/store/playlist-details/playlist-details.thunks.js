@@ -2,9 +2,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {
   ERROR_RESPONSE_CODES,
+  ERROR_RESPONSE_MESSAGES,
   FETCH_PLAYLISTS_TYPES,
   MY_PLAYLISTS_URL,
   PUBLIC_PLAYLIST_URL,
+  PUBLIC_PLAYLIST_URL as PLAYLIST_REACTION_URL,
 } from '../constants';
 import {
   capitalizeWords,
@@ -123,7 +125,7 @@ export const changePlaylistType = createAsyncThunk(
       };
     } catch (error) {
       if (error.response.status === ERROR_RESPONSE_CODES.UNPROCESSABLE_ENTITY)
-        throw new Error('422 Unprocessable Entity');
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNPROCESSABLE_ENTITY);
 
       throw error.response.data.errors;
     }
@@ -269,16 +271,34 @@ export const editPlaylistDetailsRejected = (state, action) => {
 
 export const fetchPlaylistComments = createAsyncThunk(
   'playlistDetailsSlice/fetchPlaylistComments',
-  async ({ playlistId, page = 1 }) => {
+  async ({ playlistId, playlistTypeToDisplay, page = 1 }, { getState }) => {
+    const accessToken = getState().user.accessToken;
     try {
-      const response = await axios({
-        url: `${PUBLIC_PLAYLIST_URL}/${playlistId}/comments?page=${page}`,
-        headers: {
-          Accept: '*/*',
-        },
-      });
-      return response.data;
+      if (playlistTypeToDisplay === FETCH_PLAYLISTS_TYPES.PUBLIC) {
+        const response = await axios({
+          url: `${PUBLIC_PLAYLIST_URL}/${playlistId}/comments?page=${page}`,
+          headers: {
+            Accept: '*/*',
+          },
+        });
+        return response.data;
+      }
+      if (playlistTypeToDisplay !== FETCH_PLAYLISTS_TYPES.PUBLIC) {
+        const response = await axios({
+          url: `${PUBLIC_PLAYLIST_URL}/${playlistId}/comments?page=${page}`,
+          headers: {
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        return response.data;
+      }
     } catch (error) {
+      if (error.response.status === ERROR_RESPONSE_CODES.NOT_FOUND)
+        throw new Error(ERROR_RESPONSE_MESSAGES.NOT_FOUND);
+      if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNAUTHORIZED);
+
       throw error.response.data.errors;
     }
   }
@@ -354,9 +374,9 @@ export const addCommentToPlaylist = createAsyncThunk(
       };
     } catch (error) {
       if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
-        throw new Error('401 Unauthorized');
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNAUTHORIZED);
       if (error.response.status === ERROR_RESPONSE_CODES.UNPROCESSABLE_ENTITY)
-        throw new Error('422 Unprocessable Entity');
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNPROCESSABLE_ENTITY);
 
       throw error.response.data.errors;
     }
@@ -370,13 +390,195 @@ export const addCommentToPlaylistPending = (state) => {
 
 export const addCommentToPlaylistFulfilled = (state, action) => {
   state.loading = false;
-  state.playlistDetails.commentsInfo.comments.unshift(
-    action.payload.newComment
-  );
-  state.playlistDetails.commentsInfo.metadata.commentsCount++;
+  state.playlistDetails.commentsInfo.comments = [
+    action.payload.newComment,
+    ...state.playlistDetails.commentsInfo.comments,
+  ];
+  state.playlistDetails.commentsInfo.metadata.commentsCount =
+    state.playlistDetails.commentsInfo.metadata.commentsCount + 1;
 };
 
 export const addCommentToPlaylistRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const fetchPlaylistReaction = createAsyncThunk(
+  'playlistDetailsSlice/fetchPlaylistReaction',
+  async (playlistId, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    try {
+      const response = await axios({
+        url: `${PLAYLIST_REACTION_URL}/${playlistId}/reaction`,
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        transformResponse: [
+          (responseData) => {
+            const { reaction } = JSON.parse(responseData);
+            return {
+              isLiked: reaction.data?.attributes.status === 1,
+              isDisliked: reaction.data?.attributes.status === 0,
+            };
+          },
+        ],
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNAUTHORIZED);
+      if (error.response.status === ERROR_RESPONSE_CODES.NOT_FOUND)
+        throw new Error(ERROR_RESPONSE_MESSAGES.NOT_FOUND);
+
+      throw error.response.data.errors;
+    }
+  }
+);
+
+export const fetchPlaylistReactionPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+
+export const fetchPlaylistReactionFulfilled = (state, action) => {
+  state.loading = false;
+  state.playlistDetails.playlistReaction = action.payload;
+};
+
+export const fetchPlaylistReactionRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const postPlaylistLike = createAsyncThunk(
+  'playlistDetailsSlice/postPlaylistLike',
+  async (playlistId, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    try {
+      await axios({
+        url: `${PLAYLIST_REACTION_URL}/${playlistId}/reaction`,
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
+          status: 1,
+        },
+      });
+      return {
+        isLiked: true,
+        isDisliked: false,
+      };
+    } catch (error) {
+      if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNAUTHORIZED);
+      if (error.response.status === ERROR_RESPONSE_CODES.UNPROCESSABLE_ENTITY)
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNPROCESSABLE_ENTITY);
+
+      throw error.response.data.errors;
+    }
+  }
+);
+export const postPlaylistLikePending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const postPlaylistLikeFulfilled = (state, action) => {
+  state.loading = false;
+  state.playlistDetails.playlistReaction.isLiked = action.payload.isLiked;
+  state.playlistDetails.playlistReaction.isDisliked = action.payload.isDisliked;
+};
+export const postPlaylistLikeRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const postPlaylistDislike = createAsyncThunk(
+  'playlistDetailsSlice/postPlaylistDislike',
+  async (playlistId, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    try {
+      await axios({
+        url: `${PLAYLIST_REACTION_URL}/${playlistId}/reaction`,
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
+          status: 0,
+        },
+      });
+      return {
+        isLiked: false,
+        isDisliked: true,
+      };
+    } catch (error) {
+      if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNAUTHORIZED);
+      if (error.response.status === ERROR_RESPONSE_CODES.UNPROCESSABLE_ENTITY)
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNPROCESSABLE_ENTITY);
+
+      throw error.response.data.errors;
+    }
+  }
+);
+export const postPlaylistDislikePending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const postPlaylistDislikeFulfilled = (state, action) => {
+  state.loading = false;
+  state.playlistDetails.playlistReaction.isLiked = action.payload.isLiked;
+  state.playlistDetails.playlistReaction.isDisliked = action.payload.isDisliked;
+};
+export const postPlaylistDislikeRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const deletePlaylistReaction = createAsyncThunk(
+  'playlistDetailsSlice/deletePlaylistReaction',
+  async (playlistId, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    try {
+      await axios({
+        url: `${PLAYLIST_REACTION_URL}/${playlistId}/reaction`,
+        method: 'DELETE',
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return {
+        isLiked: false,
+        isDisliked: false,
+      };
+    } catch (error) {
+      if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNAUTHORIZED);
+      if (error.response.status === ERROR_RESPONSE_CODES.NOT_FOUND)
+        throw new Error(ERROR_RESPONSE_MESSAGES.NOT_FOUND);
+
+      throw error.response.data.errors;
+    }
+  }
+);
+
+export const deletePlaylistReactionPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+export const deletePlaylistReactionFulfilled = (state, action) => {
+  state.loading = false;
+  state.playlistDetails.playlistReaction.isLiked = action.payload.isLiked;
+  state.playlistDetails.playlistReaction.isDisliked = action.payload.isDisliked;
+};
+export const deletePlaylistReactionRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

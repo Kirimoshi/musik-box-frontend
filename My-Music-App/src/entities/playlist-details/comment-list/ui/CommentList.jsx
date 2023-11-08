@@ -17,8 +17,11 @@ import {
   addCommentToPlaylist,
   fetchPlaylistComments,
 } from '../../../../store/playlist-details/playlist-details.thunks';
-import { useParams } from 'react-router-dom';
-import { UPLOADS_URL } from '../../../../store/constants';
+import { useLocation, useParams } from 'react-router-dom';
+import {
+  FETCH_PLAYLISTS_TYPES,
+  UPLOADS_URL,
+} from '../../../../store/constants';
 import Pagination from '../../../../shared/Pagination';
 import {
   CommentAuthorAvatar,
@@ -40,11 +43,17 @@ import {
   NewCommentForm,
 } from './CommentList.styles';
 import { isAuthenticatedSelector } from '../../../../store/user/user.selector';
-import { baseToastConfig, OneLineMessage } from '../../../../shared/Toasts';
+import {
+  commentErrorToastConfig,
+  OneLineMessage,
+} from '../../../../shared/Toasts';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
+import paths from '../../../../router/paths';
 
 export default function CommentList() {
   const dispatch = useDispatch();
+  let location = useLocation();
   const isAuth = useSelector(isAuthenticatedSelector);
   const { id } = useParams();
   const [newComment, setNewComment] = useState('');
@@ -62,6 +71,7 @@ export default function CommentList() {
   const [clickCount, setClickCount] = useState(0);
   const [lastClickTimestamp, setLastClickTimestamp] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [playlistTypeToDisplay, setPlaylistTypeToDisplay] = useState('');
   const toastId = useRef(null);
   const clearComment = () => {
     setNewComment('');
@@ -75,23 +85,41 @@ export default function CommentList() {
     return Math.floor(commentAge / constants.daysInMilliseconds);
   };
 
-  const notify = useCallback(() => {
+  const notifyCommentError = useCallback(() => {
     toastId.current = toast(
-      <OneLineMessage message={constants.pendingMsg} />,
-      baseToastConfig
+      <OneLineMessage message={constants.errorMsg} />,
+      commentErrorToastConfig
     );
   }, []);
-
-  const notifyError = useCallback(() => {
-    toast.update(toastId.current, {
-      type: toast.TYPE.ERROR,
-      autoClose: 2000,
-      render: <OneLineMessage message={constants.errorMsg} />,
-    });
-  }, []);
+  useEffect(() => {
+    if (isFormSubmitted && !loading && error) {
+      notifyCommentError();
+      setIsFormSubmitted(false);
+    }
+  }, [isFormSubmitted, loading, error, notifyCommentError]);
 
   useEffect(() => {
-    dispatch(fetchPlaylistComments({ playlistId: id, page: commentsPage }));
+    if (location.pathname.includes(paths.publicPlaylistDetails)) {
+      setPlaylistTypeToDisplay(FETCH_PLAYLISTS_TYPES.PUBLIC);
+      return;
+    }
+    if (location.pathname.includes(paths.myPlaylistDetails)) {
+      setPlaylistTypeToDisplay(FETCH_PLAYLISTS_TYPES.MY);
+      return;
+    }
+    if (location.pathname.includes(paths.sharedPlaylistDetails)) {
+      setPlaylistTypeToDisplay(FETCH_PLAYLISTS_TYPES.SHARED);
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    dispatch(
+      fetchPlaylistComments({
+        playlistId: id,
+        playlistTypeToDisplay: playlistTypeToDisplay,
+        page: commentsPage,
+      })
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, commentsPage]); // Dispatch is not a dependency because it is a function that never changes
 
@@ -107,16 +135,6 @@ export default function CommentList() {
     }, constants.timeOut);
     return () => clearTimeout(timer);
   }, [clickCount]);
-
-  useEffect(() => {
-    if (isFormSubmitted && loading) {
-      notify();
-    }
-    if (isFormSubmitted && !loading && error) {
-      notifyError();
-      setIsFormSubmitted(false);
-    }
-  }, [isFormSubmitted, error, loading, notify, notifyError]);
 
   const handleClick = () => {
     const currentTime = Date.now();
@@ -245,11 +263,18 @@ export default function CommentList() {
           }
         )}
       </CommentListContainer>
-      <Pagination
-        handleClick={onPageChange}
-        isLeftActive={!loading && commentsPage !== 1}
-        isRightActive={!loading && commentsPage < lastPage}
-      />
+      {comments.length === 0 ? null : (
+        <Pagination
+          handleClick={onPageChange}
+          isLeftActive={!loading && commentsPage !== 1}
+          isRightActive={!loading && commentsPage < lastPage}
+          marginBottom='12px'
+        />
+      )}
     </CommentsSection>
   );
 }
+
+CommentList.propTypes = {
+  playlistTypeToDisplay: PropTypes.string.isRequired,
+};

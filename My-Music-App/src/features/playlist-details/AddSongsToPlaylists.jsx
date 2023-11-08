@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { IoSearchSharp } from 'react-icons/io5';
-import { IoAddSharp } from 'react-icons/io5';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { IoAddSharp, IoSearchSharp } from 'react-icons/io5';
 import { PiDotBold } from 'react-icons/pi';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,37 +11,37 @@ import defaultAlbumCover from '../../shared/assets/default_album_cover.jpg';
 import { UPLOADS_URL } from '../../store/constants';
 import { addSongToPlaylist } from '../../store/playlist-details/playlist-details.thunks';
 import {
-  playlistDetailsLoadingSelector,
   playlistDetailsErrorSelector,
+  playlistDetailsLoadingSelector,
 } from '../../store/playlist-details/playlist-details.selector';
 import {
   findSongs,
   removeSongFromList,
 } from '../../store/addSongsModal/addSongsModal.thunks';
 import {
-  listOfSongsSelector,
   lastPageSelector,
+  listOfSongsSelector,
 } from '../../store/addSongsModal/addSongsModal.selector';
 
 import {
-  ModalContainer,
-  Header,
-  Title,
-  CloseButton,
-  CrossSvg,
-  SearchBarWrapper,
-  SearchBarInput,
-  SearchBarIcon,
+  AddSongIcon,
   AddSongsMain,
   AddSongsTitle,
-  SongList,
-  SongItem,
-  SongImgWrapper,
-  SongImg,
+  CloseButton,
+  CrossSvg,
+  Header,
+  ModalContainer,
+  SearchBarIcon,
+  SearchBarInput,
+  SearchBarWrapper,
   SongArtistInfo,
-  SongTitle,
+  SongImg,
+  SongImgWrapper,
   SongInfo,
-  AddSongIcon,
+  SongItem,
+  SongList,
+  SongTitle,
+  Title,
   WarningMessage,
 } from './AddSongsToPlaylists.styles';
 import Pagination from '../../shared/Pagination';
@@ -239,7 +238,7 @@ function AddSongsToPlaylists({ options }) {
             handleClick={onPageChange}
             isLeftActive={!loading && page !== 1}
             isRightActive={!loading && page < last}
-            magrinBottom='0'
+            marginBottom='0'
           />
         )}
       </AddSongsMain>

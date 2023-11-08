@@ -40,4 +40,11 @@ export const FETCH_HOME_PLAYLISTS_TYPES = {
 export const ERROR_RESPONSE_CODES = {
   UNAUTHORIZED: 401,
   UNPROCESSABLE_ENTITY: 422,
+  NOT_FOUND: 404,
+};
+
+export const ERROR_RESPONSE_MESSAGES = {
+  UNAUTHORIZED: '401 Unauthorized',
+  UNPROCESSABLE_ENTITY: '422 Unprocessable Entity',
+  NOT_FOUND: '404 Not Found',
 };
