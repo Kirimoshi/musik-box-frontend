@@ -1,11 +1,12 @@
 import { BasePage } from "./basePage";
 
-export class PlaylistPage extends BasePage {
+export class MyPlaylistPage extends BasePage {
     constructor() {
         super();
         this.url = `details/`;
         this.playlistForm = `section.playlist__profile`;
         this.songsForm = `div.songsContainer`;
+        this.addSongsForm = `dialog.addSongsToPlaylistsModal__container`
     }
     get songMenu() {
         return $$(`${this.songsForm} .songlist-vertical-menu svg`);
@@ -15,15 +16,21 @@ export class PlaylistPage extends BasePage {
         return $$(`${this.songsForm} .songs`);
     }
 
-    get removeSongFromPlaylistButton() {
+    get removeSongButton() {
         return $$(`${this.songsForm} .delete-modal`);
+    }
+
+    async deleteSong() {
+        await this.songMenu[await this.songMenu.length-1].click();
+        await this.removeSongButton[await this.removeSongButton.length-1].click();
+        await this.confirmDeletionButton.click();
     }
 
     get dialogWindowSongTitle() {
         return $(`${this.songsForm} dialog h3`)
     }
 
-    get removeSongButton() {
+    get confirmDeletionButton() {
         return $(`//div[@class="songsContainer"]/dialog/button[text()="Remove Song"]`)
     }
 
@@ -92,7 +99,7 @@ export class PlaylistPage extends BasePage {
     }
 
     get songName() {
-        return $$(`${this.songsForm} .song .artistInfo`)
+        return $$(`//div[@class="artistInfo"]/p[text()]`)
     }
 
     get songImage() {
@@ -121,5 +128,49 @@ export class PlaylistPage extends BasePage {
 
     get commentAge() {
         return $$(`span.comment__age`)
+    }
+
+    get addSongButton() {
+        return $(`div.addsong svg`)
+    }
+
+    get addSongList() {
+        return $$(`${this.addSongsForm} .addsong-item.addsong-item`)
+    }
+
+    get addSongName() {
+        return $$(`${this.addSongsForm} .addsong-item.addsong-item	p:only-child`)
+    }
+
+    get addSongArtistName() {
+        return $$(`//dialog//p[text()="artist "]`)
+    }
+
+    get addSongAlbumName() {
+        return $$(`${this.addSongsForm} .addsong-item.addsong-item p:nth-child(3)`)
+    }
+
+    get songInput() {
+        return $(`${this.addSongsForm} input[type="text"]`)
+    }
+
+    get songSearchButton() {
+        return $(`${this.addSongsForm} button[type="submit"] svg`)
+    }
+
+    get addSongToPlaylistButton() {
+        return $(`${this.addSongsForm} .addsong-item-icon`)
+    }
+
+    get rightArrowPaginator() {
+        return $(`${this.addSongsForm} [data-right-arrow-id="pagination-right-arrow"]`)
+    }
+
+    get leftArrowPaginator() {
+        return $(`${this.addSongsForm} [data-left-arrow-id="pagination-left-arrow"]`)
+    }
+
+    get closeAddSongsWindowButton() {
+        return $(`${this.addSongsForm} button [alt="button to close modal"]`)
     }
 }

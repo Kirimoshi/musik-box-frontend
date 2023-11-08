@@ -32,7 +32,8 @@ Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentP
   assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });
 
-Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/, async function (place, page, element, type, expectedText) {
+Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/,
+  async function (place, page, element, type, expectedText) {
   let currentElementText;
   await browser.waitUntil(async function () {
   if (place === "alert" || place === "sidebar") {
@@ -109,7 +110,7 @@ Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
 //   assert.equal(await elementImg, el)
 // })
 
-Then(/"([^"]*)" element is (not )?displayed on "([^"]*)" page/, async function (element, notDisplayed, page) {
+Then(/"([^"]*)" is (not )?displayed on "([^"]*)" page/, async function (element, notDisplayed, page) {
   let currentElement = await Pages[page][camelize(`${element}`)];
   await expect(currentElement).toBeDisplayed();
   if (notDisplayed) {
@@ -191,20 +192,47 @@ Then(/playlists in "([^"]*)" on the "([^"]*)" page are ordered by (the number of
   });
 
 Then(/"([^"]*)" page "([^"]*)" "([^"]*)" contains next text: "([^"]*)"/, async function (page, element, type, expectedText) {
-  const currentElement = await Pages[page][camelize(`${element}${type}`)];
-  const expectedTextLower = expectedText.toLowerCase();
+  const expectedTextInLowerCase = expectedText.toLowerCase();
+  let textToCheck;
+  await browser.waitUntil(async function () {
+    let elementText = await Pages[page][camelize(`${element}${type}`)];
+    for (let elements of elementText) {
+      textToCheck = await elements.getText();
+      return textToCheck;
+    }
+  }, {
+    timeout: 5000,
+    timeoutMsg: 'expected element to be defined after 5s'
+  });
+  const currentElementText = await textToCheck.toLowerCase();
+  await browser.pause(500);
+  expect(currentElementText).toContain(expectedTextInLowerCase);
+});
 
-  if (element === 'publicPlaylistSong') {
-    const playlistSongItems = await Pages[page][camelize(`${element}${type}`)];
-    for (const playlist of playlistSongItems) {
-      const currentPlaylistSongs = await playlist.$$('span[data-song-id]');
-      const songTexts = await Promise.all(currentPlaylistSongs.map(song => song.getText()));
-      expect(songTexts.some(text => text.toLowerCase().includes(expectedTextLower))).toBe(true);
+Then(/the "([^"]*)" (not added|added) in the "([^"]*)" page songs list/,
+  async function (element, ifadded, page) {
+    let songNameArray = await Pages[page][camelize(`${element}Name`)];
+    let existingSongs = [];
+    await songNameArray.map(async (el) => {
+      existingSongs.push(await el.getText());
+    });
+
+    await browser.waitUntil(() => {
+      return existingSongs.includes(this.songToAdd[0]);
+    }, {
+      timeout: 5000,
+      timeoutMsg: 'Song was not found in the list within 5 seconds'
+    });
+    if (ifadded === "added") {
+      assert.include(existingSongs, this.songToAdd[0], "Song is not found")
+      await Pages[page].deleteSong()
+    } else if (ifadded === "not added") {
+      assert.include(existingSongs, this.songToAdd[0], "Song is not found")
     }
-  } else {
-    for (const element of currentElement) {
-      const currentElementText = await element.getText();
-      expect(currentElementText.toLowerCase()).toContain(expectedTextLower);
-    }
-  }
+  });
+
+Then(/"([^"]*)" "([^"]*)" placeholder is "([^"]*)"/, async function (page, element, searchPlaceholder) {
+  const searchElem = await Pages[page][camelize(`${element}`)];
+  assert.equal(await searchElem.getAttribute('placeholder'),
+    searchPlaceholder, `SearchField doesn't match ${searchPlaceholder} value`);
 });

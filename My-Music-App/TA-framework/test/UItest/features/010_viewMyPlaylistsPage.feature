@@ -1,13 +1,13 @@
 @010 @viewMyPlaylists
 
-Feature: View the My Playlists page
+Feature: EPMRDPEMAP-633 View the My Playlists page
 
     Scenario: Verifiyng opening the My Playlists page
         Given the user "signIn" to the application
         Then the user is on the "home" page
         When the user clicks on the "sidebar" "My Playlists" "Button" element
         Then the user is on the "myPlaylists" page
-        And "My Playlists List" element is displayed on "myPlaylists" page
+        And "My Playlists List" is displayed on "myPlaylists" page
 
     Scenario Outline: Verify that Authorized users is able to navigate to the My Playlists page by clicking the My Playlists button on the following pages: '<page>'
         Given the user "signIn" to the application
@@ -16,7 +16,7 @@ Feature: View the My Playlists page
         Then the user is on the "<page>" page
         When the user clicks on the "sidebar" "My Playlists" "Button" element
         Then the user is on the "myPlaylists" page
-        And "My Playlists List" element is displayed on "myPlaylists" page
+        And "My Playlists List" is displayed on "myPlaylists" page
 
     Examples:
         | page            |
@@ -28,12 +28,12 @@ Feature: View the My Playlists page
     Scenario: Verifiyng the My Playlists page includes no more than 10 playlists on a page.
         Given the user is open "myPlaylists" page
         Then the user is on the "myPlaylists" page
-        Then "My Playlists List" element is displayed on "myPlaylists" page
+        Then "My Playlists List" is displayed on "myPlaylists" page
         Then "myPlaylists" page has no more than 10 elements in "My Playlists List"
 
     Scenario: Verifiyng information about My Playlists
         Given the user is on the "myPlaylists" page
-        Then "My Playlists List" element is displayed on "myPlaylists" page
+        Then "My Playlists List" is displayed on "myPlaylists" page
         And "My Playlist Name" elements of "My Playlists List" are displayed on "myPlaylists" page
         And "My Playlist Logo" elements of "My Playlists List" are displayed on "myPlaylists" page
         And "My Playlist Songs List" elements of "My Playlists List" are displayed on "myPlaylists" page
