@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { oneLineEllipsis } from '../../../../shared/Shared.styles';
+import { flexCenter } from '../../../../widgets/playlist-details/PlaylistDetails.styles';
 
 export const playlistCardImageWidth = 168;
 
@@ -68,34 +69,51 @@ export const PublicPlaylistCardSongs = styled.p`
   color: #fff;
 `;
 
-export const PublicPlaylistCardLikes = styled.div`
+export const PublicPlaylistCardRating = styled.div`
   position: absolute;
   top: 1em;
   right: 1em;
   display: flex;
   gap: 4px;
+`;
 
-  & > .count-wrapper {
-    display: flex;
+export const RatingContainer = styled.div`
+  display: flex;
+  gap: 4px;
+
+  & > .public-playlist-card__rating--dislike,
+  & > .public-playlist-card__rating--like,
+  & > .shared-playlist-card__rating--dislike,
+  & > .shared-playlist-card__rating--like {
+    ${flexCenter}
     gap: 4px;
-  }
-
-  & .btn {
-    cursor: pointer;
-    background-color: inherit;
-    display: inline-block;
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
-  }
-
-  & .count {
+    color: var(--m-3-white, #fff);
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #ffffff;
-    align-self: center;
+
+    .count {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      letter-spacing: 0;
+      text-align: left;
+      color: #fff;
+      align-self: center;
+    }
+
+    .reaction {
+      background-color: inherit;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    .reaction__active {
+      color: #d0bcff;
+      scale: 1.2;
+    }
   }
 `;

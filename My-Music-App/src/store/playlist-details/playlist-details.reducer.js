@@ -21,10 +21,14 @@ const initialState = {
       registerdate: null,
       playlistsOwned: null,
     },
+    playlistReaction: {
+      isLiked: null,
+      isDisliked: null,
+    },
     songs: [],
     commentsInfo: {
       comments: [],
-      metadata: {},
+      metadata: { commentsCount: 0 },
     },
   },
 };
@@ -122,6 +126,51 @@ export const playlistDetailsSlice = createSlice({
       .addCase(
         thunks.addCommentToPlaylist.rejected,
         thunks.addCommentToPlaylistRejected
+      )
+      .addCase(
+        thunks.fetchPlaylistReaction.pending,
+        thunks.fetchPlaylistReactionPending
+      )
+      .addCase(
+        thunks.fetchPlaylistReaction.fulfilled,
+        thunks.fetchPlaylistReactionFulfilled
+      )
+      .addCase(
+        thunks.fetchPlaylistReaction.rejected,
+        thunks.fetchPlaylistReactionRejected
+      )
+      .addCase(thunks.postPlaylistLike.pending, thunks.postPlaylistLikePending)
+      .addCase(
+        thunks.postPlaylistLike.fulfilled,
+        thunks.postPlaylistLikeFulfilled
+      )
+      .addCase(
+        thunks.postPlaylistLike.rejected,
+        thunks.postPlaylistLikeRejected
+      )
+      .addCase(
+        thunks.postPlaylistDislike.pending,
+        thunks.postPlaylistDislikePending
+      )
+      .addCase(
+        thunks.postPlaylistDislike.fulfilled,
+        thunks.postPlaylistDislikeFulfilled
+      )
+      .addCase(
+        thunks.postPlaylistDislike.rejected,
+        thunks.postPlaylistDislikeRejected
+      )
+      .addCase(
+        thunks.deletePlaylistReaction.pending,
+        thunks.deletePlaylistReactionPending
+      )
+      .addCase(
+        thunks.deletePlaylistReaction.fulfilled,
+        thunks.deletePlaylistReactionFulfilled
+      )
+      .addCase(
+        thunks.deletePlaylistReaction.rejected,
+        thunks.deletePlaylistReactionRejected
       );
   },
 });

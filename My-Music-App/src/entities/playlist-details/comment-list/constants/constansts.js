@@ -3,7 +3,6 @@ export const constants = {
   commentMaxLength: 1000,
   timeOut: 60000,
   timerLength: 2,
-  pendingMsg: 'Posting your comment...',
   errorMsg: 'Oops, looks like something went wrong. Please try again later.',
   daysInMilliseconds: 86400000,
 };

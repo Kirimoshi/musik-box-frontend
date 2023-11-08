@@ -93,6 +93,7 @@ export const CommentClearButton = styled.button`
 export const CommentSubmitButton = styled.button`
   width: 328px;
   height: 40px;
+  margin-bottom: 36px;
   border: 1px solid #938f99;
   border-radius: 100px;
   background: none;
@@ -114,10 +115,10 @@ export const CommentSubmitButton = styled.button`
 export const CommentError = styled.p`
   font-size: small;
   color: #d0bcff;
+  margin-top: -36px;
 `;
 export const CommentListContainer = styled.section`
   width: 100%;
-  margin-top: -21px;
 `;
 export const CommentContainer = styled.article`
   font-style: normal;

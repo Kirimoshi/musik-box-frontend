@@ -35,9 +35,7 @@ const INITIAL_STATE = {
 export const userSlice = createSlice({
   name: 'user',
   initialState: INITIAL_STATE,
-  // synchronous reducers
   reducers: {
-    // I thick adding redux-persist is overkill right now, so rehydration was implemented manually
     rehydrateTokens: (state) => {
       state.isRehydrated = true;
       state.isRemembered = getItemFromLocalStorage('isRemembered');
@@ -48,7 +46,6 @@ export const userSlice = createSlice({
         state.refreshExpiresAt = getItemFromLocalStorage('refreshExpiresAt');
       }
     },
-    // isRemembered flag in form implemented as stand alone checkbox, so we need "personal" reducer for it
     setIsRemembered: (state, action) => {
       state.isRemembered = action.payload;
     },
@@ -59,7 +56,6 @@ export const userSlice = createSlice({
       state.loginError = null;
     },
   },
-  // asynchronous reducers
   extraReducers: (builder) => {
     builder
       .addCase(thunks.loginUser.pending, thunks.loginUserPending)

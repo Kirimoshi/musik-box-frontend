@@ -15,6 +15,7 @@ export const InputWrapper = styled.div`
   border-radius: 28px;
   height: 56px;
   padding-right: 10px;
+
   & > .search-bar-icon {
     margin: 0 5px;
     height: 40px;
@@ -25,12 +26,14 @@ export const InputWrapper = styled.div`
     justify-content: center;
     cursor: pointer;
   }
+
   & > .sort-icon-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 40px;
     height: 40px;
+
     & > .sort-icon {
       position: relative;
       display: inline-block;
@@ -38,14 +41,17 @@ export const InputWrapper = styled.div`
       color: white;
       font-size: 24px;
     }
+
     & > .sort-icon.sort-open {
       color: #b18fff;
     }
   }
+
   & > .sort-icon-wrapper.sort-open {
     background-color: #cac4d01f;
     border-radius: 20px;
   }
+
   & > .tooltip {
     width: 230px;
     height: 232px;
@@ -74,6 +80,7 @@ export const SortPlaylistsMenu = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   column-gap: 10px;
+
   & > p.sort-group-name {
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
@@ -96,9 +103,11 @@ export const SortPlaylistsMenuOption = styled.p`
   position: relative;
   padding: 0 24px 0 16px;
   height: 40px;
+
   & > input[type='radio'] {
     display: none;
   }
+
   & > label.checkbox-label {
     display: inline;
     cursor: pointer;
@@ -115,6 +124,7 @@ export const SortPlaylistsMenuOption = styled.p`
     background-color: inherit;
     color: inherit;
   }
+
   & > input:checked + label.checkbox-label::after {
     content: '✔';
     display: inline;
@@ -122,4 +132,14 @@ export const SortPlaylistsMenuOption = styled.p`
     width: 24px;
     height: 24px;
   }
+`;
+
+export const NoPlaylistsMessage = styled.p`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  text-align: center;
+  color: #aea9b4;
+  margin-bottom: 12px;
 `;
