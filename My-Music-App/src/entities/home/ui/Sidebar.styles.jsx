@@ -68,6 +68,7 @@ export const UserInfo = styled.figure`
 
 export const UserAvatar = styled.div`
   height: 60px;
+
   & > img {
     width: ${avatarWidth}px;
     aspect-ratio: 1/1;
@@ -84,12 +85,14 @@ export const AccountDetails = styled.figcaption`
     max-width: 100%;
     ${oneLineEllipsis};
   }
+
   & > p.user-info__nickname {
     color: #fff;
     font-size: 22px;
     font-weight: 400;
     line-height: 28px;
   }
+
   & > p.user-info__email {
     color: var(--m-3-ref-neutral-neutral-80, #cac5cd);
     font-size: 14px;
@@ -103,11 +106,13 @@ export const AccountDetails = styled.figcaption`
 export const AccountEdit = styled.div`
   width: ${penIconWidth}px;
   height: ${penIconWidth}px;
+  cursor: pointer;
   align-self: end;
   transform: translate(
     ${Math.round(userInfoPadding / 2)}px,
     ${Math.round(userInfoPadding / 2)}px
   );
+
   & > svg {
     /* Icon takes width/height from fontsize */
     font-size: ${penIconWidth}px;

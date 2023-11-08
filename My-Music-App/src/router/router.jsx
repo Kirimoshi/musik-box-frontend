@@ -15,11 +15,13 @@ import PlaylistDetails from '../widgets/playlist-details/PlaylistDetails';
 import { FETCH_PLAYLISTS_TYPES } from '../store/constants';
 import PublicPlaylists from '../widgets/public-playlists/PublicPlaylists';
 import NonAuthOnlyRoute from './NonAuthOnlyRoute';
+import MyAccount from '../widgets/my-account/MyAccount';
 
 const {
   home,
   signIn,
   signUp,
+  myAccount,
   myPlaylists,
   myPlaylistDetails,
   publicPlaylists,
@@ -47,6 +49,17 @@ const router = createBrowserRouter(
             <NonAuthOnlyRoute>
               <SignUp />
             </NonAuthOnlyRoute>
+          }
+        />
+        <Route
+          path={myAccount}
+          element={
+            <PrivateRoute
+              isAuthRequired
+              errorMessage={`It looks like you don't have permission to view this page. Please sign in to continue.`}
+            >
+              <MyAccount />
+            </PrivateRoute>
           }
         />
         <Route

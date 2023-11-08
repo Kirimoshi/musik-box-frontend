@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import SidebarMenu from './SidebarMenu';
@@ -11,26 +11,26 @@ import { RiPencilFill } from 'react-icons/ri';
 import { userSelector } from '../../../store/user/user.selector';
 import { logoutUser } from '../../../store/user/user.thunks';
 import {
-  SidebarContainer,
-  Logo,
-  Divider,
-  UserInfo,
-  UserAvatar,
-  AccountDetails,
-  AccountEdit,
   AboutApp,
   AboutUs,
-  Logout,
-  LoginWrapper,
+  AccountDetails,
+  AccountEdit,
+  Divider,
   LoginLink,
+  LoginWrapper,
+  Logo,
+  Logout,
+  SidebarContainer,
+  UserAvatar,
+  UserInfo,
   VerticalDivider,
 } from './Sidebar.styles';
 
 import {
   baseToastConfig,
+  LogoutErrorMessage,
   LogoutPendingMessage,
   LogoutSuccessMessage,
-  LogoutErrorMessage,
 } from '../../../shared/Toasts';
 import { useNavigate } from 'react-router-dom';
 import paths from '../../../router/paths';
@@ -97,6 +97,10 @@ function Sidebar() {
     dispatch(logoutUser());
   };
 
+  const handleNavigateToMyAccount = () => {
+    navigate(paths.myAccount);
+  };
+
   return (
     <SidebarContainer>
       <Logo to='/' className='sidebar__logo'>
@@ -121,7 +125,10 @@ function Sidebar() {
               <p className='user-info__nickname'>{nickname}</p>
               <p className='user-info__email'>{email}</p>
             </AccountDetails>
-            <AccountEdit className='user-info__edit-icon'>
+            <AccountEdit
+              className='user-info__edit-icon'
+              onClick={handleNavigateToMyAccount}
+            >
               <RiPencilFill />
             </AccountEdit>
           </>
@@ -156,4 +163,5 @@ function Sidebar() {
     </SidebarContainer>
   );
 }
+
 export default Sidebar;
