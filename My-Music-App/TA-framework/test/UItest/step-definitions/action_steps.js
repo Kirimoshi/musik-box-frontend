@@ -105,7 +105,7 @@ Then('I run mocking data', async function () {
       return mockData !== undefined;
     }, {
       timeout: 15000,
-      timeoutMsg: 'mockData didn`t resolve in 5 seconds'
+      timeoutMsg: 'mockData didn`t resolve in 15 seconds'
     });
     return mockData;
   });

@@ -5,25 +5,19 @@ export class MyPlaylistPage extends BasePage {
         super();
         this.url = `details/`;
         this.playlistForm = `section.playlist__profile`;
-        this.songsForm = `div.songsContainer`;
+        this.songsForm = `div.SongList`;
         this.addSongsForm = `dialog.addSongsToPlaylistsModal__container`
     }
     get songMenu() {
-        return $$(`${this.songsForm} .songlist-vertical-menu svg`);
+        return $$(`${this.songsForm} [data-song-id] svg:nth-child(1)`);
     }
 
     get songsList() {
-        return $$(`${this.songsForm} .songs`);
+        return $$(`${this.songsForm} [data-song-id]`);
     }
 
     get removeSongButton() {
-        return $$(`${this.songsForm} .delete-modal`);
-    }
-
-    async deleteSong() {
-        await this.songMenu[await this.songMenu.length-1].click();
-        await this.removeSongButton[await this.removeSongButton.length-1].click();
-        await this.confirmDeletionButton.click();
+        return $$(`//span[text()="Remove song from playlist"]`);
     }
 
     get dialogWindowSongTitle() {
@@ -31,11 +25,11 @@ export class MyPlaylistPage extends BasePage {
     }
 
     get confirmDeletionButton() {
-        return $(`//div[@class="songsContainer"]/dialog/button[text()="Remove Song"]`)
+        return $(`//div[@class="SongList"]/dialog/button[text()="Remove Song"]`)
     }
 
     get cancelDeletionSongButton() {
-        return $(`//div[@class="songsContainer"]/dialog/button[text()="Cancel"]`)
+        return $(`//div[@class="SongList"]/dialog/button[text()="Cancel"]`)
     }
 
     get playlistTitle() {
@@ -99,11 +93,11 @@ export class MyPlaylistPage extends BasePage {
     }
 
     get songName() {
-        return $$(`//div[@class="artistInfo"]/p[text()]`)
+        return $$(`${this.songsForm} .SongList__artistInfo > div p:only-of-type`)
     }
 
     get songImage() {
-        return $$(`${this.songsForm} div.imageBox-artistinfo img`)
+        return $$(`${this.songsForm} [alt="song cover"]`)
     }
 
     get commentList() {
@@ -143,11 +137,11 @@ export class MyPlaylistPage extends BasePage {
     }
 
     get addSongArtistName() {
-        return $$(`//dialog//p[text()="artist "]`)
+        return $$(`.addsong-item p:nth-of-type(2)`)
     }
 
     get addSongAlbumName() {
-        return $$(`${this.addSongsForm} .addsong-item.addsong-item p:nth-child(3)`)
+        return $$(`${this.addSongsForm} .addsong-item div p:nth-last-of-type(2)`)
     }
 
     get songInput() {
@@ -172,5 +166,11 @@ export class MyPlaylistPage extends BasePage {
 
     get closeAddSongsWindowButton() {
         return $(`${this.addSongsForm} button [alt="button to close modal"]`)
+    }
+
+    async deleteSong() {
+        await this.songMenu[await this.songMenu.length-1].click();
+        await this.removeSongButton[await this.removeSongButton.length-1].click();
+        await this.confirmDeletionButton.click();
     }
 }

@@ -124,7 +124,15 @@ Then(/"([^"]*)" elements of "([^"]*)" are (not )?displayed on "([^"]*)" page/, a
   let currentElementsArray = await Pages[page][camelize(`${elementsArray}`)];
 
   for (let i = 0; i < currentElementsArray.length; i++) {
+    await browser.waitUntil(async () => {
+      return await currentElement[i].isExisting();
+    }, {
+      timeout: 5000,
+      timeoutMsg: `Element ${currentElement[i]} did not exist in 5 seconds`
+    });
+
     await expect(currentElement[i]).toBeDisplayed();
+
     if (notDisplayed) {
       let ifNotDisplayed = await currentElement[i].isDisplayed();
       assert.isFalse(await ifNotDisplayed, `Expected ${currentElement[i]} element to be not displayed`)

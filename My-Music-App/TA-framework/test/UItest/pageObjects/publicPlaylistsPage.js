@@ -38,7 +38,7 @@ export class PublicPlaylistsPage extends BasePage {
     }
 
     get publicPlaylistLikeButton() {
-        return $(`${this.playlistsContainer}`).$$('.btn-like');
+        return $(`${this.playlistsContainer}`).$$('[data-likes-id] + div.reaction');
     }
 
     get publicPlaylistLikeCounter() {
@@ -46,7 +46,7 @@ export class PublicPlaylistsPage extends BasePage {
     }
 
     get publicPlaylistDislikeButton() {
-        return $(`${this.playlistsContainer}`).$$('.btn-dislike');
+        return $(`${this.playlistsContainer}`).$$('[data-dislikes-id] + div.reaction');
     }
 
     get publicPlaylistDislikeCounter() {

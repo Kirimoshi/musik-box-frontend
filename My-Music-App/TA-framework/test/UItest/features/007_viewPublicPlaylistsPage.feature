@@ -143,7 +143,7 @@ Feature: View the Public Playlists page
         Examples:
             | propertyName              | property         | elementName             | elementType |
             | Playlist name             | The unique album | publicPlaylistName      | List        |
-            | Playlist owner's nickname | Danylo           | publicPlaylistCreatedBy | Labels      |
+            | Playlist owner's nickname | John             | publicPlaylistCreatedBy | Labels      |
             # #     # # |Playlist description| alias     ||| - need to open each playlist to check description
             | Song name                 | Du hast          | publicPlaylistSong      | List        |
             | Author name               | Rammstein        | publicPlaylistSong      | List        |
@@ -165,7 +165,7 @@ Feature: View the Public Playlists page
         Examples:
             | propertyName              | property         | elementName             | elementType |
             | Playlist name             | The unique album | publicPlaylistName      | List        |
-            | Playlist owner's nickname | Danylo           | publicPlaylistCreatedBy | Labels      |
+            | Playlist owner's nickname | John             | publicPlaylistCreatedBy | Labels      |
         # #     # # |Playlist description| alias     ||| - need to open each playlist to check description
             | Song name                 | Du hast          | publicPlaylistSong      | List        |
             | Author name               | Rammstein        | publicPlaylistSong      | List        |
