@@ -7,7 +7,7 @@ Feature: EPMRDPEMAP-642 - The delete playlist from playlists feature
     When the user clicks on the "sidebar" "My Playlists" "Button" element
     Then the user is on the "myPlaylists" page
     When the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
-    Then the user is on the "current" "playlist" page
+    Then the user is on the "current" "myPlaylist" page
 
   Scenario: Verify that the authenticated user is able to cancel deletion playlist from playlists list
     Given the user clicks on the "sidebar" "My Playlists" "Button" element
@@ -33,11 +33,11 @@ Feature: EPMRDPEMAP-642 - The delete playlist from playlists feature
     Then the user is on the "myPlaylists" page
     And the "myPlaylists" page "Playlists Item" elements have the initial length
     When the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
-    Then the user is on the "current" "playlist" page
-    When the user clicks on the "playlist" page "Playlist" "Menu" element
-    And the user clicks on the "playlist" page "Delete Playlist" "Button" element
-    Then "playlist" page "Dialog Window" "Playlist Title" is: "Are you sure you want to delete this playlist? You will not be able to restore it."
-    When the user clicks on the "playlist" page "Dialog Delete Playlist" "Button" element
+    Then the user is on the "current" "myPlaylist" page
+    When the user clicks on the "myPlaylist" page "Playlist" "Menu" element
+    And the user clicks on the "myPlaylist" page "Delete Playlist" "Button" element
+    Then "myPlaylist" page "Dialog Window" "Playlist Title" is: "Are you sure you want to delete this playlist? You will not be able to restore it."
+    When the user clicks on the "myPlaylist" page "Dialog Delete Playlist" "Button" element
     And the user clicks on the "sidebar" "My Playlists" "Button" element
     Then the user is on the "myPlaylists" page
     Then the "myPlaylists" page "Playlists Item" elements length are less than the initial length for one item

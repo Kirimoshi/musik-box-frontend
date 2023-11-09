@@ -1,17 +1,17 @@
 @009 @viewSharedPlaylists
 
-Feature: View the Shared Playlists page
+Feature: EPMRDPEMAP-603 View the Shared Playlists page
 
     Scenario: Verifiyng opening the Shared Playlists page
         Given the user "signIn" to the application
         Then the user is on the "home" page
         When the user clicks on the "sidebar" "Shared Playlists" "Button" element
         Then the user is on the "sharedPlaylists" page
-        And "Shared Playlists List" element is displayed on "sharedPlaylists" page
+        And "Shared Playlists List" is displayed on "sharedPlaylists" page
 
     Scenario: Verifiyng information about Shared Playlists
         Given the user is on the "sharedPlaylists" page
-        Then "Shared Playlists List" element is displayed on "sharedPlaylists" page
+        Then "Shared Playlists List" is displayed on "sharedPlaylists" page
         And "Shared Playlist Name" elements of "Shared Playlists List" are displayed on "sharedPlaylists" page
         And "Shared Playlist Logo" elements of "Shared Playlists List" are displayed on "sharedPlaylists" page
         And "Shared Playlist Like Button" elements of "Shared Playlists List" are displayed on "sharedPlaylists" page
@@ -24,15 +24,15 @@ Feature: View the Shared Playlists page
 
     Scenario: Verifiyng the Shared Playlists page is paginated and includes no more than 10 shared playlists on a page.
         Given the user is on the "sharedPlaylists" page
-        Then "Shared Playlists List" element is displayed on "sharedPlaylists" page
+        Then "Shared Playlists List" is displayed on "sharedPlaylists" page
         Then "sharedPlaylists" page has no more than 10 elements in "Shared Playlists List"
         When the user clicks on the "pagination" "Right" "Arrow" element
-        And "Shared Playlists List" element is displayed on "sharedPlaylists" page
+        And "Shared Playlists List" is displayed on "sharedPlaylists" page
         Then "sharedPlaylists" page has no more than 10 elements in "Shared Playlists List"
 
     Scenario: Verify opening individual shared playlist from Shared Playlists page
         Given the user is on the "sharedPlaylists" page
-        Then "Shared Playlists List" element is displayed on "sharedPlaylists" page
+        Then "Shared Playlists List" is displayed on "sharedPlaylists" page
         When the user clicks on the "sharedPlaylists" page "Shared Playlists" "List" 1 element
         Then the user is on the "current" "sharedPlaylist" page
         Then the user logging out
@@ -44,7 +44,7 @@ Feature: View the Shared Playlists page
         Then the user is on the "<page>" page
         When the user clicks on the "sidebar" "Shared Playlists" "Button" element
         Then the user is on the "sharedPlaylists" page
-        And "Shared Playlists List" element is displayed on "sharedPlaylists" page
+        And "Shared Playlists List" is displayed on "sharedPlaylists" page
         Then the user logging out
         Then "alert" "Logout Success" "Message" is: "You have been successfully logged out."
         Examples:

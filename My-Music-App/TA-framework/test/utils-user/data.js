@@ -16,7 +16,7 @@ const PagesUrl = {
     signIn: Pages['signIn'].url,
     base: Pages['base'].url,
     myPlaylists: Pages['myPlaylists'].url,
-    playlist: Pages['playlist'].url,
+    myPlaylist: Pages['myPlaylist'].url,
     publicPlaylists: Pages['publicPlaylists'].url,
     sharedPlaylists: Pages['sharedPlaylists'].url,
     sharedPlaylist: Pages['sharedPlaylist'].url,

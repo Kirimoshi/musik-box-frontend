@@ -58,7 +58,7 @@ export class PublicPlaylistsPage extends BasePage {
     }
 
     get searchIcon() {
-        return $('.search-bar-icon');
+        return $('[data-search-id="search-bar-icon"]');
     }
 
     get sortIcon() {

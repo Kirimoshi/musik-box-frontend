@@ -8,4 +8,8 @@ export class AlertWindow {
     get permissionMessage() {
         return $(`div .Toastify__toast-body p`)
     }
+
+    get addSongMessage() {
+        return $(`div .Toastify__toast-body p`)
+    }
 }

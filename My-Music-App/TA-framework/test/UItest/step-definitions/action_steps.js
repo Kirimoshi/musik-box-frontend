@@ -5,6 +5,7 @@ import BaseElements from "../pageObjects/elements/baseElements";
 const { camelize, sendRequest } = require("../../utils-user/helpers");
 const { userData, newUserData } = require("../../utils-user/data");
 const { assert } = require("chai");
+const { mockData } = require("../../utils-user/mock_utils");
 
 
 Given(/the user is open "([^"]*)" page/, async function (page) {
@@ -65,9 +66,9 @@ Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" "([^"]*)" (\d+)? ?eleme
   } else {
     throw new Error("Element is not found")
   }
-  expect(elementToClick).toBeDisplayed();
-  await elementToClick.click();
-  await browser.pause(500);
+    expect(elementToClick).toBeDisplayed();
+    await elementToClick.click();
+    await browser.pause(500);
   });
 
 When(/^the user logging out$/, async () => {
@@ -93,3 +94,41 @@ Then("the user tries to log in and delete account if it exists", async () => {
 When(/the user fills in the "([^"]*)" page "([^"]*)" "([^"]*)" with "([^"]*)"/, async function (page, element, type, text) {
   await Pages[page][camelize(`${element}${type}`)].setValue(text);
 });
+
+Then('I run mocking data', async function () {
+  const mockTest = await browser.mock(`http://127.0.0.1:3000/api/v1/playlists?page=1&sort_by=&sort_order=&include=songs`, {
+    method: "get"
+  });
+
+  await mockTest.respond(async () => {
+    await browser.waitUntil(async () => {
+      return mockData !== undefined;
+    }, {
+      timeout: 15000,
+      timeoutMsg: 'mockData didn`t resolve in 5 seconds'
+    });
+    return mockData;
+  });
+});
+
+Then(/the user "([^"]*)" (not )?existing "([^"]*)" "([^"]*)" into add songs search field in the "([^"]*)" page/,
+  async function (input, ifNot, song, name, page) {
+    const songNameArray = await Pages[page][camelize(`${song}${name}`)];
+    const songInput = await Pages[page][camelize(`${song}${input}`)];
+    const allSongsResponse = await sendRequest("/api/v1/songs", "get");
+    const allSongsArray = await allSongsResponse.data;
+    const allSongsNames = await allSongsArray.songs.data.map(song => song.attributes.title);
+    this.songToAdd;
+    let existingSongs = [];
+    await songNameArray.map(async (el) => {
+      existingSongs.push(await el.getText());
+    });
+    if (ifNot) {
+      await browser.pause(1000)
+      this.songToAdd = allSongsNames.filter(item => !existingSongs.includes(item));
+    } else {
+      await browser.pause(1000)
+      this.songToAdd = allSongsNames.filter(item => existingSongs.includes(item));
+    }
+    await songInput.setValue(String(this.songToAdd[0]));
+  });
