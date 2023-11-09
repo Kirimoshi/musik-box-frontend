@@ -5,13 +5,16 @@ import './maincontainermyplaylists.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { errorSelector, userSelector } from '../../store/user/user.selector';
 import {
+  myPlaylistsMetadataPageSelector,
   myPlaylistErrorSelector,
   myPlaylistLoadingSelector,
+  shouldRefreshMyPlaylistsSelector,
 } from '../../store/myPlaylists/myPlaylists.selector';
 import {
   addMyPlaylist,
   fetchPageOfMyPlaylists,
 } from '../../store/myPlaylists/myPlaylists.thunks';
+import { setShouldRefreshMyPlaylists } from '../../store/myPlaylists/myPlaylists.reducer';
 import {
   Container,
   ContentWrapper,
@@ -22,6 +25,7 @@ import InputComponent from '../../shared/ui/input/Input';
 import MyPlaylistsList from '../../entities/my-playlists/ui/my-playlists-list/MyPlaylistsList';
 import { baseToastConfig, OneLineMessage } from '../../shared/Toasts';
 import ModalForm from '../../features/my-playlists/ModalForm';
+import Pagination from '../../shared/Pagination';
 
 function MyPlaylists() {
   const dispatch = useDispatch();
@@ -31,13 +35,28 @@ function MyPlaylists() {
 
   const playlistErr = useSelector(myPlaylistErrorSelector);
   const loading = useSelector(myPlaylistLoadingSelector);
-
+  const { last, page } = useSelector(myPlaylistsMetadataPageSelector);
   const [isCreatePlaylistCliked, setIsCreatePlaylistCliked] = useState(false);
+  const shouldRefreshMyPlaylists = useSelector(
+    shouldRefreshMyPlaylistsSelector
+  );
 
+  const handleFetch = (page = 1) => {
+    dispatch(fetchPageOfMyPlaylists(page));
+  };
   useEffect(() => {
     if (!isAuthenticated) return;
-    dispatch(fetchPageOfMyPlaylists('1')); // TODO: "1" is a magic number for page of playlists, do we need implement pagination?
-  }, [dispatch, isAuthenticated]);
+    handleFetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated || !shouldRefreshMyPlaylists) return;
+    handleFetch(page);
+    dispatch(setShouldRefreshMyPlaylists(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldRefreshMyPlaylists]);
+
   useEffect(() => {
     if (error) console.error(error);
   }, [error]);
@@ -106,6 +125,18 @@ function MyPlaylists() {
     setSearchString(newSearchString.trim().toLowerCase());
   };
 
+  const onPageChange = useCallback(
+    (changeDirection) => {
+      if (changeDirection === 'left' && page !== 1) {
+        handleFetch(page - 1);
+      } else if (changeDirection === 'right' && page < last) {
+        handleFetch(page + 1);
+      }
+    },
+    // eslint-disable-next-line
+    [page, last]
+  );
+
   return (
     <>
       <Container>
@@ -148,6 +179,11 @@ function MyPlaylists() {
           </div>
           <div className='division' />
           <MyPlaylistsList searchString={searchString} />
+          <Pagination
+            handleClick={onPageChange}
+            isLeftActive={!loading && page !== 1}
+            isRightActive={!loading && page < last}
+          />
         </ContentWrapper>
       </Container>
     </>

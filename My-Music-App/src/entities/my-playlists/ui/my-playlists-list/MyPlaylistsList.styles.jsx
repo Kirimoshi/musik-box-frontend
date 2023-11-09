@@ -52,8 +52,8 @@ export const Menu = styled.ul`
     0px 2px 6px 2px rgba(0, 0, 0, 0.15);
   // Position
   position: absolute;
-  top: 65%;
-  right: 10px;
+  right: 50px;
+  top: 0;
 `;
 
 const commonMenuItem = css`

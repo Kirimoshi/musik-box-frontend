@@ -4,6 +4,8 @@ import * as thunks from './myPlaylists.thunks';
 const initialState = {
   loading: false,
   error: null,
+  shouldRefreshMyPlaylists: false,
+  metadata: {},
   myPlaylists: [],
 };
 
@@ -13,6 +15,9 @@ export const myPlaylistsSlice = createSlice({
   reducers: {
     setMyPlaylists: (state, action) => {
       state.myPlaylists = action.payload;
+    },
+    setShouldRefreshMyPlaylists: (state, action) => {
+      state.shouldRefreshMyPlaylists = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -47,6 +52,7 @@ export const myPlaylistsSlice = createSlice({
   },
 });
 
-export const { setMyPlaylists } = myPlaylistsSlice.actions;
+export const { setMyPlaylists, setShouldRefreshMyPlaylists } =
+  myPlaylistsSlice.actions;
 
 export const myPlaylistsReducer = myPlaylistsSlice.reducer;
