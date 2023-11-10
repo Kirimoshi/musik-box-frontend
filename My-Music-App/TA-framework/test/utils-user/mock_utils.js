@@ -17,7 +17,7 @@ const mockData = `{
                 },
                 "description": "Vero exercitationem voluptatem modi mollitia co...",
                 "number_likes_dislikes": "Likes: 6 / Dislikes: 1",
-                "playlist_owner_nickname": "Danylo",
+                "playlist_owner_nickname": "John",
                 "first_ten_songs": {
                     "data": [{
                         "id": "136",

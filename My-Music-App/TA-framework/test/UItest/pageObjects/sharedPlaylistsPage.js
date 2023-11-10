@@ -20,11 +20,11 @@ export class SharedPlaylistsPage extends BasePage {
   }
 
   get sharedPlaylistLikeButton() {
-    return $$(`${this.playlistsContainer} .btn.btn-like`);
+    return $$(`${this.playlistsContainer} [data-likes-id] + div.reaction`);
   }
 
   get sharedPlaylistDislikeButton() {
-    return $$(`${this.playlistsContainer} .btn.btn-dislike`);
+    return $$(`${this.playlistsContainer} [data-dislikes-id] + div.reaction`);
   }
 
   get sharedPlaylistLikeCounter() {
