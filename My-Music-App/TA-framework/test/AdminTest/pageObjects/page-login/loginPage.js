@@ -16,11 +16,15 @@ export class LoginPage extends BasePage {
     return $(`${this.fieldset} #admin_user_password`);
   }
 
-  get rememberCheckBox() {
+  get rememberMeCheckbox() {
     return $(`${this.fieldset} #admin_user_remember_me`)
   }
   
   get loginButton() {
     return $(`${this.fieldset} [type="submit"]`)
+  }
+
+  get loginMessage() {
+    return $(`div.flashes .flash.flash_alert`)
   }
 }

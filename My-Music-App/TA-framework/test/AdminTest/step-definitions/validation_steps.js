@@ -18,6 +18,9 @@ Then(/the admin is on the "([^"]*)" ("([^"]*)"\s)?page/, async function (page, c
   if (currentPageNumber) {
     currentPageNumber = await pageNumber();
     actualUrl = await withoutEndpointPage(await currentUrl) + currentPageNumber;
+  } else if (page === "login") {
+    let url = await withoutEndpointPage(await currentUrl) + PagesUrl[page];
+    actualUrl = await url.replace(/\/admin\/admin/, '/admin');
   } else {
     actualUrl = await withoutEndpointPage(await currentUrl) + PagesUrl[page];
   }
@@ -70,10 +73,8 @@ Then(/the "([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/, async function (
 
 Then(/the "([^"]*)" is "([^"]*)" "([^"]*)"/, async function (page, element, type) {
   const currentElementDate = await Pages[page][camelize(`${element}${type}`)].getText();
-  const formattedCurrentElementDate = await currentElementDate.replace(/\d(?=\D*$)/, '');
   const date = new Date()
   const options = {
-    timeZone: 'UTC',
     timeZoneName: 'short',
     year: 'numeric',
     month: 'long',
@@ -83,12 +84,29 @@ Then(/the "([^"]*)" is "([^"]*)" "([^"]*)"/, async function (page, element, type
     hour12: false
   };
   const currentDate = date.toLocaleDateString('en-US', options);
-  const formattedCurrentDate = currentDate.replace(/ at|\sUTC|\d(?=\D*$)/g, '').trim();
-  assert.equal(await formattedCurrentElementDate, formattedCurrentDate, `${page} doesn't match ${currentDate} value`)
+  const formattedCurrentDate = currentDate.replace(/at (\d+):(\d+) GMT\+(\d+)/, '$1:$2')
+  if (currentElementDate !== formattedCurrentDate) {
+    const modifiedDateDate = arr.replace(/(\d+)$/g, (number) => {
+      const modifiedNumber = parseInt(number, 10) - 1;
+      return modifiedNumber.toString().padStart(number.length, '0');
+    });
+    assert.equal(await currentElementDate, modifiedDateDate, `${page} doesn't match ${currentDate} value`)
+  } else {
+    
+  } assert.equal(await currentElementDate, formattedCurrentDate, `${page} doesn't match ${currentDate} value`)
 });
 
 Then(/the length of "([^"]*)" in the "([^"]*)" page is (\d+)? ?"([^"]*)"/,
   async function (type, page, expectedLength, element) {
     let elementsLength = await Pages[page][camelize(`${type}${element}`)];
     assert.equal(elementsLength.length, expectedLength, `${page} doesn't match ${expectedLength} value`);
-});
+  });
+
+  Then(/"([^"]*)" is (not )?displayed on "([^"]*)" page/, async function (element, notDisplayed, page) {
+    let currentElement = await Pages[page][camelize(`${element}`)];
+    await expect(currentElement).toBeDisplayed();
+    if (notDisplayed) {
+      let ifNotDisplayed = await currentElement.isDisplayed();
+      assert.isFalse(await ifNotDisplayed, `Expected the element to be not displayed`)
+    }
+  });

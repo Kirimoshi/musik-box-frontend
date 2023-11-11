@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+  /* eslint-disable no-undef */
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
 import BaseElements from "../pageObjects/elements/baseElements";
@@ -6,6 +6,9 @@ const { camelize, generateRandomWord } = require ("../../utils-admin/helpers");
 const { assert } = require("chai");
 const { adminUserData } = require("../../utils-admin/data");
 
+Given(/the admin user is open "([^"]*)" page/, async function (page) {
+  await Pages[page].open();
+});
 
 Then(/the admin "([^"]*)" to the system as the admin user/, async function (page) {
   const currentPage = await Pages[page]
@@ -13,7 +16,7 @@ Then(/the admin "([^"]*)" to the system as the admin user/, async function (page
   async function logInToTheSystem() {
     const emailField = await currentPage.inputEmail;
     const passwordField = await currentPage.inputPassword;
-    const rememberCheckbox = await currentPage.rememberCheckBox;
+    const rememberCheckbox = await currentPage.rememberMeCheckbox;
     const confirmButton = await currentPage.loginButton;
     await emailField.setValue(adminUserData.email);
     await passwordField.setValue(adminUserData.password);
@@ -23,14 +26,14 @@ Then(/the admin "([^"]*)" to the system as the admin user/, async function (page
   await logInToTheSystem()
 });
 
-Then(/the admin clicks on the "([^"]*)" (page )?(\d+)? ?"([^"]*)" "([^"]*)"/,
+Then(/the admin clicks on the "([^"]*)" (page|form)? ?(\d+)? ?"([^"]*)" "([^"]*)"/,
   async function (place, page, numeral, element, type) {
     let elementToClick;
   if (place==="header") {
     elementToClick = await BaseElements[place][camelize(`${element}${type}`)];
   } else if (numeral) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
-  } else if (page){
+  } else if (page) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)];
   } else {
     throw new Error(`Element wasn't found`);
@@ -76,5 +79,9 @@ Then(/the admin "([^"]*)" on the "([^"]*)" page "([^"]*)"/, async function (acti
   } else {
     return;
   }
+})
+
+Then("the admin user log-out", async function () {
+  await BaseElements.header.logout();
 });
 

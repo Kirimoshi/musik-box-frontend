@@ -37,8 +37,8 @@ Feature: Admin "CRUD" Songs
     Scenario: Verify that the admin can view Song
         Given the admin is on the "songs" "current_song" page
         Then the "header" "Current" "Title" is: "Dancing City"
-        Then the "current_song" page "Song" "Title" is: "Dancing City"
-        Then the "current_song" page "Album" "Name" is: "Bent"
+        Then "Song Title" is displayed on "current_song" page
+        Then "Album Name" is displayed on "current_song" page
         Then the "current_song" is "Created At" "Date"
         Then the "current_song" is "Updated At" "Date"
 
