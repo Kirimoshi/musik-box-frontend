@@ -38,4 +38,12 @@ export class Header{
   get successfullyMessage() {
     return $(`div.flashes .flash.flash_notice`);
   }
+
+  get logoutButton() {
+    return $(`${this.headerSelector} #logout`);
+  }
+
+  async logout() {
+    await this.logoutButton.click();
+  }
 }
