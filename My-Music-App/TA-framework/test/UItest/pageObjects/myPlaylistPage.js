@@ -115,12 +115,16 @@ export class MyPlaylistPage extends BasePage {
     get commentorName() {
         return $$(`span.comment__author-name`)
     }
+
+    get commentEmail() {
+        return $$(`p.comment__author-email`)
+    }
     
     get commentContent() {
         return $$(`p.comment__content`)
     }
 
-    get commentAge() {
+    get commentDate() {
         return $$(`span.comment__age`)
     }
 
@@ -168,9 +172,18 @@ export class MyPlaylistPage extends BasePage {
         return $(`${this.addSongsForm} button [alt="button to close modal"]`)
     }
 
-    async deleteSong() {
+    async deleteLastAddedSong() {
         await this.songMenu[await this.songMenu.length-1].click();
         await this.removeSongButton[await this.removeSongButton.length-1].click();
         await this.confirmDeletionButton.click();
     }
+
+    get closeAddSongsWindowButton() {
+        return $(`${this.addSongsForm} button [alt="button to close modal"]`)
+    }
+
+    get commentErrorMessage() {
+        return $(`p.comment-form__error-msg`)
+    }
+
 }

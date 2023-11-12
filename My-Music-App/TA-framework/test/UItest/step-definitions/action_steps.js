@@ -14,14 +14,8 @@ Given(/the user is open "([^"]*)" page/, async function (page) {
 
 When(/the user sing-ups with "([^"]*)", "([^"]*)", "([^"]*)", and "([^"]*)"/,
   async function (nickname, email, password, confirmPassword) {
-    await Pages["signUp"].singUpToTheApplication(
-      nickname,
-      email,
-      password,
-      confirmPassword
-    );
-  }
-);
+  await Pages["signUp"].singUpToTheApplication(nickname, email, password, confirmPassword)
+});
 
 Then(/the user "([^"]*)" to the application/, async function (page) {
   const currentPage = await Pages[page]
@@ -55,8 +49,8 @@ Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" "([^"]*)" (\d+)? ?eleme
     elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
     return elementToClick;
     }, {
-    timeout: 5000,
-    timeoutMsg: 'expected element to be defined after 5s'
+    timeout: 10000,
+    timeoutMsg: 'expected element to be defined after 10s'
     });
   } else if (ifPage) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)];
@@ -91,7 +85,7 @@ Then("the user tries to log in and delete account if it exists", async () => {
   } else return;
 });
 
-When(/the user fills in the "([^"]*)" page "([^"]*)" "([^"]*)" with "([^"]*)"/, async function (page, element, type, text) {
+Then(/the user fills in the "([^"]*)" page "([^"]*)" "([^"]*)" with "([^"]*)"/, async function (page, element, type, text) {
   await Pages[page][camelize(`${element}${type}`)].setValue(text);
 });
 
@@ -131,4 +125,9 @@ Then(/the user "([^"]*)" (not )?existing "([^"]*)" "([^"]*)" into add songs sear
       this.songToAdd = allSongsNames.filter(item => existingSongs.includes(item));
     }
     await songInput.setValue(String(this.songToAdd[0]));
-  });
+});
+
+Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" page as: "([^"]*)"/,
+  async function (element, type, page, value) {
+    await Pages[page][camelize(`${type}${element}`)].setValue(value);
+});

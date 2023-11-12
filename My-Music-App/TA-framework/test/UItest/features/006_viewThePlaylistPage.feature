@@ -34,7 +34,7 @@ Feature: EPMRDPEMAP-223 - View the Playlist page
     And "Song Image" elements of "Songs List" are displayed on "myPlaylist" page
     And "Commentor Name" elements of "Comment List" are displayed on "myPlaylist" page
     And "Comment Content" elements of "Comment List" are displayed on "myPlaylist" page
-    And "Comment Age" elements of "Comment List" are displayed on "myPlaylist" page
+    And "Comment Date" elements of "Comment List" are displayed on "myPlaylist" page
     # Then "playlist"  has "Artist"    Not implement
     # Then "playlist" "song" has "sorting"  Not implement
     # Then "playlist" "comment" has "sorting"  Not implement

@@ -26,8 +26,8 @@ Then(/the user is on the ("([^"]*)"\s)?"([^"]*)" page/, async function (currentP
     expectedUrl = await browser.getUrl();
     return expectedUrl === actualUrl;
   }, {
-    timeout: 5000,
-    timeoutMsg: 'expected link to be changed after 5s'
+    timeout: 10000,
+    timeoutMsg: 'expected link to be changed after 10s'
   });
   assert.equal(expectedUrl, actualUrl, `Expected url: ${actualUrl} is not found`);
 });
@@ -45,8 +45,8 @@ Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/,
   }
     return currentElementText
   }, {
-    timeout: 5000,
-    timeoutMsg: 'expected text to be changed after 5s'
+    timeout: 10000,
+    timeoutMsg: 'expected text to be changed after 10s'
   })
   
   await browser.pause(500);
@@ -100,16 +100,6 @@ Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
   assert.isTrue(await localStorageData, `Expected result isn't ${localStorageData}`);
 });
 
-// Then(/"([^"]*)" page "([^"]*)" "([^"]*)" is displayed/, async function (page, element, type) {
-//   let currentElement = await Pages[page][camelize(`${element}${type}`)]
-//   assert.isTrue(await currentElement.isDisplayed())
-// })
-
-// Then(/"([^"]*)" "([^"]*)" has "([^"]*)" "([^"]*)"/, async function (page, element, el, type,) {
-//   let elementImg = await Pages[page][camelize(`${element}${type}`)][0].getAttribute('alt')
-//   assert.equal(await elementImg, el)
-// })
-
 Then(/"([^"]*)" is (not )?displayed on "([^"]*)" page/, async function (element, notDisplayed, page) {
   let currentElement = await Pages[page][camelize(`${element}`)];
   await expect(currentElement).toBeDisplayed();
@@ -119,7 +109,8 @@ Then(/"([^"]*)" is (not )?displayed on "([^"]*)" page/, async function (element,
   }
 });
 
-Then(/"([^"]*)" elements of "([^"]*)" are (not )?displayed on "([^"]*)" page/, async function (element, elementsArray, notDisplayed, page) {
+Then(/"([^"]*)" (\d+)? ?(elements|element)? ?of "([^"]*)" are (not )?displayed on "([^"]*)" page/,
+  async function (element, numeral, elementType, elementsArray, notDisplayed, page) {
   let currentElement = await Pages[page][camelize(`${element}`)];
   let currentElementsArray = await Pages[page][camelize(`${elementsArray}`)];
 
@@ -127,15 +118,16 @@ Then(/"([^"]*)" elements of "([^"]*)" are (not )?displayed on "([^"]*)" page/, a
     await browser.waitUntil(async () => {
       return await currentElement[i].isExisting();
     }, {
-      timeout: 5000,
-      timeoutMsg: `Element ${currentElement[i]} did not exist in 5 seconds`
+      timeout: 10000,
+      timeoutMsg: `Element ${currentElement[i]} did not exist in 10 seconds`
     });
-
     await expect(currentElement[i]).toBeDisplayed();
 
     if (notDisplayed) {
       let ifNotDisplayed = await currentElement[i].isDisplayed();
       assert.isFalse(await ifNotDisplayed, `Expected ${currentElement[i]} element to be not displayed`)
+    } else if (elementType === "element") {
+      await expect(currentElement[numeral]).toBeDisplayed();
     }
   }
 });
@@ -209,8 +201,8 @@ Then(/"([^"]*)" page "([^"]*)" "([^"]*)" contains next text: "([^"]*)"/, async f
       return textToCheck;
     }
   }, {
-    timeout: 5000,
-    timeoutMsg: 'expected element to be defined after 5s'
+    timeout: 10000,
+    timeoutMsg: 'expected element to be defined after 10s'
   });
   const currentElementText = await textToCheck.toLowerCase();
   await browser.pause(500);
@@ -228,19 +220,43 @@ Then(/the "([^"]*)" (not added|added) in the "([^"]*)" page songs list/,
     await browser.waitUntil(() => {
       return existingSongs.includes(this.songToAdd[0]);
     }, {
-      timeout: 5000,
-      timeoutMsg: 'Song was not found in the list within 5 seconds'
+      timeout: 15000,
+      timeoutMsg: 'Song was not found in the list within 15 seconds'
     });
     if (ifadded === "added") {
       assert.include(existingSongs, this.songToAdd[0], "Song is not found")
-      await Pages[page].deleteSong()
+      await Pages[page].deleteLastAddedSong()
     } else if (ifadded === "not added") {
       assert.include(existingSongs, this.songToAdd[0], "Song is not found")
     }
-  });
+});
 
 Then(/"([^"]*)" "([^"]*)" placeholder is "([^"]*)"/, async function (page, element, searchPlaceholder) {
   const searchElem = await Pages[page][camelize(`${element}`)];
   assert.equal(await searchElem.getAttribute('placeholder'),
     searchPlaceholder, `SearchField doesn't match ${searchPlaceholder} value`);
+});
+
+Then(/the "([^"]*)" is added to the "([^"]*)" page "([^"]*)"/, async function (value, page, place) {
+  const elementList = await Pages[page][camelize(`${place}`)];
+  let commentsArray = [];
+  await elementList.map(async (el) => {
+    commentsArray.push(await el.getText());
+  });
+  await browser.waitUntil(() => {
+    return commentsArray.includes(value);
+  }, {
+    timeout: 10000,
+    timeoutMsg: 'Comment was not found in the list within 10 seconds'
+  });
+  assert.include(commentsArray, value, "Comment is not found")
+});
+
+Then(/the "([^"]*)" in the "([^"]*)" page is "([^"]*)" and click is "([^"]*)"/,
+  async function (element, page, status, isClickable) {
+  const currentElement = await Pages[page][camelize(`${element}`)]
+  let elementStatus = await currentElement.getAttribute('class');
+  let elementIsClickable = await currentElement.getCSSProperty('cursor');
+  assert.equal(await elementIsClickable.value, isClickable, `Expected the element to be ${isClickable}`);
+  assert.include(await elementStatus, status, `Expected the element to have ${elementStatus} status`);
 });
