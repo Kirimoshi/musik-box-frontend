@@ -13,26 +13,26 @@ Feature: Admin Sign In
 
     Scenario Outline: Verify email data validation and email error messages during sign-in
         Then the admin is on the "login" page
-        Then the admin "Input" <email> in the "login" page as: <value>
-        Then the admin "Input" <password> in the "login" page as: <value>
+        Then the admin "Input" <email> in the "login" page as: <email_value>
+        Then the admin "Input" <password> in the "login" page as: <password_value>
         When the admin clicks on the "login" form "Login" "Button"
         And the "login" page "Login" "Message" is: <error_message>
 
         Examples:
-            | email         | password         | value              | password     | error_message                |
-            | "Email"       | "Password"       | "adminexample.com" | "secreT!123" | "Invalid Email or password." |
-            | "Email"       | "Password"       | "admin@examplecom" | "secreT!123" | "Invalid Email or password." |
-            | "Email"       | "Password"       | "barfoo"           | "secreT!123" | "Invalid Email or password." |
+            | email         | password         | email_value        | password_value | error_message                |
+            | "Email"       | "Password"       | "adminexample.com" | "secreT!123"   | "Invalid Email or password." |
+            | "Email"       | "Password"       | "admin@examplecom" | "secreT!123"   | "Invalid Email or password." |
+            | "Email"       | "Password"       | "barfoo"           | "secreT!123"   | "Invalid Email or password." |
 
     Scenario Outline: Verify password data validation and password error messages during sign-in
         Then the admin is on the "login" page
-        Then the admin "Input" <email> in the "login" page as: <value>
-        Then the admin "Input" <password> in the "login" page as: <value>
+        Then the admin "Input" <email> in the "login" page as: <email_value>
+        Then the admin "Input" <password> in the "login" page as: <password_value>
         When the admin clicks on the "login" form "Login" "Button"
         And the "login" page "Login" "Message" is: <error_message>
 
         Examples:
-            | email         | password         | value              | password    | error_message                |
-            | "Email"       | "Password"       | "adminexample.com" | "secreT123" | "Invalid Email or password." |
-            | "Email"       | "Password"       | "admin@examplecom" | "secreT!"   | "Invalid Email or password." |
-            | "Email"       | "Password"       | "barfoo"           | "secre!123" | "Invalid Email or password." |
+            | email         | password         | email_value         | password_value | error_message                |
+            | "Email"       | "Password"       | "admin@example.com" | "secreT123"    | "Invalid Email or password." |
+            | "Email"       | "Password"       | "admin@example.com" | "secreT!"      | "Invalid Email or password." |
+            | "Email"       | "Password"       | "admin@example.com" | "secre!123"    | "Invalid Email or password." |

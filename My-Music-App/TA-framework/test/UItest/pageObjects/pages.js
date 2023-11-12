@@ -4,6 +4,7 @@ import { HomePage } from "./homePage";
 import { MyPlaylistsPage } from "./myPlaylistsPage";
 import { BasePage } from "./basePage";
 import { PublicPlaylistsPage } from "./publicPlaylistsPage";
+import { PublicPlaylistPage } from "./publicPlaylistPage";
 import { SharedPlaylistsPage } from "./sharedPlaylistsPage";
 import { FriendsPage } from "./friendsPage";
 import { SharedPlaylistPage } from "./sharedPlaylistPage";
@@ -21,6 +22,7 @@ class Pages {
         this.sharedPlaylists = new SharedPlaylistsPage();
         this.sharedPlaylist = new SharedPlaylistPage();
         this.friends = new FriendsPage();
+        this.publicPlaylist = new PublicPlaylistPage();
         // Add more instances as needed
     }
 }
