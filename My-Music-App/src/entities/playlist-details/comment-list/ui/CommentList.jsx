@@ -164,6 +164,10 @@ export default function CommentList() {
     [commentsPage, lastPage]
   );
 
+  const commentPasteHandler = (e) => {
+    setNewComment(e.clipboardData.getData('text/plain'));
+  };
+
   return (
     <CommentsSection>
       <CommentsHeader>
@@ -189,6 +193,7 @@ export default function CommentList() {
               onChange={(e) => {
                 setNewComment(e.target.value);
               }}
+              onPaste={commentPasteHandler}
             />
             <CommentClearButton
               type={'reset'}
