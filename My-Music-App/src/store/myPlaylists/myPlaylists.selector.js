@@ -7,6 +7,16 @@ export const pageOfMyPlaylistsSelector = createSelector(
   (myPlaylistsSlice) => myPlaylistsSlice.myPlaylists
 );
 
+export const shouldRefreshMyPlaylistsSelector = createSelector(
+  myPlaylistsSliceSelector,
+  (myPlaylistsSlice) => myPlaylistsSlice.shouldRefreshMyPlaylists
+);
+
+export const myPlaylistsMetadataPageSelector = createSelector(
+  myPlaylistsSliceSelector,
+  (myPlaylistsSlice) => myPlaylistsSlice.metadata
+);
+
 export const myPlaylistErrorSelector = createSelector(
   myPlaylistsSliceSelector,
   (myPlaylistsSlice) => myPlaylistsSlice.error

@@ -5,14 +5,18 @@ import { FETCH_PLAYLISTS_TYPES, MY_PLAYLISTS_URL } from '../constants';
 // Fetch page of ten My Playlist Data Thunk
 export const fetchPageOfMyPlaylists = createAsyncThunk(
   'myPlaylistsSlice/fetchPageOfMyPlaylists',
-  async (page, { getState }) => {
+  async (page = 1, { getState }) => {
     const accessToken = getState().user.accessToken;
     try {
       const response = await axios({
-        url: `${MY_PLAYLISTS_URL}?playlist_type=${FETCH_PLAYLISTS_TYPES.MY}&page=${page}`,
+        url: MY_PLAYLISTS_URL,
         headers: {
           Accept: '*/*',
           Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          playlist_type: FETCH_PLAYLISTS_TYPES.MY,
+          page,
         },
       });
       return response.data;
@@ -28,6 +32,7 @@ export const fetchPageOfMyPlaylistsPending = (state) => {
 export const fetchPageOfMyPlaylistsFulfilled = (state, action) => {
   state.loading = false;
   state.myPlaylists = action.payload.playlists.data;
+  state.metadata = action.payload.metadata;
 };
 export const fetchPageOfMyPlaylistsRejected = (state, action) => {
   state.loading = false;
@@ -39,7 +44,6 @@ export const deleteMyPlaylist = createAsyncThunk(
   'myPlaylistsSlice/deleteMyPlaylist',
   async (playlistId, { getState }) => {
     const accessToken = getState().user.accessToken;
-
     try {
       const response = await axios({
         url: `${MY_PLAYLISTS_URL}/${playlistId}`,
@@ -61,10 +65,7 @@ export const deleteMyPlaylistPending = (state) => {
 };
 export const deleteMyPlaylistFulfilled = (state, action) => {
   state.loading = false;
-
-  state.myPlaylists = state.myPlaylists.filter(
-    (playlist) => playlist.id !== action.payload.playlistId
-  );
+  state.shouldRefreshMyPlaylists = true;
 };
 export const deleteMyPlaylistRejected = (state, action) => {
   state.loading = false;
@@ -76,9 +77,9 @@ export const addMyPlaylist = createAsyncThunk(
   'myPlaylistsSlice/addMyPlaylist',
   async (formData, { getState }) => {
     const accessToken = getState().user.accessToken;
-
+    const { page } = getState().myPlaylistsSlice.metadata;
     try {
-      const response = await axios({
+      await axios({
         url: `${MY_PLAYLISTS_URL}`,
         method: 'POST',
         data: formData,
@@ -88,9 +89,21 @@ export const addMyPlaylist = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
+      // secon async operation
+      const response = await axios({
+        url: MY_PLAYLISTS_URL,
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          playlist_type: FETCH_PLAYLISTS_TYPES.MY,
+          page,
+        },
+      });
       return response.data;
     } catch (error) {
-      throw error.response.data.errors;
+      throw error.message;
     }
   }
 );
@@ -100,14 +113,8 @@ export const addMyPlaylistPending = (state) => {
 };
 export const addMyPlaylistFulfilled = (state, action) => {
   state.loading = false;
-  const payload = {
-    ...action.payload.data,
-    attributes: {
-      ...action.payload.data.attributes,
-      first_ten_songs: { data: [] },
-    },
-  };
-  state.myPlaylists = [...state.myPlaylists, payload];
+  state.myPlaylists = action.payload.playlists.data;
+  state.metadata = action.payload.metadata;
 };
 export const addMyPlaylistRejected = (state, action) => {
   state.loading = false;
