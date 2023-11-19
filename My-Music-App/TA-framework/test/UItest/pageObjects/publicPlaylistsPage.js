@@ -53,7 +53,7 @@ export class PublicPlaylistsPage extends BasePage {
         return $(`${this.playlistsContainer}`).$$('span[data-dislikes-id]');
     }
 
-    get searchBoxInput() {
+    get searchBoxValueInput() {
         return $(`input[type='search']`);
     }
 

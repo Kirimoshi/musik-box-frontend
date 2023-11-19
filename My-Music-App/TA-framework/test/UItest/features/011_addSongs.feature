@@ -14,7 +14,7 @@ Feature: EPMRDPEMAP-634 Add songs to playlist
         Then the user "Input" not existing "Song" "Name" into add songs search field in the "myPlaylist" page
         Then the user clicks on the "myPlaylist" page "Song Search" "Button" element
         Then the user clicks on the "myPlaylist" page "Add Song To Playlist" "Button" element
-        Then "alert" "Add Song" "Message" is: "Successfully added to playlist :)"
+        Then "toastify" "Information" "Message" is: "Successfully added to playlist :)"
         When the user clicks on the "myPlaylist" page "Close Add Songs Window" "Button" element
         Then the "Song" added in the "myPlaylist" page songs list
         
@@ -24,7 +24,7 @@ Feature: EPMRDPEMAP-634 Add songs to playlist
         And the user "Input" existing "Song" "Name" into add songs search field in the "myPlaylist" page
         Then the user clicks on the "myPlaylist" page "Song Search" "Button" element
         And the user clicks on the "myPlaylist" page "Add Song To Playlist" "Button" element
-        Then "alert" "Add Song" "Message" is: "This song is already in the playlist."
+        Then "toastify" "Information" "Message" is: "This song is already in the playlist."
         And the "Song" not added in the "myPlaylist" page songs list
         Then the user clicks on the "myPlaylist" page "Close Add Songs Window" "Button" element
 
@@ -53,7 +53,7 @@ Feature: EPMRDPEMAP-634 Add songs to playlist
         Then "Add Song List" is displayed on "myPlaylist" page
         Then "myPlaylist" page has no more than 20 elements in "Add Song List"
         
-# ## There is no implemented functionality for deleting songs from shared playlist
+## There is no implemented functionality for deleting songs from shared playlist
     # Scenario: Add song to Shared Playlist
     #     Given the user is open "sharedPlaylists" page
     #     Then the user is on the "sharedPlaylists" page

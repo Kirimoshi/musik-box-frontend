@@ -39,11 +39,11 @@ Feature: EPMRDPEMAP-633 View the My Playlists page
         And "My Playlist Songs List" elements of "My Playlists List" are displayed on "myPlaylists" page
         Then "myPlaylists" page has no more than 10 elements in "My Playlist Songs List"
         Then the user logging out
-        Then "alert" "Logout Success" "Message" is: "You have been successfully logged out."
+        Then "toastify" "Logout Success" "Message" is: "You have been successfully logged out."
 
     Scenario: Verify that a guest user redirects to the Sign In page when trying to navigate to the My Playlists page
         When the user is open "signIn" page
         Then the user is on the "signIn" page
         When the user is open "myPlaylists" page
-        Then "alert" "Permission" "Message" is: "It looks like you don't have permission to view this page. Please sign in to continue."
+        Then "toastify" "Information" "Message" is: "It looks like you don't have permission to view this page. Please sign in to continue."
         And the user is on the "signIn" page

@@ -46,7 +46,7 @@ Feature: EPMRDPEMAP-603 View the Shared Playlists page
         Then the user is on the "sharedPlaylists" page
         And "Shared Playlists List" is displayed on "sharedPlaylists" page
         Then the user logging out
-        Then "alert" "Logout Success" "Message" is: "You have been successfully logged out."
+        Then "toastify" "Logout Success" "Message" is: "You have been successfully logged out."
         Examples:
             | page            |
             | publicPlaylists |
@@ -57,5 +57,5 @@ Feature: EPMRDPEMAP-603 View the Shared Playlists page
         When the user is open "signIn" page
         Then the user is on the "signIn" page
         When the user is open "sharedPlaylists" page
-        Then "alert" "Permission" "Message" is: "It looks like you don't have permission to view this page. Please sign in to continue."
+        Then "toastify" "Information" "Message" is: "It looks like you don't have permission to view this page. Please sign in to continue."
         And the user is on the "signIn" page

@@ -6,7 +6,8 @@ export class MyPlaylistPage extends BasePage {
         this.url = `details/`;
         this.playlistForm = `section.playlist__profile`;
         this.songsForm = `div.SongList`;
-        this.addSongsForm = `dialog.addSongsToPlaylistsModal__container`
+        this.addSongsForm = `dialog.addSongsToPlaylistsModal__container`;
+        this.profileMenu = `.profile-menu`
     }
     get songMenu() {
         return $$(`${this.songsForm} [data-song-id] svg:nth-child(1)`);
@@ -52,7 +53,7 @@ export class MyPlaylistPage extends BasePage {
         return $(`//dialog/button[text()="Delete playlist"]`)
     }
 
-    get cancelDeletionPlaylistButton() {
+    get dialogCancelButton() {
         return $(`//dialog/button[text()="Cancel"]`)
     }
     
@@ -184,6 +185,38 @@ export class MyPlaylistPage extends BasePage {
 
     get commentErrorMessage() {
         return $(`p.comment-form__error-msg`)
+    }
+
+    get playlistMenuDeleteButton() {
+        return $(`${this.profileMenu} .profile-menu__delete`)
+    }
+
+    get playlistMenuEditButton() {
+        return $(`${this.profileMenu} .profile-menu__edit`)
+    }
+
+    get privateButton() {
+        return $(`${this.profileMenu} .profile-menu__change-type--private`)
+    }
+
+    get sharedButton() {
+        return $(`${this.profileMenu} .profile-menu__change-type--shared`)
+    }
+
+    get publicButton() {
+        return $(`${this.profileMenu} .profile-menu__change-type--public`)
+    }
+
+    get playlistType() {
+        return $(`${this.playlistForm} .profile__playlist-type`)
+    }
+
+    get playlistTypes() {
+        return $$(`${this.playlistForm} div.profile__dropdown-menu .profile-menu li`);
+    }
+
+    get changePlaylistTypeButton() {
+        return $(`//dialog/button[text()="Change"]`)
     }
 
 }

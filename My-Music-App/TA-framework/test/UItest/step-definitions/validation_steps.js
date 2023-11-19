@@ -36,22 +36,25 @@ Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/,
   async function (place, page, element, type, expectedText) {
   let currentElementText;
   await browser.waitUntil(async function () {
-  if (place === "alert" || place === "sidebar") {
+  if (place === "toastify" || place === "sidebar") {
     currentElementText = await BaseElements[place][camelize(`${element}${type}`)].getText();
   } else if (page) {
     currentElementText = await Pages[place][camelize(`${element}${type}`)].getText();
-  } else if (currentElementText.includes('\n')) {
+    if (currentElementText.includes('\n')) {
     currentElementText = await currentElementText.split('\n').join(' ');
+    }
+  } else {
+    throw new Error(`The ${expectedText} wasn't found`);
   }
-    return currentElementText
+    return currentElementText === expectedText;
   }, {
     timeout: 10000,
     timeoutMsg: 'expected text to be changed after 10s'
   })
   
-  await browser.pause(500);
   assert.equal(currentElementText, expectedText, `${place} doesn't match ${expectedText} value`)
 });
+
 
 Then(/^(.*) message should be displayed: (.*)$/,
   async (elementType, errorMessage) => {
@@ -70,18 +73,32 @@ Then(/^(.*) message should be displayed: (.*)$/,
 });
 
 Then(/the "([^"]*)" page "([^"]*)" elements have the initial length/, async function (page, element) {
-  let currentElement = await Pages[page][camelize(`${element}`)];
+  let currentElement;
+  await browser.waitUntil(async function () {
+    currentElement = await Pages[page][camelize(`${element}`)];
+    return currentElement !== undefined;
+  }, {
+    timeout: 10000,
+    timeoutMsg: 'expected element to be defined after 10s'
+  });
   this.initialLength = await currentElement.length;
 });
 
 Then(/the "([^"]*)" page "([^"]*)" elements length are (not )?less than the initial length for one item/, async function (page, element, ifNotDeleted) {
-  let currentElement = await Pages[page][camelize(`${element}`)];
   if (ifNotDeleted) {
-    let ifCanceled = await currentElement.length;
-    assert.equal(await ifCanceled, this.initialLength, `Expected the length to be ${this.initialLength}`)
+    let notDeleted = await Pages[page][camelize(`${element}`)];
+    assert.equal(await notDeleted.length, this.initialLength,
+      `Expected the length to be ${this.initialLength}`)
   } else {
-    let ifDeleted = await currentElement.length;
-    assert.equal(await ifDeleted, this.initialLength - 1,
+    let ifDeleted;
+    await browser.waitUntil(async () => {
+      ifDeleted = await Pages[page][camelize(`${element}`)];
+      return ifDeleted.length < this.initialLength;
+    }, {
+      timeout: 15000,
+      timeoutMsg: `expected element to be defined after 15s`
+    });
+    assert.equal(await ifDeleted.length, this.initialLength - 1,
       `Expected the length to be one less than the ${this.initialLength} length`)
   }
 });
@@ -100,13 +117,15 @@ Then(/the user storage data is (not )?empty/, async function (IfNotEmpty) {
   assert.isTrue(await localStorageData, `Expected result isn't ${localStorageData}`);
 });
 
-Then(/"([^"]*)" is (not )?displayed on "([^"]*)" page/, async function (element, notDisplayed, page) {
+Then(/"([^"]*)" is displayed on "([^"]*)" page/, async function (element, page) {
   let currentElement = await Pages[page][camelize(`${element}`)];
-  await expect(currentElement).toBeDisplayed();
-  if (notDisplayed) {
-    let ifNotDisplayed = await currentElement.isDisplayed();
-    assert.isFalse(await ifNotDisplayed, `Expected the element to be not displayed`)
-  }
+   await browser.waitUntil(async () => {
+     return await currentElement !== undefined;
+   }, {
+     timeout: 10000,
+     timeoutMsg: `Element ${currentElement} did not exist in 10 seconds`
+   });
+   await expect(await currentElement).toBeDisplayed();
 });
 
 Then(/"([^"]*)" (\d+)? ?(elements|element)? ?of "([^"]*)" are (not )?displayed on "([^"]*)" page/,
@@ -212,11 +231,10 @@ Then(/"([^"]*)" page "([^"]*)" "([^"]*)" contains next text: "([^"]*)"/, async f
 Then(/the "([^"]*)" (not added|added) in the "([^"]*)" page songs list/,
   async function (element, ifadded, page) {
     let songNameArray = await Pages[page][camelize(`${element}Name`)];
-    let existingSongs = [];
-    await songNameArray.map(async (el) => {
-      existingSongs.push(await el.getText());
-    });
-
+    let existingSongs = await Promise.all(songNameArray.map(async (el) => {
+      return el.getText();
+    }));
+    
     await browser.waitUntil(() => {
       return existingSongs.includes(this.songToAdd[0]);
     }, {
@@ -229,7 +247,7 @@ Then(/the "([^"]*)" (not added|added) in the "([^"]*)" page songs list/,
     } else if (ifadded === "not added") {
       assert.include(existingSongs, this.songToAdd[0], "Song is not found")
     }
-});
+  });
 
 Then(/"([^"]*)" "([^"]*)" placeholder is "([^"]*)"/, async function (page, element, searchPlaceholder) {
   const searchElem = await Pages[page][camelize(`${element}`)];
@@ -239,17 +257,16 @@ Then(/"([^"]*)" "([^"]*)" placeholder is "([^"]*)"/, async function (page, eleme
 
 Then(/the "([^"]*)" is added to the "([^"]*)" page "([^"]*)"/, async function (value, page, place) {
   const elementList = await Pages[page][camelize(`${place}`)];
-  let commentsArray = [];
-  await elementList.map(async (el) => {
-    commentsArray.push(await el.getText());
-  });
+  let commentsArray = await Promise.all(elementList.map(async (el) => {
+    return el.getText();
+  }));
   await browser.waitUntil(() => {
     return commentsArray.includes(value);
   }, {
     timeout: 10000,
     timeoutMsg: 'Comment was not found in the list within 10 seconds'
   });
-  assert.include(commentsArray, value, "Comment is not found")
+  assert.equal(commentsArray[0], value, "Comment is not found")
 });
 
 Then(/the "([^"]*)" in the "([^"]*)" page is "([^"]*)" and click is "([^"]*)"/,
@@ -259,4 +276,13 @@ Then(/the "([^"]*)" in the "([^"]*)" page is "([^"]*)" and click is "([^"]*)"/,
   let elementIsClickable = await currentElement.getCSSProperty('cursor');
   assert.equal(await elementIsClickable.value, isClickable, `Expected the element to be ${isClickable}`);
   assert.include(await elementStatus, status, `Expected the element to have ${elementStatus} status`);
+  });
+
+  Then(/the user on the "([^"]*)" page isn't able change "([^"]*)" type to "([^"]*)"/,
+  async function (page, element, value) {
+    const arrayOfElements = await Pages[page][camelize(`${element}Types`)];
+    let arrayOfElementsText = await Promise.all(arrayOfElements.map(async (el) => {
+      return el.getText();
+    }));
+    assert.notInclude(arrayOfElementsText, value, `Expected the element to be ${value}`);
 });

@@ -45,7 +45,7 @@ Feature: EPMRDPEMAP-642 - The delete playlist from playlists feature
   Scenario: Verify that only authorized users can delete their personal playlists.
     Given the user is on the "myPlaylists" page
     When the user logging out
-    Then "alert" "Logout Success" "Message" is: "You have been successfully logged out."
+    Then "toastify" "Logout Success" "Message" is: "You have been successfully logged out."
     Then the user is on the "signIn" page
     When the user is open "myPlaylists" page
-    Then "alert" "Permission" "Message" is: "It looks like you don't have permission to view this page. Please sign in to continue."
+    Then "toastify" "Information" "Message" is: "It looks like you don't have permission to view this page. Please sign in to continue."
