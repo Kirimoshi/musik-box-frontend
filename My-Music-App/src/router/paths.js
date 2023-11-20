@@ -10,6 +10,9 @@ const paths = {
   sharedPlaylists: '/shared-playlists',
   sharedPlaylistDetails: '/shared-playlists/details',
   friends: '/friends',
+  friendsMy: 'my',
+  friendsSent: 'sent',
+  friendsRequest: 'request',
 };
 
 export default paths;

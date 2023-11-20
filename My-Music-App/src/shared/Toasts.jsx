@@ -41,6 +41,14 @@ OneLineMessage.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
+export function MessageWithChildren({ children }) {
+  return <ToatsMsg>{children}</ToatsMsg>;
+}
+
+MessageWithChildren.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 export function LogoutPendingMessage() {
   return (
     <ToatsMsg className='toast__logout--pending'>

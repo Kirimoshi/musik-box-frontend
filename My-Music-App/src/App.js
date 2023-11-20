@@ -12,6 +12,8 @@ import router from './router/router';
 
 import './App.css';
 
+const HALF_HOUR = 30 * 60 * 1000;
+
 function App() {
   const dispatch = useDispatch();
   const {
@@ -22,7 +24,10 @@ function App() {
     accessExpiresAt,
     refreshToken,
     refreshExpiresAt,
+    loading,
   } = useSelector(userSelector);
+
+  const refreshTimer = React.useRef(null);
 
   useEffect(() => {
     if (!isRehydrated) dispatch(rehydrateTokens());
@@ -60,6 +65,18 @@ function App() {
     isRemembered,
     isRehydrated,
   ]);
+
+  useEffect(() => {
+    if (!isAuthenticated || !isRehydrated || loading) return;
+    refreshTimer.current = setInterval(() => {
+      dispatch(refreshUser());
+    }, HALF_HOUR);
+
+    return () => {
+      clearInterval(refreshTimer.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isRehydrated, loading]);
 
   return (
     <div className='App'>
