@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
 } from 'react-router-dom';
 import Home from '../pages/home/Home';
@@ -16,6 +17,8 @@ import { FETCH_PLAYLISTS_TYPES } from '../store/constants';
 import PublicPlaylists from '../widgets/public-playlists/PublicPlaylists';
 import NonAuthOnlyRoute from './NonAuthOnlyRoute';
 import MyAccount from '../widgets/my-account/MyAccount';
+import Friends from '../widgets/friends/Friends';
+import FriendsTab from '../entities/friends/ui/FriendsTab';
 
 const {
   home,
@@ -28,6 +31,10 @@ const {
   publicPlaylistDetails,
   sharedPlaylists,
   sharedPlaylistDetails,
+  friends,
+  friendsMy,
+  friendsSent,
+  friendsRequest,
 } = paths;
 
 const router = createBrowserRouter(
@@ -119,6 +126,42 @@ const router = createBrowserRouter(
           }
         />
         <Route path={publicPlaylists} element={<PublicPlaylists />} />
+        <Route path={friends} element={<Friends />}>
+          <Route path='' element={<Navigate to='my' />} />
+          <Route
+            path={friendsMy}
+            element={
+              <PrivateRoute
+                isAuthRequired
+                errorMessage={`It looks like you don't have permission to view this page. Please sign in to continue.`}
+              >
+                <FriendsTab />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={friendsSent}
+            element={
+              <PrivateRoute
+                isAuthRequired
+                errorMessage={`It looks like you don't have permission to view this page. Please sign in to continue.`}
+              >
+                <FriendsTab />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={friendsRequest}
+            element={
+              <PrivateRoute
+                isAuthRequired
+                errorMessage={`It looks like you don't have permission to view this page. Please sign in to continue.`}
+              >
+                <FriendsTab />
+              </PrivateRoute>
+            }
+          />
+        </Route>
         <Route path='*' element={<h1>Not Found</h1>} />
       </Route>
     </>

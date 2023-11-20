@@ -6,6 +6,12 @@ export const oneLineEllipsis = css`
   white-space: nowrap;
 `;
 
+export const flexHorizontalCenter = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const Title = styled.h2`
   color: #fff;
   font-family: Roboto, sans-serif;
@@ -30,4 +36,10 @@ export const BasePlaylistsContainer = styled.section`
   justify-content: space-between;
   gap: 24px;
   margin-bottom: 12px;
+`;
+
+export const Spacer = styled.div`
+  ${({ $marginBottom }) =>
+    !!$marginBottom && `margin-bottom: ${$marginBottom}px`};
+  ${({ $marginTop }) => !!$marginTop && `margin-top: ${$marginTop}px`};
 `;

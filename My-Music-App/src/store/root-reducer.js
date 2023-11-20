@@ -7,6 +7,7 @@ import { sharedPlaylistsReducer } from './shared-playlists/shared-playlists.redu
 import { playlistDetailsReducer } from './playlist-details/playlist-details.reducer';
 import { addSongsModalReducer } from './addSongsModal/addSongsModal.reducer';
 import { userPlaylistsReactionsReducer } from './user-playlists-reactions/user-playlists-reactions.reducer';
+import { friendsReducer } from './friends/friends.reducer';
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -17,4 +18,5 @@ export const rootReducer = combineReducers({
   playlistDetailsSlice: playlistDetailsReducer,
   addSongsModalSlice: addSongsModalReducer,
   userPlaylistsReactionsSlice: userPlaylistsReactionsReducer,
+  friendsSlice: friendsReducer,
 });

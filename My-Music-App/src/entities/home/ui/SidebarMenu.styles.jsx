@@ -9,11 +9,6 @@ export const MenuContainer = styled.nav`
     & > li {
       cursor: pointer;
     }
-
-    // TODO: remove one by one when adding functionality for new menu items
-    & > li:nth-child(4) {
-      cursor: not-allowed;
-    }
   }
 `;
 
