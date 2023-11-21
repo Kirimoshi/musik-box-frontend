@@ -41,29 +41,27 @@ When(/the user sing-ins without remembering with "([^"]*)" and "([^"]*)"/, async
   await Pages.signIn.signInWithoutRemembering(email, password);
 });
 
-Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" "([^"]*)" (\d+)? ?element/,
-  async function (place, ifPage, element, type, numeral) {
+Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" (form )?"([^"]*)" (\d+)? ?element/,
+  async function (place, ifPage, element, form, type, numeral) {
   let elementToClick;
-  if (numeral) {
   await browser.waitUntil(async function () {
+  if (numeral) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
-    return elementToClick;
-    }, {
-    timeout: 10000,
-    timeoutMsg: 'expected element to be defined after 10s'
-    });
-  } else if (ifPage) {
+  } else if (ifPage || form) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)];
   } else if (place === "sidebar" || place === "pagination") {
-    await browser.pause(500);
     elementToClick = await BaseElements[place][camelize(`${element}${type}`)];
   } else {
-    throw new Error("Element is not found")
+    throw new Error(`${elementToClick} wasn't found`)
   }
-    expect(elementToClick).toBeDisplayed();
+    return elementToClick!==undefined;
+  }, {
+    timeout: 10000,
+    timeoutMsg: 'expected element to be defined after 10s'
+  });
     await elementToClick.click();
     await browser.pause(500);
-  });
+});
 
 When(/^the user logging out$/, async () => {
   await Pages.home.logout();
@@ -83,10 +81,6 @@ Then("the user tries to log in and delete account if it exists", async () => {
     const responseDelete = await sendRequest("/api/v1/my/account", null, "delete", accessToken);
     expect(responseDelete.status).to.equal(200, `Account deletion failed with status: ${responseDelete.status}`);
   } else return;
-});
-
-Then(/the user fills in the "([^"]*)" page "([^"]*)" "([^"]*)" with "([^"]*)"/, async function (page, element, type, text) {
-  await Pages[page][camelize(`${element}${type}`)].setValue(text);
 });
 
 Then('I run mocking data', async function () {
@@ -109,7 +103,7 @@ Then(/the user "([^"]*)" (not )?existing "([^"]*)" "([^"]*)" into add songs sear
   async function (input, ifNot, song, name, page) {
     const songNameArray = await Pages[page][camelize(`${song}${name}`)];
     const songInput = await Pages[page][camelize(`${song}${input}`)];
-    const allSongsResponse = await sendRequest("/api/v1/songs", "get");
+    const allSongsResponse = await sendRequest("api/v1/songs?per_page=100&page=1", "get");
     const allSongsArray = await allSongsResponse.data;
     const allSongsNames = await allSongsArray.songs.data.map(song => song.attributes.title);
     this.songToAdd;
@@ -127,7 +121,11 @@ Then(/the user "([^"]*)" (not )?existing "([^"]*)" "([^"]*)" into add songs sear
     await songInput.setValue(String(this.songToAdd[0]));
 });
 
-Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" page as: "([^"]*)"/,
-  async function (element, type, page, value) {
-    await Pages[page][camelize(`${type}${element}`)].setValue(value);
+Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" "([^"]*)" as: "([^"]*)"/,
+  async function (element, type, page, place, value) {
+    if (place === "New Playlist" || place === "Search Box") {
+    await Pages[page][camelize(`${place}${type}${element}`)].setValue(value);
+    } else {
+      await Pages[page][camelize(`${type}${element}`)].setValue(value);
+    };
 });

@@ -1,15 +1,11 @@
-export class AlertWindow {
+export class ToastifyWindow {
     constructor() {}
 
     get logoutSuccessMessage() {
         return $(`div .toast__logout--success p`)
     }
 
-    get permissionMessage() {
-        return $(`div .Toastify__toast-body p`)
-    }
-
-    get addSongMessage() {
+    get informationMessage() {
         return $(`div .Toastify__toast-body p`)
     }
 }

@@ -46,4 +46,24 @@ export class MyPlaylistsPage extends BasePage{
     get cancelDeletionPlaylistButton() {
         return $(`//dialog/button[text()="Cancel"]`)
     }
+
+    get searchBoxValueInput(){
+        return $(`input[type='search']`);
+    }
+
+    get addPlaylistButton() {
+        return $(`[data-testid="newplaylist-btn"]`);
+    }
+
+    get newPlaylistNameInput() {
+        return $(`input[name="playlistName"]`);
+    }
+
+    get newPlaylistDescriptionInput() {
+        return $(`textarea.ModalForm__inputDescription`);
+    }
+
+    get createNewPlaylistButton() {
+        return $(`button.ModalForm__submitButton`);
+    }
 }
