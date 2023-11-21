@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { oneLineEllipsis } from '../../../shared/Shared.styles';
 
 export const SidebarContainer = styled.div`
@@ -130,13 +130,32 @@ export const AboutApp = styled.div`
   letter-spacing: 0.5px;
 `;
 
-export const AboutUs = styled.div`
-  margin-bottom: 24px;
+export const NavContainer = styled.nav`
+  margin: 5px 0px;
+`;
+
+export const AboutUsLink = styled(NavLink)`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
   color: var(--m-3-sys-dark-on-surface, #e6e0e9);
+  padding: 5px;
+  width: 180px;
+  height: 45px;
+  margin-bottom: 24px;
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 0.5px;
+
+  &.active {
+    padding-left: 10px;
+    color: white;
+    background: #030109;
+    border: 1px solid #49454f;
+    border-radius: 14px;
+  }
 `;
 
 export const Logout = styled.button`

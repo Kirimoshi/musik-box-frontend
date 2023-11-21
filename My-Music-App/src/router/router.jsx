@@ -19,6 +19,7 @@ import NonAuthOnlyRoute from './NonAuthOnlyRoute';
 import MyAccount from '../widgets/my-account/MyAccount';
 import Friends from '../widgets/friends/Friends';
 import FriendsTab from '../entities/friends/ui/FriendsTab';
+import About from '../entities/about/About';
 
 const {
   home,
@@ -35,6 +36,7 @@ const {
   friendsMy,
   friendsSent,
   friendsRequest,
+  about,
 } = paths;
 
 const router = createBrowserRouter(
@@ -162,6 +164,7 @@ const router = createBrowserRouter(
             }
           />
         </Route>
+        <Route path={about} element={<About />} />
         <Route path='*' element={<h1>Not Found</h1>} />
       </Route>
     </>

@@ -12,7 +12,7 @@ import { userSelector } from '../../../store/user/user.selector';
 import { logoutUser } from '../../../store/user/user.thunks';
 import {
   AboutApp,
-  AboutUs,
+  AboutUsLink,
   AccountDetails,
   AccountEdit,
   Divider,
@@ -24,6 +24,7 @@ import {
   UserAvatar,
   UserInfo,
   VerticalDivider,
+  NavContainer,
 } from './Sidebar.styles';
 
 import {
@@ -148,12 +149,13 @@ function Sidebar() {
       </UserInfo>
       <SidebarMenu menuObject={MenuList} />
       <Divider />
-      <AboutApp>
-        <p>About the app</p>
-      </AboutApp>
-      <AboutUs>
-        <p>About us</p>
-      </AboutUs>
+      <NavContainer>
+        <AboutApp>
+          <p>About the app</p>
+        </AboutApp>
+        <AboutUsLink to={paths.about}>About us</AboutUsLink>
+      </NavContainer>
+
       <Divider />
       {isAuth && (
         <Logout onClick={handleLogout} className='user-info__btn--logout'>

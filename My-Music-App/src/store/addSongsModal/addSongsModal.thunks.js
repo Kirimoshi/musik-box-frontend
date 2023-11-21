@@ -41,23 +41,3 @@ export const findSongsRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };
-
-export const removeSongFromList = (id) => {
-  return {
-    type: 'addSongsModalSlice/removeSongFromList',
-    payload: id,
-  };
-};
-export const removeSongFromListPending = (state) => {
-  state.loading = true;
-  state.error = null;
-};
-export const removeSongFromListFulfilled = (state, action) => {
-  const id = action.payload;
-  state.loading = false;
-  state.songs = state.songs.filter((song) => song.id !== id);
-};
-export const removeSongFromListRejected = (state, action) => {
-  state.loading = false;
-  state.error = action.error.message;
-};
