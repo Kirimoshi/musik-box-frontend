@@ -14,10 +14,8 @@ import {
   playlistDetailsErrorSelector,
   playlistDetailsLoadingSelector,
 } from '../../store/playlist-details/playlist-details.selector';
-import {
-  findSongs,
-  removeSongFromList,
-} from '../../store/addSongsModal/addSongsModal.thunks';
+import { findSongs } from '../../store/addSongsModal/addSongsModal.thunks';
+import { removeSongFromList } from '../../store/addSongsModal/addSongsModal.reducer';
 import {
   lastPageSelector,
   listOfSongsSelector,

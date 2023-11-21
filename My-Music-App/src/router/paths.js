@@ -13,6 +13,7 @@ const paths = {
   friendsMy: 'my',
   friendsSent: 'sent',
   friendsRequest: 'request',
+  about: '/about',
 };
 
 export default paths;
