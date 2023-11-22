@@ -3,10 +3,6 @@ import styled from 'styled-components';
 export const footerHeight = 64;
 export const sidebarWidth = 360;
 
-const mainContainerPaddingLeft = 80;
-const mainContainerPaddingRight = 112;
-const mainContainerPaddingTop = 56;
-
 export const HomeContainer = styled.div`
   margin: 0 auto;
   display: grid;
@@ -25,9 +21,7 @@ export const SidebarContainer = styled.aside`
 export const MainContainer = styled.main`
   grid-area: main;
   position: relative;
-  padding-left: ${mainContainerPaddingLeft}px;
-  padding-right: ${mainContainerPaddingRight}px;
-  padding-top: ${mainContainerPaddingTop}px;
+  padding: 56px 112px 80px 80px;
   background: var(--m-3-ref-primary-primary-0, #000);
   height: max-content;
   min-height: calc(100vh - ${footerHeight}px);

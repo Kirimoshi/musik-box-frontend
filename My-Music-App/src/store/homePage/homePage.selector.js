@@ -71,3 +71,8 @@ export const topGenresSongsPaginationSelector = createSelector(
   homePageSelector,
   (homePageSlice) => homePageSlice.topGenresSongsPaginationData
 );
+
+export const topUsersSelector = createSelector(
+  homePageSelector,
+  (homePageSlice) => homePageSlice.topUsers
+);

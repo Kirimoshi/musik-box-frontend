@@ -39,6 +39,11 @@ export const FETCH_HOME_PLAYLISTS_TYPES = {
   FEATURED: 'featured',
 };
 
+export const FETCH_USER_TYPES = {
+  POPULAR: 'popular',
+  CONTRIBUTOR: 'contributor',
+};
+
 export const ERROR_RESPONSE_CODES = {
   UNAUTHORIZED: 401,
   UNPROCESSABLE_ENTITY: 422,

@@ -22,6 +22,7 @@ import {
   genresSelector,
   topGenresSongsSelector,
   topGenresSongsPaginationSelector,
+  topUsersSelector,
 } from '../../store/homePage/homePage.selector';
 
 import {
@@ -32,7 +33,10 @@ import {
   fetchHomePageLastSongs,
   fetchHomePageGenres,
   fetchHomePageTopGenresSongs,
+  fetchHomePageTopUsers,
 } from '../../store/homePage/homePage.thunks';
+import TopUsersList from '../../entities/main-view/top-users/ui/TopUsersList';
+import { TOP_USERS_TEXT_FIELD_TYPE } from '../../entities/main-view/top-users/constants/constants';
 
 function Main() {
   const dispatch = useDispatch();
@@ -52,6 +56,7 @@ function Main() {
   const topGenresSongsPagination = useSelector(
     topGenresSongsPaginationSelector
   );
+  const topUsers = useSelector(topUsersSelector);
 
   const handlePaginationClick = (fetcher, pagination) => (direction) => {
     dispatch(
@@ -67,6 +72,7 @@ function Main() {
     dispatch(fetchHomePageLastSongs());
     dispatch(fetchHomePageGenres());
     dispatch(fetchHomePageTopGenresSongs());
+    dispatch(fetchHomePageTopUsers());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Dispatch is not a dependency, it remains unchanged from the initialization of store.
 
@@ -169,6 +175,17 @@ function Main() {
           topGenresSongsPagination.page < topGenresSongsPagination.last
         }
         className='main-view__pagination--song-top-genres'
+      />
+      <TopUsersList
+        title='Users'
+        subtitle='Most Popular'
+        textFieldType={TOP_USERS_TEXT_FIELD_TYPE.FRIENDS}
+        usersList={topUsers?.popular}
+      />
+      <TopUsersList
+        subtitle='Top Contributors'
+        usersList={topUsers?.contributor}
+        textFieldType={TOP_USERS_TEXT_FIELD_TYPE.PLAYLISTS}
       />
     </>
   );
