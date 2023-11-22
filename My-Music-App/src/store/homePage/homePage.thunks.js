@@ -222,7 +222,7 @@ export const fetchHomePageTopUsers = createAsyncThunk(
   'homePageSlice/fetchTopUsers',
   async () => {
     try {
-      const responces = await axios.all([
+      const responses = await axios.all([
         axios({
           url: `${API_URL}/users?user_type=${FETCH_USER_TYPES.POPULAR}&per_page=5&page=1`,
         }),
@@ -231,8 +231,8 @@ export const fetchHomePageTopUsers = createAsyncThunk(
         }),
       ]);
       return {
-        popular: responces[0].data.users.data,
-        contributor: responces[1].data.users.data,
+        popular: responses[0].data.users.data,
+        contributor: responses[1].data.users.data,
       };
     } catch ({ response: { data } }) {
       throw data.error ?? data.errors;
