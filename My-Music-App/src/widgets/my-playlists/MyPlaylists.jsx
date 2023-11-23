@@ -9,6 +9,7 @@ import {
   myPlaylistErrorSelector,
   myPlaylistLoadingSelector,
   shouldRefreshMyPlaylistsSelector,
+  pageOfMyPlaylistsSelector,
 } from '../../store/myPlaylists/myPlaylists.selector';
 import {
   addMyPlaylist,
@@ -32,6 +33,7 @@ function MyPlaylists() {
   const { isAuthenticated } = useSelector(userSelector);
   const error = useSelector(errorSelector);
   const toastId = React.useRef(null);
+  const myPlaylists = useSelector(pageOfMyPlaylistsSelector);
 
   const playlistErr = useSelector(myPlaylistErrorSelector);
   const loading = useSelector(myPlaylistLoadingSelector);
@@ -52,7 +54,11 @@ function MyPlaylists() {
 
   useEffect(() => {
     if (!isAuthenticated || !shouldRefreshMyPlaylists) return;
-    handleFetch(page);
+    if (myPlaylists.length === 1 && page !== 1) {
+      handleFetch(page - 1);
+    } else {
+      handleFetch(page);
+    }
     dispatch(setShouldRefreshMyPlaylists(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldRefreshMyPlaylists]);
