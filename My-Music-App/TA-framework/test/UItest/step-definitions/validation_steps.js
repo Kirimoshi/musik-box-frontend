@@ -4,7 +4,8 @@ import Pages from "../pageObjects/pages";
 const {
   camelize,
   pageNumber,
-  withoutEndpointPage
+  withoutEndpointPage,
+  sendRequest
 } = require("../../utils-user/helpers");
 const { PagesUrl } = require("../../utils-user/data");
 import BaseElements from "../pageObjects/elements/baseElements";
@@ -54,7 +55,6 @@ Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/,
   
   assert.equal(currentElementText, expectedText, `${place} doesn't match ${expectedText} value`)
 });
-
 
 Then(/^(.*) message should be displayed: (.*)$/,
   async (elementType, errorMessage) => {
@@ -278,11 +278,25 @@ Then(/the "([^"]*)" in the "([^"]*)" page is "([^"]*)" and click is "([^"]*)"/,
   assert.include(await elementStatus, status, `Expected the element to have ${elementStatus} status`);
   });
 
-  Then(/the user on the "([^"]*)" page isn't able change "([^"]*)" type to "([^"]*)"/,
+Then(/the user on the "([^"]*)" page isn't able change "([^"]*)" type to "([^"]*)"/,
   async function (page, element, value) {
-    const arrayOfElements = await Pages[page][camelize(`${element}Types`)];
-    let arrayOfElementsText = await Promise.all(arrayOfElements.map(async (el) => {
-      return el.getText();
-    }));
-    assert.notInclude(arrayOfElementsText, value, `Expected the element to be ${value}`);
+  const arrayOfElements = await Pages[page][camelize(`${element}Types`)];
+  let arrayOfElementsText = await Promise.all(arrayOfElements.map(async (el) => {
+    return el.getText();
+  }));
+  assert.notInclude(arrayOfElementsText, value, `Expected the element to be ${value}`);
+  });
+
+Then(/"([^"]*)" (private|public) playlist is (not )?visible to all app users/,
+  async function (element, type, ifNot) {
+    const allPlaylistsResponse = await sendRequest("api/v1/playlists?per_page=100&page=1", "get");
+    const allPlaylistsArray = await allPlaylistsResponse.data;
+    const allPlaylistsNames = await allPlaylistsArray.playlists.data.map(playlist => playlist.attributes.name);
+    if (ifNot && type === "private") {
+      assert.notInclude(await allPlaylistsNames, element)
+    } else if (type === "public") {
+      assert.include(await allPlaylistsNames, element)
+    } else {
+      throw new Error("The element is displayed wrong");
+    }
 });

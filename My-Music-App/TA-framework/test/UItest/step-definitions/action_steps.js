@@ -71,18 +71,6 @@ When(/^the Internet connection is interrupted$/, async () => {
   await browser.throttle("offline");
 });
 
-Then("the user tries to log in and delete account if it exists", async () => {
-  const responseLogin = await sendRequest("api/v1/login", newUserData, "post", null, {
-    "accept": "*/*",
-    "Content-Type": "application/json"
-  });
-  if (responseLogin.status === 200 && responseLogin.data.access) {
-    const accessToken = responseLogin.data.access;
-    const responseDelete = await sendRequest("/api/v1/my/account", null, "delete", accessToken);
-    expect(responseDelete.status).to.equal(200, `Account deletion failed with status: ${responseDelete.status}`);
-  } else return;
-});
-
 Then('I run mocking data', async function () {
   const mockTest = await browser.mock(`http://127.0.0.1:3000/api/v1/playlists?page=1&sort_by=&sort_order=&include=songs`, {
     method: "get"
@@ -128,4 +116,13 @@ Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" "([^"]*)" as: "([^"]*)"/,
     } else {
       await Pages[page][camelize(`${type}${element}`)].setValue(value);
     };
+  });
+
+Then("the user deletes personal account", async () => {
+  const responseLogin = await sendRequest("api/v1/login", newUserData, "post", null, {
+    "accept": "*/*",
+    "Content-Type": "application/json"
+  });
+    const accessToken = await responseLogin.data.access;
+    await sendRequest("/api/v1/my/account", null, "delete", accessToken);
 });
