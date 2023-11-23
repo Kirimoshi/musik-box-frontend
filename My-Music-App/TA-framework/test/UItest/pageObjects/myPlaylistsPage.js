@@ -42,6 +42,9 @@ export class MyPlaylistsPage extends BasePage{
     get dialogDeletePlaylistButton() {
         return $(`//dialog/button[text()="Delete playlist"]`)
     }
+    get discardButton() {
+        return $(`//dialog/button[text()="Discard"]`)
+    }
 
     get cancelDeletionPlaylistButton() {
         return $(`//dialog/button[text()="Cancel"]`)
@@ -65,5 +68,17 @@ export class MyPlaylistsPage extends BasePage{
 
     get createNewPlaylistButton() {
         return $(`button.ModalForm__submitButton`);
+        
     }
+    get closeWindow() {
+        return $(`.ModalForm__closeButton img`);
+        
+    }
+    get inputError() {
+        return $(`//p[text()="Too short, playlist name should be between 3 and 50 characters in length."]`)
+             } 
+                
+     get errorDescription() {
+        return $(`//p[text()="Too short, playlist description should be between 3 and 1000 characters in length."]`)
+                            } 
 }
