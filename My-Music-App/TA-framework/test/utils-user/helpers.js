@@ -39,7 +39,7 @@ const sendRequest = async (url, data = null, method = "get", accessToken = null,
         });
         return {
             status: response.status,
-            data: response.data,    
+            data: response.data,
         } 
     } catch (error) {
         return {
