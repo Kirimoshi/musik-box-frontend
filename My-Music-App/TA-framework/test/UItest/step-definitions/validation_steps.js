@@ -52,7 +52,7 @@ Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/,
     timeout: 10000,
     timeoutMsg: 'expected text to be changed after 10s'
   })
-  
+  await browser.pause(500);
   assert.equal(currentElementText, expectedText, `${place} doesn't match ${expectedText} value`)
 });
 
@@ -299,4 +299,32 @@ Then(/"([^"]*)" (private|public) playlist is (not )?visible to all app users/,
     } else {
       throw new Error("The element is displayed wrong");
     }
+});
+
+Then(/the "([^"]*)" "([^"]*)" is (not )?added to the "([^"]*)" page playlists list/,
+  async function (name, element, ifNot, page) {
+    const playlistsArray = await Pages[page][camelize(`${element}Name`)];
+    const playlistsNames = await Promise.all(playlistsArray.map(async (el) => {
+      return el.getText();
+    }));
+    await browser.waitUntil(() => {
+      return playlistsNames!==undefined;
+    }, {
+      timeout: 10000,
+      timeoutMsg: 'Playlist was not found in the list within 10 seconds'
+    });
+    if (ifNot) {
+      assert.notInclude(await playlistsNames, name)
+    } else {
+      assert.include(await playlistsNames, name)
+    }
+});
+
+Then(/in the "([^"]*)" page user is able to add "([^"]*)" to the "([^"]*)" with "([^"]*)" formats/,
+  async function (page, type, element, value) {
+    const currentElement = await Pages[page][camelize(`${element}${type}`)]
+    const elementFormats = await currentElement.getAttribute('accept');
+    const matches = elementFormats.match(/image\/(\w+)/g);
+    const imageFormats = matches.map(match => match.split('/')[1]).join(', ');
+    assert.equal(await imageFormats, value)
 });

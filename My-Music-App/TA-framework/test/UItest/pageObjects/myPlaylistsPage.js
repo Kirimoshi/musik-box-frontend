@@ -18,6 +18,10 @@ export class MyPlaylistsPage extends BasePage{
     get myPlaylistLogo() {
         return $$(`${this.playlistsContainer} .playlist-card__image`);
     }
+    
+    get newPlaylistLogo() {
+        return $(`img[alt="Playlist Logo"]+input`);
+    }
 
     get myPlaylistSongsList() {
         return $$(`${this.playlistsContainer} .playlist-card__songs`);
@@ -76,9 +80,9 @@ export class MyPlaylistsPage extends BasePage{
     }
     get inputError() {
         return $(`//p[text()="Too short, playlist name should be between 3 and 50 characters in length."]`)
-             } 
+    } 
                 
      get errorDescription() {
         return $(`//p[text()="Too short, playlist description should be between 3 and 1000 characters in length."]`)
-                            } 
+    } 
 }
