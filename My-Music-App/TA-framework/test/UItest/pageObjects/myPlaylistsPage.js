@@ -78,11 +78,19 @@ export class MyPlaylistsPage extends BasePage{
         return $(`.ModalForm__closeButton img`);
         
     }
-    get inputError() {
+    get shortNameInputError() {
         return $(`//p[text()="Too short, playlist name should be between 3 and 50 characters in length."]`)
     } 
                 
-     get errorDescription() {
+    get shortDescriptionInputError() {
         return $(`//p[text()="Too short, playlist description should be between 3 and 1000 characters in length."]`)
     } 
+
+    get tooBigNameInputError() {
+        return $(`//p[text()="Too big, playlist name should be between 3 and 50 characters in length."]`)
+    }
+
+    get tooBigDescriptionInputError() {
+        return $(`//p[text()="Too big, playlist description should be between 3 and 1000 characters in length."]`)
+    }
 }

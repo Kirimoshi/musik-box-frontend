@@ -53,15 +53,19 @@ Feature: EPMRDPEMAP-630 Create a New Playlist
         When the user clicks on the "myPlaylists" page "Close" "Window" element
         Then the user clicks on the "myPlaylists" page "Discard" "Button" element
 
-    Scenario: The user verify playlist name for the number of input characters
+    Scenario: The user inputs wrong length of name and description
         Given the user clicks on the "sidebar" "My Playlists" "Button" element
         Then the user is on the "myPlaylists" page
         When the user clicks on the "myPlaylists" page "Add Playlist" "Button" element
         Then the user "Input" "Name" in the "myPlaylists" "New Playlist" as: "Ne"
-        Then "myPlaylists" page "Input" "Error" is: "Too short, playlist name should be between 3 and 50 characters in length."
+        Then "myPlaylists" page "Short Name Input" "Error" is: "Too short, playlist name should be between 3 and 50 characters in length."
         Then the user "Input" "Description" in the "myPlaylists" "New Playlist" as: "Ne"
-        Then "myPlaylists" page "Error" "Description" is: "Too short, playlist description should be between 3 and 1000 characters in length."
-    
+        Then "myPlaylists" page "Short Description Input" "Error" is: "Too short, playlist description should be between 3 and 1000 characters in length."
+        Then the user "Input" "Name" in the "myPlaylists" "New Playlist" as: "Lorem ipsum dolor sit amet, consectetuer adipiscing eli"
+        Then "myPlaylists" page "Too Big Name Input" "Error" is: "Too big, playlist name should be between 3 and 50 characters in length."
+        Then the user "Input" "Description" in the "myPlaylists" "New Playlist" as: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam qu"
+        Then "myPlaylists" page "Too Big Description Input" "Error" is: "Too big, playlist description should be between 3 and 1000 characters in length."
+
     Scenario: The user deletes data
         Then the user deletes personal account
         
