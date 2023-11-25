@@ -18,6 +18,10 @@ export class MyPlaylistsPage extends BasePage{
     get myPlaylistLogo() {
         return $$(`${this.playlistsContainer} .playlist-card__image`);
     }
+    
+    get newPlaylistLogo() {
+        return $(`img[alt="Playlist Logo"]+input`);
+    }
 
     get myPlaylistSongsList() {
         return $$(`${this.playlistsContainer} .playlist-card__songs`);
@@ -42,6 +46,9 @@ export class MyPlaylistsPage extends BasePage{
     get dialogDeletePlaylistButton() {
         return $(`//dialog/button[text()="Delete playlist"]`)
     }
+    get discardButton() {
+        return $(`//dialog/button[text()="Discard"]`)
+    }
 
     get cancelDeletionPlaylistButton() {
         return $(`//dialog/button[text()="Cancel"]`)
@@ -65,5 +72,25 @@ export class MyPlaylistsPage extends BasePage{
 
     get createNewPlaylistButton() {
         return $(`button.ModalForm__submitButton`);
+        
+    }
+    get closeWindow() {
+        return $(`.ModalForm__closeButton img`);
+        
+    }
+    get shortNameInputError() {
+        return $(`//p[text()="Too short, playlist name should be between 3 and 50 characters in length."]`)
+    } 
+                
+    get shortDescriptionInputError() {
+        return $(`//p[text()="Too short, playlist description should be between 3 and 1000 characters in length."]`)
+    } 
+
+    get tooBigNameInputError() {
+        return $(`//p[text()="Too big, playlist name should be between 3 and 50 characters in length."]`)
+    }
+
+    get tooBigDescriptionInputError() {
+        return $(`//p[text()="Too big, playlist description should be between 3 and 1000 characters in length."]`)
     }
 }
