@@ -320,11 +320,18 @@ Then(/the "([^"]*)" "([^"]*)" is (not )?added to the "([^"]*)" page playlists li
     }
 });
 
-Then(/in the "([^"]*)" page user is able to add "([^"]*)" to the "([^"]*)" with "([^"]*)" formats/,
+Then(/in the "([^"]*)" page user is able to add "([^"]*)" in the "([^"]*)" with "([^"]*)" formats/,
   async function (page, type, element, value) {
     const currentElement = await Pages[page][camelize(`${element}${type}`)]
     const elementFormats = await currentElement.getAttribute('accept');
     const matches = elementFormats.match(/image\/(\w+)/g);
     const imageFormats = matches.map(match => match.split('/')[1]).join(', ');
     assert.equal(await imageFormats, value)
+  });
+
+  Then(/"([^"]*)" page "([^"]*)" "([^"]*)" value is: "([^"]*)"/,
+  async function (page, element, type, value) {
+    const currentElement = await Pages[page][camelize(`${element}${type}`)]
+    const currentElementValue = await currentElement.getValue();
+    assert.equal(await currentElementValue, value)
 });

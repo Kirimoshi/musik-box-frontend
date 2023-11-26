@@ -11,7 +11,7 @@ export class MyPlaylistsPage extends BasePage{
         return $$(`${this.playlistsContainer} .my-playlists__card`);
     }
 
-    get myPlaylistName() {
+    get playlistName() {
         return $$(`${this.playlistsContainer} .playlist-card__title`);
     }
 
@@ -19,7 +19,7 @@ export class MyPlaylistsPage extends BasePage{
         return $$(`${this.playlistsContainer} .playlist-card__image`);
     }
     
-    get newPlaylistLogo() {
+    get playlistDialogWindowLogo() {
         return $(`img[alt="Playlist Logo"]+input`);
     }
 
@@ -39,13 +39,46 @@ export class MyPlaylistsPage extends BasePage{
         return $$(`//p[text()="Delete Playlist"]`);
     }
 
-    get dialogWindowPlaylistTitle() {
-        return $(`dialog h3`)
+    get editPlaylistButton() {
+        return $$(`//p[text()="Edit"]`);
+    }
+
+    get editPlaylistFormTitle() {
+        return $(`p.ModalForm__title`)
+    }
+
+    get editPlaylistFormDescription() {
+        return $(`//textarea[text()]`);
+    }
+
+    get editPlaylistFormName() {
+        return $(`input[name="playlistName"]`);
+    }
+
+    get editPlaylistForm() {
+        return $(`dialog.ModalForm__container`);
+    }
+
+    get editPlaylistNameInput() {
+        return $(`input[name="playlistName"]`);
+    }
+
+    get editPlaylistDescriptionInput() {
+        return $(`textarea.ModalForm__inputDescription`);
+    }
+
+    get editPlaylistFormSubmitButton() {
+        return $(`button.ModalForm__submitButton`);
+    }
+
+    get editFormExitMessage() {
+        return $(`.ModalForm__container dialog h3`)
     }
 
     get dialogDeletePlaylistButton() {
         return $(`//dialog/button[text()="Delete playlist"]`)
     }
+
     get discardButton() {
         return $(`//dialog/button[text()="Discard"]`)
     }
