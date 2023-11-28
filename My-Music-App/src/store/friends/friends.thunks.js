@@ -201,13 +201,9 @@ export const fetchAddFriend = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      console.log('file: friends.thunks.js:204 ~ error:', error);
-
       const errMsgArr = error?.response?.data?.errors?.details;
-
       if (errMsgArr !== undefined && Array.isArray(errMsgArr)) {
-        console.error('Thunk addFriend error: ', errMsgArr.join(', '));
-        throw [error?.code, ...errMsgArr].join(', ');
+        throw [error.code, ...errMsgArr].join(', ');
       }
       throw error;
     }

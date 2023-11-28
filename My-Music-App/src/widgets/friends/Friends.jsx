@@ -9,7 +9,6 @@ import {
 import { Outlet } from 'react-router-dom';
 import paths from '../../router/paths';
 import AddFriend from '../../features/friends/ui/AddFriend';
-// import FriendTest from './FriendTest';
 
 const { friends, friendsMy, friendsSent, friendsRequest } = paths;
 
@@ -20,8 +19,6 @@ function Friends() {
         <FriendsTitle>Friends</FriendsTitle>
         <AddFriend />
       </FriendsTitleContainer>
-      {/* TODO: ADD user and friends test component, will be removed after add friends feature will be done.  */}
-      {/* <FriendTest /> */}
       <FriendsMenu>
         <FriendsMenuItem to={`${friends}/${friendsSent}`}>
           Sent by me
