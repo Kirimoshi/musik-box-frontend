@@ -25,52 +25,40 @@ Feature: EPMRDPEMAP-627 Modify My Playlist information
         Then the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
         Then "Edit Playlist Form" is displayed on "myPlaylists" page
         Then "myPlaylists" page "Edit Playlist Form" "Title" is: "Edit playlist"
-        Then "myPlaylists" page "Edit Playlist Form" "Name" value is: "The popular songs"
-        Then "myPlaylists" page "Edit Playlist Form" "Description" is: "Far far far away"
+        Then "myPlaylists" page "Edit Playlist" "Name" value is: "The popular songs"
+        Then "myPlaylists" page "Edit Playlist" "Description" value is: "Far far far away"
         Then in the "myPlaylists" page user is able to add "Logo" in the "Playlist Dialog Window" with "jpeg, png, jpg, svg" formats
         When the user clicks on the "myPlaylists" page "Close" "Window" element
         Then the user clicks on the "myPlaylists" page "Discard" "Button" element
 
     Scenario: The user is able to edit playlist name and description
-        Then the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The popular songs"
-        Then the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
-        Then the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
+        Given the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The popular songs"
+        And the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
+        When the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
         Then the user "Input" "Name" in the "myPlaylists" "Edit Playlist" as: "The most popular songs"
-        Then the user "Input" "Description" in the "myPlaylists" "Edit Playlist" as: "Super dance"
-        Then the user clicks on the "myPlaylists" page "Edit Playlist Form" "Submit Button" element
-        Then the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
-        Then the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
-        Then the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
-        Then "myPlaylists" page "Edit Playlist Form" "Name" value is: "The most popular songs"
-        Then "myPlaylists" page "Edit Playlist Form" "Description" value is: "Super dance"
-        When the user clicks on the "myPlaylists" page "Close" "Window" element
-        Then the user clicks on the "myPlaylists" page "Discard" "Button" element
+        And the user "Input" "Description" in the "myPlaylists" "Edit Playlist" as: "Super dance"
+        And the user clicks on the "myPlaylists" page "Edit Playlist Form" "Submit Button" element
+        And the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
+        And the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
+        And the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
+        And "myPlaylists" page "Edit Playlist" "Name" value is: "The most popular songs"
+        And "myPlaylists" page "Edit Playlist" "Description" value is: "Super dance"
+        And the user clicks on the "myPlaylists" page "Close" "Window" element
+        And the user clicks on the "myPlaylists" page "Discard" "Button" element
 
     Scenario: The user isn't able to delete playlist name
-        Then the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
-        Then the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
-        Then the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
-        Then the user "Input" "Name" in the "myPlaylists" "Edit Playlist" as: ""
-        Then the user clicks on the "myPlaylists" page "Edit Playlist Form" "Submit Button" element
-        Then the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
-        Then the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
-        Then the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
-        Then "myPlaylists" page "Edit Playlist Form" "Name" value is: "The most popular songs"
-        When the user clicks on the "myPlaylists" page "Close" "Window" element
-        Then the user clicks on the "myPlaylists" page "Discard" "Button" element
+        Given the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
+        And the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
+        When the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
+        And the user is not able to delete "Name" in the "myPlaylists" page "Edit Playlist" "Input" form
+        Then "toastify" "Information" "Message" is: "Successfully added to playlist :)"
 
     Scenario: The user is able to delete playlist description
-        Then the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
-        Then the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
-        Then the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
-        Then the user "Input" "Description" in the "myPlaylists" "Edit Playlist" as: ""
-        Then the user clicks on the "myPlaylists" page "Edit Playlist Form" "Submit Button" element
-        Then the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
-        Then the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
-        Then the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
-        # Then "myPlaylists" page "Edit Playlist Form" "Description" is: ""
-        When the user clicks on the "myPlaylists" page "Close" "Window" element
-        Then the user clicks on the "myPlaylists" page "Discard" "Button" element
+        Given the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
+        And the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
+        When the user clicks on the "myPlaylists" page "Edit Playlist" "Button" 1 element
+        And the user is able to delete "Description" in the "myPlaylists" page "Edit Playlist" "Input" form
+        Then "toastify" "Information" "Message" is: "Successfully added to playlist :)"
 
     Scenario: The user discard editing the playlist
         When the user clicks on the "sidebar" "My Playlists" "Button" element

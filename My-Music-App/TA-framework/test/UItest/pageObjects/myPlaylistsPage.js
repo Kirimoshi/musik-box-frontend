@@ -47,14 +47,6 @@ export class MyPlaylistsPage extends BasePage{
         return $(`p.ModalForm__title`)
     }
 
-    get editPlaylistFormDescription() {
-        return $(`//textarea[text()]`);
-    }
-
-    get editPlaylistFormName() {
-        return $(`input[name="playlistName"]`);
-    }
-
     get editPlaylistForm() {
         return $(`dialog.ModalForm__container`);
     }

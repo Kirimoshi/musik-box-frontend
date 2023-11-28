@@ -118,7 +118,7 @@ Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" "([^"]*)" as: "([^"]*)"/,
       await Pages[page][camelize(`${type}${element}`)].clearValue();
       await Pages[page][camelize(`${type}${element}`)].setValue(value);
     };
-  });
+});
 
 Then("the user deletes personal account", async () => {
   const responseLogin = await sendRequest("api/v1/login", newUserData, "post", null, {
