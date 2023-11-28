@@ -7,12 +7,17 @@ export const FriendsContainer = styled.section`
   font-style: normal;
 `;
 
+export const FriendsTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+`;
 export const FriendsTitle = styled.h3`
   color: var(--m-3-white, #fff);
   font-size: 22px;
   font-weight: 400;
   line-height: 28px;
-  margin-bottom: 24px;
 `;
 
 export const FriendsMenu = styled.nav`

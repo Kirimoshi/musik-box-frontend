@@ -15,6 +15,8 @@ const initialState = {
   friendsSentPaginationData: {},
   friendsRecived: [],
   friendsRecivedPaginationData: {},
+  addFriendLoading: false,
+  addFriendError: null,
 };
 
 export const friendsSlice = createSlice({
@@ -32,6 +34,9 @@ export const friendsSlice = createSlice({
     },
     setFriendsCTAClickedFriendName: (state, action) => {
       state.friendsCTAClickedFriendName = action.payload;
+    },
+    setAddFriendError: (state, action) => {
+      state.addFriendError = action.payload;
     },
   },
 
@@ -93,7 +98,10 @@ export const friendsSlice = createSlice({
       .addCase(
         thunks.fetchDeleteFriendship.rejected,
         thunks.fetchDeleteFriendshipRejected
-      );
+      )
+      .addCase(thunks.fetchAddFriend.pending, thunks.fetchAddFriendPending)
+      .addCase(thunks.fetchAddFriend.fulfilled, thunks.fetchAddFriendFulfilled)
+      .addCase(thunks.fetchAddFriend.rejected, thunks.fetchAddFriendRejected);
   },
 });
 
@@ -102,6 +110,7 @@ export const {
   setFriendsSuccessMessage,
   setFriendsCTAClicked,
   setFriendsCTAClickedFriendName,
+  setAddFriendError,
 } = friendsSlice.actions;
 
 export const friendsReducer = friendsSlice.reducer;

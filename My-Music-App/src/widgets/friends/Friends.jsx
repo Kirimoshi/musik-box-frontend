@@ -4,9 +4,11 @@ import {
   FriendsMenu,
   FriendsMenuItem,
   FriendsTitle,
+  FriendsTitleContainer,
 } from './Friends.styles';
 import { Outlet } from 'react-router-dom';
 import paths from '../../router/paths';
+import AddFriend from '../../features/friends/ui/AddFriend';
 // import FriendTest from './FriendTest';
 
 const { friends, friendsMy, friendsSent, friendsRequest } = paths;
@@ -14,7 +16,10 @@ const { friends, friendsMy, friendsSent, friendsRequest } = paths;
 function Friends() {
   return (
     <FriendsContainer>
-      <FriendsTitle>Friends</FriendsTitle>
+      <FriendsTitleContainer>
+        <FriendsTitle>Friends</FriendsTitle>
+        <AddFriend />
+      </FriendsTitleContainer>
       {/* TODO: ADD user and friends test component, will be removed after add friends feature will be done.  */}
       {/* <FriendTest /> */}
       <FriendsMenu>
@@ -28,7 +33,6 @@ function Friends() {
           My Friends
         </FriendsMenuItem>
       </FriendsMenu>
-
       <Outlet />
     </FriendsContainer>
   );

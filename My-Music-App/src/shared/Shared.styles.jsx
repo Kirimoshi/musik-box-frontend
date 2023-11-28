@@ -49,3 +49,26 @@ export const Spacer = styled.div`
     !!$marginBottom && `margin-bottom: ${$marginBottom}px`};
   ${({ $marginTop }) => !!$marginTop && `margin-top: ${$marginTop}px`};
 `;
+
+export const BaseButton = styled.button`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 24px;
+
+  width: 224px;
+  border-radius: 100px;
+  border: 1px solid var(--m-3-sys-dark-outline, #938f99);
+
+  color: var(--m-3-sys-dark-error, #f2b8b5);
+  text-align: center;
+
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+
+  line-height: 20px;
+  letter-spacing: 0.1px;
+`;
