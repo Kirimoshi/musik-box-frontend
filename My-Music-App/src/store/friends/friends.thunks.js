@@ -185,3 +185,39 @@ export const fetchDeleteFriendshipRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };
+
+export const fetchAddFriend = createAsyncThunk(
+  'friendsSlice/fetchAddFriend',
+  async (friendEmail, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `${FRIENDS_URL}?email=${friendEmail}`,
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      const errMsgArr = error?.response?.data?.errors?.details;
+      if (errMsgArr !== undefined && Array.isArray(errMsgArr)) {
+        throw [error.code, ...errMsgArr].join(', ');
+      }
+      throw error;
+    }
+  }
+);
+export const fetchAddFriendPending = (state) => {
+  state.addFriendLoading = true;
+  state.addFriendError = null;
+};
+export const fetchAddFriendFulfilled = (state, action) => {
+  state.addFriendLoading = false;
+  state.shouldRefetchFriends = true;
+};
+export const fetchAddFriendRejected = (state, action) => {
+  state.addFriendLoading = false;
+  state.addFriendError = action.error.message;
+};

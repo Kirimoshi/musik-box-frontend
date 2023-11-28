@@ -61,3 +61,13 @@ export const friendsRecivedPaginationDataSelector = createSelector(
   friendsSelector,
   (friendsSlice) => friendsSlice.friendsRecivedPaginationData
 );
+
+export const addFriendLoadingSelector = createSelector(
+  friendsSelector,
+  (friendsSlice) => friendsSlice.addFriendLoading
+);
+
+export const addFriendErrorSelector = createSelector(
+  friendsSelector,
+  (friendsSlice) => friendsSlice.addFriendError
+);

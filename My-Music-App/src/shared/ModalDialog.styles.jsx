@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BaseButton } from './Shared.styles';
 
 export const ModalContainer = styled.dialog`
   &[open] {
@@ -49,27 +50,7 @@ export const Divider = styled.hr`
   background: #49454f;
   border: none;
 `;
-const BaseButton = styled.button`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 24px;
 
-  width: 224px;
-  border-radius: 100px;
-  border: 1px solid var(--m-3-sys-dark-outline, #938f99);
-
-  color: var(--m-3-sys-dark-error, #f2b8b5);
-  text-align: center;
-
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
-  font-style: normal;
-
-  line-height: 20px;
-  letter-spacing: 0.1px;
-`;
 export const ActionButton = styled(BaseButton)`
   background-color: transparent;
   color: var(--m-3-sys-dark-error, #f2b8b5);
