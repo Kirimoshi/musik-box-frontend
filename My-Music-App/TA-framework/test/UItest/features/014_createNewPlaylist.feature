@@ -33,7 +33,7 @@ Feature: EPMRDPEMAP-630 Create a New Playlist
         Then the user "Input" "Description" in the "myPlaylists" "New Playlist" as: "La la la"
         Then the user clicks on the "myPlaylists" page "Create New Playlist" form "Button" element
         Then "toastify" "Information" "Message" is: "Playlist successfully created :)"
-        Then the "The most popular songs" "My Playlist" is added to the "myPlaylists" page playlists list
+        Then the "The most popular songs" "Playlist" is added to the "myPlaylists" page playlists list
 
     Scenario: The user discard creating a new playlist
         When the user clicks on the "sidebar" "My Playlists" "Button" element
@@ -43,13 +43,13 @@ Feature: EPMRDPEMAP-630 Create a New Playlist
         Then the user "Input" "Description" in the "myPlaylists" "New Playlist" as: "Ніч яка місячна"
         When the user clicks on the "myPlaylists" page "Close" "Window" element
         Then the user clicks on the "myPlaylists" page "Discard" "Button" element
-        Then the "А вже весна" "My Playlist" is not added to the "myPlaylists" page playlists list
+        Then the "А вже весна" "playlist" is not added to the "myPlaylists" page playlists list
 
     Scenario: Verify the avilaible formats of the playlist logo image
         When the user clicks on the "sidebar" "My Playlists" "Button" element
         Then the user is on the "myPlaylists" page
         When the user clicks on the "myPlaylists" page "Add Playlist" "Button" element
-        Then in the "myPlaylists" page user is able to add "Logo" to the "New Playlist" with "jpeg, png, jpg, svg" formats
+        Then in the "myPlaylists" page user is able to add "Logo" in the "Playlist Dialog Window" with "jpeg, png, jpg, svg" formats
         When the user clicks on the "myPlaylists" page "Close" "Window" element
         Then the user clicks on the "myPlaylists" page "Discard" "Button" element
 

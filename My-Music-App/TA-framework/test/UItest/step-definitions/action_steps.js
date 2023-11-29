@@ -111,12 +111,14 @@ Then(/the user "([^"]*)" (not )?existing "([^"]*)" "([^"]*)" into add songs sear
 
 Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" "([^"]*)" as: "([^"]*)"/,
   async function (element, type, page, place, value) {
-    if (place === "New Playlist" || place === "Search Box") {
+    if (place === "New Playlist" || place === "Search Box" || place === "Edit Playlist") {
+      await Pages[page][camelize(`${place}${type}${element}`)].clearValue();
     await Pages[page][camelize(`${place}${type}${element}`)].setValue(value);
     } else {
+      await Pages[page][camelize(`${type}${element}`)].clearValue();
       await Pages[page][camelize(`${type}${element}`)].setValue(value);
     };
-  });
+});
 
 Then("the user deletes personal account", async () => {
   const responseLogin = await sendRequest("api/v1/login", newUserData, "post", null, {

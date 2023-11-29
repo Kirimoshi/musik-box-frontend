@@ -7,7 +7,8 @@ export class MyPlaylistPage extends BasePage {
         this.playlistForm = `section.playlist__profile`;
         this.songsForm = `div.SongList`;
         this.addSongsForm = `dialog.addSongsToPlaylistsModal__container`;
-        this.profileMenu = `.profile-menu`
+        this.profileMenu = `.profile-menu`;
+
     }
     get songMenu() {
         return $$(`${this.songsForm} [data-song-id] svg:nth-child(1)`);

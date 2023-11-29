@@ -7,6 +7,7 @@ const {
   withoutEndpointPage,
   sendRequest
 } = require("../../utils-user/helpers");
+const { newUserData } = require("../../utils-user/data");
 const { PagesUrl } = require("../../utils-user/data");
 import BaseElements from "../pageObjects/elements/baseElements";
 const { assert } = require("chai");
@@ -320,11 +321,46 @@ Then(/the "([^"]*)" "([^"]*)" is (not )?added to the "([^"]*)" page playlists li
     }
 });
 
-Then(/in the "([^"]*)" page user is able to add "([^"]*)" to the "([^"]*)" with "([^"]*)" formats/,
+Then(/in the "([^"]*)" page user is able to add "([^"]*)" in the "([^"]*)" with "([^"]*)" formats/,
   async function (page, type, element, value) {
     const currentElement = await Pages[page][camelize(`${element}${type}`)]
     const elementFormats = await currentElement.getAttribute('accept');
     const matches = elementFormats.match(/image\/(\w+)/g);
     const imageFormats = matches.map(match => match.split('/')[1]).join(', ');
     assert.equal(await imageFormats, value)
+});
+
+Then(/"([^"]*)" page "([^"]*)" "([^"]*)" value is: "([^"]*)"/,
+  async function (page, element, type, value) {
+    const currentElement = await Pages[page][camelize(`${element}${type}Input`)]
+    const currentElementValue = await currentElement.getValue();
+    assert.equal(await currentElementValue, value)
+});
+
+Then(/the user is (not )?able to delete "([^"]*)" in the "([^"]*)" page "([^"]*)" "([^"]*)" form/,
+  async function (ifNot, value, page, element, place) {
+    let inputValue = await Pages[page][camelize(`${element}${value}${place}`)];
+    await inputValue.setValue(" ");
+    let submitButton = await Pages[page][camelize(`${element}Form Submit Button`)];
+    await browser.waitUntil(async () => {
+    return await submitButton.isClickable();
+    }, {
+    timeout: 10000,
+    timeoutMsg: 'expected element to be defined after 10s'
+    });
+    await submitButton.click();
+    const responseLogin = await sendRequest("api/v1/login", newUserData, "post", null, {
+    "accept": "*/*",
+    "Content-Type": "application/json"
+    });
+    const accessToken = await responseLogin.data.access;
+    const allPlaylistsResponse = await sendRequest("/api/v1/my/playlists?playlist_type=my_playlists&page=1", null, "get", accessToken);
+    const allPlaylistsArray = await allPlaylistsResponse.data;
+    const playlistDescription = await allPlaylistsArray.playlists.data.map(playlist => playlist.attributes.description);
+    const playlistName = await allPlaylistsArray.playlists.data.map(playlist => playlist.attributes.name);
+    if (ifNot) {
+      assert.notEqual(await playlistName[0], null, `The ${playlistName[0]} is deleted`);
+    } else {
+      assert.equal(await playlistDescription[0], null, `The ${playlistDescription[0]} is not deleted`);
+    }
 });

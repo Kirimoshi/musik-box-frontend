@@ -34,7 +34,7 @@ Feature: EPMRDPEMAP-633 View the My Playlists page
     Scenario: Verifiyng information about My Playlists
         Given the user is on the "myPlaylists" page
         Then "My Playlists List" is displayed on "myPlaylists" page
-        And "My Playlist Name" elements of "My Playlists List" are displayed on "myPlaylists" page
+        And "Playlist Name" elements of "My Playlists List" are displayed on "myPlaylists" page
         And "My Playlist Logo" elements of "My Playlists List" are displayed on "myPlaylists" page
         And "My Playlist Songs List" elements of "My Playlists List" are displayed on "myPlaylists" page
         Then "myPlaylists" page has no more than 10 elements in "My Playlist Songs List"
