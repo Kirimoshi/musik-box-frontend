@@ -85,7 +85,7 @@ Then(/the "([^"]*)" page "([^"]*)" elements have the initial length/, async func
   this.initialLength = await currentElement.length;
 });
 
-Then(/the "([^"]*)" page "([^"]*)" elements length are (not )?less than the initial length for one item/, async function (page, element, ifNotDeleted) {
+Then(/the "([^"]*)" page "([^"]*)" elements length are (not )?less than the initial length by one item/, async function (page, element, ifNotDeleted) {
   if (ifNotDeleted) {
     let notDeleted = await Pages[page][camelize(`${element}`)];
     assert.equal(await notDeleted.length, this.initialLength,
@@ -133,7 +133,6 @@ Then(/"([^"]*)" (\d+)? ?(elements|element)? ?of "([^"]*)" are (not )?displayed o
   async function (element, numeral, elementType, elementsArray, notDisplayed, page) {
   let currentElement = await Pages[page][camelize(`${element}`)];
   let currentElementsArray = await Pages[page][camelize(`${elementsArray}`)];
-
   for (let i = 0; i < currentElementsArray.length; i++) {
     await browser.waitUntil(async () => {
       return await currentElement[i].isExisting();
@@ -142,7 +141,6 @@ Then(/"([^"]*)" (\d+)? ?(elements|element)? ?of "([^"]*)" are (not )?displayed o
       timeoutMsg: `Element ${currentElement[i]} did not exist in 10 seconds`
     });
     await expect(currentElement[i]).toBeDisplayed();
-
     if (notDisplayed) {
       let ifNotDisplayed = await currentElement[i].isDisplayed();
       assert.isFalse(await ifNotDisplayed, `Expected ${currentElement[i]} element to be not displayed`)
@@ -155,7 +153,6 @@ Then(/"([^"]*)" (\d+)? ?(elements|element)? ?of "([^"]*)" are (not )?displayed o
 Then(/every playlist in "([^"]*)" on the "([^"]*)" page has ([^"]*) songs/, async function (playlistList, page, number) {
   const playlistItems = await Pages[page][playlistList];
   const expectedNumberOfSongs = Number(number);
-
   for (const playlist of playlistItems) {
     const currentPlaylistSongs = await playlist.$$('span[data-song-id]');
     expect(currentPlaylistSongs.length).toEqual(expectedNumberOfSongs);
@@ -235,7 +232,7 @@ Then(/the "([^"]*)" (not added|added) in the "([^"]*)" page songs list/,
     let existingSongs = await Promise.all(songNameArray.map(async (el) => {
       return el.getText();
     }));
-    
+
     await browser.waitUntil(() => {
       return existingSongs.includes(this.songToAdd[0]);
     }, {
@@ -286,7 +283,7 @@ Then(/the user on the "([^"]*)" page isn't able change "([^"]*)" type to "([^"]*
     return el.getText();
   }));
   assert.notInclude(arrayOfElementsText, value, `Expected the element to be ${value}`);
-  });
+});
 
 Then(/"([^"]*)" (private|public) playlist is (not )?visible to all app users/,
   async function (element, type, ifNot) {
@@ -363,4 +360,49 @@ Then(/the user is (not )?able to delete "([^"]*)" in the "([^"]*)" page "([^"]*)
     } else {
       assert.equal(await playlistDescription[0], null, `The ${playlistDescription[0]} is not deleted`);
     }
+});
+
+Then(/the "([^"]*)" in the "([^"]*)" has "([^"]*)" value/, async function (element, place, value) {
+  let currentElement = await Pages[place][camelize(`${element}`)];
+  await browser.waitUntil(async function () {
+    return await currentElement.isDisplayed();
+  }, {
+    timeout: 10000,
+    timeoutMsg: 'expected element to be defined after 10s'
+  });
+  let currentValue = await currentElement.getText();
+  this.initialValue = Number(currentValue);
+  assert.equal(await this.initialValue, Number(value));
+});
+
+Then(/the user (discard )?(likes|dislikes) "([^"]*)" playlist/, async function (ifDiscard, ifLike, playlistName) {
+  const allPlaylistsResponse = await sendRequest(`api/v1/playlists?per_page=100&page=1`, "get");
+  const playlistsData = allPlaylistsResponse.data;
+  const currentPlaylist = new Promise((resolve) => {
+    playlistsData.playlists.data.find(playlist => {
+      if (playlist.attributes.name === playlistName) {
+        resolve(playlist);
+        const likesDislikes = currentPlaylist.attributes.number_likes_dislikes;
+        const likesNumber = parseInt(likesDislikes.split('/')[0].split(':')[1].trim());
+        const dislikesNumber = parseInt(likesDislikes.split('/')[1].split(':')[1].trim());
+  if (ifLike === "likes") {
+    assert.equal(likesNumber, this.initialValue + 1)
+  } else if (ifDiscard) {
+    assert.equal(likesNumber, this.initialValue)
+  } else if (ifLike === "dislikes") {
+    assert.equal(dislikesNumber, this.initialValue + 1)
+  } else if (ifDiscard) {
+    assert.equal(dislikesNumber, this.initialValue)
+  } else {
+    throw new Error("The element is displayed wrong");
+  }
+      }
+    });
+  });
+});
+
+Then(/the user isn't able to click on the "([^"]*)" of "([^"]*)"/, async function (element, place) {
+  const currentElement = await Pages[place][camelize(`${element}`)];
+  assert.isFalse(await currentElement.isEnabled(), `Expected the ${currentElement} to be disabled`);
+  assert.isFalse(await currentElement.isClickable(), `Expected the ${currentElement} to be not clickable`);
 });

@@ -2,7 +2,12 @@
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import Pages from "../pageObjects/pages";
 import BaseElements from "../pageObjects/elements/baseElements";
-const { camelize, sendRequest } = require("../../utils-user/helpers");
+const {
+  camelize,
+  sendRequest,
+  withoutEndpointPage,
+  pageNumber
+} = require("../../utils-user/helpers");
 const { userData, newUserData } = require("../../utils-user/data");
 const { assert } = require("chai");
 const { mockData } = require("../../utils-user/mock_utils");
@@ -54,7 +59,7 @@ Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" (form )?"([^"]*)" (\d+)
   } else {
     throw new Error(`${elementToClick} wasn't found`)
   }
-    return elementToClick!==undefined;
+    return elementToClick.isClickable();
   }, {
     timeout: 10000,
     timeoutMsg: 'expected element to be defined after 10s'
@@ -113,7 +118,7 @@ Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" "([^"]*)" as: "([^"]*)"/,
   async function (element, type, page, place, value) {
     if (place === "New Playlist" || place === "Search Box" || place === "Edit Playlist") {
       await Pages[page][camelize(`${place}${type}${element}`)].clearValue();
-    await Pages[page][camelize(`${place}${type}${element}`)].setValue(value);
+      await Pages[page][camelize(`${place}${type}${element}`)].setValue(value);
     } else {
       await Pages[page][camelize(`${type}${element}`)].clearValue();
       await Pages[page][camelize(`${type}${element}`)].setValue(value);
@@ -128,3 +133,18 @@ Then("the user deletes personal account", async () => {
     const accessToken = await responseLogin.data.access;
     await sendRequest("/api/v1/my/account", null, "delete", accessToken);
 });
+
+Given(/the user is open "([^"]*)" "([^"]*)" in the "([^"]*)" page/,
+  async function (itemName, currentItem, place) {
+    await BaseElements['sidebar'][camelize(`${place}Button`)].click();
+    const valueInput = await Pages[place].searchBoxValueInput;
+    const searchButton = await Pages[place].searchIcon;
+    const currentElement = await Pages[place][camelize(`${place}Item`)];
+    await valueInput.setValue(itemName);
+    await searchButton.click();
+    await currentElement.click();
+    const currentUrl = await browser.getUrl();
+    currentItem = await pageNumber();
+    const currentPlaylist = await withoutEndpointPage(await currentUrl) + currentItem;
+    assert.equal(await currentUrl, currentPlaylist);
+  });

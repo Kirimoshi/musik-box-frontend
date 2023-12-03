@@ -20,7 +20,7 @@ Feature: EPMRDPEMAP-640 - The delete songs from playlists feature
     Then "myPlaylist" page "Dialog Window" "Song Title" is: "Are you sure you want to remove this song from playlist? You will not be able to restore it."
     And the "myPlaylist" page "Songs List" elements have the initial length
     When the user clicks on the "myPlaylist" page "Cancel Deletion Song" "Button" element
-    Then the "myPlaylist" page "Songs List" elements length are not less than the initial length for one item
+    Then the "myPlaylist" page "Songs List" elements length are not less than the initial length by one item
 
   Scenario: Verify that the user is able to delete song from playlist
     Given the user is on the "current" "myPlaylist" page
@@ -28,4 +28,4 @@ Feature: EPMRDPEMAP-640 - The delete songs from playlists feature
     Then "myPlaylist" page "Dialog Window" "Song Title" is: "Are you sure you want to remove this song from playlist? You will not be able to restore it."
     And the "myPlaylist" page "Songs List" elements have the initial length
     When the user clicks on the "myPlaylist" page "Confirm Deletion" "Button" element
-    Then the "myPlaylist" page "Songs List" elements length are less than the initial length for one item
+    Then the "myPlaylist" page "Songs List" elements length are less than the initial length by one item

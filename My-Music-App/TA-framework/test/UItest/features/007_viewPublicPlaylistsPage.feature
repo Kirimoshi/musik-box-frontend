@@ -137,7 +137,6 @@ Feature: View the Public Playlists page
         Then the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
         And "Search Box Value Input" is displayed on "publicPlaylists" page
-        # When the user fills in the "publicPlaylists" page "Search Box" "Value Input" with "<property>"
         When the user "Input" "Value" in the "publicPlaylists" "Search Box" as: "<property>"
         When the user clicks on the "publicPlaylists" page "Search" "Icon" element
         Then "publicPlaylists" page "<elementName>" "<elementType>" contains next text: "<property>"
