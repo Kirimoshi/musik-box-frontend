@@ -29,9 +29,9 @@ export const commentErrorToastConfig = {
 
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export function OneLineMessage({ message }) {
+export function OneLineMessage({ message, className }) {
   return (
-    <ToatsMsg>
+    <ToatsMsg className={`${className ?? ''}`}>
       <p>{message}</p>
     </ToatsMsg>
   );
@@ -39,14 +39,16 @@ export function OneLineMessage({ message }) {
 
 OneLineMessage.propTypes = {
   message: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 
-export function MessageWithChildren({ children }) {
-  return <ToatsMsg>{children}</ToatsMsg>;
+export function MessageWithChildren({ children, className }) {
+  return <ToatsMsg className={`${className ?? ''}`}>{children}</ToatsMsg>;
 }
 
 MessageWithChildren.propTypes = {
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 
 export function LogoutPendingMessage() {

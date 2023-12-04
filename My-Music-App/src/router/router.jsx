@@ -129,7 +129,7 @@ const router = createBrowserRouter(
         />
         <Route path={publicPlaylists} element={<PublicPlaylists />} />
         <Route path={friends} element={<Friends />}>
-          <Route path='' element={<Navigate to='my' />} />
+          <Route path='' element={<Navigate to={friendsRequest} />} />
           <Route
             path={friendsMy}
             element={

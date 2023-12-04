@@ -71,3 +71,8 @@ export const addFriendErrorSelector = createSelector(
   friendsSelector,
   (friendsSlice) => friendsSlice.addFriendError
 );
+
+export const numOfRecivedFriendRequestsSelector = createSelector(
+  friendsSelector,
+  (friendsSlice) => friendsSlice.numOfRecivedFriendRequests
+);

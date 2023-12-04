@@ -11,6 +11,8 @@ export const HomeContainer = styled.div`
   grid-template-areas:
     'sidebar main'
     'footer footer';
+
+  ${({ $isBlurEnabled }) => $isBlurEnabled && 'filter: blur(5px);'}
 `;
 
 export const SidebarContainer = styled.aside`

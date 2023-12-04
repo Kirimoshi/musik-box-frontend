@@ -17,6 +17,7 @@ const initialState = {
   friendsRecivedPaginationData: {},
   addFriendLoading: false,
   addFriendError: null,
+  numOfRecivedFriendRequests: null,
 };
 
 export const friendsSlice = createSlice({

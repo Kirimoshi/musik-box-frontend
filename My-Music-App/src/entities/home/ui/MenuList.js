@@ -36,6 +36,7 @@ const MenuList = [
     name: 'Friends',
     isAuthOnly: true,
     path: friends,
+    shoudRenderCounter: true,
   },
 ];
 
