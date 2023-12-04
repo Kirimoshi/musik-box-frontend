@@ -10,6 +10,7 @@ export const FriendsContainer = styled.section`
 export const FriendsTitleContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 24px;
   margin-bottom: 24px;
 `;

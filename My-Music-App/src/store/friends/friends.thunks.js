@@ -2,15 +2,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { FRIENDS_URL } from '../constants';
 import axios from 'axios';
 
-const PER_PAGE = 10; // TODO: this const exist for easier pagination testing, we need to remove it when story is done
-
 export const fetchFriendsAccepted = createAsyncThunk(
   'friendsSlice/fetchFriendsAccepted',
   async (page = 1, { getState }) => {
     const accessToken = getState().user.accessToken;
     try {
       const response = await axios({
-        url: `${FRIENDS_URL}?page=${page}&per_page=${PER_PAGE}`,
+        url: `${FRIENDS_URL}?page=${page}&per_page=10`,
         headers: {
           Accept: '*/*',
           Authorization: `Bearer ${accessToken}`,
@@ -45,7 +43,7 @@ export const fetchFriendsSent = createAsyncThunk(
     const accessToken = getState().user.accessToken;
     try {
       const response = await axios({
-        url: `${FRIENDS_URL}/?direction=sent&page=${page}&per_page=${PER_PAGE}`,
+        url: `${FRIENDS_URL}/?direction=sent&page=${page}&per_page=10`,
         headers: {
           Accept: '*/*',
           Authorization: `Bearer ${accessToken}`,
@@ -80,7 +78,7 @@ export const fetchFriendsRecived = createAsyncThunk(
     const accessToken = getState().user.accessToken;
     try {
       const response = await axios({
-        url: `${FRIENDS_URL}/?direction=received&page=${page}&per_page=${PER_PAGE}`,
+        url: `${FRIENDS_URL}/?direction=received&page=${page}&per_page=10`,
         headers: {
           Accept: '*/*',
           Authorization: `Bearer ${accessToken}`,
@@ -103,6 +101,7 @@ export const fetchFriendsRecivedFulfilled = (state, action) => {
   state.loading = false;
   state.friendsRecived = action.payload.dataArr;
   state.friendsRecivedPaginationData = action.payload.paginationData;
+  state.numOfRecivedFriendRequests = action.payload.paginationData.count;
 };
 export const fetchFriendsRecivedRejected = (state, action) => {
   state.loading = false;

@@ -18,7 +18,7 @@ import {
  * @param {string} actionButtonText Text to display on the action button
  * @param {string} closeButtonText Text to display on the close button
  */
-function ModalDialog({ options }) {
+function ModalDialog({ options, className }) {
   const {
     isModalOpen,
     title,
@@ -49,7 +49,7 @@ function ModalDialog({ options }) {
   };
 
   return (
-    <ModalContainer ref={dialogRef}>
+    <ModalContainer ref={dialogRef} className={className ?? ``}>
       <Title>{title}</Title>
       <Divider />
       <ActionButton onClick={handleAction}>
@@ -69,6 +69,7 @@ ModalDialog.propTypes = {
     closeButtonText: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }).isRequired,
+  className: PropTypes.string,
 };
 
 export default ModalDialog;

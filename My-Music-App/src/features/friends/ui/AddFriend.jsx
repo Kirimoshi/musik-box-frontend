@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addFriendErrorSelector,
@@ -19,8 +20,9 @@ import {
   ADD_FRIEND_ERROR_TEXTS,
   ADD_FRIEND_FETCH_ERROR_RESPONSES,
 } from '../constants/constants';
+import { setBackgroundBlur } from '../../../store/app/app.reducer';
 
-function AddFriend() {
+function AddFriend({ className }) {
   const dispatch = useDispatch();
   const isLoading = useSelector(addFriendLoadingSelector);
   const error = useSelector(addFriendErrorSelector);
@@ -34,7 +36,10 @@ function AddFriend() {
 
   const notify = () => {
     toastId.current = toast(
-      <OneLineMessage message='Processing...' />,
+      <OneLineMessage
+        className='add-friend__modal--pending-toast'
+        message='Processing...'
+      />,
       baseToastConfig
     );
   };
@@ -42,16 +47,26 @@ function AddFriend() {
   const notifySuccess = () => {
     toast.update(toastId.current, {
       type: toast.TYPE.SUCCESS,
-      autoClose: 1000,
-      render: <OneLineMessage message='Request successfuly sent' />,
+      autoClose: 1500,
+      render: (
+        <OneLineMessage
+          message='Request successfuly sent'
+          className='add-friend__modal--success-toast'
+        />
+      ),
     });
   };
 
   const notifyError = (errorMsg) => {
     toast.update(toastId.current, {
       type: toast.TYPE.ERROR,
-      autoClose: 1000,
-      render: <OneLineMessage message={errorMsg} />,
+      autoClose: 1500,
+      render: (
+        <OneLineMessage
+          message={errorMsg}
+          className='add-friend__modal--error-toast'
+        />
+      ),
     });
   };
 
@@ -70,11 +85,13 @@ function AddFriend() {
   };
 
   useEffect(() => {
+    dispatch(setBackgroundBlur(isModalOpen));
     if (isModalOpen) {
       dialogRef.current.showModal();
     } else {
       dialogRef.current.close();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalOpen]);
 
   useEffect(() => {
@@ -132,11 +149,15 @@ function AddFriend() {
           </ActionButton>
         </FriendModalFormWrapper>
       </FriendModalContainer>
-      <FriendCustomButton onClick={handleToggleModal}>
+      <FriendCustomButton onClick={handleToggleModal} className={className}>
         Add New Friend
       </FriendCustomButton>
     </>
   );
 }
+
+AddFriend.propTypes = {
+  className: PropTypes.string,
+};
 
 export default AddFriend;

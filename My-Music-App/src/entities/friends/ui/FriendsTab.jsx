@@ -294,7 +294,7 @@ function FriendsTab(props) {
 
   return (
     <>
-      <FriendsList>
+      <FriendsList className={`friends__tab--${currentTab}`}>
         {currentFriends.length !== 0 ? (
           currentFriends.map((friend) => {
             return (

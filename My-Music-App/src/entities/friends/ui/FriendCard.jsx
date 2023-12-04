@@ -47,7 +47,6 @@ function FriendCard({ friend, tabType }) {
   } = friend;
   const formattedUpdateDate = formatDateDDmmmYYYY(new Date(updatedAt));
 
-  // MODAL
   const [modalOptions, setModalOptions] = useState({
     isModalOpen: false,
     actionButtonText: '',
@@ -57,11 +56,9 @@ function FriendCard({ friend, tabType }) {
     onAction: () => {},
   });
 
-  // Close modal
   const handleCloseModal = () =>
     setModalOptions({ ...modalOptions, isModalOpen: false });
 
-  // Delete existing frindship
   const handleModalDeleteMyFriend = () => {
     setModalOptions({
       isModalOpen: true,
@@ -89,12 +86,12 @@ function FriendCard({ friend, tabType }) {
 
   return (
     <>
-      <FriendCardContainer>
-        <ModalDialog
-          className='friend-card__modal--delete'
-          options={modalOptions}
-        />
-        <FriendCardAvatar>
+      <FriendCardContainer
+        className='friend-card__wrapper'
+        data-friend-id={friendId}
+      >
+        <ModalDialog className='friend-card__modal' options={modalOptions} />
+        <FriendCardAvatar className='friend-card__img-wrap'>
           <img
             src={
               profilePicture
@@ -104,22 +101,31 @@ function FriendCard({ friend, tabType }) {
             alt={`${nickname} avatar`}
           />
         </FriendCardAvatar>
-        <FriendCardCaption>
-          <FriendCardCaptionItemName>
+        <FriendCardCaption className='friend-card__caption'>
+          <FriendCardCaptionItemName className='friend-card__caption--name'>
             {capitalizeWords(nickname)}
           </FriendCardCaptionItemName>
-          <FriendCardCaptionItem>{email}</FriendCardCaptionItem>
-          <FriendCardCaptionItem>
+          <FriendCardCaptionItem className='friend-card__caption--email'>
+            {email}
+          </FriendCardCaptionItem>
+          <FriendCardCaptionItem className='friend-card__caption--num-shared-playlists'>
             <AiOutlineShareAlt />
             <span>{`${numOfSharedPlaylists ?? '0'} shared playlists`}</span>
           </FriendCardCaptionItem>
-          <FriendCardCaptionItem>
+          <FriendCardCaptionItem className='friend-card__caption--date'>
             {`${TEXT_FOR_DATA_FIELDS[tabType]}: ${formattedUpdateDate}`}
           </FriendCardCaptionItem>
         </FriendCardCaption>
-        <FriendCardIcons $tabType={tabType} $isIconActive={shouldAllowCTA}>
+        <FriendCardIcons
+          $tabType={tabType}
+          $isIconActive={shouldAllowCTA}
+          className='friend-card__icon-wrap'
+        >
           {tabType === FRIENDS_TAB_TYPES.MY_FRIENDS && (
-            <MdDeleteForever onClick={handleModalDeleteMyFriend} />
+            <MdDeleteForever
+              onClick={handleModalDeleteMyFriend}
+              className='friend-card__icon--delete'
+            />
           )}
           {tabType === FRIENDS_TAB_TYPES.REQUEST && (
             <>
@@ -127,11 +133,13 @@ function FriendCard({ friend, tabType }) {
                 onClick={handleDeleteFriendshipClick(
                   FRIENDS_CTA_BUTTON_TYPES.DECLINE
                 )}
+                className='friend-card__icon--decline'
               />
               <AiOutlineCheck
                 onClick={handleAcceptFriendshipClick(
                   FRIENDS_CTA_BUTTON_TYPES.ACCEPT
                 )}
+                className='friend-card__icon--accept'
               />
             </>
           )}
@@ -140,6 +148,7 @@ function FriendCard({ friend, tabType }) {
               onClick={handleDeleteFriendshipClick(
                 FRIENDS_CTA_BUTTON_TYPES.CANCEL
               )}
+              className='friend-card__icon--cancel'
             />
           )}
         </FriendCardIcons>
