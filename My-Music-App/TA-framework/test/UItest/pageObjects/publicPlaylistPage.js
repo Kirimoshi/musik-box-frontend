@@ -37,4 +37,20 @@ export class PublicPlaylistPage extends BasePage {
   get commentErrorMessage() {
     return $(`p.comment-form__error-msg`)
   }
+
+  get publicPlaylistLikeButton() {
+    return $(`.profile__rating--like button.reaction-btn`);
+  }
+
+  get publicPlaylistDislikeButton() {
+    return $(`.profile__rating--dislike button.reaction-btn`);
+  }
+
+  get publicPlaylistLikeCounter() {
+    return $(`span.profile__rating--like`);
+  }
+
+  get publicPlaylistDislikeCounter() {
+    return $(`span.profile__rating--dislike`);
+  }
 }

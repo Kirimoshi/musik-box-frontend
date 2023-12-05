@@ -6,6 +6,7 @@ export class SharedPlaylistPage extends BasePage {
     this.url = '';
     this.addSongsForm = `dialog.addSongsToPlaylistsModal__container`;
   }
+  
   get addSongButton() {
     return $(`div.addsong svg`)
   }

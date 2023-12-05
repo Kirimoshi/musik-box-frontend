@@ -58,7 +58,7 @@ export class MyPlaylistPage extends BasePage {
         return $(`//dialog/button[text()="Cancel"]`)
     }
     
-    get dialogWindowPlaylistTitle() {
+    get dialogDeleteMessage() {
         return $(`${this.playlistForm} dialog h3`)
     }
 

@@ -39,6 +39,10 @@ export class MyPlaylistsPage extends BasePage{
         return $$(`//p[text()="Delete Playlist"]`);
     }
 
+    get dialogDeleteMessage() {
+        return $(`dialog h3`);
+    }
+
     get editPlaylistButton() {
         return $$(`//p[text()="Edit"]`);
     }
