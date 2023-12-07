@@ -79,7 +79,7 @@ function MyPlaylistsList({ searchString }) {
     toast.update(toastId.current, {
       type: toast.TYPE.SUCCESS,
       autoClose: 2000,
-      render: <OneLineMessage message='Successfully added to playlist :)' />,
+      render: <OneLineMessage message='Playlist changed successfully' />,
     });
   }, []);
 

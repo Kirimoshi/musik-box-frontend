@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import uploadImage from '../../shared/assets/uploadImage.svg';
 import closeLogo from '../../shared/assets/closeLogo.svg';
+import { IoCloseCircleOutline } from 'react-icons/io5';
 
 import { validate } from '../shared/CreateNewPlaylistValidation';
 import ModalDialog from '../../shared/ModalDialog';
@@ -11,6 +12,7 @@ import { UPLOADS_URL } from '../../store/constants';
 import {
   CloseButton,
   CoverImage,
+  DeleteLogoButton,
   DescriptionContainer,
   DescriptionInput,
   Details,
@@ -20,7 +22,7 @@ import {
   Header,
   LogoItem,
   LogoWrap,
-  ModalContainer,
+  EditPlaylistModalContainer,
   NameContainer,
   NameInput,
   PlaylistDescriptionWrap,
@@ -59,7 +61,14 @@ function ModalForm({ options }) {
   };
   const [playlistDetails, setPlaylistDetails] = useState(initialValues);
   const [createPlaylistErrors, setCreatePlaylistErrors] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false); // Current state of dialog modal
+  const [modalDialogOptions, setModalDialogOptions] = useState({
+    isModalOpen: false,
+    actionButtonText: '',
+    closeButtonText: '',
+    title: '',
+    onAction: () => {},
+    onClose: () => {},
+  });
 
   useEffect(() => {
     setCreatePlaylistErrors(validate(playlistDetails));
@@ -69,6 +78,7 @@ function ModalForm({ options }) {
   const coverURL = playlist?.attributes?.logo
     ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
     : '';
+  const shouldRenderDeleteLogoButton = !!playlistDetails.playlistLogo;
 
   useEffect(() => {
     if (!coverURL) {
@@ -97,10 +107,6 @@ function ModalForm({ options }) {
     onClose();
   };
 
-  const handleOpenModal = () => setIsModalOpen(true);
-
-  const handleCloseModal = () => setIsModalOpen(false);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPlaylistDetails({ ...playlistDetails, [name]: value });
@@ -123,6 +129,10 @@ function ModalForm({ options }) {
     setCreatePlaylistErrors({ ...createPlaylistErrors, playlistLogo: '' });
   };
 
+  const deleteImageClick = () => {
+    setPlaylistDetails({ ...playlistDetails, playlistLogo: '' });
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!createPlaylistErrors.playlistLogo) {
@@ -130,24 +140,48 @@ function ModalForm({ options }) {
     }
   };
 
+  const handleCloseModalDialog = () => {
+    setModalDialogOptions({
+      ...modalDialogOptions,
+      isModalOpen: false,
+    });
+  };
+
+  const handleOpenDiscardModal = () => {
+    setModalDialogOptions({
+      ...modalDialogOptions,
+      isModalOpen: true,
+      actionButtonText: 'Discard',
+      closeButtonText: 'Cancel',
+      title: 'Are you sure you want to discard these changes?',
+      onAction: handleConfirmationDialog,
+      onClose: handleCloseModalDialog,
+    });
+  };
+
+  const handleOpenDeleteLogoModal = () => {
+    setModalDialogOptions({
+      ...modalDialogOptions,
+      isModalOpen: true,
+      actionButtonText: 'Yes',
+      closeButtonText: 'No',
+      title: 'Are you sure to want to delete the logo??',
+      onAction: deleteImageClick,
+      onClose: handleCloseModalDialog,
+    });
+  };
+
   return (
-    <ModalContainer ref={formRef} className='ModalForm__container'>
+    <EditPlaylistModalContainer ref={formRef} className='ModalForm__container'>
       <ModalDialog
         className='modal__delete-playlist'
-        options={{
-          isModalOpen,
-          actionButtonText: 'Discard',
-          closeButtonText: 'Cancel',
-          title: 'Are you sure you want to discard these changes?',
-          onAction: handleConfirmationDialog,
-          onClose: handleCloseModal,
-        }}
+        options={modalDialogOptions}
       />
       <Header>
         <Title className='ModalForm__title'>{modalTitle}</Title>
         <CloseButton
           className='ModalForm__closeButton'
-          onClick={handleOpenModal}
+          onClick={handleOpenDiscardModal}
         >
           <img src={closeLogo} alt='button to close modal' />
         </CloseButton>
@@ -175,6 +209,14 @@ function ModalForm({ options }) {
             <ValidationLabel>
               {createPlaylistErrors.playlistLogo}
             </ValidationLabel>
+            {shouldRenderDeleteLogoButton && (
+              <DeleteLogoButton
+                type='button'
+                className='ModalForm__deleteLogoButton'
+              >
+                <IoCloseCircleOutline onClick={handleOpenDeleteLogoModal} />
+              </DeleteLogoButton>
+            )}
           </LogoItem>
           <NameContainer>
             <FormLabel>Playlist name</FormLabel>
@@ -217,7 +259,7 @@ function ModalForm({ options }) {
           </SubmitButton>
         </Form>
       </Details>
-    </ModalContainer>
+    </EditPlaylistModalContainer>
   );
 }
 

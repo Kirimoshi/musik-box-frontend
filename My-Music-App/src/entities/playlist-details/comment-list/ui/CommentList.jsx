@@ -281,5 +281,5 @@ export default function CommentList() {
 }
 
 CommentList.propTypes = {
-  playlistTypeToDisplay: PropTypes.string.isRequired,
+  playlistTypeToDisplay: PropTypes.string,
 };
