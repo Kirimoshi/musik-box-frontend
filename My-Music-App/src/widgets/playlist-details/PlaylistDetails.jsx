@@ -170,7 +170,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
     toast.update(toastId.current, {
       type: toast.TYPE.SUCCESS,
       autoClose: 2000,
-      render: <OneLineMessage message='Successfully added to playlist :)' />,
+      render: <OneLineMessage message='Playlist changed successfully' />,
     });
   }, []);
 
@@ -220,7 +220,6 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
     }
   }, [isReactionClicked, loading, playlistErr, notifyReactionError]);
 
-  // TODO: we need some kind of loader, but for now prevent render until we get the data
   return (
     playlistId === navigateId && (
       <Container

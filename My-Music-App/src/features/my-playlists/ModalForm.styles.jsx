@@ -1,14 +1,16 @@
 import styled from 'styled-components';
+import {
+  flexColumnCenter,
+  flexVerticalCenter,
+} from '../../shared/Shared.styles';
 
-export const ModalContainer = styled.dialog`
+export const EditPlaylistModalContainer = styled.dialog`
   &[open] {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    display: flex;
     padding: 24px;
-    flex-direction: column;
-    align-items: center;
+    ${flexColumnCenter}
     gap: 12px;
     pointer-events: visible;
     border: none;
@@ -16,6 +18,7 @@ export const ModalContainer = styled.dialog`
     background: #211f26;
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
       0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+    font-family: Roboto, sans-serif;
   }
   &[open]::backdrop {
     background: rgba(0, 0, 0, 0.5);
@@ -32,7 +35,6 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.p`
-  font-family: Roboto, sans-serif;
   font-size: 22px;
   font-style: normal;
   font-weight: 400;
@@ -53,35 +55,58 @@ export const Details = styled.div`
 
 export const Form = styled.form`
   width: 34vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template: repeat(4, auto) / 1fr;
 `;
 
 export const LogoItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-self: center;
+  ${flexVerticalCenter}
+  position: relative;
+  width: fit-content;
 `;
 
 export const LogoWrap = styled.div`
   height: 150px;
-  aspect-ratio: 1;
-  border-radius: 18px;
-  background: #f0f0f0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 150px;
+
+  background: transparent;
+  ${flexVerticalCenter}
   cursor: pointer;
-  overflow: hidden;
+`;
+
+export const DeleteLogoButton = styled.button`
+  position: absolute;
+  top: calc(1em / 6);
+  right: calc(1em / 6);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 32px;
+  color: #ff0000;
+  color: var(--m-3-ref-error-error-40, #b3261e);
+  transition: scale 0.2s ease-in-out;
+
+  &:hover {
+    color: var(--m-3-ref-error-error-50, #dc362e);
+    transform: scale(1.1);
+  }
+
+  & > svg {
+    filter: drop-shadow(0px 0px 1px var(--m-3-ref-neutral-neutral-100, #fff))
+      drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.5));
+  }
 `;
 
 export const CoverImage = styled.img`
   height: 100%;
   width: 100%;
+  border-radius: 18px;
   object-fit: cover;
+
+  &:hover {
+    filter: brightness(90%);
+  }
 `;
 
 export const FileInput = styled.input`
@@ -130,7 +155,6 @@ export const PlaylistDescriptionWrap = styled.div`
 export const NameInput = styled.input`
   background-color: transparent;
   font-size: 16px;
-  font-family: Roboto, sans-serif;
   line-height: 24px;
   letter-spacing: 0.5px;
   padding-left: 16px;

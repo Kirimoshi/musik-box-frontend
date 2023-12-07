@@ -12,6 +12,13 @@ export const flexHorizontalCenter = css`
   align-items: center;
 `;
 
+export const flexVerticalCenter = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
 export const flexColumnCenter = css`
   display: flex;
   flex-direction: column;
