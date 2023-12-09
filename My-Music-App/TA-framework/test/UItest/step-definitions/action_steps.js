@@ -134,7 +134,7 @@ Then("the user deletes personal account", async () => {
     await sendRequest("/api/v1/my/account", null, "delete", accessToken);
 });
 
-Given(/the user is open "([^"]*)" "([^"]*)" in the "([^"]*)" page/,
+Then(/the user is open "([^"]*)" "([^"]*)" in the "([^"]*)" page/,
   async function (itemName, currentItem, place) {
     await BaseElements['sidebar'][camelize(`${place}Button`)].click();
     const valueInput = await Pages[place].searchBoxValueInput;
@@ -147,4 +147,4 @@ Given(/the user is open "([^"]*)" "([^"]*)" in the "([^"]*)" page/,
     currentItem = await pageNumber();
     const currentPlaylist = await withoutEndpointPage(await currentUrl) + currentItem;
     assert.equal(await currentUrl, currentPlaylist);
-  });
+});

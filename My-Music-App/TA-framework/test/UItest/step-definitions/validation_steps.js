@@ -159,11 +159,17 @@ Then(/every playlist in "([^"]*)" on the "([^"]*)" page has ([^"]*) songs/, asyn
   }
 });
 
-Then(/"([^"]*)" page has no more than ([^"]*) elements in "([^"]*)"/, async function (page, number, element) {
-  let playlistItems = await Pages[page][camelize(`${element}`)];
-  let playlistItemsLength = Number(await playlistItems.length);
-  let expectedNumberOfPlaylists = Number(number);
-  await expect(playlistItemsLength).toBeLessThanOrEqual(expectedNumberOfPlaylists)
+Then(/"([^"]*)" page has no more than (\d+)? ?elements in "([^"]*)"/,
+  async function (page, number, element) {
+    let playlistItems = await Pages[page][camelize(`${element}`)];
+    await browser.waitUntil(async () => {
+      return await playlistItems !== undefined;
+    }, {
+      timeout: 10000,
+      timeoutMsg: `${playlistItems} did not exist in 10 seconds`
+    });
+    let playlistItemsLength = Number(await playlistItems.length);
+    await expect(playlistItemsLength).toBeLessThanOrEqual(number)
 });
 
 Then(/every element of "([^"]*)" on the "([^"]*)" page is clickable/, async function (elementsArray, page) {
@@ -405,4 +411,63 @@ Then(/the user isn't able to click on the "([^"]*)" of "([^"]*)"/, async functio
   const currentElement = await Pages[place][camelize(`${element}`)];
   assert.isFalse(await currentElement.isEnabled(), `Expected the ${currentElement} to be disabled`);
   assert.isFalse(await currentElement.isClickable(), `Expected the ${currentElement} to be not clickable`);
+});
+
+Then(/the (\d+)? ?popular playlist on the home page has no less than 5 songs in it/,
+  async function (numeral) {
+    const allPlaylistsResponse = await sendRequest(`api/v1/playlists?type=popular&page=1&per_page=4`, "get");
+    const currentPlaylistsData = await allPlaylistsResponse.data;
+    const currentPlaylistAttributes = await currentPlaylistsData.playlists.data.filter(playlist => playlist.attributes)
+    const currentElementSongsLength = await currentPlaylistAttributes[numeral - 1].attributes.first_ten_songs.data.length;
+    assert.isTrue(await currentElementSongsLength >= 5, `Expected the ${currentElementSongsLength} to be more than 5`);
+  });
+
+Then(/the popular playlists sorted by the largest number of likes/, async function () {
+    const allPlaylistsResponse = await sendRequest(`api/v1/playlists?type=popular&sort_by&sort_order&per_page=4`, "get");
+    const currentPlaylistsData = await allPlaylistsResponse.data;
+    const currentPlaylistAttributes = await currentPlaylistsData.playlists.data.filter(playlist => playlist.attributes)
+    const likesDislikes = await currentPlaylistAttributes.map(playlist => playlist.attributes.number_likes_dislikes);
+    const likes = likesDislikes.map(likeStr => parseInt(likeStr.split(':')[1]));
+    const isDecreasingOrEqual = likes.slice(1).every((value, index) => value <= likes[index]);
+    assert.isTrue(isDecreasingOrEqual, `Expected the ${likes} to be decreasing`);
+});
+
+Then(/the "([^"]*)" playlists have "([^"]*)"/, async function (playlistType, elementType) {
+    const allPlaylistsResponse = await sendRequest(`api/v1/playlists?type=popular&sort_by&sort_order&per_page=4`, "get");
+    const currentPlaylistsData = await allPlaylistsResponse.data;
+    const currentPlaylistAttributes = await currentPlaylistsData.playlists.data.filter(playlist => playlist.attributes)
+    const playlistName = await currentPlaylistAttributes.map(playlist => playlist.attributes.name);
+    const playlistAuthorName = await currentPlaylistAttributes.map(playlist => playlist.attributes.playlist_owner_nickname);
+    const playlistDescription = await currentPlaylistAttributes.map(playlist => playlist.attributes.description);
+    switch (true) {
+      case (["popular", "featured", "latest"].includes(playlistType)):
+        switch (elementType) {
+          case "name":
+            assert.isTrue(await playlistName.every(name => name !== null), `Expected the ${playlistName} to be not null`);
+            break;
+          case "description":
+            const hasNonNullDescription = playlistDescription.some(desc => desc !== null);
+            if (hasNonNullDescription) {
+              assert.isTrue(await playlistDescription.every(desc => desc !== ''), "Description is optional");
+            }
+            break;
+          case "author":
+            assert.isTrue(await playlistAuthorName.every(author => author !== null), `Expected the ${playlistAuthorName} to be not null`);
+            break;
+          default:
+            throw new Error("The element is displayed wrong");
+        }
+        break;
+      default:
+        throw new Error("The element is displayed wrong");
+    }
+});
+
+Then(/"([^"]*)" "([^"]*)" of each "([^"]*)" are displayed on "([^"]*)" page/, async function (type, property, element, page) {
+  let currentElement = await Pages[page][camelize(`${element}${type}`)];
+  const elementsProperty = await Promise.all(currentElement.map(async (el) => {
+    return await el.getCSSProperty(property);
+  }));
+  const elementPropertyValue = elementsProperty.every(data => data.value.isDisplayed());
+  assert.isTrue(await elementPropertyValue, `the ${elementPropertyValue} is not displayed`);
 });

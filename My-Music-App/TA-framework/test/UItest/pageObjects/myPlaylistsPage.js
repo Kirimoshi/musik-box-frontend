@@ -51,6 +51,10 @@ export class MyPlaylistsPage extends BasePage{
         return $(`p.ModalForm__title`)
     }
 
+    get editPlaylistFormDownloadLogoButton() {
+        return $(`div.ModalForm__logoItem [alt="Playlist Logo"]`)
+    }
+
     get editPlaylistForm() {
         return $(`dialog.ModalForm__container`);
     }
