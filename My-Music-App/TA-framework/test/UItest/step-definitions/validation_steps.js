@@ -457,10 +457,7 @@ Then(/the "([^"]*)" playlists have "([^"]*)"/, async function (playlistType, ele
           default:
             throw new Error("The element is displayed wrong");
         }
-        break;
-      default:
-        throw new Error("The element is displayed wrong");
-    }
+      }
 });
 
 Then(/"([^"]*)" "([^"]*)" of each "([^"]*)" are displayed on "([^"]*)" page/, async function (type, property, element, page) {
