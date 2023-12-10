@@ -1,4 +1,4 @@
-@017 @viewPlaylistsOnTheHomePage
+@017 @viewPlaylistsOnTheHomePage @Smoke
 Feature: EPMRDPEMAP-612 View Playlists on the Home Page
 
     Scenario: The user opens home page

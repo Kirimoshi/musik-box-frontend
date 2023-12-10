@@ -1,6 +1,6 @@
-@005 @PagesRedirection
-
+@005 @PagesRedirection @Smoke
 Feature: EPMRDPEMAP-638 - Redirect authorized users from the Sign In and Sign Up pages
+
   Scenario: Verify that the authorized user redirects to the "home" page from "signIn" page
     Given the user is open "signIn" page
     When the user sing-ins with "test.user@example.com" and "secreT!123"

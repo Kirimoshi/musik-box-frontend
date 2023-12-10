@@ -1,11 +1,13 @@
-@006 @viewThePlaylistPage
-
+@006 @viewThePlaylistPage @Smoke
 Feature: EPMRDPEMAP-223 - View the Playlist page
+
+  @Login @Regression
   Scenario: Verify that the authenticated user sing in with valid data
     Given the user is open "signIn" page
     When the user sing-ins with "test.user@example.com" and "secreT!123"
     Then the user is on the "home" page
 
+  @RedirectionToThePlaylistPage @Regression
   Scenario: Verify that the user is able to redirect to the "playlist" page
     Given the user is on the "home" page
     When the user clicks on the "sidebar" "My Playlists" "Button" element

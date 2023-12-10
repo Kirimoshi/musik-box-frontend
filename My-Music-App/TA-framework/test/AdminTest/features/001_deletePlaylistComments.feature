@@ -1,6 +1,6 @@
-@001 @adminPlaylistCommentsModeration
-
+@001 @adminPlaylistCommentsModeration @Regression
 Feature: Admin playlist comments moderation
+
   Scenario: Verify that the admin user log in with valid data
     Given the admin "login" to the system as the admin user
     Then the admin is on the "admin" page
@@ -17,6 +17,7 @@ Feature: Admin playlist comments moderation
     Then the "playlist_comments" page 1 "Comment" has "View Button"
     Then the "playlist_comments" page 1 "Comment" has "Delete Button"
 
+@DeleteCommentsFeature @Smoke
   Scenario: Verify that the admin user is able to delete comments from playlist
     Given the admin is on the "playlist_comments" page
     Then the "playlist_comments" page 1 "Playlist Comment" has the initial value

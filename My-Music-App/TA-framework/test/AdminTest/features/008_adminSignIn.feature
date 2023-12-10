@@ -1,6 +1,7 @@
-@008 @adminSignIn
-
+@008 @adminSignIn @Regression
 Feature: Admin Sign In
+
+    @AdminLoginFeature @Smoke
     Scenario: Verify that the admin sign-in with valid data
         Given the admin user is open "login" page
         Then the admin is on the "login" page

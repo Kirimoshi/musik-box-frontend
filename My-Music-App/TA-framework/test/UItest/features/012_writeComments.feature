@@ -1,10 +1,13 @@
-@012 @writeComments
-
+@012 @writeComments @Regression
 Feature: EPMRDPEMAP-648 write comments to playlist
 
-    Scenario: The user writes valid comment to the My Playlist
+    Scenario: The user login to the application
         Given the user "signIn" to the application
         Then the user is on the "home" page
+
+    @WriteCommentsToMyPlaylistFeature @Smoke
+    Scenario: The user writes valid comment to the My Playlist
+        Given the user is on the "home" page
         When the user clicks on the "sidebar" "My Playlists" "Button" element
         Then the user is on the "myPlaylists" page
         When the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
@@ -36,6 +39,7 @@ Feature: EPMRDPEMAP-648 write comments to playlist
         Then the user "Input" "Comment" in the "myPlaylist" "page" as: "new comment 3"
         Then the "Leave Comment Button" in the "myPlaylist" page is "disable" and click is "not-allowed"
 
+    @WriteCommentsToSharedPlaylistFeature @Smoke
     Scenario: The user writes valid comment to the Shared Playlist
         Then the user clicks on the "sidebar" "Shared Playlists" "Button" element
         Then the user is on the "sharedPlaylists" page
@@ -68,6 +72,7 @@ Feature: EPMRDPEMAP-648 write comments to playlist
         Then the user "Input" "Comment" in the "sharedPlaylist" "page" as: "new comment 3"
         Then the "Leave Comment Button" in the "sharedPlaylist" page is "disable" and click is "not-allowed"
 
+    @WriteCommentsToPublicPlaylistFeature @Smoke
     Scenario: The user writes valid comment to the Public Playlist
         Given the user clicks on the "sidebar" "Public Playlists" "Button" element
         Then the user is on the "publicPlaylists" page

@@ -1,5 +1,4 @@
-@014 @createNewPlaylist
-
+@014 @createNewPlaylist @Regression
 Feature: EPMRDPEMAP-630 Create a New Playlist
 
     Scenario: The new user sign-up and login to the application
@@ -12,6 +11,8 @@ Feature: EPMRDPEMAP-630 Create a New Playlist
             | nickname | email             | password    | confirm_password |
             | "Scj15"  | "Valid25@ukr.net" | "Qwer212@#" | "Qwer212@#"      |
 
+
+    @createNewPlaylistFeature @Smoke
     Scenario: The new playlist is created with Private type by default and without songs
         When the user clicks on the "sidebar" "My Playlists" "Button" element
         Then the user is on the "myPlaylists" page

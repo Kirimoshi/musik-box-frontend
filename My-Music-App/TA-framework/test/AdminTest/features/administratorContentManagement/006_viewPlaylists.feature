@@ -1,6 +1,7 @@
-@006 @viewPlaylists
-
+@006 @viewPlaylists @Smoke
 Feature: Admin view the Playlists
+
+    @AdminLogin @Regression
     Scenario: Verify that the admin user log in with valid data
         Given the admin "login" to the system as the admin user
         Then the admin is on the "admin" page

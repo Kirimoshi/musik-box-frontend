@@ -1,10 +1,13 @@
-@005 @songsCRUD
+@005 @songsCRUD @Smoke
 
 Feature: Admin "CRUD" Songs
+
+    @AdminLogin @Regression
     Scenario: Verify that the admin user log in with valid data
         Given the admin "login" to the system as the admin user
         Then the admin is on the "admin" page
 
+    @VerifySongsDetails @Regression
     Scenario: Verifying details about songs in the "Songs" page
         Given the admin is on the "admin" page
         When the admin clicks on the "header" "Songs" "Button"

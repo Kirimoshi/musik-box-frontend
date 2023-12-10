@@ -1,5 +1,4 @@
-@003 @signOut
-
+@003 @signOut @Regression
 Feature: EPMRDPEMAP-207 - The SingOut feature
 
   Scenario Outline: 1. Verify that the user with valid data can sing in
@@ -11,7 +10,8 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
       | email                   | password     |
       | "test.user@example.com" | "secreT!123" |
 
-  Scenario Outline: Verify that the logout message is displaying if the sign-out action was successful
+  @signOut @Smoke
+  Scenario Outline: Verify that the user is able logged out
     When the user logging out
     Then logoutSuccessMessage1 message should be displayed: <logout_message1>
     Then logoutSuccessMessage2 message should be displayed: <logout_message2>

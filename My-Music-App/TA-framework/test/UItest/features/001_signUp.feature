@@ -1,10 +1,10 @@
-@001 @signUp
-
+@001 @signUp @Regression
 Feature: The SingUp feature
   Background: Opening "signUp" page
     Given the user is open "signUp" page
 
-  Scenario Outline: Verify that the user with valid data can sing up
+  @signUp @Smoke  
+  Scenario Outline:  Verify that the user with valid data can sing up
     Then the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
     Then the user is on the "signIn" page
     Then the user deletes personal account

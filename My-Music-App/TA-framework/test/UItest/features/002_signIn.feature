@@ -1,5 +1,4 @@
-@002 @signIn
-
+@002 @signIn @Smoke
 Feature: EPMRDPEMAP-201 - The SingIn feature
 
   Scenario Outline: Verify that the user with valid data can sing in

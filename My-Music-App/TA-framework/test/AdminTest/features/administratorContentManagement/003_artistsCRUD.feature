@@ -1,10 +1,12 @@
-@003 @artistsCRUD
-
+@003 @artistsCRUD @Smoke
 Feature: Admin "CRUD" Artists
+
+    @AdminLogin @Regression
     Scenario: Verify that the admin user log in with valid data
         Given the admin "login" to the system as the admin user
         Then the admin is on the "admin" page
 
+    @VerifyingArtistsDetails @Regression
     Scenario: Verifying details about artist in the "Artists" page
         Given the admin is on the "admin" page
         When the admin clicks on the "header" "Artists" "Button"
