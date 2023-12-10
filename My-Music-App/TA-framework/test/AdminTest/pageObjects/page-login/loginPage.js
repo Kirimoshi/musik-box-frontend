@@ -4,7 +4,7 @@ import { BasePage } from "../basePage";
 export class LoginPage extends BasePage {
   constructor() {
     super();
-    this.url = 'admin/login';
+    this.url = 'login';
     this.fieldset = `fieldset`
   }
 

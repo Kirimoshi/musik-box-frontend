@@ -18,9 +18,6 @@ Then(/the admin is on the "([^"]*)" ("([^"]*)"\s)?page/, async function (page, c
   if (currentPageNumber) {
     currentPageNumber = await pageNumber();
     actualUrl = await withoutEndpointPage(await currentUrl) + currentPageNumber;
-  } else if (page === "login") {
-    let url = await withoutEndpointPage(await currentUrl) + PagesUrl[page];
-    actualUrl = await url.replace(/\/admin\/admin/, '/admin');
   } else {
     actualUrl = await withoutEndpointPage(await currentUrl) + PagesUrl[page];
   }
