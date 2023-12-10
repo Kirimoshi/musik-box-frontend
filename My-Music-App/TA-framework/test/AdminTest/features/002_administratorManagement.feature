@@ -1,10 +1,12 @@
-@002 @adminUsersModeration
-
+@002 @adminUsersModeration @Smoke
 Feature: Admin "CRUD" new administrators
+
+@AdminLogin @Regression
   Scenario: Verify that the admin user log in with valid data
     Given the admin "login" to the system as the admin user
     Then the admin is on the "admin" page
 
+@RedirectsToTheAdminUsersPage @Regression
   Scenario: Verify that the admin user redirects to the "admin_users" page
     Given the admin is on the "admin" page
     When the admin clicks on the "header" "Admin Users" "Button"

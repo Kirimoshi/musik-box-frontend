@@ -1,7 +1,7 @@
-@010 @viewMyPlaylists
-
+@010 @viewMyPlaylists @Regression
 Feature: EPMRDPEMAP-633 View the My Playlists page
 
+    @OpeningMyPlaylistsPage @Regression
     Scenario: Verifiyng opening the My Playlists page
         Given the user "signIn" to the application
         Then the user is on the "home" page
@@ -41,6 +41,7 @@ Feature: EPMRDPEMAP-633 View the My Playlists page
         Then the user logging out
         Then "toastify" "Logout Success" "Message" is: "You have been successfully logged out."
 
+    @GuestUserMyPlaylistsAccess @Regression
     Scenario: Verify that a guest user redirects to the Sign In page when trying to navigate to the My Playlists page
         When the user is open "signIn" page
         Then the user is on the "signIn" page

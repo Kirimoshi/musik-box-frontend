@@ -1,6 +1,6 @@
-@008 @deletePlaylists
-
+@008 @deletePlaylists @Regression
 Feature: EPMRDPEMAP-642 - The delete playlist from playlists feature
+
   Scenario: Verify that the authenticated user has access to the "playlist" page by clicking an individual playlist from the "playlists" page.
     Given the user "signIn" to the application
     Then the user is on the "home" page
@@ -19,6 +19,7 @@ Feature: EPMRDPEMAP-642 - The delete playlist from playlists feature
     When the user clicks on the "myPlaylists" page "Cancel Deletion Playlist" "Button" element
     Then the "myPlaylists" page "Playlists Item" elements length are not less than the initial length by one item
 
+  @DeleteSongsFeature @Smoke
   Scenario: Verify that the authenticated user is able to delete playlist from playlists list
     Given the user is on the "myPlaylists" page
     When the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
@@ -28,6 +29,7 @@ Feature: EPMRDPEMAP-642 - The delete playlist from playlists feature
     When the user clicks on the "myPlaylists" page "Dialog Delete Playlist" "Button" element
     Then the "myPlaylists" page "Playlists Item" elements length are less than the initial length by one item
 
+  @DeleteSongsFeature @Smoke
   Scenario: Verify that the authenticated user can delete the playlist from the specific playlist page.
     Given the user clicks on the "sidebar" "My Playlists" "Button" element
     Then the user is on the "myPlaylists" page

@@ -1,14 +1,20 @@
-@011 @addSongs
-
+@011 @addSongs @Regression
 Feature: EPMRDPEMAP-634 Add songs to playlist
 
-    Scenario: Add not existing song to Playlist
+    Scenario: Login to the application
         Given the user "signIn" to the application
         Then the user is on the "home" page
+
+    Scenario: Opening the "myPlaylist" page
+        Given the user is on the "home" page
         When the user clicks on the "sidebar" "My Playlists" "Button" element
         Then the user is on the "myPlaylists" page
         When the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
         Then the user is on the "current" "myPlaylist" page
+
+    @AddSongs @Smoke
+    Scenario: Add song to Playlist
+        Given the user is on the "current" "myPlaylist" page
         Then "Add Song Button" is displayed on "myPlaylist" page
         Then the user clicks on the "myPlaylist" page "Add Song" "Button" element
         Then the user "Input" not existing "Song" "Name" into add songs search field in the "myPlaylist" page
@@ -52,17 +58,4 @@ Feature: EPMRDPEMAP-634 Add songs to playlist
         Then the user clicks on the "myPlaylist" page "Left Arrow" "Paginator" element
         Then "Add Song List" is displayed on "myPlaylist" page
         Then "myPlaylist" page has no more than 20 elements in "Add Song List"
-        
-## There is no implemented functionality for deleting songs from shared playlist
-    # Scenario: Add song to Shared Playlist
-    #     Given the user is open "sharedPlaylists" page
-    #     Then the user is on the "sharedPlaylists" page
-    #     When the user clicks on the "sharedPlaylists" page "Shared Playlists" "List" 1 element
-    #     Then the user is on the "current" "sharedPlaylist" page
-    #     Then the user clicks on the "sharedPlaylist" page "Add Song" "Button" element
-    #     Then the user "Input" not existing "Song" "Name" into add songs search field in the "sharedPlaylist" page
-    #     Then the user clicks on the "sharedPlaylist" page "Song Submit" "Button" element
-    #     Then the user clicks on the "sharedPlaylist" page "Add Song To Playlist" "Button" element
-    #     Then "alert" "Add Song" "Message" is: "Successfully added to playlist :)"
-    #     Then the "Song" added in the "myPlaylist" page songs list
         

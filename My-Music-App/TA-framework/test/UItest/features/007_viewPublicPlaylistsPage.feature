@@ -1,7 +1,5 @@
-@007 @publicPlaylistsPage
-
+@007 @viewPublicPlaylistsPage @Smoke
 Feature: View the Public Playlists page
-        
 
     Scenario: 1.1 The Public Playlists page should be accessible to guest
         Given the user is open "signIn" page
@@ -57,6 +55,7 @@ Feature: View the Public Playlists page
     # ## This page is not implemented yet
     # ## | My Account page |
 
+    @VerifyingOrderOfPlaylists @Regression
     Scenario: 4.1 The playlists should be ordered by the number of likes in descending order for authorized users
         # and then by the date they were created in descending order - the date is currently mocked and the same for all playlists
         Given the user is open "signIn" page
@@ -69,6 +68,7 @@ Feature: View the Public Playlists page
         Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by the number of likes in descending order
         Then the user logging out
 
+    @VerifyingOrderOfPlaylists @Regression
     Scenario: 4.2 The playlists should be ordered by the number of likes in descending order for unauthorized users
         # and then by the date they were created in descending order - the date is currently mocked and the same for all playlists
         Given the user is open "signIn" page
@@ -131,6 +131,7 @@ Feature: View the Public Playlists page
         And "Public Playlists List" is displayed on "publicPlaylists" page
         Then "publicPlaylists" page has no more than 10 elements in "Public Playlists List"
 
+    @VerifyingFilterFeature @Regression
     Scenario Outline: 7.1 The Public Playlists page should have a filter feature that allows Guest to search for playlists by the following: <propertyName>
         Given I run mocking data
         Then the user is open "publicPlaylists" page
@@ -148,6 +149,7 @@ Feature: View the Public Playlists page
             | Song name                 | Du hast          | publicPlaylistSong      | List        |
             | Author name               | Rammstein        | publicPlaylistSong      | List        |
 
+    @VerifyingFilterFeature @Regression
     Scenario Outline: 7.2 The Public Playlists page should have a filter feature that allows Users to search for playlists by the following: <propertyName>
         Given I run mocking data
         Then the user is open "signIn" page
@@ -170,6 +172,7 @@ Feature: View the Public Playlists page
             | Song name                 | Du hast          | publicPlaylistSong      | List        |
             | Author name               | Rammstein        | publicPlaylistSong      | List        |
 
+    @VerifyingSortingFeature @Regression
     Scenario Outline: 8.1.1 The Public Playlists page should have a sorting feature that allows Guests to sort playlists by playlist name in <Order>
         Given the user is open "signIn" page
         Then the user is on the "signIn" page
@@ -188,6 +191,7 @@ Feature: View the Public Playlists page
             | Ascending Order  | ascending  |
             | Descending Order | descending |
 
+    @VerifyingSortingFeature @Regression
     Scenario Outline: 8.1.2 The Public Playlists page should have a sorting feature that allows Users to sort playlists by playlist name in <Order>
         Given the user is open "signIn" page
         Then the user is on the "signIn" page
@@ -210,6 +214,7 @@ Feature: View the Public Playlists page
             | Descending Order | descending |
 
     # # this feature should be refactored by FE team
+    @VerifyingSortingFeature @Regression
     Scenario: 8.2.1 The Public Playlists page should have a sorting feature that allows Guests to sort playlists by the number of comments in ascending or descending order.
         Given the user is open "publicPlaylists" page
         Then the user is on the "publicPlaylists" page
@@ -227,6 +232,7 @@ Feature: View the Public Playlists page
     # Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by number of comments in descending order - this validation step doesn't exist yet
 
     # # this feature should be refactored by FE team
+    @VerifyingSortingFeature @Regression
     Scenario: 8.2.2 The Public Playlists page should have a sorting feature that allows Users to sort playlists by the number of comments in ascending or descending order.
         Given the user is open "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"

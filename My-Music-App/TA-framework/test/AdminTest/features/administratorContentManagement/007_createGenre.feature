@@ -1,6 +1,6 @@
-@007 @createGenre
-
+@007 @createGenre @Smoke @Regression
 Feature: Admin create new Genre
+
     Scenario: Verify that the admin user log in with valid data
         Given the admin "login" to the system as the admin user
         Then the admin is on the "admin" page
@@ -15,6 +15,7 @@ Feature: Admin create new Genre
         Then the "genres" page 1 "Genre" has "Created Date"
         Then the "genres" page 1 "Genre" has "Updated Date"
 
+    @createGenreFeature @Smoke
     Scenario: Verifying that admin has ability to create new Genre
         Given the admin is on the "genres" page
         When the admin clicks on the "genres" page "New Genre" "Button"

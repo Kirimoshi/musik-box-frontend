@@ -1,6 +1,6 @@
-@004 @deleteSongs
-
+@004 @deleteSongs @Regression
 Feature: EPMRDPEMAP-640 - The delete songs from playlists feature
+
   Scenario: Verify that the authenticated user sing in with valid data
     Given the user is open "signIn" page
     When the user sing-ins with "test.user@example.com" and "secreT!123"
@@ -22,6 +22,7 @@ Feature: EPMRDPEMAP-640 - The delete songs from playlists feature
     When the user clicks on the "myPlaylist" page "Cancel Deletion Song" "Button" element
     Then the "myPlaylist" page "Songs List" elements length are not less than the initial length by one item
 
+  @deleteSongs @Smoke
   Scenario: Verify that the user is able to delete song from playlist
     Given the user is on the "current" "myPlaylist" page
     When the user clicks on the "myPlaylist" page "Remove Song" "Button" 1 element

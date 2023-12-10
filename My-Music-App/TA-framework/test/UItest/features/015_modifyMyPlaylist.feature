@@ -1,4 +1,4 @@
-@015 @modifyMyPlaylist
+@015 @modifyMyPlaylist @Regression
 Feature: EPMRDPEMAP-627 Modify My Playlist information
 
     Scenario: The new user sign-up and login to the application
@@ -39,6 +39,7 @@ Feature: EPMRDPEMAP-627 Modify My Playlist information
         And the user clicks on the "myPlaylists" page "Close" "Window" element
         And the user clicks on the "myPlaylists" page "Discard" "Button" element
 
+    @EditPlaylistNameFeature @Smoke
     Scenario: The user is able to edit playlist name
         Given the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The popular songs"
         And the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
@@ -52,6 +53,7 @@ Feature: EPMRDPEMAP-627 Modify My Playlist information
         And the user clicks on the "myPlaylists" page "Close" "Window" element
         And the user clicks on the "myPlaylists" page "Discard" "Button" element
 
+    @EditPlaylistDescriptionFeature @Smoke
     Scenario: The user is able to edit playlist description
         Given the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
         And the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
@@ -65,6 +67,7 @@ Feature: EPMRDPEMAP-627 Modify My Playlist information
         And the user clicks on the "myPlaylists" page "Close" "Window" element
         And the user clicks on the "myPlaylists" page "Discard" "Button" element
 
+    @DeletePlaylistNameFeature @Smoke
     Scenario: The user isn't able to delete playlist name
         Given the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
         And the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
@@ -72,6 +75,7 @@ Feature: EPMRDPEMAP-627 Modify My Playlist information
         Then the user is not able to delete "Name" in the "myPlaylists" page "Edit Playlist" "Input" form
         And "toastify" "Information" "Message" is: "Playlist changed successfully"
 
+    @DeletePlaylistDescriptionFeature @Smoke
     Scenario: The user is able to delete playlist description
         Given the user "Input" "Value" in the "myPlaylists" "Search Box" as: "The most popular songs"
         And the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
