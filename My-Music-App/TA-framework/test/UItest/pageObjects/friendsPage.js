@@ -5,4 +5,20 @@ export class FriendsPage extends BasePage {
     super();
     this.url = `request`;
   }
+
+  get addNewFriendButton() {
+    return $(`button.friends__title-btn`);
+  }
+
+  get addFriendFormEmailInput() {
+    return $(`input[placeholder="Enter email"]`);
+  }
+
+  get addNewFriendButton() {
+    return $(`button.friends__title-btn`);
+  }
+
+  get dialogWindowAddFriendButton() {
+    return $(`button.add-friend-modal__btn--submit`);
+  }
 }

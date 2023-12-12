@@ -1,4 +1,4 @@
-@007 @createGenre @Smoke @Regression
+@007 @createGenre @Regression
 Feature: Admin create new Genre
 
     Scenario: Verify that the admin user log in with valid data

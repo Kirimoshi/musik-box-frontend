@@ -7,7 +7,7 @@ const {
   withoutEndpointPage,
   sendRequest
 } = require("../../utils-user/helpers");
-const { newUserData } = require("../../utils-user/data");
+const { newUserData, userData } = require("../../utils-user/data");
 const { PagesUrl } = require("../../utils-user/data");
 import BaseElements from "../pageObjects/elements/baseElements";
 const { assert } = require("chai");
@@ -212,7 +212,7 @@ Then(/playlists in "([^"]*)" on the "([^"]*)" page are ordered by (the number of
     } else {
       throw new Error("The elements are sorted wrong");
     }
-  });
+});
 
 Then(/"([^"]*)" page "([^"]*)" "([^"]*)" contains next text: "([^"]*)"/, async function (page, element, type, expectedText) {
   const expectedTextInLowerCase = expectedText.toLowerCase();
@@ -232,8 +232,8 @@ Then(/"([^"]*)" page "([^"]*)" "([^"]*)" contains next text: "([^"]*)"/, async f
   expect(currentElementText).toContain(expectedTextInLowerCase);
 });
 
-Then(/the "([^"]*)" (not added|added) in the "([^"]*)" page songs list/,
-  async function (element, ifadded, page) {
+Then(/the "([^"]*)" is added into "([^"]*)" page songs list/,
+  async function (element, page) {
     let songNameArray = await Pages[page][camelize(`${element}Name`)];
     let existingSongs = await Promise.all(songNameArray.map(async (el) => {
       return el.getText();
@@ -245,13 +245,8 @@ Then(/the "([^"]*)" (not added|added) in the "([^"]*)" page songs list/,
       timeout: 15000,
       timeoutMsg: 'Song was not found in the list within 15 seconds'
     });
-    if (ifadded === "added") {
-      assert.include(existingSongs, this.songToAdd[0], "Song is not found")
-      await Pages[page].deleteLastAddedSong()
-    } else if (ifadded === "not added") {
-      assert.include(existingSongs, this.songToAdd[0], "Song is not found")
-    }
-  });
+    assert.include(existingSongs, this.songToAdd[0], "Song is not found")
+});
 
 Then(/"([^"]*)" "([^"]*)" placeholder is "([^"]*)"/, async function (page, element, searchPlaceholder) {
   const searchElem = await Pages[page][camelize(`${element}`)];
@@ -280,7 +275,7 @@ Then(/the "([^"]*)" in the "([^"]*)" page is "([^"]*)" and click is "([^"]*)"/,
   let elementIsClickable = await currentElement.getCSSProperty('cursor');
   assert.equal(await elementIsClickable.value, isClickable, `Expected the element to be ${isClickable}`);
   assert.include(await elementStatus, status, `Expected the element to have ${elementStatus} status`);
-  });
+});
 
 Then(/the user on the "([^"]*)" page isn't able change "([^"]*)" type to "([^"]*)"/,
   async function (page, element, value) {
@@ -294,8 +289,8 @@ Then(/the user on the "([^"]*)" page isn't able change "([^"]*)" type to "([^"]*
 Then(/"([^"]*)" (private|public) playlist is (not )?visible to all app users/,
   async function (element, type, ifNot) {
     const allPlaylistsResponse = await sendRequest("api/v1/playlists?per_page=100&page=1", "get");
-    const allPlaylistsArray = await allPlaylistsResponse.data;
-    const allPlaylistsNames = await allPlaylistsArray.playlists.data.map(playlist => playlist.attributes.name);
+    const playlistsData = await allPlaylistsResponse.data;
+    const allPlaylistsNames = await playlistsData.playlists.data.map(playlist => playlist.attributes.name);
     if (ifNot && type === "private") {
       assert.notInclude(await allPlaylistsNames, element)
     } else if (type === "public") {
@@ -358,9 +353,9 @@ Then(/the user is (not )?able to delete "([^"]*)" in the "([^"]*)" page "([^"]*)
     });
     const accessToken = await responseLogin.data.access;
     const allPlaylistsResponse = await sendRequest("/api/v1/my/playlists?playlist_type=my_playlists&page=1", null, "get", accessToken);
-    const allPlaylistsArray = await allPlaylistsResponse.data;
-    const playlistDescription = await allPlaylistsArray.playlists.data.map(playlist => playlist.attributes.description);
-    const playlistName = await allPlaylistsArray.playlists.data.map(playlist => playlist.attributes.name);
+    const playlistsData = await allPlaylistsResponse.data;
+    const playlistDescription = await playlistsData.playlists.data.map(playlist => playlist.attributes.description);
+    const playlistName = await playlistsData.playlists.data.map(playlist => playlist.attributes.name);
     if (ifNot) {
       assert.notEqual(await playlistName[0], null, `The ${playlistName[0]} is deleted`);
     } else {
@@ -416,17 +411,17 @@ Then(/the user isn't able to click on the "([^"]*)" of "([^"]*)"/, async functio
 Then(/the (\d+)? ?popular playlist on the home page has no less than 5 songs in it/,
   async function (numeral) {
     const allPlaylistsResponse = await sendRequest(`api/v1/playlists?type=popular&page=1&per_page=4`, "get");
-    const currentPlaylistsData = await allPlaylistsResponse.data;
-    const currentPlaylistAttributes = await currentPlaylistsData.playlists.data.filter(playlist => playlist.attributes)
-    const currentElementSongsLength = await currentPlaylistAttributes[numeral - 1].attributes.first_ten_songs.data.length;
+    const playlistsData = await allPlaylistsResponse.data;
+    const playlistAttributes = await playlistsData.playlists.data.filter(playlist => playlist.attributes)
+    const currentElementSongsLength = await playlistAttributes[numeral - 1].attributes.first_ten_songs.data.length;
     assert.isTrue(await currentElementSongsLength >= 5, `Expected the ${currentElementSongsLength} to be more than 5`);
-  });
+});
 
 Then(/the popular playlists sorted by the largest number of likes/, async function () {
     const allPlaylistsResponse = await sendRequest(`api/v1/playlists?type=popular&sort_by&sort_order&per_page=4`, "get");
-    const currentPlaylistsData = await allPlaylistsResponse.data;
-    const currentPlaylistAttributes = await currentPlaylistsData.playlists.data.filter(playlist => playlist.attributes)
-    const likesDislikes = await currentPlaylistAttributes.map(playlist => playlist.attributes.number_likes_dislikes);
+    const playlistsData = await allPlaylistsResponse.data;
+    const playlistAttributes = await playlistsData.playlists.data.filter(playlist => playlist.attributes)
+    const likesDislikes = await playlistAttributes.map(playlist => playlist.attributes.number_likes_dislikes);
     const likes = likesDislikes.map(likeStr => parseInt(likeStr.split(':')[1]));
     const isDecreasingOrEqual = likes.slice(1).every((value, index) => value <= likes[index]);
     assert.isTrue(isDecreasingOrEqual, `Expected the ${likes} to be decreasing`);
@@ -434,11 +429,11 @@ Then(/the popular playlists sorted by the largest number of likes/, async functi
 
 Then(/the "([^"]*)" playlists have "([^"]*)"/, async function (playlistType, elementType) {
     const allPlaylistsResponse = await sendRequest(`api/v1/playlists?type=popular&sort_by&sort_order&per_page=4`, "get");
-    const currentPlaylistsData = await allPlaylistsResponse.data;
-    const currentPlaylistAttributes = await currentPlaylistsData.playlists.data.filter(playlist => playlist.attributes)
-    const playlistName = await currentPlaylistAttributes.map(playlist => playlist.attributes.name);
-    const playlistAuthorName = await currentPlaylistAttributes.map(playlist => playlist.attributes.playlist_owner_nickname);
-    const playlistDescription = await currentPlaylistAttributes.map(playlist => playlist.attributes.description);
+    const playlistsData = await allPlaylistsResponse.data;
+    const playlistAttributes = await playlistsData.playlists.data.filter(playlist => playlist.attributes)
+    const playlistName = await playlistAttributes.map(playlist => playlist.attributes.name);
+    const playlistAuthorName = await playlistAttributes.map(playlist => playlist.attributes.playlist_owner_nickname);
+    const playlistDescription = await playlistAttributes.map(playlist => playlist.attributes.description);
     switch (true) {
       case (["popular", "featured", "latest"].includes(playlistType)):
         switch (elementType) {
@@ -467,4 +462,19 @@ Then(/"([^"]*)" "([^"]*)" of each "([^"]*)" are displayed on "([^"]*)" page/, as
   }));
   const elementPropertyValue = elementsProperty.every(data => data.value.isDisplayed());
   assert.isTrue(await elementPropertyValue, `the ${elementPropertyValue} is not displayed`);
+});
+
+Then(/friend request from user with name "([^"]*)" and email "([^"]*)" is displayed on the friends page/, async function (name, email) {
+  const responseLogin = await sendRequest("api/v1/login", userData, "post", null, {
+    "accept": "*/*",
+    "Content-Type": "application/json"
+  });
+  const accessToken = await responseLogin.data.access;
+  const allFriendsResponse = await sendRequest("api/v1/my/friendships/?direction=received&page=1&per_page=10", null, "get", accessToken);
+  const friendsData = allFriendsResponse.data;
+  const friendsAttributes = await friendsData.friendships.data.filter(playlist => playlist.attributes)
+  const currentFriendEmail = await friendsAttributes.map(friend => friend.attributes.peer.email);
+  const currentFriendName = await friendsAttributes.map(friend => friend.attributes.peer.nickname);
+  assert.equal(await currentFriendEmail[0], email, `The ${currentFriendEmail[0]} is not found`);
+  assert.equal(await currentFriendName[0], name, `The ${currentFriendName[0]} is not found`);
 });
