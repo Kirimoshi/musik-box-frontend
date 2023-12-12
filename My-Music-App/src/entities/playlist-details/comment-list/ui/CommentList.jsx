@@ -186,7 +186,6 @@ export default function CommentList() {
               name='new-comment'
               id='new-comment'
               form='new-comment-form'
-              maxLength={constants.commentMaxLength}
               required
               placeholder='Unsurpassed, magical, super duper'
               value={newComment}
