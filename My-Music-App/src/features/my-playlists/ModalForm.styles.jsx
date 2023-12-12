@@ -110,7 +110,7 @@ export const CoverImage = styled.img`
 `;
 
 export const FileInput = styled.input`
-  display: 'none';
+  display: none;
 `;
 
 export const ValidationLabel = styled.p`

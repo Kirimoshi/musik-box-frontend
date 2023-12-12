@@ -148,7 +148,17 @@ export const AddSongIcon = styled.div`
   margin-left: auto;
   margin-right: 1em;
   cursor: pointer;
-  color: white;
+
+  & > svg {
+    font-size: 24px;
+  }
+  & > .addsong-item-icon {
+    color: white;
+  }
+
+  & > .addsong-item-already-added {
+    color: var(--m-3-ref-primary-primary-60, #9a82db);
+  }
 `;
 
 export const WarningMessage = styled.p`

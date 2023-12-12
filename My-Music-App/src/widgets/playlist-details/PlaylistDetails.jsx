@@ -23,6 +23,7 @@ import {
   ProfileRating,
   ProfileText,
   ProfileVerticalMenu,
+  SongListContainer,
 } from './PlaylistDetails.styles';
 import MenuDropdownProfile from '../../entities/playlist-details/menu-dropdown-profile/ui/MenuDropdownProfile';
 import SongList from './SongList';
@@ -50,6 +51,7 @@ import {
   postPlaylistLike,
 } from '../../store/playlist-details/playlist-details.thunks';
 import ModalForm from '../../features/my-playlists/ModalForm';
+import { setBackgroundBlur } from '../../store/app/app.reducer';
 
 function PlaylistDetails({ playlistTypeToDisplay }) {
   const dispatch = useDispatch();
@@ -220,6 +222,11 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
     }
   }, [isReactionClicked, loading, playlistErr, notifyReactionError]);
 
+  useEffect(() => {
+    dispatch(setBackgroundBlur(isAddSongModalOpen));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAddSongModalOpen]);
+
   return (
     playlistId === navigateId && (
       <Container
@@ -350,12 +357,12 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
             )}
           </div>
         )}
-        <div className='songsList' data-testid='song-list'>
+        <SongListContainer className='songsList' data-testid='song-list'>
           <SongList
             shouldRenderKebabMenu={shouldRenderKebabMenu}
             shouldRenderAddedBy={shouldRenderAddedBy}
           />
-        </div>
+        </SongListContainer>
         <CommentList data-testid='comment-list' />
       </Container>
     )
