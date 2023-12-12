@@ -1,5 +1,5 @@
 import './styles/loginstyle.css';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useFormik } from 'formik';
 import { SignInSchema } from './schemas/SignInSchema';
@@ -8,8 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setIsRemembered,
   clearLoginError,
+  setIsRemembered,
 } from '../../store/user/user.reducer';
 import { loginUser } from '../../store/user/user.thunks';
 import {

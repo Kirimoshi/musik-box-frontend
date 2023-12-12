@@ -3,7 +3,7 @@ import { createSelector } from '@reduxjs/toolkit';
 const userSlice = (state) => state.user;
 
 /** User slice
- * @type {{loading: boolean, isAuthenticated: boolean, error: null | string, accessToken: null | string, accessExpiresAt: null | string, refreshToken: null | string, refreshExpiresAt: null | string, isRemembered: boolean | null, credentials: {email: string | null}}}
+ * @type {{loading: boolean, isAuthenticated: boolean, error: null | string, accessToken: null | string, accessExpiresAt: null | string, refreshToken: null | string, refreshExpiresAt: null | string, isRemembered: boolean | null, credentials: {email: string | null, nickname: string | null, picture: {data: {height: number, is_silhouette: boolean, url: string, width: number}} | null, id: string | null, uid: string | null, exp: number | null, ruid: string | null}}}
  */
 export const userSelector = createSelector(userSlice, (user) => user);
 

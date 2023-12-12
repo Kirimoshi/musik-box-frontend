@@ -1,0 +1,38 @@
+import { createSlice } from '@reduxjs/toolkit';
+import * as thunks from './my-account.thunks';
+
+const initialState = {
+  loading: false,
+  error: null,
+  myAccount: {
+    nickname: '',
+    email: '',
+    profilePicture: null,
+  },
+};
+
+export const myAccountSlice = createSlice({
+  name: 'myAccountSlice',
+  initialState: initialState,
+  reducers: {
+    setMyAccount: (state, action) => {
+      state.myAccount = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(thunks.fetchMyAccount.pending, thunks.fetchMyAccountPending)
+      .addCase(thunks.fetchMyAccount.fulfilled, thunks.fetchMyAccountFulfilled)
+      .addCase(thunks.fetchMyAccount.rejected, thunks.fetchMyAccountRejected)
+      .addCase(thunks.updateMyAccount.pending, thunks.updateMyAccountPending)
+      .addCase(
+        thunks.updateMyAccount.fulfilled,
+        thunks.updateMyAccountFulfilled
+      )
+      .addCase(thunks.updateMyAccount.rejected, thunks.updateMyAccountRejected);
+  },
+});
+
+export const { setMyAccount } = myAccountSlice.actions;
+
+export const myAccountReducer = myAccountSlice.reducer;

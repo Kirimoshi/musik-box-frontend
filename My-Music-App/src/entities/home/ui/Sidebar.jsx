@@ -36,17 +36,15 @@ import {
 import { useNavigate } from 'react-router-dom';
 import paths from '../../../router/paths';
 import { UPLOADS_URL } from '../../../store/constants';
+import { myAccountSelector } from '../../../store/my-account/my-account.selector';
+import { fetchMyAccount } from '../../../store/my-account/my-account.thunks';
 
 function Sidebar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toastId = React.useRef(null);
-  const {
-    isAuthenticated: isAuth,
-    loading,
-    error,
-    credentials: { email, nickname, picture },
-  } = useSelector(userSelector);
+  const { isAuthenticated: isAuth, loading, error } = useSelector(userSelector);
+  const { nickname, email, profilePicture } = useSelector(myAccountSelector);
 
   const [isLogoutClicked, setIsLogoutClicked] = useState(false);
 
@@ -102,6 +100,12 @@ function Sidebar() {
     navigate(paths.myAccount);
   };
 
+  useEffect(() => {
+    if (!isAuth) return;
+    dispatch(fetchMyAccount());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuth]);
+
   return (
     <SidebarContainer>
       <Logo to='/' className='sidebar__logo'>
@@ -115,8 +119,8 @@ function Sidebar() {
             <UserAvatar className='user-info__picture'>
               <img
                 src={
-                  picture
-                    ? `${UPLOADS_URL}/${picture.storage}/${picture.id}`
+                  profilePicture
+                    ? `${UPLOADS_URL}/${profilePicture.storage}/${profilePicture.id}`
                     : require('../../../shared/assets/default_user_avatar_small.png')
                 }
                 alt='current user avatar'

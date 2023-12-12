@@ -72,7 +72,8 @@ export const UserAvatar = styled.div`
   & > img {
     width: ${avatarWidth}px;
     aspect-ratio: 1/1;
-    border-radius: 100px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 `;
 
@@ -117,6 +118,11 @@ export const AccountEdit = styled.div`
     /* Icon takes width/height from fontsize */
     font-size: ${penIconWidth}px;
     color: #ffffff;
+  }
+
+  &:hover {
+    scale: 1.2;
+    transition: scale 0.2s ease-in-out;
   }
 `;
 
