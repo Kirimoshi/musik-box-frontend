@@ -1,17 +1,44 @@
 import styled from 'styled-components';
 
+const songItemHeight = 100;
+const songItemGap = 24;
+const numOfSongs = 5;
+const songListHeight =
+  songItemHeight * numOfSongs + songItemGap * (numOfSongs - 1);
+const scrollbarWidth = `10px`;
+const scrollbarTrackColor = `var(--m-3-ref-secondary-secondary-20, #332D41)`;
+const scrollbarColor = `var(--m-3-ref-primary-primary-50, #7F67BE)`;
+
 export const SongsContainer = styled.ul`
-  height: 280px;
+  max-height: ${songListHeight}px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   gap: 24px;
   position: relative;
+
+  &::-webkit-scrollbar {
+    width: ${scrollbarWidth};
+  }
+  &::-webkit-scrollbar-track {
+    background: ${scrollbarTrackColor};
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${scrollbarColor};
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${scrollbarColor};
+  }
+  & {
+    scrollbar-width: thin;
+    scrollbar-color: ${scrollbarColor} ${scrollbarTrackColor};
+  }
 `;
 
 export const SongItem = styled.li`
   display: block;
 `;
+
 export const Song = styled.div`
   display: flex;
   flex-direction: row;
@@ -28,7 +55,7 @@ export const SongCard = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   gap: 5px;
-  height: 100px;
+  height: ${songItemHeight}px;
 `;
 
 export const SongImgWrapper = styled.div`

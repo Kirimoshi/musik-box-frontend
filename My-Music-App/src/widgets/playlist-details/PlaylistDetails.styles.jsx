@@ -165,3 +165,7 @@ export const Container = styled.div`
   align-items: center;
   gap: 15px;
 `;
+
+export const SongListContainer = styled.div`
+  width: 90%;
+`;

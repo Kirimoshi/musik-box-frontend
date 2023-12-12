@@ -8,18 +8,27 @@ import { toast } from 'react-toastify';
 import { baseToastConfig, OneLineMessage } from '../../shared/Toasts';
 import closeLogo from '../../shared/assets/closeLogo.svg';
 import defaultAlbumCover from '../../shared/assets/default_album_cover.jpg';
+import { AiOutlineDelete } from 'react-icons/ai';
 import { UPLOADS_URL } from '../../store/constants';
-import { addSongToPlaylist } from '../../store/playlist-details/playlist-details.thunks';
+import {
+  addSongToPlaylist,
+  deleteSongFromPlaylist,
+} from '../../store/playlist-details/playlist-details.thunks';
 import {
   playlistDetailsErrorSelector,
   playlistDetailsLoadingSelector,
+  playlistDetailsSelector,
 } from '../../store/playlist-details/playlist-details.selector';
 import { findSongs } from '../../store/addSongsModal/addSongsModal.thunks';
-import { removeSongFromList } from '../../store/addSongsModal/addSongsModal.reducer';
 import {
   lastPageSelector,
   listOfSongsSelector,
 } from '../../store/addSongsModal/addSongsModal.selector';
+
+import {
+  ADD_SONG_ACTION_TYPE as ACTION_TYPE,
+  ADD_SONG_TOAST_TEXT as TOAST_TEXT,
+} from './constants/constants';
 
 import {
   AddSongIcon,
@@ -60,9 +69,12 @@ function AddSongsToPlaylists({ options }) {
     }
   }, [isAddSongModalOpen]);
 
+  const { songs: allSongs } = useSelector(playlistDetailsSelector);
+  const allSongsIds = allSongs.map(({ id }) => id);
   const songs = useSelector(listOfSongsSelector);
   const [searchSong, setSearchSong] = useState('');
   const [isAddSongCliked, setIsAddSongCliked] = useState(false);
+  const [isRemoveSongCliked, setIsRemoveSongCliked] = useState(false);
   const [page, setPage] = useState(1);
   const perPage = 5;
   const last = useSelector(lastPageSelector);
@@ -80,7 +92,6 @@ function AddSongsToPlaylists({ options }) {
     dispatch(
       addSongToPlaylist({ song_id: id, playlist_id: modalPlaylistId, song })
     );
-    dispatch(removeSongFromList(id));
   };
 
   useEffect(() => {
@@ -90,47 +101,69 @@ function AddSongsToPlaylists({ options }) {
 
   const notify = useCallback(() => {
     toastId.current = toast(
-      <OneLineMessage message='Adding song...' />,
-      baseToastConfig
+      <OneLineMessage message={TOAST_TEXT.PROCESSING} />,
+      {
+        ...baseToastConfig,
+        position: 'top-right',
+      }
     );
   }, []);
 
-  const notifyError = useCallback((error) => {
+  const notifyError = useCallback((error, actionType) => {
+    const isUnpocessableErrorOccured = error?.message?.includes('422');
+    const errorMessage =
+      isUnpocessableErrorOccured && actionType === ACTION_TYPE.ADD_SONG
+        ? TOAST_TEXT.ADD_ERROR
+        : isUnpocessableErrorOccured && actionType === ACTION_TYPE.REMOVE_SONG
+        ? TOAST_TEXT.DELETE_ERROR
+        : TOAST_TEXT.DEFAULT_ERROR;
+
     toast.update(toastId.current, {
       type: toast.TYPE.ERROR,
       autoClose: 2000,
-      render: (
-        <OneLineMessage
-          message={
-            error.message.includes('422')
-              ? 'This song is already in the playlist.'
-              : 'Oops, looks like something went wrong.'
-          }
-        />
-      ),
+      render: <OneLineMessage message={errorMessage} />,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const notifySuccess = useCallback(() => {
+  const notifySuccess = useCallback((actionType) => {
+    const successMessage =
+      actionType === ACTION_TYPE.ADD_SONG
+        ? TOAST_TEXT.SUCCESS_ADD
+        : actionType === ACTION_TYPE.REMOVE_SONG
+        ? TOAST_TEXT.SUCCESS_DELETE
+        : TOAST_TEXT.DEFAULT_ERROR;
+    const toastType =
+      actionType === ACTION_TYPE.ADD_SONG
+        ? toast.TYPE.SUCCESS
+        : ACTION_TYPE.REMOVE_SONG
+        ? toast.TYPE.INFO
+        : toast.TYPE.ERROR;
     toast.update(toastId.current, {
-      type: toast.TYPE.SUCCESS,
-      autoClose: 2000,
-      render: <OneLineMessage message='Successfully added to playlist :)' />,
+      type: toastType,
+      autoClose: 1500,
+      render: <OneLineMessage message={successMessage} />,
     });
   }, []);
 
   useEffect(() => {
-    if (isAddSongCliked && loading) {
-      notify(playlistErr);
+    if ((isAddSongCliked || isRemoveSongCliked) && loading) {
+      notify();
     }
     if (isAddSongCliked && !loading && playlistErr) {
-      notifyError(playlistErr);
+      notifyError(playlistErr, ACTION_TYPE.ADD_SONG);
       setIsAddSongCliked(false);
     }
     if (isAddSongCliked && !loading && !playlistErr) {
-      notifySuccess();
+      notifySuccess(ACTION_TYPE.ADD_SONG);
       setIsAddSongCliked(false);
+    }
+    if (isRemoveSongCliked && !loading && playlistErr) {
+      notifyError(playlistErr, ACTION_TYPE.REMOVE_SONG);
+      setIsRemoveSongCliked(false);
+    }
+    if (isRemoveSongCliked && !loading && !playlistErr) {
+      notifySuccess(ACTION_TYPE.REMOVE_SONG);
+      setIsRemoveSongCliked(false);
     }
   }, [
     isAddSongCliked,
@@ -139,9 +172,11 @@ function AddSongsToPlaylists({ options }) {
     notify,
     notifyError,
     notifySuccess,
+    isRemoveSongCliked,
   ]);
 
-  const handleAddSong = (id) => {
+  const handleAddSong = (id) => () => {
+    if (loading) return;
     setIsAddSongCliked(true);
     postSongsData(id);
   };
@@ -149,6 +184,11 @@ function AddSongsToPlaylists({ options }) {
     e.preventDefault();
     setPage(1);
     handleFindSongs();
+  };
+  const handleRemoveSong = (id) => () => {
+    if (loading) return;
+    setIsRemoveSongCliked(true);
+    dispatch(deleteSongFromPlaylist(id));
   };
 
   const onPageChange = useCallback(
@@ -194,38 +234,47 @@ function AddSongsToPlaylists({ options }) {
         <SongList className='addsongs-songlist'>
           {songs &&
             songs.map(
-              ({ id, attributes: { cover, title, artists, album } }) => (
-                <SongItem className='addsong-item' key={id}>
-                  <SongImgWrapper className='addsong-song-item-img'>
-                    <SongImg
-                      src={
-                        cover
-                          ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
-                          : defaultAlbumCover
-                      }
-                      alt='song preview'
-                      className='addsong-song-img'
-                    />
-                  </SongImgWrapper>
-                  <SongArtistInfo>
-                    <SongTitle>
-                      <p>{title}</p>
-                    </SongTitle>
-                    <SongInfo>
-                      <p>{album}</p>
-                      <PiDotBold />
-                      <p>{artists.join(', ')}</p>
-                    </SongInfo>
-                  </SongArtistInfo>
-                  <AddSongIcon>
-                    <IoAddSharp
-                      size='24'
-                      className='addsong-item-icon'
-                      onClick={() => handleAddSong(id)}
-                    />
-                  </AddSongIcon>
-                </SongItem>
-              )
+              ({ id, attributes: { cover, title, artists, album } }) => {
+                const isSongAlreadyAdded = allSongsIds.includes(id);
+                return (
+                  <SongItem className='addsong-item' key={id}>
+                    <SongImgWrapper className='addsong-song-item-img'>
+                      <SongImg
+                        src={
+                          cover
+                            ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
+                            : defaultAlbumCover
+                        }
+                        alt='song preview'
+                        className='addsong-song-img'
+                      />
+                    </SongImgWrapper>
+                    <SongArtistInfo>
+                      <SongTitle>
+                        <p>{title}</p>
+                      </SongTitle>
+                      <SongInfo>
+                        <p>{album}</p>
+                        <PiDotBold />
+                        <p>{artists.join(', ')}</p>
+                      </SongInfo>
+                    </SongArtistInfo>
+                    <AddSongIcon>
+                      {isSongAlreadyAdded ? (
+                        <AiOutlineDelete
+                          className='addsong-item-already-added'
+                          onClick={handleRemoveSong(id)}
+                        />
+                      ) : (
+                        <IoAddSharp
+                          className='addsong-item-icon'
+                          onClick={handleAddSong(id)}
+                        />
+                      )}
+                    </AddSongIcon>
+                  </SongItem>
+                );
+              }
             )}
           {songs.length === 0 && (
             <WarningMessage>There is nothing left...</WarningMessage>

@@ -85,15 +85,16 @@ function SongList({ shouldRenderKebabMenu, shouldRenderAddedBy }) {
           onAction: handlerRemove,
           onClose: handleCloseModal,
         }}
+        className='song-list__modal--remove-song'
       />
-      <SongsContainer>
+      <SongsContainer className='song-list__container scrollbar-on'>
         {songs.map(
           ({ id, attributes: { title, artists, cover, added_by, album } }) => {
             return (
               <SongItem key={id} data-song-id={id}>
                 <Song>
-                  <SongCard>
-                    <SongImgWrapper>
+                  <SongCard className='song-list__song-card song-card__container'>
+                    <SongImgWrapper className='song-card__cover'>
                       <SongCover
                         src={
                           cover
@@ -103,37 +104,42 @@ function SongList({ shouldRenderKebabMenu, shouldRenderAddedBy }) {
                         alt='song cover'
                       />
                     </SongImgWrapper>
-                    <SongArtistInfo className='SongList__artistInfo'>
-                      <SongTitle>
+                    <SongArtistInfo className='SongList__artistInfo song-card__caption'>
+                      <SongTitle className='song-card__caption--title'>
                         <p>{title}</p>
                       </SongTitle>
                       <SongInfo>
-                        <p>{album}</p>
+                        <p className='song-card__caption--album'>{album}</p>
                         <PiDotBold />
-                        <p>{artists.join(', ')}</p>
+                        <p className='song-card__caption--artists'>
+                          {artists.join(', ')}
+                        </p>
                       </SongInfo>
                       {shouldRenderAddedBy && (
-                        <SongInfo>
+                        <SongInfo className='song-card__caption--added-by'>
                           <p>Added by {capitalizeWords(added_by)}</p>
                         </SongInfo>
                       )}
                     </SongArtistInfo>
                   </SongCard>
-                  <VerticalMenu>
+                  <VerticalMenu className='song-card__vertical-menu-icon-wrapper'>
                     {(shouldRenderKebabMenu ||
                       (shouldRenderAddedBy && nickname === added_by)) && (
                       <BsThreeDotsVertical
                         onClick={() => {
                           verticalMenuToggle(id);
                         }}
+                        className='song-card__vertical-menu-icon'
                       />
                     )}
                     {openModel === id && (
-                      <DeleteModal>
+                      <DeleteModal className='song-card__detete-menu delete-menu'>
                         {
                           <DeleteTag onClick={() => handleDeleteSong(id)}>
-                            <RiDeleteBin6Line />
-                            <span>Remove song from playlist</span>
+                            <RiDeleteBin6Line className='delete-menu__icon' />
+                            <span className='delete-menu__text'>
+                              Remove song from playlist
+                            </span>
                           </DeleteTag>
                         }
                       </DeleteModal>
