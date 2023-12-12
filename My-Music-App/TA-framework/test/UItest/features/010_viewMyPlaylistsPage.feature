@@ -1,4 +1,4 @@
-@010 @viewMyPlaylists @Regression
+@010 @viewMyPlaylists @Smoke
 Feature: EPMRDPEMAP-633 View the My Playlists page
 
     @OpeningMyPlaylistsPage @Regression

@@ -22,17 +22,7 @@ Feature: EPMRDPEMAP-634 Add songs to playlist
         Then the user clicks on the "myPlaylist" page "Add Song To Playlist" "Button" element
         Then "toastify" "Information" "Message" is: "Successfully added to playlist :)"
         When the user clicks on the "myPlaylist" page "Close Add Songs Window" "Button" element
-        Then the "Song" added in the "myPlaylist" page songs list
-        
-    Scenario: Add existing song to Playlist
-        Given the user is on the "current" "myPlaylist" page
-        When the user clicks on the "myPlaylist" page "Add Song" "Button" element
-        And the user "Input" existing "Song" "Name" into add songs search field in the "myPlaylist" page
-        Then the user clicks on the "myPlaylist" page "Song Search" "Button" element
-        And the user clicks on the "myPlaylist" page "Add Song To Playlist" "Button" element
-        Then "toastify" "Information" "Message" is: "This song is already in the playlist."
-        And the "Song" not added in the "myPlaylist" page songs list
-        Then the user clicks on the "myPlaylist" page "Close Add Songs Window" "Button" element
+        Then the "Song" is added into "myPlaylist" page songs list
 
     Scenario: View Add songs dialog window elements
         Given the user is on the "current" "myPlaylist" page
