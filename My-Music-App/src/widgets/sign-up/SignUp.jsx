@@ -3,10 +3,21 @@ import SignUpFormInput from './SignUpFormInput';
 import { validate } from './SignUpValidation';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './sign-up-styles.css';
 import { constants } from './constants';
 import { isLoggedIn } from '../../RedirectAuthenticatedUsers/AuthenticatedUsers';
 import paths from '../../router/paths';
+import { SIGNUP_URL } from '../../store/constants';
+
+import {
+  InputsList,
+  NavDescription,
+  NavWrapper,
+  SignUpButton,
+  SignUpForm,
+  SignUpPage,
+  SignInSignUpBlock,
+  SignUpTitle,
+} from './SignUp.styled';
 
 function SignUp() {
   const navigate = useNavigate();
@@ -63,22 +74,28 @@ function SignUp() {
   };
 
   const backendErrorsValidate = (errorsArray) => {
-    // TODO: Refactor this function, forEach is preferable way here
-    // eslint-disable-next-line array-callback-return
-    errorsArray.map((element) => {
-      if (element === constants.emailDomainErrorElement)
-        backendErrors.emailDomainError = true;
-      else if (element === constants.emailExistingErrorElement)
-        backendErrors.emailExistingError = true;
-      else if (element === constants.emailInvalidErrorElement)
-        backendErrors.emailInvalidError = true;
-      if (element === constants.nicknameExistingErrorElement)
-        backendErrors.nicknameExistingError = true;
+    errorsArray.forEach((element) => {
+      switch (element) {
+        case constants.emailDomainErrorElement:
+          backendErrors.emailDomainError = true;
+          break;
+        case constants.emailExistingErrorElement:
+          backendErrors.emailExistingError = true;
+          break;
+        case constants.emailInvalidErrorElement:
+          backendErrors.emailInvalidError = true;
+          break;
+        case constants.nicknameExistingErrorElement:
+          backendErrors.nicknameExistingError = true;
+          break;
+        default:
+          break;
+      }
     });
     setSignUpErrors(validate(signUpValues, backendErrors));
   };
 
-  const fetchAPIData = () => {
+  const fetchAPIData = async () => {
     const userData = {
       user: {
         email: signUpValues.email,
@@ -87,26 +104,23 @@ function SignUp() {
         password_confirmation: signUpValues.confirmPassword,
       },
     };
-    axios
-      .post(constants.API_URL, userData)
-      .then(() => {
-        navigate(paths.signIn);
-      })
-      .catch((error) => {
-        const errorsArray = error.response.data.errors.details;
-        backendErrorsValidate(errorsArray);
-      });
+
+    try {
+      await axios.post(SIGNUP_URL, userData);
+      navigate(paths.signIn);
+    } catch (error) {
+      const errorsArray = error.response.data.errors.details;
+      backendErrorsValidate(errorsArray);
+    }
   };
 
   return (
-    <div className='signup-page'>
-      <div className='signup-header'>
-        <header>
-          <p>Sign Up</p>
-        </header>
-      </div>
-      <div className='signup-details'>
-        <form className='signup-form' onSubmit={handleSubmit}>
+    <SignUpPage className='signUp'>
+      <SignUpTitle className='signUp__title' data-testid='signun'>
+        Sign Up
+      </SignUpTitle>
+      <SignUpForm className='signUp__form' onSubmit={handleSubmit}>
+        <InputsList className='signUp__inputsList'>
           <SignUpFormInput
             label='Nickname'
             type='text'
@@ -143,26 +157,25 @@ function SignUp() {
             resetDetails={resetDetails}
             signUpErrors={signUpErrors.confirmPassword}
           />
-          <div className='form-submit'>
-            <button
-              id='submit-confirm'
-              type='submit'
-              disabled={disableButton}
-              className={
-                disableButton ? 'submit-disable-button' : 'submit-button'
-              }
-            >
-              {' '}
-              Sign Up
-            </button>
-            <p className='signin-query'>Already have an account?</p>
-            <nav>
-              <Link to={paths.signIn}>Sign in</Link>
-            </nav>
-          </div>
-        </form>
-      </div>
-    </div>
+        </InputsList>
+        <SignInSignUpBlock>
+          <SignUpButton
+            className='signUp__submitButton'
+            id='submit-confirm'
+            type='submit'
+            disabled={disableButton}
+          >
+            Sign Up
+          </SignUpButton>
+          <NavDescription>Already have an account?</NavDescription>
+          <NavWrapper>
+            <Link to={paths.signIn} className='signUp__toSignInNavigationlink'>
+              Sign in
+            </Link>
+          </NavWrapper>
+        </SignInSignUpBlock>
+      </SignUpForm>
+    </SignUpPage>
   );
 }
 

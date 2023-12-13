@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const AboutSection = styled.section`
+  color: rgb(235, 230, 230);
   margin: 0 auto;
   font-family: Roboto, sans-serif;
 `;

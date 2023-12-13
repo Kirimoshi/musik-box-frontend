@@ -9,6 +9,7 @@ export const CommentsSection = styled.section`
   font-family: Roboto, sans-serif;
 `;
 export const CommentsHeader = styled.h2`
+  color: white;
   font-size: 22px;
   font-weight: 400;
   line-height: 28px;
