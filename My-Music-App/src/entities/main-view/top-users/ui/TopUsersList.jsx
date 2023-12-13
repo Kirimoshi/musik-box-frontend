@@ -10,12 +10,17 @@ import TopUserCard from './TopUserCard';
 import { capitalize } from '../../../../store/helpers';
 
 function TopUsers({ title, subtitle, usersList, textFieldType }) {
+  const isUsersListEmpty = !usersList?.length;
   return (
     <section className='top-users'>
-      <TopUserTitle className='top-users__title'>{title}</TopUserTitle>
-      <TopUserSubtitle className='top-users__subtitle'>
-        {subtitle}
-      </TopUserSubtitle>
+      {title && (
+        <TopUserTitle className='top-users__title test'>{title}</TopUserTitle>
+      )}
+      {!isUsersListEmpty && (
+        <TopUserSubtitle className='top-users__subtitle'>
+          {subtitle}
+        </TopUserSubtitle>
+      )}
       <TopUserList>
         {usersList?.map(
           ({

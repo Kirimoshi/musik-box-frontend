@@ -245,7 +245,12 @@ export const fetchHomePageTopUsersPending = (state) => {
 };
 export const fetchHomePageTopUsersFulfilled = (state, action) => {
   state.loading = false;
-  state.topUsers = action.payload;
+  state.topUsers = {
+    popular: action.payload.popular,
+    contributor: action.payload.contributor.filter(
+      ({ attributes: { playlists_number: playlistsNum } }) => !!playlistsNum
+    ),
+  };
 };
 export const fetchHomePageTopUsersRejected = (state, action) => {
   state.loading = false;
