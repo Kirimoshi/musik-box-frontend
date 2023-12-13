@@ -57,6 +57,8 @@ function Main() {
     topGenresSongsPaginationSelector
   );
   const topUsers = useSelector(topUsersSelector);
+  const isTopUsersEmpty =
+    !topUsers?.popular.length && !topUsers?.contributor.length;
 
   const handlePaginationClick = (fetcher, pagination) => (direction) => {
     dispatch(
@@ -177,7 +179,7 @@ function Main() {
         className='main-view__pagination--song-top-genres'
       />
       <TopUsersList
-        title='Users'
+        title={isTopUsersEmpty ? null : 'Users'}
         subtitle='Most Popular'
         textFieldType={TOP_USERS_TEXT_FIELD_TYPE.FRIENDS}
         usersList={topUsers?.popular}
