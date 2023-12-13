@@ -2,6 +2,7 @@ export const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
 export const API_URL = BASE_API_URL + '/api/v1';
 export const LOGIN_URL = BASE_API_URL + '/api/v1/login';
+export const SIGNUP_URL = BASE_API_URL + '/api/v1/users';
 export const REFRESH_URL = BASE_API_URL + '/api/v1/refresh';
 export const LOGOUT_URL = BASE_API_URL + '/api/v1/logout';
 export const MY_PLAYLISTS_URL = BASE_API_URL + '/api/v1/my/playlists';

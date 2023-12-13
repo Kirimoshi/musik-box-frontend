@@ -8,8 +8,12 @@ export const TopUserCardItem = styled.li`
     gap: 4px;
 
     & > figcaption {
+      color: white;
       ${flexColumnCenter}
       gap: 4px;
+      & > p {
+        color: #aea9b4;
+      }
     }
   }
 

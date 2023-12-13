@@ -1,4 +1,5 @@
 import { constants } from './constants';
+
 export const validate = (values, backendErrors) => {
   const error = {};
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -8,6 +9,8 @@ export const validate = (values, backendErrors) => {
   const oneDigitRegex = /(?=.*\d)/;
   const specialCharacterRegex = /(?=.*[@#$%^&-+=()])/;
   const notAllowedRegex = /(?=.*[\\'"])/;
+
+  //  Nickname validation
 
   if (!values.nickname) {
     error.nickname = 'Please enter your nickname.';
@@ -25,6 +28,9 @@ export const validate = (values, backendErrors) => {
     error.nickname =
       'The nickname you entered is already associated with an existing account. Please sign in or use a different nickname to sign up.';
   }
+
+  // Email validation
+
   if (!values.email) {
     error.email = 'Please enter an email address.';
   } else if (whiteSpaceRegex.test(values.email)) {
@@ -41,6 +47,9 @@ export const validate = (values, backendErrors) => {
     error.email =
       'Please enter a valid email address without any spaces or special characters.';
   }
+
+  // Password validation
+
   if (!values.password) {
     error.password = 'Please enter a password.';
   } else if (values.password.length < constants.passwordMinValueLength) {
@@ -67,11 +76,15 @@ export const validate = (values, backendErrors) => {
     error.password =
       'Please enter the password that does not include characters such as Backslash (\\), Single Quote (\' or \'), Double Quote (" or "), Null Byte (\\0).';
   }
+
+  // Confirm password validation
+
   if (!values.confirmPassword) {
     error.confirmPassword = 'Please confirm your password.';
   } else if (values.password !== values.confirmPassword) {
     error.confirmPassword =
       'The passwords you entered do not match. Please try again.';
   }
+
   return error;
 };

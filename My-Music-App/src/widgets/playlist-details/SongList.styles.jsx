@@ -80,6 +80,7 @@ export const SongArtistInfo = styled.div`
 `;
 
 export const SongTitle = styled.div`
+  color: #e6e0e9;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5;

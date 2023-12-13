@@ -25,7 +25,7 @@ export const fetchAboutPending = (state) => {
 };
 export const fetchAboutFulfilled = (state, action) => {
   state.loading = false;
-  state.aboutUs = action.payload.option.data.attributes;
+  state.aboutUs = action.payload.option.data.attributes.body;
 };
 export const fetchAboutRejected = (state, action) => {
   state.loading = false;
