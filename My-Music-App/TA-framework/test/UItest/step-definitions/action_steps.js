@@ -46,11 +46,11 @@ When(/the user sing-ins without remembering with "([^"]*)" and "([^"]*)"/, async
   await Pages.signIn.signInWithoutRemembering(email, password);
 });
 
-Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" (form )?"([^"]*)" (\d+)? ?element/,
-  async function (place, ifPage, element, form, type, numeral) {
+Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" (form )?"([^"]*)" ?(\d+)? ?(element)?/,
+  async function (place, ifPage, element, form, type, numeral, optionalElement) {
   let elementToClick;
   await browser.waitUntil(async function () {
-  if (numeral) {
+  if (numeral&&optionalElement) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)][numeral - 1];
   } else if (ifPage || form) {
     elementToClick = await Pages[place][camelize(`${element}${type}`)];
@@ -116,13 +116,12 @@ Then(/the user "([^"]*)" (not )?existing "([^"]*)" "([^"]*)" into add songs sear
 
 Then(/the user "([^"]*)" "([^"]*)" in the "([^"]*)" "([^"]*)" as: "([^"]*)"/,
   async function (element, type, page, place, value) {
-    if (place === "New Playlist" || place === "Search Box" || place === "Edit Playlist") {
-      await Pages[page][camelize(`${place}${type}${element}`)].clearValue();
-      await Pages[page][camelize(`${place}${type}${element}`)].setValue(value);
-    } else {
-      await Pages[page][camelize(`${type}${element}`)].clearValue();
-      await Pages[page][camelize(`${type}${element}`)].setValue(value);
-    };
+    const elementKey = place === 'New Playlist' || place === 'Search Box' || place === 'Edit Playlist' || place === 'Add Friend Form' ?
+      `${place}${type}${element}` :
+      `${type}${element}`;
+
+    await Pages[page][camelize(elementKey)].clearValue();
+    await Pages[page][camelize(elementKey)].setValue(value);
 });
 
 Then("the user deletes personal account", async () => {

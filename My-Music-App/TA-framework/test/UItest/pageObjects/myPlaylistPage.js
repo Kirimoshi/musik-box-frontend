@@ -174,12 +174,6 @@ export class MyPlaylistPage extends BasePage {
         return $(`${this.addSongsForm} button [alt="button to close modal"]`)
     }
 
-    async deleteLastAddedSong() {
-        await this.songMenu[await this.songMenu.length-1].click();
-        await this.removeSongButton[await this.removeSongButton.length-1].click();
-        await this.confirmDeletionButton.click();
-    }
-
     get closeAddSongsWindowButton() {
         return $(`${this.addSongsForm} button [alt="button to close modal"]`)
     }
