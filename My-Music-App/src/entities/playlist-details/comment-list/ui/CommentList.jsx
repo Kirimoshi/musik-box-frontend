@@ -5,7 +5,11 @@ import 'tippy.js/dist/tippy.css';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 import { Validate } from '../lib/utils/CommentValidations';
-import { constants } from '../constants/constansts';
+import {
+  BACKEND_ERROR_MSGS,
+  constants,
+  TOAST_MESSAGES,
+} from '../constants/constansts';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -43,10 +47,7 @@ import {
   NewCommentForm,
 } from './CommentList.styles';
 import { isAuthenticatedSelector } from '../../../../store/user/user.selector';
-import {
-  commentErrorToastConfig,
-  OneLineMessage,
-} from '../../../../shared/Toasts';
+import { baseToastConfig, OneLineMessage } from '../../../../shared/Toasts';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import paths from '../../../../router/paths';
@@ -84,19 +85,50 @@ export default function CommentList() {
     const commentAge = currentDate - commentDate;
     return Math.floor(commentAge / constants.daysInMilliseconds);
   };
-
-  const notifyCommentError = useCallback(() => {
+  //TODO Fix toasts
+  const notify = useCallback(() => {
     toastId.current = toast(
-      <OneLineMessage message={constants.errorMsg} />,
-      commentErrorToastConfig
+      <OneLineMessage message={TOAST_MESSAGES.PENDING} />,
+      baseToastConfig
     );
   }, []);
+
+  const notifyCommentError = useCallback(() => {
+    toast.update(toastId.current, {
+      type: toast.TYPE.ERROR,
+      autoClose: 2000,
+      render: <OneLineMessage message={TOAST_MESSAGES.ERROR} />,
+    });
+  }, []);
+
+  const notifySuccess = useCallback(() => {
+    toast.update(toastId.current, {
+      type: toast.TYPE.SUCCESS,
+      autoClose: 2000,
+      render: <OneLineMessage message={TOAST_MESSAGES.SUCCESS} />,
+    });
+  }, []);
+
   useEffect(() => {
+    if (isFormSubmitted && loading) {
+      notify();
+    }
     if (isFormSubmitted && !loading && error) {
       notifyCommentError();
       setIsFormSubmitted(false);
     }
-  }, [isFormSubmitted, loading, error, notifyCommentError]);
+    if (isFormSubmitted && !loading && !error) {
+      notifySuccess();
+      setIsFormSubmitted(false);
+    }
+  }, [
+    isFormSubmitted,
+    loading,
+    error,
+    notifyCommentError,
+    notify,
+    notifySuccess,
+  ]);
 
   useEffect(() => {
     if (location.pathname.includes(paths.publicPlaylistDetails)) {
@@ -150,6 +182,7 @@ export default function CommentList() {
     }
     dispatch(addCommentToPlaylist(newComment)).then(() => {
       clearComment();
+      setIsFormSubmitted(true);
     });
   };
 
@@ -165,8 +198,16 @@ export default function CommentList() {
   );
 
   const commentPasteHandler = (e) => {
+    e.preventDefault();
     setNewComment(e.clipboardData.getData('text/plain'));
   };
+
+  useEffect(() => {
+    if (!error) return;
+    if (error === BACKEND_ERROR_MSGS.COMMENT_LIMIT_EXCEEDED) {
+      setIsButtonDisabled(true);
+    }
+  }, [error]);
 
   return (
     <CommentsSection>
@@ -217,11 +258,11 @@ export default function CommentList() {
           form={'new-comment-form'}
           name={'comment-submit-btn'}
           className={`${
-            !isAuth || commentErrors.input || isButtonDisabled
+            !isAuth || commentErrors.input || isButtonDisabled || loading
               ? 'comment-form__submit-btn button-disable'
               : 'comment-form__submit-btn'
           }`}
-          disabled={!isAuth || commentErrors.input}
+          disabled={!isAuth || commentErrors.input || loading}
           onClick={() => {
             handleClick();
           }}

@@ -28,9 +28,9 @@ export const validateMyAccount = (myAccountDetails) => {
 
   if (constants.whitespaceRegex.test(myAccountDetails.email)) {
     errors.email = 'Please enter a valid email address without any spaces';
-  } else if (constants.emailRegex.test(myAccountDetails.email)) {
+  } else if (!constants.emailRegex.test(myAccountDetails.email)) {
     errors.email =
-      'Please enter a valid email domain. Only dots and hyphens are allowed as special characters';
+      'Please enter a valid email domain. Only dots, hyphens and underscores are allowed as special characters';
   } else {
     delete errors.email;
   }

@@ -119,6 +119,7 @@ function MyAccount() {
   }, [isSaveClicked, loading, error, notify, notifyError, notifySuccess]);
 
   const handleInputPaste = (e) => {
+    e.preventDefault();
     const { name } = e.target;
     setMyAccountDetails({
       ...myAccountDetails,
@@ -185,10 +186,10 @@ function MyAccount() {
     const data = await fetch(url);
     const buffer = await data.arrayBuffer();
     const blob = new Blob([buffer], {
-      type: initProfilePicture.metadata.mime_type,
+      type: initProfilePicture?.metadata.mime_type,
     });
-    const file = new File([blob], initProfilePicture.metadata.filename, {
-      type: initProfilePicture.metadata.mime_type,
+    const file = new File([blob], initProfilePicture?.metadata.filename, {
+      type: initProfilePicture?.metadata.mime_type,
     });
     return file;
   }
