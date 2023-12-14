@@ -13,6 +13,7 @@ export const Wrapper = styled.div`
   align-items: center;
   font-family: Roboto, sans-serif;
   gap: 16px;
+  color: #fff;
 `;
 export const Header = styled.h2`
   font-size: 22px;
@@ -106,6 +107,7 @@ export const FormInput = styled.input`
   width: 100%;
   height: 100%;
   padding: 8px 40px 8px 12px;
+  color: #e6e0e9;
 `;
 
 export const InputClearButton = styled.button`

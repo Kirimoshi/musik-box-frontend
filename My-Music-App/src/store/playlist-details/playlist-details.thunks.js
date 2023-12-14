@@ -355,30 +355,18 @@ export const addCommentToPlaylist = createAsyncThunk(
         data: {
           content: commentContent,
         },
-        transformResponse: [
-          (responseData) => {
-            const { data } = JSON.parse(responseData);
-            return {
-              id: data.id,
-              userName: capitalizeWords(data.attributes.user_name),
-              userEmail: data.attributes.user_email,
-              userPicture: data.attributes.user_picture,
-              createdAtZ: formatDateDDmmmYYYY(data.attributes.created_at),
-              content: data.attributes.content,
-            };
-          },
-        ],
       });
-      return {
-        newComment: response.data,
-      };
+      return response.data;
     } catch (error) {
       if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
         throw new Error(ERROR_RESPONSE_MESSAGES.UNAUTHORIZED);
-      if (error.response.status === ERROR_RESPONSE_CODES.UNPROCESSABLE_ENTITY)
-        throw new Error(ERROR_RESPONSE_MESSAGES.UNPROCESSABLE_ENTITY);
-
-      throw error.response.data.errors;
+      if (error.response.status === ERROR_RESPONSE_CODES.UNPROCESSABLE_ENTITY) {
+        const errMsgArr = error?.response?.data?.errors?.details?.base;
+        if (errMsgArr !== undefined && Array.isArray(errMsgArr)) {
+          throw errMsgArr.join(', ');
+        }
+      }
+      throw error;
     }
   }
 );
@@ -389,9 +377,24 @@ export const addCommentToPlaylistPending = (state) => {
 };
 
 export const addCommentToPlaylistFulfilled = (state, action) => {
+  const {
+    data: {
+      id,
+      attributes: { user_name, user_email, user_picture, created_at, content },
+    },
+  } = action.payload;
+  const newComment = {
+    id,
+    userName: capitalizeWords(user_name),
+    userEmail: user_email,
+    userPicture: user_picture,
+    createdAtZ: formatDateDDmmmYYYY(created_at),
+    content,
+  };
+
   state.loading = false;
   state.playlistDetails.commentsInfo.comments = [
-    action.payload.newComment,
+    newComment,
     ...state.playlistDetails.commentsInfo.comments,
   ];
   state.playlistDetails.commentsInfo.metadata.commentsCount =
