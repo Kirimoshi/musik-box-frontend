@@ -6,7 +6,6 @@ import { PiDotBold } from 'react-icons/pi';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/user.selector';
-import { UPLOADS_URL } from '../../store/constants';
 
 import ModalDialog from '../../shared/ModalDialog';
 import { playlistDetailsSelector } from '../../store/playlist-details/playlist-details.selector';
@@ -26,6 +25,10 @@ import {
   SongImgWrapper,
 } from './SongList.styles';
 import { capitalizeWords } from '../../store/helpers';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../features/shared/ImgWrap/constants/constants';
 
 function SongList({ shouldRenderKebabMenu, shouldRenderAddedBy }) {
   // state
@@ -96,11 +99,9 @@ function SongList({ shouldRenderKebabMenu, shouldRenderAddedBy }) {
                   <SongCard className='song-list__song-card song-card__container'>
                     <SongImgWrapper className='song-card__cover'>
                       <SongCover
-                        src={
-                          cover
-                            ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
-                            : require('../../shared/assets/default_song_cover.png')
-                        }
+                        srcObj={cover}
+                        fallbackType={FALLBACK_TYPES.ALBUM}
+                        size={IMAGE_SIZES.SMALL}
                         alt='song cover'
                       />
                     </SongImgWrapper>

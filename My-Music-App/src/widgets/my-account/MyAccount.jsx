@@ -28,7 +28,6 @@ import {
   myAccountLoadingSelector,
   myAccountSelector,
 } from '../../store/my-account/my-account.selector';
-import { UPLOADS_URL } from '../../store/constants';
 import { MdPhotoCamera } from 'react-icons/md';
 import { isEmpty, validateMyAccount } from './lib/utils/MyAccountValidation';
 import Tippy from '@tippyjs/react';
@@ -42,6 +41,12 @@ import {
 import { userSelector } from '../../store/user/user.selector';
 import ModalDialog from '../../shared/ModalDialog';
 import { useBlocker } from 'react-router-dom';
+import {
+  DEFAULT_USER_AVATAR,
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../features/shared/ImgWrap/constants/constants';
+import { getImgSrc } from '../../features/shared/ImgWrap/lib/getImgSrc';
 
 function MyAccount() {
   const dispatch = useDispatch();
@@ -65,7 +70,7 @@ function MyAccount() {
   const { nickname, email, profilePicture } = myAccountDetails;
   const [myAccountErrors, setMyAccountErrors] = useState({});
   const avatarURL = initProfilePicture
-    ? `${UPLOADS_URL}/${initProfilePicture.storage}/${initProfilePicture.id}`
+    ? getImgSrc(initProfilePicture, FALLBACK_TYPES.USER, IMAGE_SIZES.LARGE)
     : '';
 
   const [isSaveClicked, setIsSaveClicked] = useState(false);
@@ -153,9 +158,7 @@ function MyAccount() {
   };
 
   const handleAvatarDelete = async () => {
-    const file = await fetchAvatar(
-      require('../../shared/assets/default_user_avatar_small.png')
-    );
+    const file = await fetchAvatar(DEFAULT_USER_AVATAR.JPG);
     setMyAccountDetails({
       ...myAccountDetails,
       profilePicture: file,
@@ -279,7 +282,11 @@ function MyAccount() {
                 />
               ) : (
                 <AvatarImage
-                  src={require('../../shared/assets/default_user_avatar_small.png')}
+                  src={getImgSrc(
+                    initProfilePicture,
+                    FALLBACK_TYPES.USER,
+                    IMAGE_SIZES.LARGE
+                  )}
                   alt='Default user avatar'
                 />
               )}

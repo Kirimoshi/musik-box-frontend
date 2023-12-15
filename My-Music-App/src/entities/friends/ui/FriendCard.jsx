@@ -20,7 +20,6 @@ import {
   AiOutlineShareAlt,
 } from 'react-icons/ai';
 import { MdDeleteForever } from 'react-icons/md';
-import { UPLOADS_URL } from '../../../store/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchAcceptFriendship,
@@ -32,6 +31,11 @@ import {
 } from '../../../store/friends/friends.reducer';
 import { friendsCTAClickedSelector } from '../../../store/friends/friends.selector';
 import ModalDialog from '../../../shared/ModalDialog';
+import ImgWrap from '../../../features/shared/ImgWrap/ui/ImgWrap';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../../features/shared/ImgWrap/constants/constants';
 
 function FriendCard({ friend, tabType }) {
   const dispatch = useDispatch();
@@ -92,12 +96,10 @@ function FriendCard({ friend, tabType }) {
       >
         <ModalDialog className='friend-card__modal' options={modalOptions} />
         <FriendCardAvatar className='friend-card__img-wrap'>
-          <img
-            src={
-              profilePicture
-                ? `${UPLOADS_URL}/${profilePicture.storage}/${profilePicture.id}`
-                : require('../../../shared/assets/default_user_avatar.jpg')
-            }
+          <ImgWrap
+            srcObj={profilePicture}
+            fallbackType={FALLBACK_TYPES.USER}
+            size={IMAGE_SIZES.MICRO}
             alt={`${nickname} avatar`}
           />
         </FriendCardAvatar>

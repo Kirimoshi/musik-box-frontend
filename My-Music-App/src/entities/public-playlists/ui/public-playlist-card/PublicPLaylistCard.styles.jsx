@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { oneLineEllipsis } from '../../../../shared/Shared.styles';
 import { flexCenter } from '../../../../widgets/playlist-details/PlaylistDetails.styles';
+import ImgWrap from '../../../../features/shared/ImgWrap/ui/ImgWrap';
 
 export const playlistCardImageWidth = 168;
 
@@ -20,7 +21,7 @@ export const PublicPlaylistCardContainer = styled.figure`
   font-family: 'Roboto', sans-serif;
 `;
 
-export const PublicPlaylistCardImage = styled.img`
+export const PublicPlaylistCardImage = styled(ImgWrap)`
   height: 100%;
   width: ${playlistCardImageWidth}px;
   object-fit: cover;

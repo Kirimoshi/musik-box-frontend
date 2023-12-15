@@ -89,6 +89,7 @@ export const CardLike = styled.div`
   padding: 9.818px;
   padding-top: ${cardPadd.top}px;
   padding-right: ${cardPadd.right}px;
+  color: var(--m-3-white, #fff);
 
   & > svg {
     height: 32.7px;

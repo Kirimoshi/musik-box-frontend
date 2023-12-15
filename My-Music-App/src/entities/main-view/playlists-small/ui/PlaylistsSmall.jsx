@@ -14,8 +14,12 @@ import {
   CardDescription,
   DescriptionCTA,
 } from './PlaylistsSmall.styles';
-import { UPLOADS_URL } from '../../../../store/constants';
 import { capitalizeWords } from '../../../../store/helpers';
+import { getImgSrc } from '../../../../features/shared/ImgWrap/lib/getImgSrc';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../../../features/shared/ImgWrap/constants/constants';
 
 const MAX_CHARS = 25;
 
@@ -60,9 +64,12 @@ function PlaylistsSmall({ playlists, subtitle, className }) {
             const shouldRenderDescription = description !== null;
             const hasLongDescription =
               description && description.length >= MAX_CHARS;
-            const coverUrl = logo
-              ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-              : require('../../../../shared/assets/default_playlist_cover.jpg');
+
+            const coverUrl = getImgSrc(
+              logo,
+              FALLBACK_TYPES.PLAYLIST,
+              IMAGE_SIZES.MEDIUM
+            );
 
             return (
               <PlaylistCard

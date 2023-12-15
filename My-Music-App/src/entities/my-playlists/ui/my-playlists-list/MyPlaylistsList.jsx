@@ -37,8 +37,11 @@ import {
   PlaylistMenuIcon,
 } from './MyPlaylistsList.styles';
 
-import { UPLOADS_URL } from '../../../../store/constants';
 import paths from '../../../../router/paths';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../../../features/shared/ImgWrap/constants/constants';
 
 function MyPlaylistsList({ searchString }) {
   const dispatch = useDispatch();
@@ -200,11 +203,9 @@ function MyPlaylistsList({ searchString }) {
               >
                 <MyPlaylistsCardImage
                   className='playlist-card__image'
-                  src={
-                    logo
-                      ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-                      : require('../../../../shared/assets/default_playlist_cover.jpg')
-                  }
+                  srcObj={logo}
+                  size={IMAGE_SIZES.MEDIUM}
+                  fallbackType={FALLBACK_TYPES.PLAYLIST}
                   alt={`song preview for ${name}`}
                   onClick={handleNavigate(id)}
                 />

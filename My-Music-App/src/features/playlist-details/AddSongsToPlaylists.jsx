@@ -7,9 +7,7 @@ import { toast } from 'react-toastify';
 
 import { baseToastConfig, OneLineMessage } from '../../shared/Toasts';
 import closeLogo from '../../shared/assets/closeLogo.svg';
-import defaultAlbumCover from '../../shared/assets/default_album_cover.jpg';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { UPLOADS_URL } from '../../store/constants';
 import {
   addSongToPlaylist,
   deleteSongFromPlaylist,
@@ -52,6 +50,10 @@ import {
   WarningMessage,
 } from './AddSongsToPlaylists.styles';
 import Pagination from '../../shared/Pagination';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../shared/ImgWrap/constants/constants';
 
 function AddSongsToPlaylists({ options }) {
   const dispatch = useDispatch();
@@ -240,11 +242,9 @@ function AddSongsToPlaylists({ options }) {
                   <SongItem className='addsong-item' key={id}>
                     <SongImgWrapper className='addsong-song-item-img'>
                       <SongImg
-                        src={
-                          cover
-                            ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
-                            : defaultAlbumCover
-                        }
+                        srcObj={cover}
+                        fallbackType={FALLBACK_TYPES.ALBUM}
+                        size={IMAGE_SIZES.SMALL}
                         alt='song preview'
                         className='addsong-song-img'
                       />

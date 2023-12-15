@@ -7,8 +7,12 @@ import {
   CardTitle,
   PlaylistContainer as SongContainer,
 } from '../../playlists-small/ui/PlaylistsSmall.styles';
-import { UPLOADS_URL } from '../../../../store/constants';
 import { CardAuthors, SonglistCard, SonglistTitle } from './Songslist.styles';
+import { getImgSrc } from '../../../../features/shared/ImgWrap/lib/getImgSrc';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../../../features/shared/ImgWrap/constants/constants';
 
 function Songslist({ songs, title = '', subtitle, className }) {
   return (
@@ -21,9 +25,11 @@ function Songslist({ songs, title = '', subtitle, className }) {
           .replaceAll(/\s/g, '-')}-songlist__container`}
       >
         {songs?.map(({ id, attributes: { artists, cover, title } }) => {
-          const coverUrl = cover
-            ? `${UPLOADS_URL}/${cover.storage}/${cover.id}`
-            : require('../../../../shared/assets/default_song_cover.png');
+          const coverUrl = getImgSrc(
+            cover,
+            FALLBACK_TYPES.ALBUM,
+            IMAGE_SIZES.MEDIUM
+          );
           return (
             <SonglistCard
               key={id}

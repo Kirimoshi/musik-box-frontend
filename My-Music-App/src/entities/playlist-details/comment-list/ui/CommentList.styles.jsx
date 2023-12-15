@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ImgWrap from '../../../../features/shared/ImgWrap/ui/ImgWrap';
 
 export const CommentsSection = styled.section`
   width: 90%;
@@ -142,7 +143,7 @@ export const CommentAuthorInfo = styled.figure`
   flex-direction: row;
   column-gap: 8px;
 `;
-export const CommentAuthorAvatar = styled.img`
+export const CommentAuthorAvatar = styled(ImgWrap)`
   grid-area: avatar;
   width: 44px;
   height: 44px;

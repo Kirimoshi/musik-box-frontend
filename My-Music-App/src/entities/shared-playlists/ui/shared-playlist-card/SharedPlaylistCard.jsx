@@ -15,11 +15,14 @@ import {
 } from '../../../public-playlists/ui/public-playlist-card/PublicPLaylistCard.styles';
 
 import { capitalizeWords, parseLikesDislikes } from '../../../../store/helpers';
-import constants from '../../../public-playlists/constants/constants';
 import paths from '../../../../router/paths';
 import { BiHeart } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 import { userPlaylistsReactionsSelector } from '../../../../store/user-playlists-reactions/user-playlists-reactions.selector';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../../../features/shared/ImgWrap/constants/constants';
 
 export function SharedPlaylistCard({ playlist }) {
   const navigate = useNavigate();
@@ -41,11 +44,9 @@ export function SharedPlaylistCard({ playlist }) {
       className='shared-playlist-card__wrapper'
     >
       <SharedPlaylistCardImage
-        src={
-          logo
-            ? constants.store_URL + logo.id
-            : require('../../../../shared/assets/default_playlist_cover.jpg')
-        }
+        srcObj={logo}
+        size={IMAGE_SIZES.MEDIUM}
+        fallbackType={FALLBACK_TYPES.PLAYLIST}
         alt={`song preview for ${name}`}
         className='shared-playlist-card__image'
       />

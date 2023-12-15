@@ -22,10 +22,7 @@ import {
   fetchPlaylistComments,
 } from '../../../../store/playlist-details/playlist-details.thunks';
 import { useLocation, useParams } from 'react-router-dom';
-import {
-  FETCH_PLAYLISTS_TYPES,
-  UPLOADS_URL,
-} from '../../../../store/constants';
+import { FETCH_PLAYLISTS_TYPES } from '../../../../store/constants';
 import Pagination from '../../../../shared/Pagination';
 import {
   CommentAuthorAvatar,
@@ -51,6 +48,10 @@ import { baseToastConfig, OneLineMessage } from '../../../../shared/Toasts';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import paths from '../../../../router/paths';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../../../features/shared/ImgWrap/constants/constants';
 
 export default function CommentList() {
   const dispatch = useDispatch();
@@ -276,14 +277,13 @@ export default function CommentList() {
       <CommentListContainer className='comments__list'>
         {comments.map(
           ({ id, userName, userEmail, userPicture, createdAtZ, content }) => {
-            const userPictureUrl = userPicture
-              ? `${UPLOADS_URL}/${userPicture.storage}/${userPicture.id}`
-              : require('../../../../shared/assets/default_user_avatar_small.png');
             return (
               <CommentContainer key={id} className={`comment-${id}__details`}>
                 <CommentAuthorInfo>
                   <CommentAuthorAvatar
-                    src={userPictureUrl}
+                    srcObj={userPicture}
+                    size={IMAGE_SIZES.MICRO}
+                    fallbackType={FALLBACK_TYPES.USER}
                     alt={`${userName} avatar`}
                     className={`comment__avatar`}
                   />

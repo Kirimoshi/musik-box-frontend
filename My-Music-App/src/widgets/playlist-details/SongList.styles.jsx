@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ImgWrap from '../../features/shared/ImgWrap/ui/ImgWrap';
 
 const songItemHeight = 100;
 const songItemGap = 24;
@@ -66,9 +67,8 @@ export const SongImgWrapper = styled.div`
   overflow: hidden;
 `;
 
-export const SongCover = styled.img`
+export const SongCover = styled(ImgWrap)`
   width: 100px;
-  // aspect-ratio: 1/1;
 `;
 
 export const SongArtistInfo = styled.div`

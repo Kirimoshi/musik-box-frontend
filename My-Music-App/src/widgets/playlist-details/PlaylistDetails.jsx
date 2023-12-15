@@ -35,7 +35,6 @@ import { userSelector } from '../../store/user/user.selector';
 import {
   FETCH_PLAYLISTS_TYPES,
   PLAYLIST_PRIVACY_TYPES,
-  UPLOADS_URL,
 } from '../../store/constants';
 import {
   playlistDetailsErrorSelector,
@@ -52,6 +51,11 @@ import {
 } from '../../store/playlist-details/playlist-details.thunks';
 import ModalForm from '../../features/my-playlists/ModalForm';
 import { setBackgroundBlur } from '../../store/app/app.reducer';
+import { getImgSrc } from '../../features/shared/ImgWrap/lib/getImgSrc';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../features/shared/ImgWrap/constants/constants';
 
 function PlaylistDetails({ playlistTypeToDisplay }) {
   const dispatch = useDispatch();
@@ -100,9 +104,7 @@ function PlaylistDetails({ playlistTypeToDisplay }) {
     playlistPrivacyType === PLAYLIST_PRIVACY_TYPES.SHARED
       ? 'profile__playlist-type--shared'
       : '';
-  const coverUrl = logo
-    ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
-    : require('../../shared/assets/default_playlist_cover.jpg');
+  const coverUrl = getImgSrc(logo, FALLBACK_TYPES.PLAYLIST, IMAGE_SIZES.LARGE);
 
   const handleAddSongModal = () => {
     setIsAddSongModalOpen(true);

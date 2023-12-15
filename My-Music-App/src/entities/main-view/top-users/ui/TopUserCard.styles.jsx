@@ -22,5 +22,6 @@ export const TopUserCardItem = styled.li`
     aspect-ratio: 1/1;
     border-radius: 50%;
     overflow: hidden;
+    object-fit: cover;
   }
 `;

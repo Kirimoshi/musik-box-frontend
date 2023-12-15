@@ -7,7 +7,6 @@ import { IoCloseCircleOutline } from 'react-icons/io5';
 
 import { validate } from '../shared/CreateNewPlaylistValidation';
 import ModalDialog from '../../shared/ModalDialog';
-import { UPLOADS_URL } from '../../store/constants';
 
 import {
   CloseButton,
@@ -31,6 +30,11 @@ import {
   Title,
   ValidationLabel,
 } from './ModalForm.styles';
+import { getImgSrc } from '../shared/ImgWrap/lib/getImgSrc';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../shared/ImgWrap/constants/constants';
 
 function ModalForm({ options }) {
   const {
@@ -45,6 +49,7 @@ function ModalForm({ options }) {
 
   const imageInputRef = useRef(null); // dialog reference
   const formRef = useRef(null); // form reference
+  // const
 
   useEffect(() => {
     if (isModalFormOpen) {
@@ -76,26 +81,32 @@ function ModalForm({ options }) {
 
   const logo = playlist?.attributes?.logo || null;
   const coverURL = playlist?.attributes?.logo
-    ? `${UPLOADS_URL}/${logo.storage}/${logo.id}`
+    ? getImgSrc(logo, FALLBACK_TYPES.PLAYLIST, IMAGE_SIZES.LARGE)
     : '';
   const shouldRenderDeleteLogoButton = !!playlistDetails.playlistLogo;
 
   useEffect(() => {
-    if (!coverURL) {
-      return;
-    }
+    if (!coverURL) return;
+
     addFileToState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchImage(url) {
-    const data = await fetch(url);
-    const buffer = await data.arrayBuffer();
-    const blob = new Blob([buffer], { type: logo.metadata.mime_type });
-    const file = new File([blob], logo.metadata.filename, {
-      type: logo.metadata.mime_type,
-    });
-    return file;
+    try {
+      const data = await fetch(url);
+      if (!data.ok) {
+        throw new Error('Fetch user avatar from url to file failed');
+      }
+      const buffer = await data.arrayBuffer();
+      const blob = new Blob([buffer], { type: logo.metadata.mime_type });
+      const file = new File([blob], logo.metadata.filename, {
+        type: logo.metadata.mime_type,
+      });
+      return file;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function addFileToState() {
@@ -194,6 +205,7 @@ function ModalForm({ options }) {
               !createPlaylistErrors.playlistLogo ? (
                 <CoverImage
                   src={URL.createObjectURL(playlistDetails.playlistLogo)}
+                  // src={coverURL}
                   alt='Playlist Logo'
                 />
               ) : (
