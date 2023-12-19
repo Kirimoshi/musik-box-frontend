@@ -1,33 +1,37 @@
-@007 @viewPublicPlaylistsPage @Smoke
-Feature: View the Public Playlists page
+@007 @viewPublicPlaylistsPage
+Feature: EPMRDPEMAP-647 - View the Public Playlists page
 
-    Scenario: 1.1 The Public Playlists page should be accessible to guest
+    @Smoke
+    Scenario: The Public Playlists page should be accessible to guest
         Given the user is open "signIn" page
-        Then the user is on the "signIn" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        When the user is on the "signIn" page
+        Then the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
 
-    Scenario: 1.2 The Public Playlists page should be accessible to authenticated users
+    @Smoke
+    Scenario: The Public Playlists page should be accessible to authenticated users
         Given the user is open "signIn" page
-        Then the user is on the "signIn" page
-        When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
-        Then the user is on the "home" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        When the user is on the "signIn" page
+        Then the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
+        And the user is on the "home" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then the user logging out
+        And the user logging out
 
-    Scenario: 2. The Public Playlists page should display Public playlists created by other app users
+    @Smoke
+    Scenario: The Public Playlists page should display Public playlists created by other app users
         Given the user is open "publicPlaylists" page
-        Then the user is on the "publicPlaylists" page
-        And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then "Public Playlist Created By Labels" elements of "Public Playlists List" are displayed on "publicPlaylists" page
+        When the user is on the "publicPlaylists" page
+        Then "Public Playlists List" is displayed on "publicPlaylists" page
+        And "Public Playlist Created By Labels" elements of "Public Playlists List" are displayed on "publicPlaylists" page
 
-    Scenario Outline: 3.1 Unauthorized users must be able to navigate to the Public Playlists page by clicking the Public Playlists button on the following pages: '<page>'
+    @Smoke
+    Scenario Outline: Unauthorized users must be able to navigate to the Public Playlists page by clicking the Public Playlists button on the following pages: '<page>'
         When the user is open "<page>" page
         Then the user is on the "<page>" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
+        When the user clicks on the "sidebar" "Public Playlists" "Button"
         Then the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
         Examples:
@@ -36,17 +40,18 @@ Feature: View the Public Playlists page
             | signIn |
             | signUp |
 
-    Scenario Outline: 3.2 Authorized users must be able to navigate to the Public Playlists page by clicking the Public Playlists button on the following pages: '<page>'
+    @Smoke
+    Scenario Outline: Authorized users must be able to navigate to the Public Playlists page by clicking the Public Playlists button on the following pages: '<page>'
         Given the user is open "signIn" page
-        Then the user is on the "signIn" page
-        When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
-        Then the user is on the "home" page
-        When the user clicks on the "sidebar" "<button>" "Button" element
-        Then the user is on the "<page>" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        When the user is on the "signIn" page
+        Then the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
+        And the user is on the "home" page
+        And the user clicks on the "sidebar" "<button>" "Button"
+        And the user is on the "<page>" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then the user logging out
+        And the user logging out
         Examples:
             | button           | page            |
             | Shared Playlists | sharedPlaylists |
@@ -55,92 +60,97 @@ Feature: View the Public Playlists page
     # ## This page is not implemented yet
     # ## | My Account page |
 
-    @VerifyingOrderOfPlaylists @Regression
-    Scenario: 4.1 The playlists should be ordered by the number of likes in descending order for authorized users
+    @Regression
+    Scenario: The playlists should be ordered by the number of likes in descending order for authorized users
         # and then by the date they were created in descending order - the date is currently mocked and the same for all playlists
         Given the user is open "signIn" page
-        Then the user is on the "signIn" page
-        When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
-        Then the user is on the "home" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        When the user is on the "signIn" page
+        And the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
+        And the user is on the "home" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by the number of likes in descending order
-        Then the user logging out
+        And playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by the number of likes in descending order
 
-    @VerifyingOrderOfPlaylists @Regression
-    Scenario: 4.2 The playlists should be ordered by the number of likes in descending order for unauthorized users
-        # and then by the date they were created in descending order - the date is currently mocked and the same for all playlists
-        Given the user is open "signIn" page
+    @Regression
+    Scenario: The playlists should be ordered by the number of likes in descending order for unauthorized users
+        Given the user logging out
+        When the user is open "signIn" page
         Then the user is on the "signIn" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by the number of likes in descending order
+        And playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by the number of likes in descending order
 
-    Scenario: 5.1 Authorized users must see the number of likes and dislikes the playlist has
+    @Smoke
+    Scenario: Authorized users must see the number of likes and dislikes the playlist has
         Given the user is open "signIn" page
-        Then the user is on the "signIn" page
-        When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
-        Then the user is on the "home" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
-        And "Public Playlists List" is displayed on "publicPlaylists" page
-        And "Public Playlist Like Button" elements of "Public Playlists List" are displayed on "publicPlaylists" page
-        And "Public Playlist Like Counter" elements of "Public Playlists List" are displayed on "publicPlaylists" page
-        And "Public Playlist Dislike Button" elements of "Public Playlists List" are displayed on "publicPlaylists" page
-        And "Public Playlist Dislike Counter" elements of "Public Playlists List" are displayed on "publicPlaylists" page
-        Then the user logging out
-
-    Scenario: 5.2 Unauthorized users must see the number of likes and dislikes the playlist has
-        Given the user is open "signIn" page
-        Then the user is on the "signIn" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        When the user is on the "signIn" page
+        Then the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
+        And the user is on the "home" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
         And "Public Playlist Like Button" elements of "Public Playlists List" are displayed on "publicPlaylists" page
         And "Public Playlist Like Counter" elements of "Public Playlists List" are displayed on "publicPlaylists" page
         And "Public Playlist Dislike Button" elements of "Public Playlists List" are displayed on "publicPlaylists" page
         And "Public Playlist Dislike Counter" elements of "Public Playlists List" are displayed on "publicPlaylists" page
 
-    Scenario: 6. Each playlist should display 10 songs
+    @Smoke
+    Scenario: Unauthorized users must see the number of likes and dislikes the playlist has
+        Given the user logging out
+        When the user is open "signIn" page
+        Then the user is on the "signIn" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
+        And "Public Playlists List" is displayed on "publicPlaylists" page
+        And "Public Playlist Like Button" elements of "Public Playlists List" are displayed on "publicPlaylists" page
+        And "Public Playlist Like Counter" elements of "Public Playlists List" are displayed on "publicPlaylists" page
+        And "Public Playlist Dislike Button" elements of "Public Playlists List" are displayed on "publicPlaylists" page
+        And "Public Playlist Dislike Counter" elements of "Public Playlists List" are displayed on "publicPlaylists" page
+
+    @Smoke
+    Scenario: Each playlist should display 10 songs
         Given the user is open "publicPlaylists" page
-        Then the user is on the "publicPlaylists" page
-        And "Public Playlists List" is displayed on "publicPlaylists" page
+        When the user is on the "publicPlaylists" page
+        Then "Public Playlists List" is displayed on "publicPlaylists" page
         And every playlist in "publicPlaylistsList" on the "publicPlaylists" page has 10 songs
 
     # # no possibility to divide song name and an author name
-    Scenario: 7. Playlists songs card items include a song name and an author
+    @Smoke
+    Scenario: Playlists songs card items include a song name and an author
         Given the user is open "publicPlaylists" page
-        Then the user is on the "publicPlaylists" page
-        And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then "Public Playlist Song List" elements of "Public Playlists List" are displayed on "publicPlaylists" page
+        When the user is on the "publicPlaylists" page
+        Then "Public Playlists List" is displayed on "publicPlaylists" page
+        And "Public Playlist Song List" elements of "Public Playlists List" are displayed on "publicPlaylists" page
 
-    Scenario: 8.1 No more than 10 playlists should be displayed per page
+    @Smoke
+    Scenario: No more than 10 playlists should be displayed per page
         Given the user is open "publicPlaylists" page
-        Then the user is on the "publicPlaylists" page
-        And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then "publicPlaylists" page has no more than 10 elements in "Public Playlists List"
+        When the user is on the "publicPlaylists" page
+        Then "Public Playlists List" is displayed on "publicPlaylists" page
+        And "publicPlaylists" page has no more than 10 elements in "Public Playlists List"
 
-    Scenario: 8.2 Pagination is working and open next 10 playlists
+    @Smoke
+    Scenario: Pagination is working and open next 10 playlists
         Given the user is open "publicPlaylists" page
-        Then the user is on the "publicPlaylists" page
+        When the user is on the "publicPlaylists" page
+        Then "Public Playlists List" is displayed on "publicPlaylists" page
+        And "publicPlaylists" page has no more than 10 elements in "Public Playlists List"
+        And the user clicks on the "pagination" "Right" "Arrow"
         And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then "publicPlaylists" page has no more than 10 elements in "Public Playlists List"
-        When the user clicks on the "pagination" "Right" "Arrow" element
-        And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then "publicPlaylists" page has no more than 10 elements in "Public Playlists List"
+        And "publicPlaylists" page has no more than 10 elements in "Public Playlists List"
 
-    @VerifyingFilterFeature @Regression
-    Scenario Outline: 7.1 The Public Playlists page should have a filter feature that allows Guest to search for playlists by the following: <propertyName>
+    @Regression
+    Scenario Outline: The Public Playlists page should have a filter feature that allows Guest to search for playlists by the following: <propertyName>
         Given I run mocking data
-        Then the user is open "publicPlaylists" page
+        When the user is open "publicPlaylists" page
         Then the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
         And "Search Box Value Input" is displayed on "publicPlaylists" page
-        When the user "Input" "Value" in the "publicPlaylists" "Search Box" as: "<property>"
-        When the user clicks on the "publicPlaylists" page "Search" "Icon" element
-        Then "publicPlaylists" page "<elementName>" "<elementType>" contains next text: "<property>"
+        And the user "Input" "Value" in the "publicPlaylists" "Search Box" as: "<property>"
+        And the user clicks on the "publicPlaylists" page "Search" "Icon"
+        And "publicPlaylists" page "<elementName>" "<elementType>" contains next text: "<property>"
         Examples:
             | propertyName              | property         | elementName             | elementType |
             | Playlist name             | The unique album | publicPlaylistName      | List        |
@@ -149,78 +159,79 @@ Feature: View the Public Playlists page
             | Song name                 | Du hast          | publicPlaylistSong      | List        |
             | Author name               | Rammstein        | publicPlaylistSong      | List        |
 
-    @VerifyingFilterFeature @Regression
-    Scenario Outline: 7.2 The Public Playlists page should have a filter feature that allows Users to search for playlists by the following: <propertyName>
+
+    @Regression
+    Scenario Outline: The Public Playlists page should have a filter feature that allows Users to search for playlists by the following: <propertyName>
         Given I run mocking data
-        Then the user is open "signIn" page
+        When the user is open "signIn" page
         Then the user is on the "signIn" page
-        When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
-        Then the user is on the "home" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        And the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
+        And the user is on the "home" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
         And "Search Box Value Input" is displayed on "publicPlaylists" page
-        When the user "Input" "Value" in the "publicPlaylists" "Search Box" as: "<property>"
-        When the user clicks on the "publicPlaylists" page "Search" "Icon" element
-        Then "publicPlaylists" page "<elementName>" "<elementType>" contains next text: "<property>"
-        Then the user logging out
+        And the user "Input" "Value" in the "publicPlaylists" "Search Box" as: "<property>"
+        And the user clicks on the "publicPlaylists" page "Search" "Icon"
+        And "publicPlaylists" page "<elementName>" "<elementType>" contains next text: "<property>"
+        And the user logging out
         Examples:
             | propertyName              | property         | elementName             | elementType |
             | Playlist name             | The unique album | publicPlaylistName      | List        |
             | Playlist owner's nickname | John             | publicPlaylistCreatedBy | Labels      |
-        # #     # # |Playlist description| alias     ||| - need to open each playlist to check description
+            # #     # # |Playlist description| alias     ||| - need to open each playlist to check description
             | Song name                 | Du hast          | publicPlaylistSong      | List        |
             | Author name               | Rammstein        | publicPlaylistSong      | List        |
 
-    @VerifyingSortingFeature @Regression
-    Scenario Outline: 8.1.1 The Public Playlists page should have a sorting feature that allows Guests to sort playlists by playlist name in <Order>
+    @Regression
+    Scenario Outline: The Public Playlists page should have a sorting feature that allows Guests to sort playlists by playlist name in <Order>
         Given the user is open "signIn" page
-        Then the user is on the "signIn" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        When the user is on the "signIn" page
+        Then the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
-        When the user clicks on the "publicPlaylists" page "Sort" "Icon" element
-        Then "Sort Menu" is displayed on "publicPlaylists" page
+        And the user clicks on the "publicPlaylists" page "Sort" "Icon"
+        And "Sort Menu" is displayed on "publicPlaylists" page
         And "Sort Group Name By Name Of Playlist" is displayed on "publicPlaylists" page
         And "Sort By Name Of Playlist Ascending Order Button" is displayed on "publicPlaylists" page
         And "Sort By Name Of Playlist Descending Order Button" is displayed on "publicPlaylists" page
-        When the user clicks on the "publicPlaylists" page "Sort By Name Of Playlist <Order>" "Button" element
-        Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by playlist name in <order> order
+        And the user clicks on the "publicPlaylists" page "Sort By Name Of Playlist <Order>" "Button"
+        And playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by playlist name in <order> order
         Examples:
             | Order            | order      |
             | Ascending Order  | ascending  |
             | Descending Order | descending |
 
-    @VerifyingSortingFeature @Regression
-    Scenario Outline: 8.1.2 The Public Playlists page should have a sorting feature that allows Users to sort playlists by playlist name in <Order>
+    @Regression
+    Scenario Outline: The Public Playlists page should have a sorting feature that allows Users to sort playlists by playlist name in <Order>
         Given the user is open "signIn" page
-        Then the user is on the "signIn" page
-        When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
-        Then the user is on the "home" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        When the user is on the "signIn" page
+        Then the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
+        And the user is on the "home" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
-        When the user clicks on the "publicPlaylists" page "Sort" "Icon" element
-        Then "Sort Menu" is displayed on "publicPlaylists" page
+        And the user clicks on the "publicPlaylists" page "Sort" "Icon"
+        And "Sort Menu" is displayed on "publicPlaylists" page
         And "Sort Group Name By Name Of Playlist" is displayed on "publicPlaylists" page
         And "Sort By Name Of Playlist Ascending Order Button" is displayed on "publicPlaylists" page
         And "Sort By Name Of Playlist Descending Order Button" is displayed on "publicPlaylists" page
-        When the user clicks on the "publicPlaylists" page "Sort By Name Of Playlist <Order>" "Button" element
-        Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by playlist name in <order> order
-        Then the user logging out
+        And the user clicks on the "publicPlaylists" page "Sort By Name Of Playlist <Order>" "Button"
+        And playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by playlist name in <order> order
+        And the user logging out
         Examples:
             | Order            | order      |
             | Ascending Order  | ascending  |
             | Descending Order | descending |
 
     # # this feature should be refactored by FE team
-    @VerifyingSortingFeature @Regression
-    Scenario: 8.2.1 The Public Playlists page should have a sorting feature that allows Guests to sort playlists by the number of comments in ascending or descending order.
+    @Regression
+    Scenario: The Public Playlists page should have a sorting feature that allows Guests to sort playlists by the number of comments in ascending or descending order.
         Given the user is open "publicPlaylists" page
-        Then the user is on the "publicPlaylists" page
-        And "Public Playlists List" is displayed on "publicPlaylists" page
-        When the user clicks on the "publicPlaylists" page "Sort" "Icon" element
-        Then "Sort Menu" is displayed on "publicPlaylists" page
+        When the user is on the "publicPlaylists" page
+        Then "Public Playlists List" is displayed on "publicPlaylists" page
+        And the user clicks on the "publicPlaylists" page "Sort" "Icon"
+        And "Sort Menu" is displayed on "publicPlaylists" page
         And "Sort Group Name By Comments" is displayed on "publicPlaylists" page
         And "Sort By Comments Ascending Order Button" is displayed on "publicPlaylists" page
         And "Sort By Comments Descending Order Button" is displayed on "publicPlaylists" page
@@ -232,16 +243,16 @@ Feature: View the Public Playlists page
     # Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by number of comments in descending order - this validation step doesn't exist yet
 
     # # this feature should be refactored by FE team
-    @VerifyingSortingFeature @Regression
-    Scenario: 8.2.2 The Public Playlists page should have a sorting feature that allows Users to sort playlists by the number of comments in ascending or descending order.
+    @Regression
+    Scenario: The Public Playlists page should have a sorting feature that allows Users to sort playlists by the number of comments in ascending or descending order.
         Given the user is open "signIn" page
         When the user sing-ins without remembering with "test.user@example.com" and "secreT!123"
         Then the user is on the "home" page
-        When the user clicks on the "sidebar" "Public Playlists" "Button" element
-        Then the user is on the "publicPlaylists" page
+        And the user clicks on the "sidebar" "Public Playlists" "Button"
+        And the user is on the "publicPlaylists" page
         And "Public Playlists List" is displayed on "publicPlaylists" page
-        When the user clicks on the "publicPlaylists" page "Sort" "Icon" element
-        Then "Sort Menu" is displayed on "publicPlaylists" page
+        And the user clicks on the "publicPlaylists" page "Sort" "Icon"
+        And "Sort Menu" is displayed on "publicPlaylists" page
         And "Sort Group Name By Comments" is displayed on "publicPlaylists" page
         And "Sort By Comments Ascending Order Button" is displayed on "publicPlaylists" page
         And "Sort By Comments Descending Order Button" is displayed on "publicPlaylists" page
@@ -253,8 +264,9 @@ Feature: View the Public Playlists page
         # Then playlists in "publicPlaylistsList" on the "publicPlaylists" page are ordered by number of comments in descending order - this validation step doesn't exist yet
         Then the user logging out
 
-    Scenario: 9. Each playlist on the Public Playlists page should be clickable
+    @Smoke
+    Scenario: Each playlist on the Public Playlists page should be clickable
         Given the user is open "publicPlaylists" page
-        Then the user is on the "publicPlaylists" page
-        And "Public Playlists List" is displayed on "publicPlaylists" page
-        Then every element of "publicPlaylistsList" on the "publicPlaylists" page is clickable
+        When the user is on the "publicPlaylists" page
+        Then "Public Playlists List" is displayed on "publicPlaylists" page
+        And every element of "publicPlaylistsList" on the "publicPlaylists" page is clickable

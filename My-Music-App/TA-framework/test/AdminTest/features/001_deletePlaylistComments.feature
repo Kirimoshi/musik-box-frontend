@@ -17,7 +17,6 @@ Feature: Admin playlist comments moderation
     Then the "playlist_comments" page 1 "Comment" has "View Button"
     Then the "playlist_comments" page 1 "Comment" has "Delete Button"
 
-@DeleteCommentsFeature @Smoke
   Scenario: Verify that the admin user is able to delete comments from playlist
     Given the admin is on the "playlist_comments" page
     Then the "playlist_comments" page 1 "Playlist Comment" has the initial value

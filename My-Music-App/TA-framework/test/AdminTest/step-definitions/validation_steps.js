@@ -83,7 +83,7 @@ Then(/the "([^"]*)" is "([^"]*)" "([^"]*)"/, async function (page, element, type
   const currentDate = date.toLocaleDateString('en-US', options);
   const formattedCurrentDate = currentDate.replace(/at (\d+):(\d+) GMT\+(\d+)/, '$1:$2')
   if (currentElementDate !== formattedCurrentDate) {
-    const modifiedDateDate = arr.replace(/(\d+)$/g, (number) => {
+    const modifiedDateDate = currentElementDate.replace(/(\d+)$/g, (number) => {
       const modifiedNumber = parseInt(number, 10) - 1;
       return modifiedNumber.toString().padStart(number.length, '0');
     });

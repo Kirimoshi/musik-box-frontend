@@ -21,4 +21,8 @@ export class FriendsPage extends BasePage {
   get dialogWindowAddFriendButton() {
     return $(`button.add-friend-modal__btn--submit`);
   }
+
+  get sendByMeButton() {
+    return $(`a[href="/friends/sent"]`);
+  }
 }

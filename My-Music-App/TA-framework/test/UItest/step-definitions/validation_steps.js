@@ -50,8 +50,7 @@ Then(/"([^"]*)" (page )?"([^"]*)" "([^"]*)" is: "([^"]*)"/,
   }
     return currentElementText === expectedText;
   }, {
-    timeout: 10000,
-    timeoutMsg: 'expected text to be changed after 10s'
+    timeout: 10000
   })
   await browser.pause(500);
   assert.equal(currentElementText, expectedText, `${place} doesn't match ${expectedText} value`)
@@ -96,8 +95,8 @@ Then(/the "([^"]*)" page "([^"]*)" elements length are (not )?less than the init
       ifDeleted = await Pages[page][camelize(`${element}`)];
       return ifDeleted.length < this.initialLength;
     }, {
-      timeout: 15000,
-      timeoutMsg: `expected element to be defined after 15s`
+      timeout: 10000,
+      timeoutMsg: `expected element to be defined after 10s`
     });
     assert.equal(await ifDeleted.length, this.initialLength - 1,
       `Expected the length to be one less than the ${this.initialLength} length`)
@@ -126,7 +125,7 @@ Then(/"([^"]*)" is displayed on "([^"]*)" page/, async function (element, page) 
      timeout: 10000,
      timeoutMsg: `Element ${currentElement} did not exist in 10 seconds`
    });
-   await expect(await currentElement).toBeDisplayed();
+    await expect(await currentElement).toBeDisplayed();
 });
 
 Then(/"([^"]*)" (\d+)? ?(elements|element)? ?of "([^"]*)" are (not )?displayed on "([^"]*)" page/,
@@ -221,7 +220,7 @@ Then(/"([^"]*)" page "([^"]*)" "([^"]*)" contains next text: "([^"]*)"/, async f
     let elementText = await Pages[page][camelize(`${element}${type}`)];
     for (let elements of elementText) {
       textToCheck = await elements.getText();
-      return textToCheck;
+      return await textToCheck!==undefined;
     }
   }, {
     timeout: 10000,
@@ -265,7 +264,7 @@ Then(/the "([^"]*)" is added to the "([^"]*)" page "([^"]*)"/, async function (v
     timeout: 10000,
     timeoutMsg: 'Comment was not found in the list within 10 seconds'
   });
-  assert.equal(commentsArray[0], value, "Comment is not found")
+  assert.equal(await commentsArray[0], value, "Comment is not found")
 });
 
 Then(/the "([^"]*)" in the "([^"]*)" page is "([^"]*)" and click is "([^"]*)"/,
@@ -424,7 +423,7 @@ Then(/the popular playlists sorted by the largest number of likes/, async functi
     const likesDislikes = await playlistAttributes.map(playlist => playlist.attributes.number_likes_dislikes);
     const likes = likesDislikes.map(likeStr => parseInt(likeStr.split(':')[1]));
     const isDecreasingOrEqual = likes.slice(1).every((value, index) => value <= likes[index]);
-    assert.isTrue(isDecreasingOrEqual, `Expected the ${likes} to be decreasing`);
+    assert.isTrue(await isDecreasingOrEqual, `Expected the ${likes} to be decreasing`);
 });
 
 Then(/the "([^"]*)" playlists have "([^"]*)"/, async function (playlistType, elementType) {
@@ -464,17 +463,38 @@ Then(/"([^"]*)" "([^"]*)" of each "([^"]*)" are displayed on "([^"]*)" page/, as
   assert.isTrue(await elementPropertyValue, `the ${elementPropertyValue} is not displayed`);
 });
 
-Then(/friend request from user with name "([^"]*)" and email "([^"]*)" is displayed on the friends page/, async function (name, email) {
-  const responseLogin = await sendRequest("api/v1/login", userData, "post", null, {
+Then(/friend request (from|to)? "([^"]*)" is (displayed|not displayed|canceled)?/,
+  async function (direction, value, event) {
+  const responseDefaultUser = await sendRequest("api/v1/login", userData, "post", null, {
     "accept": "*/*",
     "Content-Type": "application/json"
   });
-  const accessToken = await responseLogin.data.access;
-  const allFriendsResponse = await sendRequest("api/v1/my/friendships/?direction=received&page=1&per_page=10", null, "get", accessToken);
-  const friendsData = allFriendsResponse.data;
-  const friendsAttributes = await friendsData.friendships.data.filter(playlist => playlist.attributes)
-  const currentFriendEmail = await friendsAttributes.map(friend => friend.attributes.peer.email);
-  const currentFriendName = await friendsAttributes.map(friend => friend.attributes.peer.nickname);
-  assert.equal(await currentFriendEmail[0], email, `The ${currentFriendEmail[0]} is not found`);
-  assert.equal(await currentFriendName[0], name, `The ${currentFriendName[0]} is not found`);
-});
+  const responseNewUser = await sendRequest("api/v1/login", newUserData, "post", null, {
+    "accept": "*/*",
+    "Content-Type": "application/json"
+  });
+  const accessTokenDefaultUser = await responseDefaultUser.data.access;
+  const accessTokenNewUser = await responseNewUser.data.access;
+    
+  const receivedResponse = await sendRequest("api/v1/my/friendships/?direction=received&page=1&per_page=10", null, "get", accessTokenDefaultUser);
+  const receivedFriendsData = receivedResponse.data;
+  const receivedFriendsAttributes = await receivedFriendsData.friendships.data.filter(playlist => playlist.attributes)
+  const receivedFriendEmail = await receivedFriendsAttributes.map(friend => friend.attributes.peer.email);
+    
+  const sentResponse = await sendRequest("api/v1/my/friendships/?direction=sent&page=1&per_page=10", null, "get", accessTokenNewUser);
+  const sentFriendsData = sentResponse.data;
+  const sentFriendsAttributes = await sentFriendsData.friendships.data.filter(playlist => playlist.attributes)
+  const sentFriendEmail = await sentFriendsAttributes.map(friend => friend.attributes.peer.email);
+    
+  if (event === "displayed" && direction === "from") {
+    assert.equal(await receivedFriendEmail[0], value, `The ${receivedFriendEmail[0]} is not found`);
+  } else if (event === "not displayed" && direction === "from") {
+    assert.notEqual(await receivedFriendEmail[0], value, `The ${receivedFriendEmail[0]} was found`);
+  } else if (event === "canceled" && direction === "to") {
+    assert.equal(await sentFriendEmail[0], undefined, `The ${sentFriendEmail[0]} was found`);
+  } else {
+    throw new Error("The element is displayed wrong");
+  }
+  });
+
+

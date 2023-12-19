@@ -40,7 +40,6 @@ Feature: EPMRDPEMAP-645 Like and Dislike public playlist
         And "Public Playlist Like Counter" is displayed on "publicPlaylist" page
         And "Public Playlist Dislike Counter" is displayed on "publicPlaylist" page
 
-    @LikePlaylistFeature @Smoke
     Scenario: The user is able to like the "The popular songs" Public playlist
         Given the "Public Playlist Like Counter" in the "publicPlaylist" has "0" value
         When the user clicks on the "publicPlaylist" page "Public Playlist" "Like Button" element
@@ -53,7 +52,6 @@ Feature: EPMRDPEMAP-645 Like and Dislike public playlist
         Then the user discard likes "The popular songs" playlist
         And the "Public Playlist Like Counter" in the "publicPlaylist" has "0" value
 
-    @DislikePlaylistFeature @Smoke
     Scenario: The user is able to dislike the "The popular songs" Public playlist
         Given the "Public Playlist Dislike Counter" in the "publicPlaylist" has "0" value
         When the user clicks on the "publicPlaylist" page "Public Playlist" "Dislike Button" element

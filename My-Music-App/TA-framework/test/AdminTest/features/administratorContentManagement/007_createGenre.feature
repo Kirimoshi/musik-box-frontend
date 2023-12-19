@@ -1,26 +1,27 @@
-@007 @createGenre @Regression
+@007 @createGenre
 Feature: Admin create new Genre
 
-    Scenario: Verify that the admin user log in with valid data
-        Given the admin "login" to the system as the admin user
-        Then the admin is on the "admin" page
-
+    @Regression
     Scenario: Verifying details about genres in the "Genres" page
-        Given the admin is on the "admin" page
+        Given the admin "login" to the system as the admin user
+        When the admin is on the "admin" page
+        Then the admin clicks on the "header" "Genres" "Button"
+        And the admin is on the "genres" page
+        And the "header" "Current" "Title" is: "Genres"
+        And the "genres" page 1 "Genre" has "Id"
+        And the "genres" page 1 "Genre" has "Title"
+        And the "genres" page 1 "Genre" has "Created Date"
+        And the "genres" page 1 "Genre" has "Updated Date"
+        And the admin user log-out
+
+    @Smoke
+    Scenario: Verifying that admin has ability to create new Genre
+        Given the admin "login" to the system as the admin user
         When the admin clicks on the "header" "Genres" "Button"
         Then the admin is on the "genres" page
-        Then the "header" "Current" "Title" is: "Genres"
-        Then the "genres" page 1 "Genre" has "Id"
-        Then the "genres" page 1 "Genre" has "Title"
-        Then the "genres" page 1 "Genre" has "Created Date"
-        Then the "genres" page 1 "Genre" has "Updated Date"
-
-    @createGenreFeature @Smoke
-    Scenario: Verifying that admin has ability to create new Genre
-        Given the admin is on the "genres" page
-        When the admin clicks on the "genres" page "New Genre" "Button"
-        Then the admin is on the "new_genre" page
-        Then the "header" "Current" "Title" is: "New Genre"
-        Then the admin "Input" "Genre Title" in the "new_genre" page as: "Created Genre"
-        When the admin clicks on the "new_genre" page "Create Genre" "Button"
-        Then the "header" "Successfully" "Message" is: "Genre was successfully created."
+        And the admin clicks on the "genres" page "New Genre" "Button"
+        And the admin is on the "new_genre" page
+        And the "header" "Current" "Title" is: "New Genre"
+        And the admin "Input" "Genre Title" in the "new_genre" page as: "Created Genre"
+        And the admin clicks on the "new_genre" page "Create Genre" "Button"
+        And the "header" "Successfully" "Message" is: "Genre was successfully created."
