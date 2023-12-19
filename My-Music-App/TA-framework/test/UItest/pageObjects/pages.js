@@ -9,6 +9,7 @@ import { SharedPlaylistsPage } from "./sharedPlaylistsPage";
 import { FriendsPage } from "./friendsPage";
 import { SharedPlaylistPage } from "./sharedPlaylistPage";
 import { MyPlaylistPage } from "./MyPlaylistPage";
+import { SendByMe } from "./friendsSendByMePage";
 
 class Pages {
     constructor() {
@@ -23,7 +24,7 @@ class Pages {
         this.sharedPlaylist = new SharedPlaylistPage();
         this.friends = new FriendsPage();
         this.publicPlaylist = new PublicPlaylistPage();
-        // Add more instances as needed
+        this.sendByMe = new SendByMe();
     }
 }
 export default Pages = new Pages();

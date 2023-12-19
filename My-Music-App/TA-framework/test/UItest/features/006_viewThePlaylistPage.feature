@@ -1,25 +1,17 @@
 @006 @viewThePlaylistPage @Smoke
 Feature: EPMRDPEMAP-223 - View the Playlist page
 
-  @Login @Regression
-  Scenario: Verify that the authenticated user sing in with valid data
-    Given the user is open "signIn" page
-    When the user sing-ins with "test.user@example.com" and "secreT!123"
-    Then the user is on the "home" page
+  Background: Verify that the authenticated user is able to redirect to the my playlist page
+    Given the user "signIn" to the application
+    When the user is on the "home" page
+    Then the user clicks on the "sidebar" "My Playlists" "Button" element
+    And the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
+    And the user is on the "current" "myPlaylist" page
 
-  @RedirectionToThePlaylistPage @Regression
-  Scenario: Verify that the user is able to redirect to the "playlist" page
-    Given the user is on the "home" page
-    When the user clicks on the "sidebar" "My Playlists" "Button" element
-    Then the user is on the "myPlaylists" page
-    When the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
-    Then the user is on the "current" "myPlaylist" page
-
-  Scenario: Verifying my playlist elements
-    Given the user is on the "current" "myPlaylist" page
-    Then "Playlist Title" is displayed on "myPlaylist" page
-    And "Playlist Item" is displayed on "myPlaylist" page
-    And "Playlist Likes" is displayed on "myPlaylist" page
+  Scenario: Verify my playlist elements
+    Given "Playlist Title" is displayed on "myPlaylist" page
+    When "Playlist Item" is displayed on "myPlaylist" page
+    Then "Playlist Likes" is displayed on "myPlaylist" page
     And "Playlist Dislikes" is displayed on "myPlaylist" page
     And "Created Date" is displayed on "myPlaylist" page
     And "Updated Date" is displayed on "myPlaylist" page

@@ -1,10 +1,10 @@
-@001 @signUp @Regression
-Feature: The SingUp feature
+@001 @signUp
+Feature: EPMRDPEMAP-204 - The SingUp feature
   Background: Opening "signUp" page
     Given the user is open "signUp" page
 
-  @signUp @Smoke  
-  Scenario Outline:  Verify that the user with valid data can sing up
+  @Smoke  
+  Scenario Outline: Verify that the user with valid data can sing up
     Then the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
     Then the user is on the "signIn" page
     Then the user deletes personal account
@@ -13,6 +13,7 @@ Feature: The SingUp feature
       | nickname | email             | password    | confirm_password |
       | "Scj15"  | "Valid25@ukr.net" | "Qwer212@#" | "Qwer212@#"      |
 
+  @Regression
   Scenario Outline: Verify nickname data validation and nickname error messages during sign-up
     When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
     Then "signUp" page "Nick Name" "Error Message" is: <error_message>
@@ -22,6 +23,7 @@ Feature: The SingUp feature
       | "Ne"     | "barfoo"         | "Qwer212@#" | "Qwer212@#"      | "Please enter the nickname that includes between 3 and 50 characters." |
       | "We w"   | "Test@email.com" | "Super5qs!" | "Super5qs!"      | "Please enter a nickname that doesn't include spaces."                 |
 
+  @Regression
   Scenario Outline: Verify email data validation and email error messages during sign-up
     When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
     Then "signUp" page "Email" "Error Message" is: <error_message>
@@ -32,6 +34,7 @@ Feature: The SingUp feature
       | "Mack4"  | "Mack 4@epam.com"               | "C"         | "M"              | "Please enter a valid email address without any spaces or special characters." |
       | "Jek"    | "Jec$%&'*+/=?^`{\|}~@gmail.com" | "Q"         | "Q"              | "Please enter a valid email address without any spaces or special characters." |
 
+  @Regression
   Scenario Outline: Verify password data validation and password error messages during sign-up
     When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
     Then "signUp" page "Password" "Error Message" is: <error_message>
@@ -44,6 +47,7 @@ Feature: The SingUp feature
       | "Simon"     | "Simon12@gmail.com"  | "No@Numbers" | "No@Numbers"     | "Please enter a password that includes at least one number."            |
       | "S"         | "4"                  | "0Chapters"  | "0Chapters"      | "Please enter a password that includes at least one special character." |
 
+  @Regression
   Scenario Outline: Verify confirm password data validation and confirm password error messages during sign-up
     When the user sing-ups with <nickname>, <email>, <password>, and <confirm_password>
     Then "signUp" page "Confirm Password" "Error Message" is: <error_message>

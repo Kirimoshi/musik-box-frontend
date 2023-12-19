@@ -1,16 +1,11 @@
-@003 @signOut @Regression
+@003 @signOut
 Feature: EPMRDPEMAP-207 - The SingOut feature
 
-  Scenario Outline: 1. Verify that the user with valid data can sing in
-    Given the user is open "signIn" page
-    When the user sing-ins with <email> and <password>
-    Then the user is on the "home" page
+  Background: Authenticated user sing-ins to the application
+    Given the user "signIn" to the application
+    And the user is on the "home" page
 
-    Examples:
-      | email                   | password     |
-      | "test.user@example.com" | "secreT!123" |
-
-  @signOut @Smoke
+  @Smoke
   Scenario Outline: Verify that the user is able logged out
     When the user logging out
     Then logoutSuccessMessage1 message should be displayed: <logout_message1>
@@ -22,22 +17,14 @@ Feature: EPMRDPEMAP-207 - The SingOut feature
       | logout_message1                       | logout_message2    |
       | You have been successfully logged out | Come back anytime! |
 
-  Scenario Outline: 2. Verify that the user with valid data can sing in
-    Given the user is open "signIn" page
-    When the user sing-ins with <email> and <password>
-    Then the user is on the "home" page
-
-    Examples:
-      | email                   | password     |
-      | "test.user@example.com" | "secreT!123" |
-
+  @Regression
   Scenario Outline: Verify that the logout message is displaying if the sign-out action was NOT successful
     Given the Internet connection is interrupted
     When the user logging out
     Then logoutUnsuccessMessage1 message should be displayed: <logout_message1>
-    Then logoutUnsuccessMessage2 message should be displayed: <logout_message2>
+    And logoutUnsuccessMessage2 message should be displayed: <logout_message2>
     And the user storage data is not empty
-    Then the user is on the "home" page
+    And the user is on the "home" page
 
     Examples:
       | logout_message1                                       | logout_message2         |

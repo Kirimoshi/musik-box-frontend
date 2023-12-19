@@ -5,7 +5,7 @@ Feature: EPMRDPEMAP-612 View Playlists on the Home Page
         Given the user is open "home" page
         Then the user is on the "home" page
 
-    Scenario Outline: Verifying the logo of each playlist
+    Scenario Outline: Verify the logo of each playlist
         Given the user is on the "home" page
         And "Logo" "background-image" of each "<playlist_type>" are displayed on "home" page
 
@@ -15,7 +15,7 @@ Feature: EPMRDPEMAP-612 View Playlists on the Home Page
             | Featured Playlist |
             | Latest Playlist   |
 
-    Scenario Outline: Verifying the names of each playlist
+    Scenario Outline: Verify the names of each playlist
         Given the user is on the "home" page
         And the "<playlist_type>" playlists have "name"
 
@@ -25,7 +25,7 @@ Feature: EPMRDPEMAP-612 View Playlists on the Home Page
             | featured      |
             | latest        |
 
-    Scenario Outline: Verifying the authors name of each playlist
+    Scenario Outline: Verify the authors name of each playlist
         Given the user is on the "home" page
         And the "<playlist_type>" playlists have "author"
 
@@ -35,7 +35,7 @@ Feature: EPMRDPEMAP-612 View Playlists on the Home Page
             | featured      |
             | latest        |
 
-    Scenario Outline: Verifying the description of each playlist
+    Scenario Outline: Verify the description of each playlist
         Given the user is on the "home" page
         And the "<playlist_type>" playlists have "description"
 
@@ -45,7 +45,7 @@ Feature: EPMRDPEMAP-612 View Playlists on the Home Page
             | featured      |
             | latest        |
 
-    Scenario Outline: Verifying the quantity of each playlists types in the "home" page
+    Scenario Outline: Verify the quantity of each playlists types in the "home" page
         Given the user is on the "home" page
         And "home" page has no more than <max_elements> elements in "<playlist_type>" playlists
 
@@ -55,7 +55,7 @@ Feature: EPMRDPEMAP-612 View Playlists on the Home Page
             | 6            | Featured Playlists |
             | 6            | Latest Playlists   |
 
-    Scenario Outline: Verifying that Popular Playlists have no less than 5 songs
+    Scenario Outline: Verify that Popular Playlists have no less than 5 songs
         Given the user is on the "home" page
         And the <ordinal> popular playlist on the home page has no less than 5 songs in it
 
@@ -66,6 +66,6 @@ Feature: EPMRDPEMAP-612 View Playlists on the Home Page
             | 3       |
             | 4       |
 
-    Scenario: Verifying that Poopular playlists with the largest number of likes will display first
+    Scenario: Verify that Poopular playlists with the largest number of likes will display first
         Given the user is on the "home" page
         And the popular playlists sorted by the largest number of likes

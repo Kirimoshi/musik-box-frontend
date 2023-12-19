@@ -65,7 +65,7 @@ Then(/the user clicks on the "([^"]*)" (page )?"([^"]*)" (form )?"([^"]*)" ?(\d+
     timeoutMsg: 'expected element to be defined after 10s'
   });
     await elementToClick.click();
-    await browser.pause(500);
+    await browser.pause(1000);
 });
 
 When(/^the user logging out$/, async () => {
@@ -92,11 +92,11 @@ Then('I run mocking data', async function () {
   });
 });
 
-Then(/the user "([^"]*)" (not )?existing "([^"]*)" "([^"]*)" into add songs search field in the "([^"]*)" page/,
-  async function (input, ifNot, song, name, page) {
+Then(/the user "([^"]*)" not existing "([^"]*)" "([^"]*)" into add songs search field in the "([^"]*)" page/,
+  async function (input, song, name, page) {
     const songNameArray = await Pages[page][camelize(`${song}${name}`)];
     const songInput = await Pages[page][camelize(`${song}${input}`)];
-    const allSongsResponse = await sendRequest("api/v1/songs?per_page=100&page=1", "get");
+    const allSongsResponse = await sendRequest("api/v1/songs?per_page=300&page=1", "get");
     const allSongsArray = await allSongsResponse.data;
     const allSongsNames = await allSongsArray.songs.data.map(song => song.attributes.title);
     this.songToAdd;
@@ -104,13 +104,8 @@ Then(/the user "([^"]*)" (not )?existing "([^"]*)" "([^"]*)" into add songs sear
     await songNameArray.map(async (el) => {
       existingSongs.push(await el.getText());
     });
-    if (ifNot) {
-      await browser.pause(1000)
-      this.songToAdd = allSongsNames.filter(item => !existingSongs.includes(item));
-    } else {
-      await browser.pause(1000)
-      this.songToAdd = allSongsNames.filter(item => existingSongs.includes(item));
-    }
+    await browser.pause(2000);
+    this.songToAdd = await allSongsNames.filter(item => !existingSongs.includes(item));
     await songInput.setValue(String(this.songToAdd[0]));
 });
 

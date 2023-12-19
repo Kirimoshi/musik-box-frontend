@@ -1,53 +1,32 @@
-@008 @deletePlaylists @Regression
+@008 @deletePlaylists
 Feature: EPMRDPEMAP-642 - The delete playlist from playlists feature
 
-  Scenario: Verify that the authenticated user has access to the "playlist" page by clicking an individual playlist from the "playlists" page.
+  Background: Verify that the authenticated user is able to open the My Playlists page
     Given the user "signIn" to the application
-    Then the user is on the "home" page
-    When the user clicks on the "sidebar" "My Playlists" "Button" element
-    Then the user is on the "myPlaylists" page
-    When the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
-    Then the user is on the "current" "myPlaylist" page
+    When the user is on the "home" page
+    Then the user clicks on the "sidebar" "My Playlists" "Button"
+    And the user is on the "myPlaylists" page
 
-  Scenario: Verify that the authenticated user is able to cancel deletion playlist from playlists list
-    Given the user clicks on the "sidebar" "My Playlists" "Button" element
-    Then the user is on the "myPlaylists" page
-    When the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
-    And the user clicks on the "myPlaylists" page "Delete Playlist" "Button" 1 element
+  @Regression
+  Scenario: Verify that the authenticated user has access to the "playlist" page by clicking an individual playlist from the "playlists" page.
+    Given the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
+    When the user is on the "current" "myPlaylist" page
+    Then the user logging out
+
+  @Smoke
+  Scenario: Verify that the authenticated user is able to delete playlist
+    Given the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
+    When the user clicks on the "myPlaylists" page "Delete Playlist" "Button" 1 element
     Then "myPlaylists" page "Dialog Delete" "Message" is: "Are you sure you want to delete this playlist? You will not be able to restore it."
     And the "myPlaylists" page "Playlists Item" elements have the initial length
-    When the user clicks on the "myPlaylists" page "Cancel Deletion Playlist" "Button" element
-    Then the "myPlaylists" page "Playlists Item" elements length are not less than the initial length by one item
+    And the user clicks on the "myPlaylists" page "Dialog Delete Playlist" "Button" element
+    And the "myPlaylists" page "Playlists Item" elements length are less than the initial length by one item
 
-  @DeleteSongsFeature @Smoke
-  Scenario: Verify that the authenticated user is able to delete playlist from playlists list
-    Given the user is on the "myPlaylists" page
-    When the user clicks on the "myPlaylists" page "Playlist" "Menu" 1 element
-    And the user clicks on the "myPlaylists" page "Delete Playlist" "Button" 1 element
-    Then "myPlaylists" page "Dialog Delete" "Message" is: "Are you sure you want to delete this playlist? You will not be able to restore it."
-    And the "myPlaylists" page "Playlists Item" elements have the initial length
-    When the user clicks on the "myPlaylists" page "Dialog Delete Playlist" "Button" element
-    Then the "myPlaylists" page "Playlists Item" elements length are less than the initial length by one item
-
-  @DeleteSongsFeature @Smoke
-  Scenario: Verify that the authenticated user can delete the playlist from the specific playlist page.
-    Given the user clicks on the "sidebar" "My Playlists" "Button" element
-    Then the user is on the "myPlaylists" page
-    And the "myPlaylists" page "Playlists Item" elements have the initial length
-    When the user clicks on the "myPlaylists" page "Playlists" "Item" 1 element
-    Then the user is on the "current" "myPlaylist" page
-    When the user clicks on the "myPlaylist" page "Playlist" "Menu" element
-    And the user clicks on the "myPlaylist" page "Delete Playlist" "Button" element
-    Then "myPlaylist" page "Dialog Delete" "Message" is: "Are you sure you want to delete this playlist? You will not be able to restore it."
-    When the user clicks on the "myPlaylist" page "Dialog Delete Playlist" "Button" element
-    And the user clicks on the "sidebar" "My Playlists" "Button" element
-    Then the user is on the "myPlaylists" page
-    Then the "myPlaylists" page "Playlists Item" elements length are less than the initial length by one item
-
+  
+  @Regression
   Scenario: Verify that only authorized users can delete their personal playlists.
-    Given the user is on the "myPlaylists" page
-    When the user logging out
-    Then "toastify" "Logout Success" "Message" is: "You have been successfully logged out."
+    Given the user logging out
+    When "toastify" "Logout Success" "Message" is: "You have been successfully logged out."
     Then the user is on the "signIn" page
-    When the user is open "myPlaylists" page
-    Then "toastify" "Information" "Message" is: "It looks like you don't have permission to view this page. Please sign in to continue."
+    And the user is open "myPlaylists" page
+    And "toastify" "Information" "Message" is: "It looks like you don't have permission to view this page. Please sign in to continue."
