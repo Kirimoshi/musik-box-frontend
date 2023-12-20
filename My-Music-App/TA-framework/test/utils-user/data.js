@@ -21,7 +21,8 @@ const PagesUrl = {
     sharedPlaylists: Pages['sharedPlaylists'].url,
     sharedPlaylist: Pages['sharedPlaylist'].url,
     friends: Pages['friends'].url,
-    publicPlaylist: Pages['publicPlaylist'].url
+    publicPlaylist: Pages['publicPlaylist'].url,
+    sendByMe: Pages['sendByMe'].url
 };
 
 module.exports = {

@@ -16,7 +16,7 @@ export class SignInPage extends BasePage {
   }
 
   get signInButton() {
-    return $("button[class='signin-button ']");
+    return $("button.signIn__submitButton");
   }
 
   get checkboxRememberMe() {
