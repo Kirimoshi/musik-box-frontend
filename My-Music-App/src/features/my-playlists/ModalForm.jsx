@@ -95,9 +95,8 @@ function ModalForm({ options }) {
   async function fetchImage(url) {
     try {
       const data = await fetch(url);
-      if (!data.ok) {
-        throw new Error('Fetch user avatar from url to file failed');
-      }
+      if (!data.ok)
+        throw new Error('Fetch playlist conver from url to file failed');
       const buffer = await data.arrayBuffer();
       const blob = new Blob([buffer], { type: logo.metadata.mime_type });
       const file = new File([blob], logo.metadata.filename, {
@@ -205,7 +204,6 @@ function ModalForm({ options }) {
               !createPlaylistErrors.playlistLogo ? (
                 <CoverImage
                   src={URL.createObjectURL(playlistDetails.playlistLogo)}
-                  // src={coverURL}
                   alt='Playlist Logo'
                 />
               ) : (
