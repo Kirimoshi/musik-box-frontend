@@ -105,13 +105,23 @@ function AddFriend({ className }) {
       setIsModalOpen(false);
     }
     if (isCTAClicked && !isLoading && error) {
-      const errMsg = error.includes(ADD_FRIEND_FETCH_ERROR_RESPONSES.EXIST)
-        ? ADD_FRIEND_ERROR_TEXTS.EXIST
-        : error.includes(ADD_FRIEND_FETCH_ERROR_RESPONSES.NOT_FOUND)
-        ? ADD_FRIEND_ERROR_TEXTS.NOT_FOUND
-        : error.includes(ADD_FRIEND_FETCH_ERROR_RESPONSES.YOURSELF)
-        ? ADD_FRIEND_ERROR_TEXTS.YOURSELF
-        : ADD_FRIEND_ERROR_TEXTS.DEFAULT;
+      let errMsg;
+      switch (true) {
+        case error.includes(ADD_FRIEND_FETCH_ERROR_RESPONSES.EXIST):
+          errMsg = ADD_FRIEND_ERROR_TEXTS.EXIST;
+          break;
+        case error.includes(ADD_FRIEND_FETCH_ERROR_RESPONSES.PENDING):
+          errMsg = ADD_FRIEND_ERROR_TEXTS.PENDING;
+          break;
+        case error.includes(ADD_FRIEND_FETCH_ERROR_RESPONSES.NOT_FOUND):
+          errMsg = ADD_FRIEND_ERROR_TEXTS.NOT_FOUND;
+          break;
+        case error.includes(ADD_FRIEND_FETCH_ERROR_RESPONSES.YOURSELF):
+          errMsg = ADD_FRIEND_ERROR_TEXTS.YOURSELF;
+          break;
+        default:
+          errMsg = ADD_FRIEND_ERROR_TEXTS.DEFAULT;
+      }
 
       notifyError(errMsg);
       setIsCTAClicked(false);
