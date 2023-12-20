@@ -1,4 +1,8 @@
 export const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
+export const IMAGE_PREFIX = process.env.REACT_APP_IMAGE_PREFIX_URL;
+export const ENABLE_LOCAL_API =
+  process.env.REACT_APP_ENABLE_LOCAL_API === 'true' &&
+  process.env.NODE_ENV === 'development';
 
 export const API_URL = BASE_API_URL + '/api/v1';
 export const LOGIN_URL = BASE_API_URL + '/api/v1/login';
