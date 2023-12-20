@@ -42,6 +42,7 @@ import {
   FALLBACK_TYPES,
   IMAGE_SIZES,
 } from '../../../features/shared/ImgWrap/constants/constants';
+import { resetMyAccount } from '../../../store/my-account/my-account.reducer';
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -98,6 +99,7 @@ function Sidebar() {
   const handleLogout = () => {
     setIsLogoutClicked(true);
     dispatch(logoutUser());
+    dispatch(resetMyAccount());
   };
 
   const handleNavigateToMyAccount = () => {

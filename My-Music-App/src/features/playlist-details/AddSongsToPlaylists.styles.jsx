@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ImgWrap from '../shared/ImgWrap/ui/ImgWrap';
 
 export const ModalContainer = styled.dialog`
   &[open] {
@@ -115,7 +116,7 @@ export const SongImgWrapper = styled.div`
   overflow: hidden;
 `;
 
-export const SongImg = styled.img`
+export const SongImg = styled(ImgWrap)`
   height: 100%;
   aspect-ratio: 1/1;
 `;

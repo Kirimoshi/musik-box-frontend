@@ -41,7 +41,7 @@ export const FriendCardAvatar = styled.figure`
   & > img {
     width: 100%;
     aspect-ratio: 1/1;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 50%;
     overflow: hidden;
   }

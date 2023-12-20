@@ -32,11 +32,11 @@ export const UNKNOWN_PICTURE_TYPE = {
  * @prop {string} MICRO - thumbnail image size, exist for avatar only
  */
 export const IMAGE_SIZES = {
-  ORIGINAL: 'original', // TODO: implement as ID
+  ORIGINAL: 'original',
   LARGE: 'large',
   MEDIUM: 'medium',
   SMALL: 'small',
-  MICRO: 'micro', // exist for avatar only
+  MICRO: 'micro',
 };
 
 /**

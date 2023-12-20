@@ -44,12 +44,11 @@ import FriendCardStub from './FriendCardStub';
 import { capitalizeWords } from '../../../store/helpers';
 import { Spacer } from '../../../shared/Shared.styles';
 
-function FriendsTab(props) {
-  // hooks
+function FriendsTab() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { pathname } = location;
-  // Selectors
+
   const {
     isAuthenticated: userIsAuth,
     loading: userIsLoading,
@@ -73,7 +72,6 @@ function FriendsTab(props) {
     friendsRecivedPaginationDataSelector
   );
 
-  // State
   const [currentTab, setCurrentTab] = useState(null);
   const [currentFriends, setCurrentFriends] = useState([]);
   const [currentPagination, setCurrentPagination] = useState({
@@ -81,7 +79,6 @@ function FriendsTab(props) {
     last: 1,
   });
 
-  // Toasts
   const toastId = useRef(null);
   const notify = useCallback(() => {
     toastId.current = toast(

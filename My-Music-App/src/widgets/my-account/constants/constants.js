@@ -5,7 +5,7 @@ export const constants = {
   nicknameMaxLength: 50,
   whitespaceRegex: /\s/g,
   nicknameLengthRegex: /^.{3,50}$/,
-  emailRegex: /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,18}$/,
+  emailRegex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,18}$/,
 };
 
 export const TOAST_MESSAGES = {

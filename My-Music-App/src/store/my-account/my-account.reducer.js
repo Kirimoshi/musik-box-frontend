@@ -18,6 +18,11 @@ export const myAccountSlice = createSlice({
     setMyAccount: (state, action) => {
       state.myAccount = action.payload;
     },
+    resetMyAccount: (state) => {
+      state.myAccount = initialState.myAccount;
+      state.error = initialState.error;
+      state.loading = initialState.loading;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -33,6 +38,6 @@ export const myAccountSlice = createSlice({
   },
 });
 
-export const { setMyAccount } = myAccountSlice.actions;
+export const { setMyAccount, resetMyAccount } = myAccountSlice.actions;
 
 export const myAccountReducer = myAccountSlice.reducer;

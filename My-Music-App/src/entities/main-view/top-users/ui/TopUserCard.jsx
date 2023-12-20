@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { UPLOADS_URL } from '../../../../store/constants';
 import { capitalizeWords } from '../../../../store/helpers';
 import { TopUserCardItem } from './TopUserCard.styles';
+import ImgWrap from '../../../../features/shared/ImgWrap/ui/ImgWrap';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../../../features/shared/ImgWrap/constants/constants';
 
 function TopUserCard({ profilePicture, nickname, textField }) {
-  const profilePictureUrl = profilePicture
-    ? `${UPLOADS_URL}/${profilePicture.storage}/${profilePicture.id}`
-    : require('../../../../shared/assets/default_user_avatar_small.png');
   return (
     <TopUserCardItem className='top-users-card__container'>
       <figure>
-        <img
-          src={profilePictureUrl}
+        <ImgWrap
+          srcObj={profilePicture}
           alt={`${nickname} avatar`}
           className='top-users-card__avatar'
+          fallbackType={FALLBACK_TYPES.USER}
+          size={IMAGE_SIZES.MICRO}
         />
 
         <figcaption className='top-users-card__text-container'>
