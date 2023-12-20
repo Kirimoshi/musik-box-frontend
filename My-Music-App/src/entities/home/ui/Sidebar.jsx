@@ -35,9 +35,13 @@ import {
 } from '../../../shared/Toasts';
 import { useNavigate } from 'react-router-dom';
 import paths from '../../../router/paths';
-import { UPLOADS_URL } from '../../../store/constants';
 import { myAccountSelector } from '../../../store/my-account/my-account.selector';
 import { fetchMyAccount } from '../../../store/my-account/my-account.thunks';
+import ImgWrap from '../../../features/shared/ImgWrap/ui/ImgWrap';
+import {
+  FALLBACK_TYPES,
+  IMAGE_SIZES,
+} from '../../../features/shared/ImgWrap/constants/constants';
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -117,13 +121,10 @@ function Sidebar() {
         {isAuth ? (
           <>
             <UserAvatar className='user-info__picture'>
-              <img
-                src={
-                  profilePicture
-                    ? `${UPLOADS_URL}/${profilePicture.storage}/${profilePicture.id}`
-                    : require('../../../shared/assets/default_user_avatar_small.png')
-                }
-                alt='current user avatar'
+              <ImgWrap
+                srcObj={profilePicture}
+                size={IMAGE_SIZES.MICRO}
+                fallbackType={FALLBACK_TYPES.USER}
               />
             </UserAvatar>
             <AccountDetails>

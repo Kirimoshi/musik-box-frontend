@@ -1,0 +1,47 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import {
+  DEFAULT_ALBUM_COVER,
+  DEFAULT_PLAYLIST_COVER,
+  DEFAULT_USER_AVATAR,
+  FALLBACK_TYPES,
+} from '../constants/constants';
+
+/**
+ * Default image component with proper image delivery using `<picture> <source> <img> </picture>`
+ *
+ * Will be used later, we need to check styles befor adding `<picture>` tag
+ * @param {String} fallbackType - type of fallback image, see `FALLBACK_TYPES` constant
+ * @param {String} alt - alt text
+ * @param {Object} props - props to pass to `<img>` tag
+ * @returns Default image of fallbackType
+ */
+function DefaultImg({ fallbackType, alt, ...props }) {
+  switch (fallbackType) {
+    case FALLBACK_TYPES.USER:
+      fallbackSrc = DEFAULT_USER_AVATAR;
+      break;
+    case FALLBACK_TYPES.ALBUM:
+      fallbackSrc = DEFAULT_ALBUM_COVER;
+      break;
+    case FALLBACK_TYPES.PLAYLIST:
+      fallbackSrc = DEFAULT_PLAYLIST_COVER;
+      break;
+    default:
+      fallbackSrc = UNKNOWN_PICTURE_TYPE;
+  }
+
+  return (
+    <picture>
+      <source srcSet={fallbackSrc.AVIF} type='image/avif' />
+      <source srcSet={fallbackSrc.WEBP} type='image/webp' />
+      <source srcSet={fallbackSrc.PNG} type='image/png' />
+      <img src={fallbackSrc.JPG} alt={alt ? alt : ''} {...props} />
+    </picture>
+  );
+}
+
+DefaultImg.propTypes = {
+  fallbackType: PropTypes.string.isRequired,
+  alt: PropTypes.string,
+};
