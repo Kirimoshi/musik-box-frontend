@@ -5,6 +5,7 @@ import {
   ERROR_RESPONSE_MESSAGES,
   MY_ACCOUNT_URL,
 } from '../constants';
+import { myAccountSlice } from './my-account.reducer';
 
 export const fetchMyAccount = createAsyncThunk(
   'myAccountSlice/fetchMyAccount',
@@ -113,6 +114,42 @@ export const updateMyAccountFulfilled = (state, action) => {
 };
 
 export const updateMyAccountRejected = (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+};
+
+export const deleteMyAccount = createAsyncThunk(
+  'myAccountSlice/deleteMyAccount',
+  async (_, { getState }) => {
+    const accessToken = getState().user.accessToken;
+    try {
+      await axios({
+        url: `${MY_ACCOUNT_URL}`,
+        method: 'DELETE',
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error) {
+      if (error.response.status === ERROR_RESPONSE_CODES.UNAUTHORIZED)
+        throw new Error(ERROR_RESPONSE_MESSAGES.UNAUTHORIZED);
+      throw error.response.data.errors;
+    }
+  }
+);
+
+export const deleteMyAccountPending = (state) => {
+  state.loading = true;
+  state.error = null;
+};
+
+export const deleteMyAccountFulfilled = (state) => {
+  state.loading = false;
+  myAccountSlice.actions.resetMyAccount(state);
+};
+
+export const deleteMyAccountRejected = (state, action) => {
   state.loading = false;
   state.error = action.error.message;
 };

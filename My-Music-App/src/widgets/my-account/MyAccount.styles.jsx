@@ -132,9 +132,10 @@ export const InputClearButton = styled.button`
   }
 `;
 
-export const AvatarDeleteIcon = styled.div`
+export const AvatarDeleteIcon = styled.button`
   width: 52px;
   height: 52px;
+  border: none;
   border-radius: 50%;
   background: transparent;
   display: flex;
@@ -146,10 +147,16 @@ export const AvatarDeleteIcon = styled.div`
   cursor: pointer;
   opacity: 0.5;
 
-  &:hover {
+  &:disabled {
+    background: #e6e0e91f;
+    color: #938f99;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
     opacity: 1;
     scale: 1.1;
-    transition: opacity, scale, transform 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
     transform: rotate(180deg);
   }
 `;
@@ -200,5 +207,27 @@ export const FormResetButton = styled(BaseButton)`
     border: 1px solid #ec928e;
     color: #b3261e;
     transition: background 0.2s ease-in-out;
+  }
+`;
+
+export const DeleteAccountFormText = styled(FormText)`
+  align-self: center;
+`;
+
+export const DeleteAccountButton = styled(BaseButton)`
+  background: transparent;
+  color: #dc362e;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  border: none;
+
+  &:hover {
+    background: #dc362e;
+    color: #410e0b;
+    font-weight: 400;
+    transition: all 0.2s ease-in-out;
   }
 `;
