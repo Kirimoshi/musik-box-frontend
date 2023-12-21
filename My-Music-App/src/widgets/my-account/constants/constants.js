@@ -25,3 +25,10 @@ export const LEAVE_PAGE_CONFIRMATION_MODAL = {
   ACTION: 'Yes',
   CLOSE: 'No',
 };
+
+export const DELETE_ACCOUNT_MODAL_MESSAGES = {
+  TITLE:
+    'Are you ABSOLUTELY sure you want to delete your account? This action cannot be undone.',
+  ACTION: 'Yes',
+  CLOSE: 'No',
+};

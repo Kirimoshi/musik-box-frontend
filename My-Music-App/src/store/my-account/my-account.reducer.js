@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as thunks from './my-account.thunks';
 
-const initialState = {
+export const initialState = {
   loading: false,
   error: null,
   myAccount: {
@@ -34,7 +34,13 @@ export const myAccountSlice = createSlice({
         thunks.updateMyAccount.fulfilled,
         thunks.updateMyAccountFulfilled
       )
-      .addCase(thunks.updateMyAccount.rejected, thunks.updateMyAccountRejected);
+      .addCase(thunks.updateMyAccount.rejected, thunks.updateMyAccountRejected)
+      .addCase(thunks.deleteMyAccount.pending, thunks.deleteMyAccountPending)
+      .addCase(
+        thunks.deleteMyAccount.fulfilled,
+        thunks.deleteMyAccountFulfilled
+      )
+      .addCase(thunks.deleteMyAccount.rejected, thunks.deleteMyAccountRejected);
   },
 });
 

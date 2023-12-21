@@ -6,6 +6,8 @@ import {
   AvatarItem,
   AvatarWrap,
   DataWrap,
+  DeleteAccountButton,
+  DeleteAccountFormText,
   FormInput,
   FormResetButton,
   FormSubmitButton,
@@ -20,6 +22,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  deleteMyAccount,
   fetchMyAccount,
   updateMyAccount,
 } from '../../store/my-account/my-account.thunks';
@@ -34,13 +37,14 @@ import Tippy from '@tippyjs/react';
 import { toast } from 'react-toastify';
 import { baseToastConfig, OneLineMessage } from '../../shared/Toasts';
 import {
+  DELETE_ACCOUNT_MODAL_MESSAGES,
   DELETE_AVATAR_MODAL_MESSAGES,
   LEAVE_PAGE_CONFIRMATION_MODAL,
   TOAST_MESSAGES,
 } from './constants/constants';
 import { userSelector } from '../../store/user/user.selector';
 import ModalDialog from '../../shared/ModalDialog';
-import { useBlocker } from 'react-router-dom';
+import { useBlocker, useNavigate } from 'react-router-dom';
 import {
   DEFAULT_USER_AVATAR,
   FALLBACK_TYPES,
@@ -50,6 +54,7 @@ import { getImgSrc } from '../../features/shared/ImgWrap/lib/getImgSrc';
 
 function MyAccount() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const toastId = useRef(null);
   const { isAuthenticated: isAuth } = useSelector(userSelector);
   const {
@@ -74,16 +79,75 @@ function MyAccount() {
     : '';
 
   const [isSaveClicked, setIsSaveClicked] = useState(false);
-  const [isDeleteAvatarModalOpen, setIsDeleteAvatarModalOpen] = useState(false);
+  const [modalClassName, setModalClassName] = useState('');
+  const [modalOptions, setModalOptions] = useState({
+    isModalOpen: false,
+    actionButtonText: '',
+    closeButtonText: '',
+    title: '',
+    onClose: () => {},
+    onAction: () => {},
+  });
 
   let blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
       isDetailsModified && currentLocation.pathname !== nextLocation.pathname
   );
-  const handleDeleteAvatarModalOpen = () => setIsDeleteAvatarModalOpen(true);
-  const handleDeleteAvatarModalClose = () => setIsDeleteAvatarModalOpen(false);
+
+  const handleAvatarDeleteModalOpen = () => {
+    setModalClassName('modal__delete-avatar');
+    setModalOptions({
+      ...modalOptions,
+      isModalOpen: true,
+      actionButtonText: DELETE_AVATAR_MODAL_MESSAGES.ACTION,
+      closeButtonText: DELETE_AVATAR_MODAL_MESSAGES.CLOSE,
+      title: DELETE_AVATAR_MODAL_MESSAGES.TITLE,
+      onAction: handleAvatarDelete,
+      onClose: handleModalClose,
+    });
+  };
+  useEffect(() => {
+    if (blocker.state === 'blocked') {
+      handleLeavePageModalOpen();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blocker.state]);
+  const handleLeavePageModalOpen = () => {
+    setModalClassName('modal__leave-page');
+    setModalOptions({
+      ...modalOptions,
+      isModalOpen: true,
+      actionButtonText: LEAVE_PAGE_CONFIRMATION_MODAL.ACTION,
+      closeButtonText: LEAVE_PAGE_CONFIRMATION_MODAL.CLOSE,
+      title: LEAVE_PAGE_CONFIRMATION_MODAL.TITLE,
+      onAction: handleLeavePage,
+      onClose: handleStayOnPage,
+    });
+  };
+  const handleModalClose = () => {
+    setModalOptions({ ...modalOptions, isModalOpen: false });
+  };
   const handleStayOnPage = () => blocker.reset();
   const handleLeavePage = () => blocker.proceed();
+
+  const handleDeleteAccountModalOpen = () => {
+    setModalClassName('modal__delete-account');
+    setModalOptions({
+      ...modalOptions,
+      isModalOpen: true,
+      actionButtonText: DELETE_ACCOUNT_MODAL_MESSAGES.ACTION,
+      closeButtonText: DELETE_ACCOUNT_MODAL_MESSAGES.CLOSE,
+      title: DELETE_ACCOUNT_MODAL_MESSAGES.TITLE,
+      onAction: handleDeleteAccount,
+      onClose: handleModalClose,
+    });
+  };
+
+  const handleDeleteAccount = () => {
+    dispatch(deleteMyAccount()).then(() => {
+      navigate('/');
+    });
+  };
 
   const notify = useCallback(() => {
     toastId.current = toast(
@@ -177,6 +241,7 @@ function MyAccount() {
   };
 
   const handleReset = async () => {
+    if (!isDetailsModified) return;
     const file = await fetchAvatar(avatarURL);
     setMyAccountDetails({
       nickname: initUsername,
@@ -241,28 +306,9 @@ function MyAccount() {
 
   return (
     <Wrapper className='my-account__wrapper'>
-      <ModalDialog
-        className='modal__delete-avatar'
-        options={{
-          isModalOpen: isDeleteAvatarModalOpen,
-          actionButtonText: DELETE_AVATAR_MODAL_MESSAGES.ACTION,
-          closeButtonText: DELETE_AVATAR_MODAL_MESSAGES.CLOSE,
-          title: DELETE_AVATAR_MODAL_MESSAGES.TITLE,
-          onAction: handleAvatarDelete,
-          onClose: handleDeleteAvatarModalClose,
-        }}
-      />
-      <ModalDialog
-        className='modal__leave-page'
-        options={{
-          isModalOpen: blocker.state === 'blocked',
-          actionButtonText: LEAVE_PAGE_CONFIRMATION_MODAL.ACTION,
-          closeButtonText: LEAVE_PAGE_CONFIRMATION_MODAL.CLOSE,
-          title: LEAVE_PAGE_CONFIRMATION_MODAL.TITLE,
-          onAction: handleLeavePage,
-          onClose: handleStayOnPage,
-        }}
-      />
+      {modalOptions.isModalOpen && (
+        <ModalDialog className={modalClassName} options={modalOptions} />
+      )}
       <PersonalDataForm
         name='personal-data-form'
         onSubmit={handleSubmit}
@@ -312,7 +358,7 @@ function MyAccount() {
                 />
               </UploadIcon>
               <AvatarDeleteIcon
-                onClick={handleDeleteAvatarModalOpen}
+                onClick={handleAvatarDeleteModalOpen}
                 className='personal-data-form__profile-picture-delete-icon'
               >
                 <AiOutlineCloseCircle size='52' fill='#EC928E' />
@@ -405,6 +451,23 @@ function MyAccount() {
           >
             Cancel
           </FormResetButton>
+        </ActionWrap>
+      </PersonalDataForm>
+      <PersonalDataForm
+        name='delete-account-form'
+        className='delete-account-form'
+      >
+        <DeleteAccountFormText>Actions with the account</DeleteAccountFormText>
+        <ActionWrap className='delete-account-form__action-btn-wrap'>
+          <DeleteAccountButton
+            type='button'
+            name='delete-account-btn'
+            className='delete-account-form__btn'
+            disabled={loading}
+            onClick={handleDeleteAccountModalOpen}
+          >
+            Delete account
+          </DeleteAccountButton>
         </ActionWrap>
       </PersonalDataForm>
     </Wrapper>
