@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 import {
   BasePlaylistsContainer,
+  oneLineEllipsis,
   Subtitle,
   Title,
-  oneLineEllipsis,
 } from '../../../../shared/Shared.styles';
 
 const likeSize = 52;
@@ -86,7 +86,7 @@ export const CardLike = styled.div`
   grid-area: like;
   width: ${likeSize}px;
   height: ${likeSize}px;
-  padding: 9.818px;
+  padding: 10px;
   padding-top: ${cardPadd.top}px;
   padding-right: ${cardPadd.right}px;
   color: var(--m-3-white, #fff);
@@ -119,6 +119,7 @@ export const CardDescription = styled.div`
   border-radius: 0px 0px 18px 18px;
   background: ${descrBgColor};
   align-self: end;
+
   & > p {
     display: -webkit-box;
     -webkit-line-clamp: ${({ $isExpanded }) =>
@@ -144,7 +145,6 @@ export const DescriptionCTA = styled.span`
   width: 40%;
   text-align: center;
   color: var(--m-3-white, #fff);
-  text-align: center;
   font-size: ${descrFontSize}px;
   font-style: normal;
   font-weight: 300;

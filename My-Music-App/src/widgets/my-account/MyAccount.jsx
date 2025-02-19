@@ -44,7 +44,7 @@ import {
 } from './constants/constants';
 import { userSelector } from '../../store/user/user.selector';
 import ModalDialog from '../../shared/ModalDialog';
-import { useBlocker, useNavigate } from 'react-router-dom';
+import { useBlocker } from 'react-router-dom';
 import {
   DEFAULT_USER_AVATAR,
   FALLBACK_TYPES,
@@ -54,9 +54,8 @@ import { getImgSrc } from '../../features/shared/ImgWrap/lib/getImgSrc';
 
 function MyAccount() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const toastId = useRef(null);
-  const { isAuthenticated: isAuth } = useSelector(userSelector);
+  let { isAuthenticated: isAuth } = useSelector(userSelector);
   const {
     nickname: initUsername,
     email: initEmail,
@@ -127,7 +126,10 @@ function MyAccount() {
   const handleModalClose = () => {
     setModalOptions({ ...modalOptions, isModalOpen: false });
   };
-  const handleStayOnPage = () => blocker.reset();
+  const handleStayOnPage = () => {
+    blocker.reset();
+    handleModalClose();
+  };
   const handleLeavePage = () => blocker.proceed();
 
   const handleDeleteAccountModalOpen = () => {
@@ -144,9 +146,7 @@ function MyAccount() {
   };
 
   const handleDeleteAccount = () => {
-    dispatch(deleteMyAccount()).then(() => {
-      navigate('/');
-    });
+    dispatch(deleteMyAccount());
   };
 
   const notify = useCallback(() => {
@@ -358,6 +358,7 @@ function MyAccount() {
                 />
               </UploadIcon>
               <AvatarDeleteIcon
+                disabled={loading}
                 onClick={handleAvatarDeleteModalOpen}
                 className='personal-data-form__profile-picture-delete-icon'
               >
