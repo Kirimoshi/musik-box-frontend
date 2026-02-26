@@ -26,6 +26,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: My-Music-App/package-lock.json
       - name: Install dependencies
         working-directory: My-Music-App
         run: npm ci
