@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
 
@@ -38,13 +41,14 @@ jobs:
         env:
           # before running this workflow, make sure to add the REACT_APP_API_URL secret in your repository settings with the appropriate value for your API URL
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+      - name: Test
+        working-directory: My-Music-App
+        run: npm test
+
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: My-Music-App/build
           branch: gh-pages
-      - name: Test
-        working-directory: My-Music-App
-        run: npm test
 
 
