@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e77b9306.css",
+    "main.js": "/static/js/main.95d73197.js",
+    "static/js/787.78dd7489.chunk.js": "/static/js/787.78dd7489.chunk.js",
+    "static/media/playlist-cover.png": "/static/media/playlist-cover.a926086e2fa8e7b5b561.png",
+    "static/media/album-cover.png": "/static/media/album-cover.b07c440365cba4514693.png",
+    "static/media/user-avatar.png": "/static/media/user-avatar.c75491e187b9d7f32609.png",
+    "static/media/album-cover.jpg": "/static/media/album-cover.c0366370e641cfd212d5.jpg",
+    "static/media/unknown-picture-type.jpg": "/static/media/unknown-picture-type.2f6974c37a98ed662c4f.jpg",
+    "static/media/user-avatar.jpg": "/static/media/user-avatar.6edcfaa8cb9792aa65fb.jpg",
+    "static/media/album-cover.webp": "/static/media/album-cover.ed76514cfcd0fe814112.webp",
+    "static/media/playlist-cover.jpg": "/static/media/playlist-cover.f5f266b9eee447536c0f.jpg",
+    "static/media/user-avatar.webp": "/static/media/user-avatar.b117b985f13a2e303411.webp",
+    "static/media/album-cover.avif": "/static/media/album-cover.e9348af8a529dabc88b3.avif",
+    "static/media/playlist-cover.webp": "/static/media/playlist-cover.988a00c723704d336447.webp",
+    "static/media/user-avatar.avif": "/static/media/user-avatar.bbb5f69cef211e93fd8b.avif",
+    "static/media/playlist-cover.avif": "/static/media/playlist-cover.6fe1e14f6db3d029165b.avif",
+    "static/media/uploadImage.svg": "/static/media/uploadImage.58d23f6eb52dab1c82ce1fe54ae1a650.svg",
+    "static/media/unAuthIcon.svg": "/static/media/unAuthIcon.43a5c40a3d4175cff03c3ac24b0a77f8.svg",
+    "index.html": "/index.html",
+    "static/media/closeLogo.svg": "/static/media/closeLogo.d56cc47b59dba2c9960d28ce529c278f.svg",
+    "main.e77b9306.css.map": "/static/css/main.e77b9306.css.map",
+    "main.95d73197.js.map": "/static/js/main.95d73197.js.map",
+    "787.78dd7489.chunk.js.map": "/static/js/787.78dd7489.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e77b9306.css",
+    "static/js/main.95d73197.js"
+  ]
+}
